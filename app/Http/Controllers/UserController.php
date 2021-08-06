@@ -70,6 +70,5 @@ class UserController extends MainController
                 'userExisted' => 'Pengguna telah wujud!',
             ]);return back();
         }
-        
     }
 }
