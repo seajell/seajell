@@ -32,17 +32,20 @@
                               <li><a class="dropdown-item" href="#">Tambah Sijil</a></li>
                             </ul>
                         </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                              Pengguna
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                              <li><a class="dropdown-item" href="#">Senarai Pengguna</a></li>
-                              <li><a class="dropdown-item" href="#">Tambah Pengguna</a></li>
-                            </ul>
-                        </li>
+                        @if(Gate::allows('authAdmin'))
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Pengguna
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="#">Senarai Pengguna</a></li>
+                                <li><a class="dropdown-item" href="{{ route('user.add') }}">Tambah Pengguna</a></li>
+                                </ul>
+                            </li>
+                        @endif
                     </ul>
                     <span class="navbar-text">
+                        <span class="text-light">Log Masuk Sebagai: <a class="fw-bold" href="{{ route('home') }}">{{ Auth::user()->username }}</a></span>
                         <form action="{{ route('logout') }}" method="post">
                             @csrf
                             <button class="btn btn-light" type="submit">Log Keluar</button>

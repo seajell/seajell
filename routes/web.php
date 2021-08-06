@@ -30,4 +30,5 @@ Route::get('/login', [UserController::class, 'loginView'])->name('login');
 Route::post('/login', [UserController::class, 'login']);
 Route::post('/logout', [UserController::class, 'logout'])->name('logout');
 
-Route::get('/user/create', [UserController::class, 'createUserView'])->name('user.create');
+Route::get('/user/add', [UserController::class, 'addUserView'])->name('user.add')->middleware(['UserIsAdmin']);
+Route::post('/user/add', [UserController::class, 'addUser'])->middleware(['UserIsAdmin']);
