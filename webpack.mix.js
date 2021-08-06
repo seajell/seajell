@@ -16,4 +16,5 @@ const mix = require('laravel-mix');
 //         //
 //     ]);
 
-mix.sass('resources/css/sass/app.scss', 'public/css/app.css');
+mix.sass('resources/css/sass/app.scss', 'public/css/app.css')
+.copy('node_modules/bootstrap-icons', 'public/bootstraps-icons');;

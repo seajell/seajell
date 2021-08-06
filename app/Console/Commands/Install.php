@@ -44,7 +44,7 @@ class Install extends Command
         $this->info('Database migrated!');
         User::upsert([
             ['username' => 'admin', 'fullname' => $this->argument('fullname'), 'fullname' => $this->argument('fullname'), 'email' => $this->argument('email'), 'password' => Hash::make($this->argument('password')), 'role' => 'superadmin']
-        ], ['username'], ['fullname', 'fullname', 'email', 'password', 'role']);
+        ], ['username'], ['fullname', 'email', 'password', 'role']);
         Artisan::call('storage:link'); // Create symbolic links
         $this->info('A user with the admin user was successfully created or updated!');
         $this->info('System was successfully installed!');
