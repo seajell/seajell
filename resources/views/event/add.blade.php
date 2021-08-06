@@ -1,68 +1,87 @@
 @extends('layout.main')
 @section('content')
-    <p class="fs-2">Tambah Pengguna</p>
-    @if(session()->has('addUserSuccess'))
-        <div class="alert alert-success w-75 ml-1">{{ session('addUserSuccess') }}</div>
+    <p class="fs-2">Tambah Acara</p>
+    @if(session()->has('addEventSuccess'))
+        <div class="alert alert-success w-75 ml-1">{{ session('addEventSuccess') }}</div>
     @endif
-    @error('userExisted')
-        <div class="alert alert-danger w-75 ml-1">{{ $message }}</div>
-    @enderror
-    <form action="" method="post" class="mb-3">
+    <form action="" method="post" class="mb-3" enctype="multipart/form-data">
         @csrf
         <div class="mb-3">
-            <label for="username" class="form-label">Username Pengguna</label>
-            <input type="text" class="form-control" id="username" name="username" placeholder="Masukkan username pengguna." value="{{ old('username') }}">
-            <div id="identification_number_help" class="form-text">
-                Username ini digunakan untuk pengguna log masuk.
-            </div>
+            <label for="event-name" class="form-label">Nama Acara</label>
+            <input type="text" class="form-control" id="event-name" name="event-name" placeholder="Masukkan nama acara." value="{{ old('event-name') }}">
         </div>
-        @error('username')
+        @error('event-name')
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
         <div class="mb-3">
-            <label for="fullname" class="form-label">Nama Penuh Pengguna</label>
-            <input type="text" class="form-control" id="fullname" name="fullname" placeholder="Masukkan nama penuh pengguna." value="{{ old('fullname') }}">
+            <label for="event-date" class="form-label">Tarikh Acara</label>
+            <input type="date" class="form-control" id="event-date" name="event-date" placeholder="Masukkan tarikh acara." value="{{ old('event-date') }}">
         </div>
-        @error('fullname')
+        @error('event-date')
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
         <div class="mb-3">
-            <label for="email" class="form-label">Alamat E-mel</label>
-            <input type="text" class="form-control" id="email" name="email" placeholder="Masukkan alamat e-mel pengguna." value="{{ old('email') }}">
+            <label for="event-location" class="form-label">Lokasi Acara</label>
+            <input type="text" class="form-control" id="event-location" name="event-location" placeholder="Masukkan lokasi acara." value="{{ old('event-location') }}">
         </div>
-        @error('email')
+        @error('event-location')
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
         <div class="mb-3">
-            <label for="password" class="form-label">Kata Laluan</label>
-            <input type="password" class="form-control" id="password" name="password" placeholder="Masukkan kata laluan pengguna.">
+            <label for="institute-name" class="form-label">Nama Institusi (Pilihan)</label>
+            <input type="text" class="form-control" id="institute-name" name="institute-name" placeholder="Masukkan nama institusi." value="{{ old('institute-name') }}">
         </div>
-        @error('password')
+        @error('institute-name')
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
         <div class="mb-3">
-            <label for="password_confirmation " class="form-label">Sahkan Kata Laluan</label>
-            <input type="password" class="form-control" id="password_confirmation " name="password_confirmation" placeholder="Masukkan kata laluan pengguna semula.">
+            <label for="insititute-logo" class="form-label">Logo Institusi (Pilihan)</label>
+            <input class="form-control" type="file" id="insititute-logo" name="institute-logo">
         </div>
+        <div id="institute_logo_help" class="form-text">
+            Logo mestilah menggunakan format PNG. <br>
+            Resolusi logo mestilah paling kurang 300 x 300 piksel bagi memastikan gambar yang jelas. <br>
+            Gambar <span class="fst-italic">transparent</span> lebih digalakkan.
+        </div>
+        @error('insititute-logo')
+            <div class="alert alert-danger">{{ $message }}</div>
+        @enderror
+        <div class="my-3">
+            <label for="organiser-name" class="form-label">Nama Penganjur (Diperlukan)</label>
+            <input type="text" class="form-control" id="organiser-name" name="organiser-name" placeholder="Masukkan nama penganjur." value="{{ old('organiser-name') }}">
+        </div>
+        @error('organiser-name')
+            <div class="alert alert-danger">{{ $message }}</div>
+        @enderror
         <div class="mb-3">
-            <label for="identification_number " class="form-label">Nombor Kad Pengenalan</label>
-            <input type="text" class="form-control" id="identification_number " name="identification_number" placeholder="Masukkan nombor kad pengenalan pengguna." value="{{ old('identification_number') }}">
-            <div id="identification_number_help" class="form-text">
-                Nombor kad pengenalan mestilah diisi tanpa "-". <br>
-                Contoh: 012345-67-8901
-            </div>
+            <label for="organiser-logo" class="form-label">Logo Penganjur (Diperlukan)</label>
+            <input class="form-control" type="file" id="organiser-logo" name="organiser-logo">
         </div>
-        @error('identification_number')
+        <div id="organiser_logo_help" class="form-text">
+            Logo mestilah menggunakan format PNG. <br>
+            Resolusi logo mestilah paling kurang 300 x 300 piksel bagi memastikan gambar yang jelas. <br>
+            Gambar <span class="fst-italic">transparent</span> lebih digalakkan.
+        </div>
+        @error('organiser-logo')
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
-        <label for="role" class="form-label">Peranan Pengguna</label>
-        <select class="form-select mb-3" name="role" id="role" aria-label="role">
-            <option value="participant">Peserta</option>
-            <option value="admin">Admin</option>
-        </select>
-        @error('role')
-            <div class="alert alert-danger">{{ $message }}</div>
-        @enderror
-        <button class="btn btn-dark" type="submit">Cipta Akaun Pengguna</button>
+        <label class="form-label mt-3">Keterlihatan (Pilih Satu)</label>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="visibility" id="visibility" value="public" checked>
+            <label class="form-check-label" for="visibility">
+              Awam
+            </label>
+        </div>     
+        <div class="form-check mb-3">
+            <input class="form-check-input" type="radio" name="visibility" value="hidden" id="visibility">
+            <label class="form-check-label" for="visibility">
+              Tersembunyi
+            </label>
+        </div>
+        <div id="invisibility_help" class="form-text">
+            Awam: Semua orang dapat akses kepada sijil jika mempunyai pautan sijil tersebut. <br>
+            Tersembunyi: Hanya pemilik sijil dapat akses selepas log masuk.
+        </div>
+        <button class="btn btn-dark mt-3" type="submit">Tambah Acara</button>
     </form>
 @endsection

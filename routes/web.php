@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\EventController;
 use App\Http\Controllers\InstallationController;
 
 /*
@@ -36,10 +37,10 @@ Route::get('/user/add', [UserController::class, 'addUserView'])->name('user.add'
 Route::post('/user/add', [UserController::class, 'addUser'])->middleware(['auth','UserIsAdmin']);
 
 
-Route::get('/event/list', [UserController::class, 'userListView'])->name('event.list')->middleware(['auth','UserIsAdmin']);
-Route::post('/event/list', [UserController::class, ''])->middleware(['auth','UserIsAdmin']);
-Route::get('/event/add', [UserController::class, 'addUserView'])->name('event.add')->middleware(['auth','UserIsAdmin']);
-Route::post('/event/add', [UserController::class, 'addUser'])->middleware(['auth','UserIsAdmin']);
+Route::get('/event/list', [EventController::class, 'eventListView'])->name('event.list')->middleware(['auth','UserIsAdmin']);
+Route::post('/event/list', [EventController::class, ''])->middleware(['auth','UserIsAdmin']);
+Route::get('/event/add', [EventController::class, 'addEventView'])->name('event.add')->middleware(['auth','UserIsAdmin']);
+Route::post('/event/add', [EventController::class, 'addEvent'])->middleware(['auth','UserIsAdmin']);
 
 // Route::get('/certificate/list', [UserController::class, 'userListView'])->name('certificate.list')->middleware(['auth','UserIsAdmin']);
 // Route::get('/certificate/user/{username}', [UserController::class, ''])->name('certificate.user')->middleware(['auth']);

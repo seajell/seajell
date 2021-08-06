@@ -30,8 +30,8 @@
                                 Acara
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="{{ route('user.list') }}">Senarai Acara</a></li>
-                                <li><a class="dropdown-item" href="{{ route('user.add') }}">Tambah Acara</a></li>
+                                <li><a class="dropdown-item" href="{{ route('event.list') }}">Senarai Acara</a></li>
+                                <li><a class="dropdown-item" href="{{ route('event.add') }}">Tambah Acara</a></li>
                                 </ul>
                             </li>
                         @endif
