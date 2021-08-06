@@ -13,6 +13,10 @@ class UserController extends MainController
     public function loginView(Request $request){
         return view('login');
     }
+    public function userListView(Request $request){
+        $users = User::select('id', 'username', 'fullname', 'email', 'role')->paginate(7);
+        return view('user.list')->with(['users' => $users]);
+    }
     public function addUserView(Request $request){
         return view('user.add');
     }

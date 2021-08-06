@@ -1,3 +1,7 @@
 {
-    "/css/app.css": "/css/app.css"
+    "/css/app.css": "/css/app.css",
+    "/bootstraps-icons/bootstrap-icons.svg": "/bootstraps-icons/bootstrap-icons.svg",
+    "/bootstraps-icons/LICENSE.md": "/bootstraps-icons/LICENSE.md",
+    "/bootstraps-icons/package.json": "/bootstraps-icons/package.json",
+    "/bootstraps-icons/README.md": "/bootstraps-icons/README.md"
 }

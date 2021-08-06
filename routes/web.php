@@ -30,5 +30,17 @@ Route::get('/login', [UserController::class, 'loginView'])->name('login');
 Route::post('/login', [UserController::class, 'login']);
 Route::post('/logout', [UserController::class, 'logout'])->name('logout');
 
-Route::get('/user/add', [UserController::class, 'addUserView'])->name('user.add')->middleware(['UserIsAdmin']);
-Route::post('/user/add', [UserController::class, 'addUser'])->middleware(['UserIsAdmin']);
+Route::get('/user/list', [UserController::class, 'userListView'])->name('user.list')->middleware(['auth','UserIsAdmin']);
+Route::post('/user/list', [UserController::class, ''])->middleware(['auth','UserIsAdmin']);
+Route::get('/user/add', [UserController::class, 'addUserView'])->name('user.add')->middleware(['auth','UserIsAdmin']);
+Route::post('/user/add', [UserController::class, 'addUser'])->middleware(['auth','UserIsAdmin']);
+
+
+Route::get('/event/list', [UserController::class, 'userListView'])->name('event.list')->middleware(['auth','UserIsAdmin']);
+Route::post('/event/list', [UserController::class, ''])->middleware(['auth','UserIsAdmin']);
+Route::get('/event/add', [UserController::class, 'addUserView'])->name('event.add')->middleware(['auth','UserIsAdmin']);
+Route::post('/event/add', [UserController::class, 'addUser'])->middleware(['auth','UserIsAdmin']);
+
+// Route::get('/certificate/list', [UserController::class, 'userListView'])->name('certificate.list')->middleware(['auth','UserIsAdmin']);
+// Route::get('/certificate/user/{username}', [UserController::class, ''])->name('certificate.user')->middleware(['auth']);
+// Route::get('/certificate/user/{username}/{certificateID}', [UserController::class, ''])->name('certificate.user.id')->middleware(['auth']);

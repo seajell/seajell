@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ asset('bootstraps-icons/font/bootstrap-icons.css') }}">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="shortcut icon" href="{{ asset('/storage/img/logo/SeaJell-Logo.png') }}" type="image/png">
     <title>SeaJell</title>
@@ -23,22 +24,35 @@
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="{{ route('home') }}">Laman Utama</a>
                         </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                              Sijil
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                              <li><a class="dropdown-item" href="#">Senarai Sijil</a></li>
-                              <li><a class="dropdown-item" href="#">Tambah Sijil</a></li>
-                            </ul>
-                        </li>
+                        @if(Gate::allows('authAdmin'))
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Acara
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="{{ route('user.list') }}">Senarai Acara</a></li>
+                                <li><a class="dropdown-item" href="{{ route('user.add') }}">Tambah Acara</a></li>
+                                </ul>
+                            </li>
+                        @endif
+                        @if(Gate::allows('authAdmin'))
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Sijil
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="{{ route('user.list') }}">Senarai Sijil</a></li>
+                                <li><a class="dropdown-item" href="{{ route('user.add') }}">Tambah Sijil</a></li>
+                                </ul>
+                            </li>
+                        @endif
                         @if(Gate::allows('authAdmin'))
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Pengguna
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="#">Senarai Pengguna</a></li>
+                                <li><a class="dropdown-item" href="{{ route('user.list') }}">Senarai Pengguna</a></li>
                                 <li><a class="dropdown-item" href="{{ route('user.add') }}">Tambah Pengguna</a></li>
                                 </ul>
                             </li>
