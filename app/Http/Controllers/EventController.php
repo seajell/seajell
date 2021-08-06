@@ -12,6 +12,15 @@ use App\Http\Controllers\MainController;
 class EventController extends MainController
 {
     public function eventListView(Request $request){
+        // id
+        // name
+        // date
+        // location
+        // organiser-name
+        // organiser-logo
+        // institute-name
+        // institute-logo
+        // visibility
         $events = Event::paginate(7);
         return view('event.list')->with(['events' => $events]);
     }
