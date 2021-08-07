@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Certificate;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Event extends Model
 {
@@ -22,6 +23,16 @@ class Event extends Model
         'institute_logo',
         'organiser_name',
         'organiser_logo',
-        'visibility'
+        'visibility',
+        'verifier_signature',
+        'verifier_name',
+        'verifier_position'
     ];
+
+    /**
+     * Relationships
+     */
+    public function certificate(){
+        return $this->hasMany(Certificate::class);
+    }
 }

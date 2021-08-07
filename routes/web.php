@@ -44,7 +44,8 @@ Route::get('/event/add', [EventController::class, 'addEventView'])->name('event.
 Route::post('/event/add', [EventController::class, 'addEvent'])->middleware(['auth','UserIsAdmin']);
 
 Route::get('/certificate/list', [CertificateController::class, 'certificateListView'])->name('certificate.list')->middleware(['auth']);
+Route::get('/certificate/view/{id}', [CertificateController::class, 'certificateView'])->name('certificate.view')->middleware(['auth']);
 Route::get('/certificate/add', [CertificateController::class, 'addCertificateView'])->name('certificate.add')->middleware(['auth','UserIsAdmin']);
-Route::post('/certificate/add', [CertificateController::class, 'addEvent'])->middleware(['auth','UserIsAdmin']);
+Route::post('/certificate/add', [CertificateController::class, 'addCertificate'])->middleware(['auth','UserIsAdmin']);
 //Route::get('/certificate/user/{username}', [CertificateController::class, ''])->name('certificate.user')->middleware(['auth']);
 //Route::get('/certificate/user/{username}/{certificateID}', [CertificateController::class, ''])->name('certificate.user.id')->middleware(['auth']);

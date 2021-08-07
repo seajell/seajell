@@ -40,7 +40,7 @@
                                 @endswitch
                             </td>
                             <td>{{ strtoupper($certificate->position) }}</td>
-                            <td class="fs-3 text-center"><a class="text-light" href=""><i class="bi bi-eye"></i></a></td>
+                            <td class="fs-3 text-center"><a class="text-light" href="{{ route('certificate.view', [$certificate->id]) }}"><i class="bi bi-eye"></i></a></td>
                             @can('authAdmin')
                                 <td class="fs-3 text-center"><a class="text-light" href=""><i class="bi bi-pencil-square"></i></a></td>
                                 <td class="fs-3 text-center"><a class="text-light" href=""><i class="bi bi-trash"></a></i></td>
