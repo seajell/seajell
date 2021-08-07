@@ -15,12 +15,13 @@ class UserController extends MainController
     }
     public function userListView(Request $request){
         $users = User::select('id', 'username', 'fullname', 'email', 'role')->paginate(7);
-        return view('user.list')->with(['users' => $users]);
+        return view('user.list')->with(['users' => $users, 'apiToken' => $this->apiToken]);
     }
     public function addUserView(Request $request){
-        return view('user.add');
+        return view('user.add')->with(['apiToken' => $this->apiToken]);
     }
     public function login(Request $request){
+        $username = strtolower($request->username);
         if(User::where('username', '=', $request->username)->first()){
             $credentials = $request->validate([
                 'username' => ['required'],
@@ -29,6 +30,11 @@ class UserController extends MainController
     
             if (Auth::attempt($credentials)) {
                 $request->session()->regenerate();
+                $id = User::select('id')->where('username', '=', $username)->first()->id;
+                $user = User::find($id);
+                $token = $user->createToken('apitoken');
+                // Add Bearer API Token to session
+                $request->session()->put('bearerAPIToken', $token->plainTextToken);
                 return redirect()->intended('');
             }
     
@@ -43,6 +49,13 @@ class UserController extends MainController
     }
 
     public function logout(Request $request){
+        if(auth()->user()->tokens() != NULL){
+            auth()->user()->tokens()->delete();
+        }
+        // Remove Bearer API Token from session
+        if ($request->session()->has('bearerAPIToken')) {
+            $request->session()->forget('bearerAPIToken');
+        }
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();

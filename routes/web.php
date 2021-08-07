@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\InstallationController;
 
 /*
@@ -29,7 +30,7 @@ Route::get('/', [HomeController::class, 'view'])->name('home')->middleware(['aut
 
 Route::get('/login', [UserController::class, 'loginView'])->name('login');
 Route::post('/login', [UserController::class, 'login']);
-Route::post('/logout', [UserController::class, 'logout'])->name('logout');
+Route::post('/logout', [UserController::class, 'logout'])->name('logout')->middleware(['auth']);
 
 Route::get('/user/list', [UserController::class, 'userListView'])->name('user.list')->middleware(['auth','UserIsAdmin']);
 Route::post('/user/list', [UserController::class, ''])->middleware(['auth','UserIsAdmin']);
@@ -42,6 +43,7 @@ Route::post('/event/list', [EventController::class, ''])->middleware(['auth','Us
 Route::get('/event/add', [EventController::class, 'addEventView'])->name('event.add')->middleware(['auth','UserIsAdmin']);
 Route::post('/event/add', [EventController::class, 'addEvent'])->middleware(['auth','UserIsAdmin']);
 
-// Route::get('/certificate/list', [UserController::class, 'userListView'])->name('certificate.list')->middleware(['auth','UserIsAdmin']);
-// Route::get('/certificate/user/{username}', [UserController::class, ''])->name('certificate.user')->middleware(['auth']);
-// Route::get('/certificate/user/{username}/{certificateID}', [UserController::class, ''])->name('certificate.user.id')->middleware(['auth']);
+//Route::get('/certificate/list', [CertificateController::class, 'userListView'])->name('certificate.list')->middleware(['auth','UserIsAdmin']);
+Route::get('/certificate/add', [CertificateController::class, 'addCertificateView'])->name('certificate.add')->middleware(['auth','UserIsAdmin']);
+//Route::get('/certificate/user/{username}', [CertificateController::class, ''])->name('certificate.user')->middleware(['auth']);
+//Route::get('/certificate/user/{username}/{certificateID}', [CertificateController::class, ''])->name('certificate.user.id')->middleware(['auth']);

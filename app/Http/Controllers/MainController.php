@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Schema;
 
 class MainController extends Controller
 {
+    protected $apiToken;
     public function __construct()
     {
         // Check if system is properly installed. If not redirect to /install route.
@@ -18,6 +19,12 @@ class MainController extends Controller
                 if(!User::where('username', 'admin')->first()){
                     return redirect()->route('install.view');
                 }else{       
+                    if ($request->session()->has('bearerAPIToken')) {
+
+                        $this->apiToken = $request->session()->get('bearerAPIToken');
+                    }else{
+                        $this->apiToken = NULL;
+                    }
                     return $next($request);
                 }
             }else{
