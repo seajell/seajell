@@ -6,12 +6,23 @@ use App\Models\User;
 use App\Models\Event;
 use App\Models\Certificate;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use App\Http\Controllers\MainController;
 
 class CertificateController extends MainController
 {
     public function addCertificateView(Request $request){
         return view('certificate.add')->with(['apiToken' => $this->apiToken]);
+    }
+    public function certificateListView(Request $request){
+        if(Gate::allows('authAdmin')){
+            $certificates = Certificate::select('certificates.id', 'certificates.type', 'certificates.position', 'users.fullname', 'events.name')->join('users', 'certificates.user_id', '=', 'users.id')->join('events', 'certificates.event_id', '=', 'events.id')->paginate(7);
+            return view('certificate.list')->with(['certificates' => $certificates, 'apiToken' => $this->apiToken]);
+        }else{
+            $certificates = Certificate::select('certificates.id', 'certificates.type', 'certificates.position', 'users.fullname', 'events.name')->join('users', 'certificates.user_id', '=', 'users.id')->join('events', 'certificates.event_id', '=', 'events.id')->where('username', Auth::user()->username)->paginate(7);
+            return view('certificate.list')->with(['certificates' => $certificates, 'apiToken' => $this->apiToken]);
+        }
     }
     public function addEvent(Request $request){
         $validated = $request->validate([

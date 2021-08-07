@@ -83,7 +83,7 @@
             Penghargaan: Diberikan kepada seseorang yang membantu dalam menjayakan acara. Contoh: Ahli Jawatankuasa Pertandingan.
         </div>
         <div class="my-3">
-            <label for="position" class="form-label">Posisi</label>
+            <label for="position" class="form-label">Kedudukan</label>
             <input type="text" class="form-control" id="position" name="position" placeholder="Masukkan posisi peserta." value="{{ old('position') }}">
         </div>
         @error('position')

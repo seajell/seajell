@@ -36,17 +36,18 @@
                                 </ul>
                             </li>
                         @endif
-                        @if(Gate::allows('authAdmin'))
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Sijil
-                                </a>
-                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="{{ route('user.list') }}">Senarai Sijil</a></li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Sijil
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                
+                            <li><a class="dropdown-item" href="{{ route('certificate.list') }}">Senarai Sijil</a></li>
+                            @if(Gate::allows('authAdmin'))
                                 <li><a class="dropdown-item" href="{{ route('certificate.add') }}">Tambah Sijil</a></li>
-                                </ul>
-                            </li>
-                        @endif
+                            @endif
+                            </ul>
+                        </li>
                         @if(Gate::allows('authAdmin'))
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
