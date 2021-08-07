@@ -1,68 +1,100 @@
 @extends('layout.main')
 @section('content')
-    <p class="fs-2">Tambah Pengguna</p>
-    @if(session()->has('addUserSuccess'))
-        <div class="alert alert-success w-75 ml-1">{{ session('addUserSuccess') }}</div>
+    <p class="fs-2">Tambah Sijil</p>
+    @if(session()->has('addCertificateSuccess'))
+        <span><div class="alert alert-success w-100 ml-1">{{ session('addCertificateSuccess') }}</div></span>
     @endif
-    @error('userExisted')
-        <div class="alert alert-danger w-75 ml-1">{{ $message }}</div>
-    @enderror
     <form action="" method="post" class="mb-3">
         @csrf
         <div class="mb-3">
-            <label for="username" class="form-label">Username Pengguna</label>
-            <input type="text" class="form-control" id="username" name="username" placeholder="Masukkan username pengguna." value="{{ old('username') }}">
-            <div id="identification_number_help" class="form-text">
-                Username ini digunakan untuk pengguna log masuk.
+            <div class="row">
+                <label for="username" class="form-label">Username Pengguna</label>   
+            </div>
+            <div class="row">
+                <div class="col-11">
+                    <input type="text" class="form-control w-100" id="username" name="username" placeholder="Masukkan username pengguna." value="{{ old('username') }}">
+                </div>
+                <div class="col-1">
+                    <button type="button" id="username-search" class="btn btn-dark w-100"><i class="bi bi-search"></i></button>
+                </div>
             </div>
         </div>
         @error('username')
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
-        <div class="mb-3">
-            <label for="fullname" class="form-label">Nama Penuh Pengguna</label>
-            <input type="text" class="form-control" id="fullname" name="fullname" placeholder="Masukkan nama penuh pengguna." value="{{ old('fullname') }}">
+        <div class="my-1" id="user-search-status">
         </div>
-        @error('fullname')
-            <div class="alert alert-danger">{{ $message }}</div>
-        @enderror
-        <div class="mb-3">
-            <label for="email" class="form-label">Alamat E-mel</label>
-            <input type="text" class="form-control" id="email" name="email" placeholder="Masukkan alamat e-mel pengguna." value="{{ old('email') }}">
-        </div>
-        @error('email')
-            <div class="alert alert-danger">{{ $message }}</div>
-        @enderror
-        <div class="mb-3">
-            <label for="password" class="form-label">Kata Laluan</label>
-            <input type="password" class="form-control" id="password" name="password" placeholder="Masukkan kata laluan pengguna.">
-        </div>
-        @error('password')
-            <div class="alert alert-danger">{{ $message }}</div>
-        @enderror
-        <div class="mb-3">
-            <label for="password_confirmation " class="form-label">Sahkan Kata Laluan</label>
-            <input type="password" class="form-control" id="password_confirmation " name="password_confirmation" placeholder="Masukkan kata laluan pengguna semula.">
-        </div>
-        <div class="mb-3">
-            <label for="identification_number " class="form-label">Nombor Kad Pengenalan</label>
-            <input type="text" class="form-control" id="identification_number " name="identification_number" placeholder="Masukkan nombor kad pengenalan pengguna." value="{{ old('identification_number') }}">
-            <div id="identification_number_help" class="form-text">
-                Nombor kad pengenalan mestilah diisi tanpa "-". <br>
-                Contoh: 012345-67-8901
+        <div class="mb-3 border border-dark border-3">
+            <div class="row my-1 mx-1">
+                <p class="fw-bold">Nama Peserta: <span class="fw-normal" id="participant-fullname-text"></span></p>
+                <p class="fw-bold">No. Kad Pengenalan: <span class="fw-normal" id="participant-identification-number-text"></span></p>
             </div>
         </div>
-        @error('identification_number')
+        <div class="mb-3">
+            <div class="row">
+                <label for="event-id" class="form-label">ID Acara</label>   
+            </div>
+            <div class="row">
+                <div class="col-11">
+                    <input type="text" class="form-control w-100" id="event-id" name="event-id" placeholder="Masukkan ID acara." value="{{ old('event-id') }}">
+                </div>
+                <div class="col-1">
+                    <button type="button" id="event-search" class="btn btn-dark w-100"><i class="bi bi-search"></i></button>
+                </div>
+            </div>
+        </div>
+        @error('event-id')
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
-        <label for="role" class="form-label">Peranan Pengguna</label>
-        <select class="form-select mb-3" name="role" id="role" aria-label="role">
-            <option value="participant">Peserta</option>
-            <option value="admin">Admin</option>
-        </select>
-        @error('role')
+        <div class="my-1" id="event-search-status">
+        </div>
+        <div class="mb-3 border border-dark border-3">
+            <div class="row my-1 mx-1">
+                <p class="fw-bold">Tarikh: <span class="fw-normal" id="event-name-text"></span></p>
+                <p class="fw-bold">Tarikh: <span class="fw-normal" id="event-date-text"></span></p>
+                <p class="fw-bold">Lokasi: <span class="fw-normal" id="event-location-text"></span></p>
+                <p class="fw-bold">Nama Penganjur: <span class="fw-normal" id="event-organiser-name-text"></span></p>
+                <p class="fw-bold">Nama Institusi: <span class="fw-normal" id="event-institute-name-text"></span></p>
+                <p class="fw-bold">Keterlihatan: <span class="fw-normal" id="event-visibility-text"></span></p>
+            </div>
+        </div>
+        <label class="form-label mt-1">Jenis Sijil (Pilih Satu)</label>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="certificate-type" id="certificate-type" value="participation" checked>
+            <label class="form-check-label" for="certificate-type">
+              Penyertaan
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="certificate-type" id="certificate-type" value="achievement" >
+            <label class="form-check-label" for="certificate-type">
+              Pencapaian
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="certificate-type" id="certificate-type" value="appreciation" >
+            <label class="form-check-label" for="certificate-type">
+              Penghargaan
+            </label>
+        </div>
+        <div id="certification_type_help mb-3" class="form-text">
+            Penyertaan: Untuk penyertaan sesuatu acara. <br>
+            Pencapaian: Jika seseorang mendapat sebarang pencapaian. Contoh: Tempat pertama dalam sesebuah pertandingan. <br>
+            Penghargaan: Diberikan kepada seseorang yang membantu dalam menjayakan acara. Contoh: Ahli Jawatankuasa Pertandingan.
+        </div>
+        <div class="my-3">
+            <label for="position" class="form-label">Kedudukan</label>
+            <input type="text" class="form-control" id="position" name="position" placeholder="Masukkan posisi peserta." value="{{ old('position') }}">
+        </div>
+        @error('position')
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
-        <button class="btn btn-dark" type="submit">Cipta Akaun Pengguna</button>
+        <div id="position_help mb-3" class="form-text">
+            Sijil Penyertaan. Contoh: "Peserta". <br>
+            Sijil Pencapaian. Contoh: "Tempat Pertama", "Tempat Kedua", "Tempat Ketiga". <br>
+            Sijil Penghargaan. Contoh: "Ahli Jawatankuasa", "Setiusaha".
+        </div>
+        <button class="btn btn-dark mt-3" type="submit">Tambah Sijil</button>
     </form>
+    <script src="{{ asset('js/addCertificateSearch.js') }}"></script>
 @endsection

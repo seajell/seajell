@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{{ asset('bootstraps-icons/font/bootstrap-icons.css') }}">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="shortcut icon" href="{{ asset('/storage/img/logo/SeaJell-Logo.png') }}" type="image/png">
+    <meta name="api-token" content="{{ $apiToken }}">
     <title>SeaJell</title>
 </head>
 <body class="min-vh-100">
@@ -35,17 +36,18 @@
                                 </ul>
                             </li>
                         @endif
-                        @if(Gate::allows('authAdmin'))
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Sijil
-                                </a>
-                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="{{ route('user.list') }}">Senarai Sijil</a></li>
-                                <li><a class="dropdown-item" href="{{ route('user.add') }}">Tambah Sijil</a></li>
-                                </ul>
-                            </li>
-                        @endif
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Sijil
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                
+                            <li><a class="dropdown-item" href="{{ route('certificate.list') }}">Senarai Sijil</a></li>
+                            @if(Gate::allows('authAdmin'))
+                                <li><a class="dropdown-item" href="{{ route('certificate.add') }}">Tambah Sijil</a></li>
+                            @endif
+                            </ul>
+                        </li>
                         @if(Gate::allows('authAdmin'))
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">

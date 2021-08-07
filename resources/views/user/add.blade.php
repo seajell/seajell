@@ -2,7 +2,7 @@
 @section('content')
     <p class="fs-2">Tambah Pengguna</p>
     @if(session()->has('addUserSuccess'))
-        <div class="alert alert-success w-75 ml-1">{{ session('addUserSuccess') }}</div>
+        <span><div class="alert alert-success w-100 ml-1">{{ session('addUserSuccess') }}</div></span>
     @endif
     @error('userExisted')
         <div class="alert alert-danger w-75 ml-1">{{ $message }}</div>
@@ -49,7 +49,7 @@
             <input type="text" class="form-control" id="identification_number " name="identification_number" placeholder="Masukkan nombor kad pengenalan pengguna." value="{{ old('identification_number') }}">
             <div id="identification_number_help" class="form-text">
                 Nombor kad pengenalan mestilah diisi tanpa "-". <br>
-                Contoh: 012345-67-8901
+                Contoh: 012345678901
             </div>
         </div>
         @error('identification_number')

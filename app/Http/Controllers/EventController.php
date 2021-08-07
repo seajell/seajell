@@ -22,11 +22,11 @@ class EventController extends MainController
         // institute-logo
         // visibility
         $events = Event::paginate(7);
-        return view('event.list')->with(['events' => $events]);
+        return view('event.list')->with(['events' => $events, 'apiToken' => $this->apiToken]);
     }
 
     public function addEventView(Request $request){
-        return view('event.add');
+        return view('event.add')->with(['apiToken' => $this->apiToken]);
     }
 
     public function addEvent(Request $request){
@@ -38,7 +38,10 @@ class EventController extends MainController
             'organiser-logo' => ['required', 'mimes:png'],
             'visibility' => ['required'],
             'institute-name' => [],
-            'institute-logo' => ['image', 'mimes:png']
+            'institute-logo' => ['image', 'mimes:png'],
+            'verifier-name' => ['required'],
+            'verifier-position' => ['required'],
+            'verifier-signature' => ['required'],
         ]);
         $eventName = $request->input('event-name');
         $eventDate = $request->input('event-date');
@@ -46,7 +49,9 @@ class EventController extends MainController
         $organiserName = $request->input('organiser-name');
         $organiserLogo = $request->file('organiser-logo');
         $visibility = $request->input('visibility');
-        
+        $verifierName = $request->input('verifier-name');
+        $verifierPosition = $request->input('verifier-position');
+        $verifierSignature = $request->file('verifier-signature');
         // Check if institute logo is uploaded (since it's not required)
         if($request->hasFile('institute-logo')){
             $instituteLogoName = $request->file('institute-logo')->getClientOriginalName();
@@ -67,6 +72,13 @@ class EventController extends MainController
         $organiserLogoImage = Image::make($organiserLogo)->resize(300, 300)->encode('png');
         $organiserLogoSavePath = '/img/organiser/'. Carbon::now()->timestamp . '-' . $organiserLogoName;
         Storage::disk('public')->put($organiserLogoSavePath, $organiserLogoImage);
+
+        $verifierSignatureName =$verifierSignature->getClientOriginalName();
+        $verifierSignatureImage = Image::make($verifierSignature)->resize(300, 100)->encode('png');
+        $verifierSignatureSavePath = '/img/signature/'. Carbon::now()->timestamp . '-' . $verifierSignatureName;
+        Storage::disk('public')->put($verifierSignatureSavePath, $verifierSignatureImage);
+
+        Storage::disk('public')->put($organiserLogoSavePath, $organiserLogoImage);
         Event::create([
             'name' => strtolower($eventName),
             'date' => $eventDate,
@@ -76,24 +88,11 @@ class EventController extends MainController
             'institute_name' => $instituteName,
             'institute_logo' => $instituteLogoSavePath,
             'visibility' => strtolower($visibility),
+            'verifier_signature' => $verifierSignatureSavePath,
+            'verifier_name' => strtolower($verifierName),
+            'verifier_position' => strtolower($verifierPosition),
         ]);
         $request->session()->flash('addEventSuccess', 'Acara berjaya ditambah!');
         return back();
-
-
-
-
-        // if(!User::select('username')->where('username', $request->username)->first()){
-        //     User::updateOrCreate(
-        //         ['username' => strtolower($request->username)],
-        //         ['fullname' => strtolower($request->fullname), 'email' => strtolower($request->email), 'password' => Hash::make($request->password), 'identification_number' => $request->identification_number, 'role' => strtolower($request->role)]
-        //     );
-        //     $request->session()->flash('addUserSuccess', 'Pengguna berjaya ditambah!');
-        //     return back();
-        // }else{
-        //     return back()->withErrors([
-        //         'userExisted' => 'Pengguna telah wujud!',
-        //     ]);return back();
-        // }
     }
 }

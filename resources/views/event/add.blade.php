@@ -2,7 +2,7 @@
 @section('content')
     <p class="fs-2">Tambah Acara</p>
     @if(session()->has('addEventSuccess'))
-        <div class="alert alert-success w-75 ml-1">{{ session('addEventSuccess') }}</div>
+        <span><div class="alert alert-success w-100 ml-1">{{ session('addEventSuccess') }}</div></span>
     @endif
     <form action="" method="post" class="mb-3" enctype="multipart/form-data">
         @csrf
@@ -40,7 +40,7 @@
         </div>
         <div id="institute_logo_help" class="form-text">
             Logo mestilah menggunakan format PNG. <br>
-            Resolusi logo mestilah paling kurang 300 x 300 piksel bagi memastikan gambar yang jelas. <br>
+            Resolusi logo mestilah paling kurang 300 x 300 piksel dan bernisbah 1:1 bagi memastikan gambar yang jelas. <br>
             Gambar <span class="fst-italic">transparent</span> lebih digalakkan.
         </div>
         @error('insititute-logo')
@@ -59,10 +59,36 @@
         </div>
         <div id="organiser_logo_help" class="form-text">
             Logo mestilah menggunakan format PNG. <br>
-            Resolusi logo mestilah paling kurang 300 x 300 piksel bagi memastikan gambar yang jelas. <br>
+            Resolusi logo mestilah paling kurang 300 x 300 piksel dan bernisbah 1:1 bagi memastikan gambar yang jelas. <br>
             Gambar <span class="fst-italic">transparent</span> lebih digalakkan.
         </div>
         @error('organiser-logo')
+            <div class="alert alert-danger">{{ $message }}</div>
+        @enderror
+        <div class="my-3">
+            <label for="verifier-name" class="form-label">Nama Pengesah (Diperlukan)</label>
+            <input type="text" class="form-control" id="verifier-name" name="verifier-name" placeholder="Masukkan nama pengesah." value="{{ old('verifier-name') }}">
+        </div>
+        @error('verifier-name')
+            <div class="alert alert-danger">{{ $message }}</div>
+        @enderror
+        <div class="my-3">
+            <label for="verifier-position" class="form-label">Jawatan Pengesah (Diperlukan)</label>
+            <input type="text" class="form-control" id="verifier-position" name="verifier-position" placeholder="Masukkan jawatan pengesah." value="{{ old('verifier-position') }}">
+        </div>
+        @error('verifier-position')
+            <div class="alert alert-danger">{{ $message }}</div>
+        @enderror
+        <div class="mb-3">
+            <label for="verifier-signature" class="form-label">Tandatangan Pengesah (Diperlukan)</label>
+            <input class="form-control" type="file" id="verifier-signature" name="verifier-signature">
+        </div>
+        <div id="verifier_signature_help" class="form-text">
+            Gambar tandatangan mestilah menggunakan format PNG. <br>
+            Resolusi tandatangan mestilah paling kurang 300 x 100 piksel dan bernisbah 3:1 bagi memastikan tandatangan yang jelas. <br>
+            Gambar tandatangan <span class="fst-italic">transparent</span> adalah diawajibkan.
+        </div>
+        @error('verifier-signature')
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
         <label class="form-label mt-3">Keterlihatan (Pilih Satu)</label>
