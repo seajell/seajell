@@ -79,21 +79,5 @@ class EventController extends MainController
         ]);
         $request->session()->flash('addEventSuccess', 'Acara berjaya ditambah!');
         return back();
-
-
-
-
-        // if(!User::select('username')->where('username', $request->username)->first()){
-        //     User::updateOrCreate(
-        //         ['username' => strtolower($request->username)],
-        //         ['fullname' => strtolower($request->fullname), 'email' => strtolower($request->email), 'password' => Hash::make($request->password), 'identification_number' => $request->identification_number, 'role' => strtolower($request->role)]
-        //     );
-        //     $request->session()->flash('addUserSuccess', 'Pengguna berjaya ditambah!');
-        //     return back();
-        // }else{
-        //     return back()->withErrors([
-        //         'userExisted' => 'Pengguna telah wujud!',
-        //     ]);return back();
-        // }
     }
 }

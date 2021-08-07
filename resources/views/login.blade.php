@@ -40,7 +40,7 @@
             </div>
         </div>
         <div class="row-100 text-center">
-            <p>Sistem <a class="text-decoration-underline text-dark" href="">SeaJell</a></p>
+            <p>Sistem <a class="text-decoration-underline text-dark" href="https://github.com/hanisirfan/seajell">SeaJell</a></p>
             <p>Hak Cipta &copy; Muhammad Hanis Irfan bin Mohd Zaid 2021</p>
         </div>
     </div>

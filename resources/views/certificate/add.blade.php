@@ -1,12 +1,9 @@
 @extends('layout.main')
 @section('content')
     <p class="fs-2">Tambah Sijil</p>
-    @if(session()->has('addUserSuccess'))
-        <div class="alert alert-success w-75 ml-1">{{ session('addUserSuccess') }}</div>
+    @if(session()->has('addCertificateSuccess'))
+        <span><div class="alert alert-success w-100 ml-1">{{ session('addCertificateSuccess') }}</div></span>
     @endif
-    @error('userExisted')
-        <div class="alert alert-danger w-75 ml-1">{{ $message }}</div>
-    @enderror
     <form action="" method="post" class="mb-3">
         @csrf
         <div class="mb-3">
@@ -22,9 +19,9 @@
                 </div>
             </div>
         </div>
-        {{-- @error('username')
+        @error('username')
             <div class="alert alert-danger">{{ $message }}</div>
-        @enderror --}}
+        @enderror
         <div class="my-1" id="user-search-status">
         </div>
         <div class="mb-3 border border-dark border-3">
@@ -46,9 +43,9 @@
                 </div>
             </div>
         </div>
-        {{-- @error('event-id')
+        @error('event-id')
             <div class="alert alert-danger">{{ $message }}</div>
-        @enderror --}}
+        @enderror
         <div class="my-1" id="event-search-status">
         </div>
         <div class="mb-3 border border-dark border-3">
@@ -61,7 +58,43 @@
                 <p class="fw-bold">Keterlihatan: <span class="fw-normal" id="event-visibility-text"></span></p>
             </div>
         </div>
-        <button class="btn btn-dark" type="submit">Tambah Sijil</button>
+        <label class="form-label mt-1">Jenis Sijil (Pilih Satu)</label>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="certificate-type" id="certificate-type" value="participation" checked>
+            <label class="form-check-label" for="certificate-type">
+              Penyertaan
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="certificate-type" id="certificate-type" value="achievement" >
+            <label class="form-check-label" for="certificate-type">
+              Pencapaian
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="certificate-type" id="certificate-type" value="appreciation" >
+            <label class="form-check-label" for="certificate-type">
+              Penghargaan
+            </label>
+        </div>
+        <div id="certification_type_help mb-3" class="form-text">
+            Penyertaan: Untuk penyertaan sesuatu acara. <br>
+            Pencapaian: Jika seseorang mendapat sebarang pencapaian. Contoh: Tempat pertama dalam sesebuah pertandingan. <br>
+            Penghargaan: Diberikan kepada seseorang yang membantu dalam menjayakan acara. Contoh: Ahli Jawatankuasa Pertandingan.
+        </div>
+        <div class="my-3">
+            <label for="position" class="form-label">Posisi</label>
+            <input type="text" class="form-control" id="position" name="position" placeholder="Masukkan posisi peserta." value="{{ old('position') }}">
+        </div>
+        @error('position')
+            <div class="alert alert-danger">{{ $message }}</div>
+        @enderror
+        <div id="position_help mb-3" class="form-text">
+            Sijil Penyertaan. Contoh: "Peserta". <br>
+            Sijil Pencapaian. Contoh: "Tempat Pertama", "Tempat Kedua", "Tempat Ketiga". <br>
+            Sijil Penghargaan. Contoh: "Ahli Jawatankuasa", "Setiusaha".
+        </div>
+        <button class="btn btn-dark mt-3" type="submit">Tambah Sijil</button>
     </form>
     <script src="{{ asset('js/addCertificateSearch.js') }}"></script>
 @endsection

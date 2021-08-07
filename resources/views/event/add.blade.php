@@ -2,7 +2,7 @@
 @section('content')
     <p class="fs-2">Tambah Acara</p>
     @if(session()->has('addEventSuccess'))
-        <div class="alert alert-success w-75 ml-1">{{ session('addEventSuccess') }}</div>
+        <span><div class="alert alert-success w-100 ml-1">{{ session('addEventSuccess') }}</div></span>
     @endif
     <form action="" method="post" class="mb-3" enctype="multipart/form-data">
         @csrf
