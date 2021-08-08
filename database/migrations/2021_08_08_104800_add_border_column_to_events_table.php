@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddBackgroundImageColumnInEventsTable extends Migration
+class AddBorderColumnToEventsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,8 @@ class AddBackgroundImageColumnInEventsTable extends Migration
     public function up()
     {
         Schema::table('events', function (Blueprint $table) {
-            $table->string('background_image')->after('verifier_position')->nullable();
+            $table->string('border')->after('background_image');
+            $table->string('border_color')->after('border')->nullable();
         });
     }
 
@@ -26,7 +27,8 @@ class AddBackgroundImageColumnInEventsTable extends Migration
     public function down()
     {
         Schema::table('events', function (Blueprint $table) {
-            $table->dropColumn('background_image');
+            $table->dropColumn('border');
+            $table->dropColumn('border_color');
         });
     }
 }

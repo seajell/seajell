@@ -27,7 +27,9 @@ class Event extends Model
         'verifier_signature',
         'verifier_name',
         'verifier_position',
-        'background_image'
+        'background_image',
+        'border',
+        'border_color',
     ];
 
     /**

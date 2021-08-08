@@ -41,7 +41,7 @@
         </div>
         <div class="row-100 text-center">
             <p>Sistem <a class="text-decoration-underline text-dark" href="https://github.com/hanisirfan/seajell">SeaJell</a></p>
-            <p>Hak Cipta &copy; Muhammad Hanis Irfan bin Mohd Zaid 2021</p>
+            <p>Hak Cipta &copy; <a href="http://hanisirfan.xyz">Muhammad Hanis Irfan bin Mohd Zaid</a> 2021</p>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>

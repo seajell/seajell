@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use PDF;
 use TCPDF_FONTS;
+use TCPDF_COLORS;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Event;
@@ -66,16 +67,29 @@ class CertificateController extends MainController
     }
     public function certificateView(Request $request, $id){
         $certEvent = Certificate::find($id)->event;
-
+        $borderAvailability = $certEvent->border;
+        $borderHexColor = $certEvent->border_color;
+        
+        // Check if border is gonna be used from the database
+        switch ($borderAvailability) {
+            case 'available':
+                $borderStatus = TRUE;
+                break;
+            case 'unavailable':
+                $borderStatus = FALSE;
+                break;
+            default:
+                break;
+        }
         // Check for event visibility
         switch ($certEvent->visibility) {
             case 'public':
                 // Certificate PDF generated will have QR code with the URL to the certificate in it
-                $this->generateCertificate($request, $id, TRUE, array(255, 254, 212), TRUE, array(0, 0, 0));
+                $this->generateCertificate($request, $id, array(255, 254, 212), $borderStatus, $borderHexColor);
                 break;
             case 'hidden':
                 if(Gate::allows('authAdmin') || Certificate::find($id)->user_id == Auth::user()->id){
-                    $this->generateCertificate($request, $id, FALSE, array(255, 254, 212), TRUE, array(0, 0, 0));
+                    $this->generateCertificate($request, $id, array(255, 254, 212), $borderStatus, $borderHexColor);
                 }else{
                     return redirect()->route('home');
                 }
@@ -84,7 +98,7 @@ class CertificateController extends MainController
                 break;
         }
     }
-    protected function generateCertificate($request, $certificateID, $QRCode = FALSE, $backgroundColor = array(255, 254, 212), $border = FALSE, $borderColor = array(252, 186, 3)){
+    protected function generateCertificate($request, $certificateID, $backgroundColor = array(255, 254, 212), $border = FALSE, $borderColor = '#000'){
         $certUser = Certificate::find($certificateID)->user;
         $certEvent = Certificate::find($certificateID)->event;
 
@@ -149,6 +163,7 @@ class CertificateController extends MainController
         // Border
         switch ($border) {
             case TRUE:
+                $borderColor = TCPDF_COLORS::convertHTMLColorToDec($borderColor, TCPDF_COLORS::$spotcolor);
                 $backgroundBorder = array('width' => 5, 'color' => array(255, 0, 255));
                 $borderStyle = array('width' => 1, 'color' => $borderColor);
                 PDF::Rect(25, 15, 160, 270, 'D', array('all' => $borderStyle));
@@ -273,27 +288,24 @@ class CertificateController extends MainController
         PDF::SetFont('bebasneue', 'B', 13);
         PDF::MultiCell(160, 0, $eventOrganiserName, 0, 'C', 0, 1, 25);
 
-        /**
-         * Signature
-         */
+        // Generate QR Code and re-adjust the signature position if visibility is set to PUBLIC 
+        switch ($certEvent->visibility) {
+            case 'public':
+                /**
+                 * Signature is visibility is PUBLIC
+                 */
+                if(Storage::disk('public')->exists($certificationVerifierSignaturePath)){
+                    $certificationVerifierSignature = '.' . Storage::disk('local')->url($certificationVerifierSignaturePath);
+                }
+                PDF::Image($certificationVerifierSignature, $x = 40, $y = 225, $w = 39, $h = 13);
 
-
-        if(Storage::disk('public')->exists($certificationVerifierSignaturePath)){
-            $certificationVerifierSignature = '.' . Storage::disk('local')->url($certificationVerifierSignaturePath);
-        }
-        PDF::Image($certificationVerifierSignature, $x = 40, $y = 225, $w = 39, $h = 13);
-
-        PDF::SetFont('bebasneue', '', 12);
-        PDF::SetXY(40, 235);
-        PDF::MultiCell($w = 100, $h = 0, $txt = '...............................................', 0, 'L', 0, 0, 40);
-        PDF::Ln();
-        PDF::MultiCell($w = 100, $h = 0, $txt = '(' . $certificationVerifierName . ')', 0, 'L', 0, 0, 40);
-        PDF::Ln();
-        PDF::MultiCell($w = 100, $h = 0, $txt = $certificationVerifierPosition, 0, 'L', 0, 0, 40);
-
-        // Generate QR Code if visibility is set to TRUE
-        switch ($QRCode) {
-            case TRUE:
+                PDF::SetFont('bebasneue', '', 12);
+                PDF::SetXY(40, 235);
+                PDF::MultiCell($w = 100, $h = 0, $txt = '...............................................', 0, 'L', 0, 0, 40);
+                PDF::Ln();
+                PDF::MultiCell($w = 100, $h = 0, $txt = '(' . $certificationVerifierName . ')', 0, 'L', 0, 0, 40);
+                PDF::Ln();
+                PDF::MultiCell($w = 100, $h = 0, $txt = $certificationVerifierPosition, 0, 'L', 0, 0, 40);
                 $style = array(
                     'border' => 0,
                     'vpadding' => 0.5,
@@ -305,7 +317,22 @@ class CertificateController extends MainController
                 );
                 PDF::write2DBarcode(url()->current(), 'QRCODE,Q', 145, 240, 30, 30, $style, 'N');
                 break;
-            case FALSE:
+            case 'hidden':
+                /**
+                 * Signature is visibility is HIDDEN
+                 */
+                if(Storage::disk('public')->exists($certificationVerifierSignaturePath)){
+                    $certificationVerifierSignature = '.' . Storage::disk('local')->url($certificationVerifierSignaturePath);
+                }
+                PDF::Image($certificationVerifierSignature, $x = 85, $y = 225, $w = 39, $h = 13);
+
+                PDF::SetFont('bebasneue', '', 12);
+                PDF::SetXY(105, 235);
+                PDF::MultiCell($w = 160, $h = 0, $txt = '...............................................', 0, 'C', 0, 0, 25);
+                PDF::Ln();
+                PDF::MultiCell($w = 160, $h = 0, $txt = '(' . $certificationVerifierName . ')', 0, 'C', 0, 0, 25);
+                PDF::Ln();
+                PDF::MultiCell($w = 160, $h = 0, $txt = $certificationVerifierPosition, 0, 'C', 0, 0, 25);
                 break;
             default:
                 break;

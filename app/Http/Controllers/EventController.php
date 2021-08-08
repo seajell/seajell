@@ -43,6 +43,7 @@ class EventController extends MainController
             'verifier-position' => ['required'],
             'verifier-signature' => ['required'],
             'background-image' => ['image', 'mimes:png'],
+            'border' => ['required'],
         ]);
         $eventName = $request->input('event-name');
         $eventDate = $request->input('event-date');
@@ -53,6 +54,15 @@ class EventController extends MainController
         $verifierName = $request->input('verifier-name');
         $verifierPosition = $request->input('verifier-position');
         $verifierSignature = $request->file('verifier-signature');
+        $borderStatus = $request->input('border');
+        $borderColor = $request->input('border-color');
+
+        // Check if border color have been set
+        if($borderColor != '' && $borderColor != NULL){
+            $borderColor = $borderColor;
+        }else{
+            $borderColor = '';
+        }
         // Check if institute logo is uploaded (since it's not required)
         if($request->hasFile('institute-logo')){
             $instituteLogoName = $request->file('institute-logo')->getClientOriginalName();
@@ -101,7 +111,9 @@ class EventController extends MainController
             'verifier_signature' => $verifierSignatureSavePath,
             'verifier_name' => strtolower($verifierName),
             'verifier_position' => strtolower($verifierPosition),
-            'background_image' => $backgroundImageSavePath
+            'background_image' => $backgroundImageSavePath,
+            'border' => $borderStatus,
+            'border_color' => $borderColor,
         ]);
 
         $request->session()->flash('addEventSuccess', 'Acara berjaya ditambah!');
