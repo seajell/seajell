@@ -22,11 +22,11 @@ class EventController extends MainController
         // institute-logo
         // visibility
         $events = Event::paginate(7);
-        return view('event.list')->with(['events' => $events, 'apiToken' => $this->apiToken]);
+        return view('event.list')->with(['events' => $events, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName]);
     }
 
     public function addEventView(Request $request){
-        return view('event.add')->with(['apiToken' => $this->apiToken]);
+        return view('event.add')->with(['apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName]);
     }
 
     public function addEvent(Request $request){

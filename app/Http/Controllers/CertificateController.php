@@ -18,15 +18,15 @@ use App\Http\Controllers\MainController;
 class CertificateController extends MainController
 {
     public function addCertificateView(Request $request){
-        return view('certificate.add')->with(['apiToken' => $this->apiToken]);
+        return view('certificate.add')->with(['apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName]);
     }
     public function certificateListView(Request $request){
         if(Gate::allows('authAdmin')){
             $certificates = Certificate::select('certificates.id', 'certificates.type', 'certificates.position', 'users.fullname', 'events.name')->join('users', 'certificates.user_id', '=', 'users.id')->join('events', 'certificates.event_id', '=', 'events.id')->paginate(7);
-            return view('certificate.list')->with(['certificates' => $certificates, 'apiToken' => $this->apiToken]);
+            return view('certificate.list')->with(['certificates' => $certificates, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName]);
         }else{
             $certificates = Certificate::select('certificates.id', 'certificates.type', 'certificates.position', 'users.fullname', 'events.name')->join('users', 'certificates.user_id', '=', 'users.id')->join('events', 'certificates.event_id', '=', 'events.id')->where('username', Auth::user()->username)->paginate(7);
-            return view('certificate.list')->with(['certificates' => $certificates, 'apiToken' => $this->apiToken]);
+            return view('certificate.list')->with(['certificates' => $certificates, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName]);
         }
     }
     public function addCertificate(Request $request){
@@ -126,7 +126,7 @@ class CertificateController extends MainController
         // Generate the certificate
 
         // Try to find way to add custom fonts
-        $title = 'SeaJell';
+        $title = $this->orgName . ' - ' . 'SeaJell';
         PDF::SetCreator('SeaJell');
         PDF::SetAuthor('SeaJell');
         switch ($certificateType) {

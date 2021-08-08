@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="shortcut icon" href="{{ asset('/storage/img/logo/SeaJell-Logo.png') }}" type="image/png">
     <meta name="api-token" content="{{ $apiToken }}">
-    <title>SeaJell</title>
+    <title>{{$orgName . ' - ' . $appName }}</title>
     @bukStyles(true)
 </head>
 <body>
@@ -75,9 +75,9 @@
             @yield('content')
         </div>
     </div>
-    <footer>
-        <div class="p-0 text-center text-light shadow-lg bg-dark">
-            <p>Sistem <a class="text-decoration-underline text-dark" href="https://github.com/hanisirfan/seajell">SeaJell</a></p>
+    <footer class="bg-dark text-center text-light pb-4">
+        <div class="d-flex flex-column justify-content-center align-items-center">
+            <p class="mt-5">Sistem <a class="text-decoration-underline text-light" href="https://github.com/hanisirfan/seajell">SeaJell</a></p>
             <p>Hak Cipta &copy; <a href="http://hanisirfan.xyz" class="text-light">Muhammad Hanis Irfan bin Mohd Zaid</a> 2021</p>
         </div>
     </footer>

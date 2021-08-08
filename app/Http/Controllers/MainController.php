@@ -9,10 +9,14 @@ use Illuminate\Support\Facades\Schema;
 class MainController extends Controller
 {
     protected $apiToken;
+    protected $appName;
+    protected $orgName;
     public function __construct()
     {
         // Check if system is properly installed. If not redirect to /install route.
         $this->middleware(function ($request, $next) {
+            $this->appName = env('APP_NAME', 'SeaJell');
+            $this->orgName = env('ORG_NAME', 'SeaJell');
             // Check if users table exist
             if(Schema::hasTable('users')){
                 // Check if admin user not exist
