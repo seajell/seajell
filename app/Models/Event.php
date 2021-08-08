@@ -26,7 +26,8 @@ class Event extends Model
         'visibility',
         'verifier_signature',
         'verifier_name',
-        'verifier_position'
+        'verifier_position',
+        'background_image'
     ];
 
     /**
