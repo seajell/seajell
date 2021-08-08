@@ -39,7 +39,7 @@
                 </form>
             </div>
         </div>
-        <div class="row-100 text-center">
+        <div class="row text-center">
             <p>Sistem <a class="text-decoration-underline text-dark" href="https://github.com/hanisirfan/seajell">SeaJell</a></p>
             <p>Hak Cipta &copy; <a href="http://hanisirfan.xyz">Muhammad Hanis Irfan bin Mohd Zaid</a> 2021</p>
         </div>
