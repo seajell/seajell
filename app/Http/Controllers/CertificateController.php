@@ -88,8 +88,13 @@ class CertificateController extends MainController
                 $this->generateCertificate($request, $id, array(255, 254, 212), $borderStatus, $borderHexColor);
                 break;
             case 'hidden':
-                if(Gate::allows('authAdmin') || Certificate::find($id)->user_id == Auth::user()->id){
-                    $this->generateCertificate($request, $id, array(255, 254, 212), $borderStatus, $borderHexColor);
+                // Check if logged in
+                if(Auth::check()){
+                    if(Gate::allows('authAdmin') || Certificate::find($id)->user_id == Auth::user()->id){
+                        $this->generateCertificate($request, $id, array(255, 254, 212), $borderStatus, $borderHexColor);
+                    }else{
+                        return redirect()->route('home');
+                    }
                 }else{
                     return redirect()->route('home');
                 }
@@ -195,7 +200,7 @@ class CertificateController extends MainController
             if(Storage::disk('public')->exists($organiserLogoPath)){
                 $organiserLogo = '.' . Storage::disk('local')->url($organiserLogoPath);
             }
-            PDF::Image($organiserLogo, $x = 85, $y = 20, $w = 30, $h = 30);
+            PDF::Image($organiserLogo, $x = 90, $y = 20, $w = 30, $h = 30);
         }
 
         PDF::Ln(40);
