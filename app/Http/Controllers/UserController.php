@@ -15,10 +15,10 @@ class UserController extends MainController
     }
     public function userListView(Request $request){
         $users = User::select('id', 'username', 'fullname', 'email', 'role')->paginate(7);
-        return view('user.list')->with(['users' => $users, 'apiToken' => $this->apiToken]);
+        return view('user.list')->with(['users' => $users, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName]);
     }
     public function addUserView(Request $request){
-        return view('user.add')->with(['apiToken' => $this->apiToken]);
+        return view('user.add')->with(['apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName]);
     }
     public function login(Request $request){
         $username = strtolower($request->username);

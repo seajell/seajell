@@ -9,12 +9,12 @@
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="shortcut icon" href="{{ asset('/storage/img/logo/SeaJell-Logo.png') }}" type="image/png">
     <meta name="api-token" content="{{ $apiToken }}">
-    <title>SeaJell</title>
+    <title>{{$orgName . ' - ' . $appName }}</title>
     @bukStyles(true)
 </head>
-<body class="min-vh-100">
-    <div class="container-fluid">
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<body>
+    <div class="container min-vh-100">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark border border-dark rounded-bottom">
             <div class="container-fluid">
                 <a class="navbar-brand" href="{{ route('home') }}"><img class="row mb-3" src="{{ asset('/storage/img/logo/SeaJell-Logo.png') }}" alt="SeaJell Logo" style="height: 3em; width: 3em;"></a>
                 <a class="navbar-brand" href="{{ route('home') }}">SeaJell</a>
@@ -71,11 +71,16 @@
                 </div>
             </div>
         </nav>
-        
         <div class="row shadow my-3">
             @yield('content')
         </div>
     </div>
+    <footer class="bg-dark text-center text-light pb-4">
+        <div class="d-flex flex-column justify-content-center align-items-center">
+            <p class="mt-5">Sistem <a class="text-decoration-underline text-light" href="https://github.com/hanisirfan/seajell">SeaJell</a></p>
+            <p>Hak Cipta &copy; <a href="http://hanisirfan.xyz" class="text-light">Muhammad Hanis Irfan bin Mohd Zaid</a> 2021</p>
+        </div>
+    </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
     @bukScripts(true)
 </body>
