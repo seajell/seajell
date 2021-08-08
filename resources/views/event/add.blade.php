@@ -91,6 +91,17 @@
         @error('verifier-signature')
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
+        <div class="my-3">
+            <label for="background-image" class="form-label">Gambar Latar Belakang (Pilihan)</label>
+            <input class="form-control" type="file" id="background-image" name="background-image">
+        </div>
+        <div id="background_image_help" class="form-text">
+            Gambar latar belakang mestilah menggunakan format PNG. <br>
+            Resolusi latar belakang mestilah mengikut saiz kertas A4 (210mm x 297mm). Ini kerana gambar akan direngangkan mengikut saiz A4.
+        </div>
+        @error('verifier-signature')
+            <div class="alert alert-danger">{{ $message }}</div>
+        @enderror
         <label class="form-label mt-3">Keterlihatan (Pilih Satu)</label>
         <div class="form-check">
             <input class="form-check-input" type="radio" name="visibility" id="visibility" value="public" checked>

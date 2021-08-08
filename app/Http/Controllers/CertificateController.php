@@ -71,11 +71,11 @@ class CertificateController extends MainController
         switch ($certEvent->visibility) {
             case 'public':
                 // Certificate PDF generated will have QR code with the URL to the certificate in it
-                $this->generateCertificate($request, $id, $QRCode = TRUE);
+                $this->generateCertificate($request, $id, TRUE, array(255, 254, 212), TRUE, array(0, 0, 0));
                 break;
             case 'hidden':
                 if(Gate::allows('authAdmin') || Certificate::find($id)->user_id == Auth::user()->id){
-                    $this->generateCertificate($request, $id);
+                    $this->generateCertificate($request, $id, FALSE, array(255, 254, 212), TRUE, array(0, 0, 0));
                 }else{
                     return redirect()->route('home');
                 }
@@ -84,7 +84,7 @@ class CertificateController extends MainController
                 break;
         }
     }
-    protected function generateCertificate($request, $certificateID, $QRCode = FALSE, $backgroundColor = array(255, 254, 212)){
+    protected function generateCertificate($request, $certificateID, $QRCode = FALSE, $backgroundColor = array(255, 254, 212), $border = FALSE, $borderColor = array(252, 186, 3)){
         $certUser = Certificate::find($certificateID)->user;
         $certEvent = Certificate::find($certificateID)->event;
 
@@ -102,6 +102,8 @@ class CertificateController extends MainController
         $certificationVerifierSignaturePath = Certificate::find($certificateID)->event->verifier_signature;
         $organiserLogoPath = $certEvent->organiser_logo;
         $instituteLogoPath = $certEvent->institute_logo;
+        $backgroundImagePath = $certEvent->background_image;
+
         // Generate the certificate
 
         // Try to find way to add custom fonts
@@ -123,17 +125,39 @@ class CertificateController extends MainController
         }
         PDF::SetTitle($title . ' - ' . $certificateTypeText);
         PDF::AddPage();
-        PDF::SetMargins(25, 25, 25, true);
+        PDF::SetMargins(0, 0, 0, true);
+        PDF::SetAutoPageBreak(false, 0);
         PDF::setPageMark();
 
-        //Background color
-        PDF::Rect(0, 0, 2000, 300,'F', array(), $backgroundColor);
+        /**
+         * Background Color/Image
+         * 
+         * Check if no background image added.
+         */
+
+        if($certEvent->background_image != '' AND $certEvent->background_image != NULL){
+            if(Storage::disk('public')->exists($backgroundImagePath)){
+                $backgroundImage = '.' . Storage::disk('local')->url($backgroundImagePath);
+            }
+            //PDF::Image($backgroundImage, 0, 0, 350, 437, '', '', '', false, 300, '', false, false, 0);
+            PDF::Image($backgroundImage, 0, 0, 210, 297, '', '', '', false, 600, '', false, false, 0);
+        }else{
+            PDF::Rect(0, 0, 210, 297,'F', array(), $backgroundColor);
+        }
+        
 
         // Border
-        $backgroundBorder = array('width' => 5, 'color' => array(255, 0, 255));
-        PDF::Rect(25, 15, 160, 270,'F', $backgroundBorder, array());
-        $borderStyle = array('width' => 1, 'color' => array(252, 186, 3));
-        PDF::Rect(25, 15, 160, 270, 'D', array('all' => $borderStyle));
+        switch ($border) {
+            case TRUE:
+                $backgroundBorder = array('width' => 5, 'color' => array(255, 0, 255));
+                $borderStyle = array('width' => 1, 'color' => $borderColor);
+                PDF::Rect(25, 15, 160, 270, 'D', array('all' => $borderStyle));
+                break;
+            case FALSE:
+                break;
+            default:
+                break;
+        }
 
         // Custom fonts
         PDF::addFont('cookie');
@@ -182,8 +206,7 @@ class CertificateController extends MainController
         PDF::Cell($w = 0, $h = 1, $txt = $certificateIntro, $align = 'C', $border = '1', $calign = 'C');
 
         PDF::SetFont('bebasneue', 'B', 13);
-        PDF::MultiCell(0, 1, $userFullname, 0, 'C');
-
+        PDF::MultiCell(160, 0, $userFullname, 0, 'C', 0, 1, 25);
 
         PDF::SetFont('bebasneue', 'B', 13);
         PDF::Cell($w = 0, $h = 1, $txt = '(' . $userIdentificationNumber . ')', $align = 'C', $border = '1', $calign = 'C');
@@ -194,7 +217,7 @@ class CertificateController extends MainController
                 PDF::Cell($w = 0, $h = 1, $txt = 'Telah menyertai', $align = 'C', $border = '1', $calign = 'C');
 
                 PDF::SetFont('bebasneue', 'B', 13);
-                PDF::MultiCell(0, 1, $eventName, 0, 'C');
+                PDF::MultiCell(160, 0, $eventName, 0, 'C', 0, 1, 25);
                 break;
             case 'achievement':
                 PDF::Ln(10);
@@ -209,7 +232,7 @@ class CertificateController extends MainController
                 PDF::Cell($w = 0, $h = 1, $txt = 'Dalam', $align = 'C', $border = '1', $calign = 'C');
 
                 PDF::SetFont('bebasneue', 'B', 13);
-                PDF::MultiCell(0, 1, $eventName, 0, 'C');
+                PDF::MultiCell(160, 0, $eventName, 0, 'C', 0, 1, 25);
                 break;
             case 'appreciation':
                 PDF::Ln(10);
@@ -224,7 +247,7 @@ class CertificateController extends MainController
                 PDF::Cell($w = 0, $h = 1, $txt = 'Dalam', $align = 'C', $border = '1', $calign = 'C');
 
                 PDF::SetFont('bebasneue', 'B', 13);
-                PDF::MultiCell(0, 1, $eventName, 0, 'C');
+                PDF::MultiCell(160, 0, $eventName, 0, 'C', 0, 1, 25);
                 break;
             default:
                 break;
@@ -236,19 +259,19 @@ class CertificateController extends MainController
         PDF::Cell($w = 0, $h = 1, $txt = 'Pada', $align = 'C', $border = '1', $calign = 'C');
 
         PDF::SetFont('bebasneue', 'B', 13);
-        PDF::MultiCell(0, 1, $eventDate, 0, 'C');
+        PDF::MultiCell(160, 0, $eventDate, 0, 'C', 0, 1, 25);
 
         PDF::Ln(10);
         PDF::SetFont('badscript', 'I', 13);
         PDF::Cell($w = 0, $h = 1, $txt = 'Bertempat di', $align = 'C', $border = '1', $calign = 'C');
         PDF::SetFont('bebasneue', 'B', 13);
-        PDF::MultiCell(0, 0, $eventLocation, 0, 'C');
+        PDF::MultiCell(160, 0, $eventLocation, 0, 'C', 0, 1, 25);
 
         PDF::Ln(10);
         PDF::SetFont('badscript', 'I', 13);
         PDF::Cell($w = 0, $h = 1, $txt = 'Anjuran', $align = 'C', $border = '1', $calign = 'C');
         PDF::SetFont('bebasneue', 'B', 13);
-        PDF::MultiCell(0, 0, $eventOrganiserName, 0, 'C');
+        PDF::MultiCell(160, 0, $eventOrganiserName, 0, 'C', 0, 1, 25);
 
         /**
          * Signature
@@ -262,7 +285,8 @@ class CertificateController extends MainController
 
         PDF::SetFont('bebasneue', '', 12);
         PDF::SetXY(40, 235);
-        PDF::MultiCell($w = 0, $h = 1, $txt = '...............................................', $align = 'C', $border = "1", $calign = 'C');
+        PDF::MultiCell($w = 100, $h = 0, $txt = '...............................................', 0, 'L', 0, 0, 40);
+        PDF::Ln();
         PDF::MultiCell($w = 100, $h = 0, $txt = '(' . $certificationVerifierName . ')', 0, 'L', 0, 0, 40);
         PDF::Ln();
         PDF::MultiCell($w = 100, $h = 0, $txt = $certificationVerifierPosition, 0, 'L', 0, 0, 40);
@@ -275,7 +299,7 @@ class CertificateController extends MainController
                     'vpadding' => 0.5,
                     'hpadding' => 0.5,
                     'fgcolor' => array(0,0,0),
-                    'bgcolor' => array(),
+                    'bgcolor' => array(255, 255, 255),
                     'module_width' => 1, 
                     'module_height' => 1
                 );

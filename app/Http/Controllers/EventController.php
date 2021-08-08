@@ -42,6 +42,7 @@ class EventController extends MainController
             'verifier-name' => ['required'],
             'verifier-position' => ['required'],
             'verifier-signature' => ['required'],
+            'background-image' => ['image', 'mimes:png'],
         ]);
         $eventName = $request->input('event-name');
         $eventDate = $request->input('event-date');
@@ -78,7 +79,16 @@ class EventController extends MainController
         $verifierSignatureSavePath = '/img/signature/'. Carbon::now()->timestamp . '-' . $verifierSignatureName;
         Storage::disk('public')->put($verifierSignatureSavePath, $verifierSignatureImage);
 
-        Storage::disk('public')->put($organiserLogoSavePath, $organiserLogoImage);
+        // Check if background image is uploaded (since it's not required)
+        if($request->hasFile('background-image')){
+            $backgroundImageName = $request->file('background-image')->getClientOriginalName();
+            $backgroundImageImage = Image::make($request->file('background-image'))->resize(794, 1123)->encode('png');
+            $backgroundImageSavePath = '/img/background_image/'. Carbon::now()->timestamp . '-' . $backgroundImageName;
+            Storage::disk('public')->put($backgroundImageSavePath, $backgroundImageImage);
+        }else{
+            $backgroundImageSavePath = '';
+        }
+
         Event::create([
             'name' => strtolower($eventName),
             'date' => $eventDate,
@@ -91,7 +101,9 @@ class EventController extends MainController
             'verifier_signature' => $verifierSignatureSavePath,
             'verifier_name' => strtolower($verifierName),
             'verifier_position' => strtolower($verifierPosition),
+            'background_image' => $backgroundImageSavePath
         ]);
+
         $request->session()->flash('addEventSuccess', 'Acara berjaya ditambah!');
         return back();
     }
