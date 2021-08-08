@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use PDF;
+use TCPDF_FONTS;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Event;
@@ -122,11 +123,22 @@ class CertificateController extends MainController
         }
         PDF::SetTitle($title . ' - ' . $certificateTypeText);
         PDF::AddPage();
+        PDF::SetMargins(25, 25, 25, true);
+        PDF::setPageMark();
 
         //Background color
-        $backgroundBorder = array('width' => 30, 'color' => array(255, 0, 255)); //Kinda doesn't work
-        PDF::Rect(0, 0, 2000, 300,'F', $backgroundBorder, $backgroundColor);
+        PDF::Rect(0, 0, 2000, 300,'F', array(), $backgroundColor);
 
+        // Border
+        $backgroundBorder = array('width' => 5, 'color' => array(255, 0, 255));
+        PDF::Rect(25, 15, 160, 270,'F', $backgroundBorder, array());
+        $borderStyle = array('width' => 1, 'color' => array(252, 186, 3));
+        PDF::Rect(25, 15, 160, 270, 'D', array('all' => $borderStyle));
+
+        // Custom fonts
+        PDF::addFont('cookie');
+        PDF::addFont('badscript');
+        PDF::addFont('bebasneue');
         /**
          * Logos
          * Check if institute logo is available
@@ -147,130 +159,127 @@ class CertificateController extends MainController
             PDF::Image($organiserLogo, $x = 85, $y = 20, $w = 30, $h = 30);
         }
 
-        PDF::Ln(45);
-        PDF::SetFont('helvetica', 'BI', 30);
+        PDF::Ln(40);
+        PDF::SetFont('cookie', 'BI', 45);
         PDF::Cell($w = 0, $h = 1, $txt = $certificateTypeText, $align = 'C', $border = '1', $calign = 'C');
 
-        $certificateIntro = 'Dengan ini diakui bahawa';
-        PDF::Ln(10);
-        PDF::SetFont('helvetica', 'BI', 12);
+        switch ($certificateType) {
+            case 'participation':
+                $certificateIntro = 'Adalah dengan ini diakui bahawa';
+                break;
+            case 'achievement':
+                $certificateIntro = 'Setinggi-tinggi tahniah diucapkan kepada';
+                break;
+            case 'appreciation':
+                $certificateIntro = 'Setinggi-tinggi penghargaan dan terima kasih kepada';
+                break;
+            default:
+                break;
+        }
+        
+        PDF::Ln(5);
+        PDF::SetFont('badscript', 'I', 13);
         PDF::Cell($w = 0, $h = 1, $txt = $certificateIntro, $align = 'C', $border = '1', $calign = 'C');
 
-        PDF::Ln(5);
-        PDF::SetFont('helvetica', '', 12);
-        PDF::Cell($w = 0, $h = 1, $txt = $userFullname, $align = 'C', $border = '1', $calign = 'C');
+        PDF::SetFont('bebasneue', 'B', 13);
+        PDF::MultiCell(0, 1, $userFullname, 0, 'C');
 
-        PDF::Ln();
-        PDF::SetFont('helvetica', '', 12);
+
+        PDF::SetFont('bebasneue', 'B', 13);
         PDF::Cell($w = 0, $h = 1, $txt = '(' . $userIdentificationNumber . ')', $align = 'C', $border = '1', $calign = 'C');
         switch ($certificateType) {
             case 'participation':
-                PDF::Ln(12);
-                PDF::SetFont('helvetica', 'I', 12);
+                PDF::Ln(10);
+                PDF::SetFont('badscript', 'I', 13);
                 PDF::Cell($w = 0, $h = 1, $txt = 'Telah menyertai', $align = 'C', $border = '1', $calign = 'C');
 
-                PDF::Ln();
-                PDF::SetFont('helvetica', 'B', 18);
-                PDF::Cell($w = 0, $h = 1, $txt = $eventName, $align = 'C', $border = '1', $calign = 'C');
+                PDF::SetFont('bebasneue', 'B', 13);
+                PDF::MultiCell(0, 1, $eventName, 0, 'C');
                 break;
             case 'achievement':
-                PDF::Ln(12);
-                PDF::SetFont('helvetica', 'I', 12);
+                PDF::Ln(10);
+                PDF::SetFont('badscript', 'I', 13);
                 PDF::Cell($w = 0, $h = 1, $txt = 'Di atas pencapaian', $align = 'C', $border = '1', $calign = 'C');
 
-                PDF::Ln();
-                PDF::SetFont('helvetica', 'B', 13);
+                PDF::SetFont('bebasneue', 'B', 13);
                 PDF::Cell($w = 0, $h = 1, $txt = $certificationPosition, $align = 'C', $border = '1', $calign = 'C');
                 
                 PDF::Ln();
-                PDF::SetFont('helvetica', 'I', 12);
+                PDF::SetFont('badscript', 'I', 13);
                 PDF::Cell($w = 0, $h = 1, $txt = 'Dalam', $align = 'C', $border = '1', $calign = 'C');
 
-                PDF::Ln();
-                PDF::SetFont('helvetica', 'B', 13);
-                PDF::Cell($w = 0, $h = 1, $txt = $eventName, $align = 'C', $border = '1', $calign = 'C');
+                PDF::SetFont('bebasneue', 'B', 13);
+                PDF::MultiCell(0, 1, $eventName, 0, 'C');
                 break;
             case 'appreciation':
-                PDF::Ln(12);
-                PDF::SetFont('helvetica', 'I', 12);
+                PDF::Ln(10);
+                PDF::SetFont('badscript', 'I', 13);
                 PDF::Cell($w = 0, $h = 1, $txt = 'atas sumbangan dan komitmen sebagai', $align = 'C', $border = '1', $calign = 'C');
 
-                PDF::Ln();
-                PDF::SetFont('helvetica', 'B', 13);
+                PDF::SetFont('bebasneue', 'B', 13);
                 PDF::Cell($w = 0, $h = 1, $txt = $certificationPosition, $align = 'C', $border = '1', $calign = 'C');
                 
                 PDF::Ln();
-                PDF::SetFont('helvetica', 'I', 12);
+                PDF::SetFont('badscript', 'I', 13);
                 PDF::Cell($w = 0, $h = 1, $txt = 'Dalam', $align = 'C', $border = '1', $calign = 'C');
 
-                PDF::Ln();
-                PDF::SetFont('helvetica', 'B', 13);
-                PDF::Cell($w = 0, $h = 1, $txt = $eventName, $align = 'C', $border = '1', $calign = 'C');
+                PDF::SetFont('bebasneue', 'B', 13);
+                PDF::MultiCell(0, 1, $eventName, 0, 'C');
                 break;
             default:
                 break;
         }
         
 
-        PDF::Ln(12);
-        PDF::SetFont('helvetica', 'I', 12);
+        PDF::Ln(10);
+        PDF::SetFont('badscript', 'I', 13);
         PDF::Cell($w = 0, $h = 1, $txt = 'Pada', $align = 'C', $border = '1', $calign = 'C');
 
-        PDF::Ln();
-        PDF::SetFont('helvetica', 'B', 12);
-        PDF::Cell($w = 0, $h = 1, $txt = $eventDate, $align = 'C', $border = '1', $calign = 'C');
+        PDF::SetFont('bebasneue', 'B', 13);
+        PDF::MultiCell(0, 1, $eventDate, 0, 'C');
 
         PDF::Ln(10);
-        PDF::SetFont('helvetica', 'I', 12);
+        PDF::SetFont('badscript', 'I', 13);
         PDF::Cell($w = 0, $h = 1, $txt = 'Bertempat di', $align = 'C', $border = '1', $calign = 'C');
-
-        PDF::Ln();
-        PDF::SetFont('helvetica', 'B', 12);
-        PDF::Cell($w = 0, $h = 1, $txt = $eventLocation, $align = 'C', $border = '1', $calign = 'C');
+        PDF::SetFont('bebasneue', 'B', 13);
+        PDF::MultiCell(0, 0, $eventLocation, 0, 'C');
 
         PDF::Ln(10);
-        PDF::SetFont('helvetica', 'I', 12);
+        PDF::SetFont('badscript', 'I', 13);
         PDF::Cell($w = 0, $h = 1, $txt = 'Anjuran', $align = 'C', $border = '1', $calign = 'C');
-
-        PDF::Ln();
-        PDF::SetFont('helvetica', 'B', 12);
-        PDF::Cell($w = 0, $h = 1, $txt = $eventOrganiserName, $align = 'C', $border = '1', $calign = 'C');
+        PDF::SetFont('bebasneue', 'B', 13);
+        PDF::MultiCell(0, 0, $eventOrganiserName, 0, 'C');
 
         /**
          * Signature
          */
 
-        PDF::SetXY(15, 240);
 
         if(Storage::disk('public')->exists($certificationVerifierSignaturePath)){
             $certificationVerifierSignature = '.' . Storage::disk('local')->url($certificationVerifierSignaturePath);
         }
-        PDF::Image($certificationVerifierSignature, $x = 20, $y = 230, $w = 39, $h = 13);
+        PDF::Image($certificationVerifierSignature, $x = 40, $y = 225, $w = 39, $h = 13);
 
-        PDF::SetFont('helvetica', '', 10);
+        PDF::SetFont('bebasneue', '', 12);
+        PDF::SetXY(40, 235);
         PDF::MultiCell($w = 0, $h = 1, $txt = '...............................................', $align = 'C', $border = "1", $calign = 'C');
-
+        PDF::MultiCell($w = 100, $h = 0, $txt = '(' . $certificationVerifierName . ')', 0, 'L', 0, 0, 40);
         PDF::Ln();
-        PDF::SetFont('helvetica', '', 10);
-        PDF::MultiCell($w = 0, $h = 1, $txt = $certificationVerifierName, $align = 'C', $border = "1", $calign = 'L');
-
-        PDF::Ln();
-        PDF::SetFont('helvetica', '', 10);
-        PDF::MultiCell($w = 0, $h = 1, $txt = $certificationVerifierPosition, $align = 'C', $border = "1", $calign = 'L');
+        PDF::MultiCell($w = 100, $h = 0, $txt = $certificationVerifierPosition, 0, 'L', 0, 0, 40);
 
         // Generate QR Code if visibility is set to TRUE
         switch ($QRCode) {
             case TRUE:
                 $style = array(
-                    'border' => 1,
+                    'border' => 0,
                     'vpadding' => 0.5,
                     'hpadding' => 0.5,
                     'fgcolor' => array(0,0,0),
-                    'bgcolor' => array(255,255,255),
+                    'bgcolor' => array(),
                     'module_width' => 1, 
                     'module_height' => 1
                 );
-                PDF::write2DBarcode(url()->current(), 'QRCODE,Q', 170, 235, 25, 25, $style, 'N');
+                PDF::write2DBarcode(url()->current(), 'QRCODE,Q', 145, 240, 30, 30, $style, 'N');
                 break;
             case FALSE:
                 break;
