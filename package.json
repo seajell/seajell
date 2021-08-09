@@ -19,6 +19,7 @@
         "sass-loader": "^12.1.0"
     },
     "dependencies": {
-        "bootstrap-icons": "^1.5.0"
+        "bootstrap-icons": "^1.5.0",
+        "signature_pad": "^3.0.0-beta.4"
     }
 }
