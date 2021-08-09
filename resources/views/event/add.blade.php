@@ -106,10 +106,13 @@
               Tersembunyi
             </label>
         </div>
-        <div id="invisibility_help" class="form-text">
+        <div id="visibility_help" class="form-text">
             Awam: Semua orang dapat akses kepada sijil jika mempunyai pautan sijil tersebut. <br>
             Tersembunyi: Hanya pemilik sijil dapat akses selepas log masuk.
         </div>
+        @error('visibility')
+            <div class="alert alert-danger">{{ $message }}</div>
+        @enderror
         <div class="my-3">
             <label for="background-image" class="form-label">Gambar Latar Belakang (Pilihan)</label>
             <input class="form-control" type="file" id="background-image" name="background-image">
@@ -118,7 +121,7 @@
             Gambar latar belakang mestilah menggunakan format PNG. <br>
             Resolusi latar belakang mestilah mengikut saiz kertas A4 (210mm x 297mm). Ini kerana gambar akan direngangkan mengikut saiz A4.
         </div>
-        @error('verifier-signature')
+        @error('background-image')
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
         <label class="form-label mt-3"><span class="fst-italic">Border</span> (Diperlukan)</label>
@@ -137,11 +140,17 @@
         <div id="border_help" class="form-text">
             <span class="fst-italic">Border</span> akan dilukis pada sijil yang dijana.
         </div>
+        @error('border')
+            <div class="alert alert-danger">{{ $message }}</div>
+        @enderror
         <label class="form-label mt-3">Warna <span class="fst-italic">Border (Pilihan)</span></label>
         <x-buk-color-picker name="border-color" class="mb-3" :options="['theme' => 'classic']" />
         <div id="border_color_help" class="form-text">
             Hanya pilih jika <span class="fst-italic">Border</span> ditetapkan kepada <span class="fst-italic">Ada</span>.
         </div>
+        @error('border-color')
+            <div class="alert alert-danger">{{ $message }}</div>
+        @enderror
         <button class="btn btn-dark mt-3" type="submit">Tambah Acara</button>
     </form>
 @endsection

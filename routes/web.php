@@ -27,6 +27,7 @@ Route::post('/install/config', [InstallationController::class, 'install']);
 Route::get('/install/success', [InstallationController::class, 'installSuccessView'])->name('install.success');
 
 Route::get('/', [HomeController::class, 'view'])->name('home')->middleware(['auth']);
+Route::get('/signature', [HomeController::class, 'signature'])->name('signature')->middleware(['auth']); // Generate signature PNG for certs
 
 Route::get('/login', [UserController::class, 'loginView'])->name('login');
 Route::post('/login', [UserController::class, 'login']);

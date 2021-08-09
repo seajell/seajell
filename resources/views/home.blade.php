@@ -6,7 +6,10 @@
         </div>
         <div class="row mb-3">
             <div class="col">
-                <a href="{{ route('certificate.list') }}" class="fs-4 w-25 btn btn-dark"><i class="bi bi-patch-check"></i> Sijil Penyertaan</a>
+                <a href="{{ route('certificate.list') }}" class="fs-4 btn btn-dark"><i class="bi bi-patch-check"></i> Sijil</a>
+            </div>
+            <div class="col">
+                <a href="{{ route('signature') }}" class="fs-4 btn btn-dark"><i class="bi bi-pen"></i> Tandatangan</a>
             </div>
         </div>
     </div>

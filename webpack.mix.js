@@ -18,4 +18,5 @@ const mix = require('laravel-mix');
 
 mix.sass('resources/css/sass/app.scss', 'public/css/app.css')
 .copy('node_modules/bootstrap-icons', 'public/bootstraps-icons')
-.js('resources/js/addCertificateSearch.js', 'public/js');
+.js('resources/js/addCertificateSearch.js', 'public/js')
+.js('resources/js/signature.js', 'public/js');
