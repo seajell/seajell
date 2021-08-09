@@ -1,37 +1,13 @@
-## Welcome to GitHub Pages
+# Welcome to the SeaJell website.
+![alt text](GithubBanner.png)
 
-You can use the [editor on GitHub](https://github.com/hanisirfan/seajell/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+## Installation
+Read the Installation section in [REAMD.md](https://github.com/hanisirfan/seajell#installation) file (typical Laravel app installation procedure).
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+## Language Support
+Malay is the only available language available for the UI. Maybe new language especially English will be added soon.
 
-### Markdown
+## License
+Copyright (c) Muhammad Hanis Irfan bin Mohd Zaid
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/hanisirfan/seajell/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+This system/project is licensed under GNU GPLv3. Each contributions to this system will be licensed under the same terms. Contributions are listed in CREDITS and the website in the future.
