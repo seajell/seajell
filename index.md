@@ -1,7 +1,7 @@
 <link rel="shortcut icon" type="image/png" href="favicon.png">
 
 # Welcome to the SeaJell website.
-![Banner](../assets/GithubBanner.png)
+![Banner](assets/GithubBanner.png)
 
 ## Installation
 Read the Installation section in [REAMD.md](https://github.com/hanisirfan/seajell#installation) file (typical Laravel app installation procedure).
