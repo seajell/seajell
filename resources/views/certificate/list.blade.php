@@ -44,7 +44,7 @@
                             <td>{{ strtoupper($certificate->position) }}</td>
                             <td class="fs-3 text-center"><a class="text-light" href="{{ route('certificate.view', [$certificate->id]) }}" target="_blank"><i class="bi bi-eye"></i></a></td>
                             @can('authAdmin')
-                                <td class="fs-3 text-center"><a class="text-light" href=""><i class="bi bi-pencil-square"></i></a></td>
+                                <td class="fs-3 text-center"><a class="text-light" href="{{ route('certificate.update', [$certificate->id]) }}"><i class="bi bi-pencil-square"></i></a></td>
                                 <td class="fs-3 text-center"><a class="text-light" href="" data-bs-toggle="modal" data-bs-target="#{{ 'delete-certificate-modal-' . $certificate->id}}"><i class="bi bi-trash"></a></i></td>
                             @endcan   
                         </tr>

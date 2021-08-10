@@ -54,3 +54,5 @@ Route::get('/certificate/view/{id}', [CertificateController::class, 'certificate
 Route::get('/certificate/add', [CertificateController::class, 'addCertificateView'])->name('certificate.add')->middleware(['auth','UserIsAdmin']);
 Route::post('/certificate/add', [CertificateController::class, 'addCertificate'])->middleware(['auth','UserIsAdmin']);
 Route::post('/certificate/remove', [CertificateController::class, 'removeCertificate'])->name('certificate.remove')->middleware(['auth','UserIsAdmin']);
+Route::get('/certificate/update/{id}', [CertificateController::class, 'updateCertificateView'])->name('certificate.update')->middleware(['auth','UserIsAdmin']);
+Route::post('/certificate/update/{id}', [CertificateController::class, 'updateCertificate'])->middleware(['auth','UserIsAdmin']);
