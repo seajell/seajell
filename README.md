@@ -1,6 +1,8 @@
------------------------------------------
-# THIS PROJECT IS STILL UNDER DEVELOPMENT
------------------------------------------
+![Banner](https://github.com/hanisirfan/seajell/blob/gh-pages/assets/GithubBanner.png)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/hanisirfan/seajell)
+![GitHub release (latest by date)](https://img.shields.io/github/downloads/hanisirfan/seajell/latest/total) 
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/hanisirfan/seajell)
+![GitHub](https://img.shields.io/github/license/hanisirfan/seajell)
 
 # SeaJell
 A simple e-Certificate Generator.
