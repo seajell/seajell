@@ -9,8 +9,8 @@ var clearBtn = document.querySelector('#signature-pad-clear');
 var signaturePad = new SignaturePad(canvas, {
     backgroundColor: 'rgba(255, 255, 255, 0)',
     penColor: 'rgb(0, 0, 0)',
-    minWidth: 3,
-    maxWidth: 5,
+    minWidth: 4,
+    maxWidth: 7,
 });
 
 /**
