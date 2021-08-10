@@ -77,7 +77,7 @@
     </div>
     <footer class="bg-dark text-center text-light pb-4">
         <div class="d-flex flex-column justify-content-center align-items-center">
-            <p class="mt-5">Sistem <a class="text-decoration-underline text-light" href="https://github.com/hanisirfan/seajell">SeaJell</a></p>
+            <p class="mt-5">Sistem <a class="text-decoration-underline text-light" href="https://github.com/hanisirfan/seajell">SeaJell</a> {{ $appVersion }}</p>
             <p>Hak Cipta &copy; <a href="http://hanisirfan.xyz" class="text-light">Muhammad Hanis Irfan bin Mohd Zaid</a> 2021</p>
         </div>
     </footer>

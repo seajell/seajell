@@ -8,10 +8,10 @@ use App\Http\Controllers\MainController;
 class HomeController extends MainController
 {
     public function view(Request $request){
-        return view('home')->with(['apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName]);
+        return view('home')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName]);
     }
 
     public function signature(Request $request){
-        return view('signature')->with(['apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName]);
+        return view('signature')->with(['appVersion' => $this->appVersion,'apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName]);
     }
 }

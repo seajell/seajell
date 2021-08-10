@@ -23,11 +23,11 @@ class EventController extends MainController
         // institute-logo
         // visibility
         $events = Event::paginate(7);
-        return view('event.list')->with(['events' => $events, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName]);
+        return view('event.list')->with(['events' => $events, 'appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName]);
     }
 
     public function addEventView(Request $request){
-        return view('event.add')->with(['apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName]);
+        return view('event.add')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName]);
     }
 
     public function updateEventView(Request $request, $id){
@@ -35,7 +35,7 @@ class EventController extends MainController
             // Only admins can update event info
             if(Gate::allows('authAdmin')){
                 $data = Event::where('id', $id)->first();
-                    return view('event.update')->with(['apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName, 'data' => $data]);
+                    return view('event.update')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName, 'data' => $data]);
             }else{
                 abort(403, 'Anda tidak boleh mengakses laman ini.');
             }

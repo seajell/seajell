@@ -12,14 +12,14 @@ use App\Http\Controllers\MainController;
 class UserController extends MainController
 {
     public function loginView(Request $request){
-        return view('login');
+        return view('login')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName]);
     }
     public function userListView(Request $request){
         $users = User::select('id', 'username', 'fullname', 'email', 'role')->paginate(7);
-        return view('user.list')->with(['users' => $users, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName]);
+        return view('user.list')->with(['users' => $users, 'appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName]);
     }
     public function addUserView(Request $request){
-        return view('user.add')->with(['apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName]);
+        return view('user.add')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName]);
     }
     public function updateUserView(Request $request, $username){
         if(User::where('username', $username)->first()){
@@ -28,7 +28,7 @@ class UserController extends MainController
                 // Only the user 'admin' can update their info. Other admins can't update the 'admin' user.
                 if($username == 'admin' && Auth::user()->username == 'admin'){
                     $data = User::where('username', $username)->first();
-                    return view('user.update')->with(['apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName, 'data' => $data]);
+                    return view('user.update')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName, 'data' => $data]);
                 }else{
                     abort(403, 'Anda tidak boleh mengakses laman ini.');
                 }

@@ -10,12 +10,14 @@ class MainController extends Controller
 {
     protected $apiToken;
     protected $appName;
+    protected $appVersion;
     protected $orgName;
     public function __construct()
     {
         // Check if system is properly installed. If not redirect to /install route.
         $this->middleware(function ($request, $next) {
             $this->appName = env('APP_NAME', 'SeaJell');
+            $this->appVersion = env('APP_VERSION', 'v1.0');
             $this->orgName = env('ORG_NAME', 'SeaJell');
             // Check if users table exist
             if(Schema::hasTable('users')){
