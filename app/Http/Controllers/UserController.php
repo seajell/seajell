@@ -25,8 +25,13 @@ class UserController extends MainController
         if(User::where('username', $username)->first()){
             // Only admins or the user that logged in themselves can update their info
             if(Gate::allows('authAdmin') || strtolower($username) == Auth::user()->username){
-                $data = User::where('username', $username)->first();
-                return view('user.update')->with(['apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName, 'data' => $data]);
+                // Only the user 'admin' can update their info. Other admins can't update the 'admin' user.
+                if($username == 'admin' && Auth::user()->username == 'admin'){
+                    $data = User::where('username', $username)->first();
+                    return view('user.update')->with(['apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName, 'data' => $data]);
+                }else{
+                    abort(403, 'Anda tidak boleh mengakses laman ini.');
+                }
             }else{
                 abort(403, 'Anda tidak boleh mengakses laman ini.');
             }
