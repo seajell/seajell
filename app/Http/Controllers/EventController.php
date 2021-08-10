@@ -119,4 +119,12 @@ class EventController extends MainController
         $request->session()->flash('addEventSuccess', 'Acara berjaya ditambah!');
         return back();
     }
+
+    public function removeEvent(Request $request){
+        $id = $request->input('event-id');
+        $event = Event::where('id', $id);
+        $event->delete();
+        $request->session()->flash('removeEventSuccess', 'Acara berjaya dibuang!');
+        return back();
+    }
 }

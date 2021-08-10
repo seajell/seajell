@@ -81,7 +81,21 @@ class UserController extends MainController
         }else{
             return back()->withErrors([
                 'userExisted' => 'Pengguna telah wujud!',
-            ]);return back();
+            ]);
+        }
+    }
+
+    public function removeUser(Request $request){
+        $username = $request->username;
+        if($username == 'admin'){
+            return back()->withErrors([
+                'removeUserError' => 'Pengguna tersebut tidak boleh dibuang!',
+            ]);
+        }else{
+            $user = User::where('username', $username);
+            $user->delete();
+            $request->session()->flash('removeUserSuccess', 'Pengguna berjaya dibuang!');
+            return back();
         }
     }
 }

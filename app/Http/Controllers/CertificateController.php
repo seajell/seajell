@@ -65,6 +65,15 @@ class CertificateController extends MainController
             ]);
         }
     }
+
+    public function removeCertificate(Request $request){
+        $id = $request->input('certificate-id');
+        $certificate = Certificate::where('id', $id);
+        $certificate->delete();
+        $request->session()->flash('removeCertificateSuccess', 'Sijil berjaya dibuang!');
+        return back();
+    }
+
     public function certificateView(Request $request, $id){
         $certEvent = Certificate::find($id)->event;
         $borderAvailability = $certEvent->border;

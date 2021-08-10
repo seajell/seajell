@@ -37,16 +37,16 @@ Route::get('/user/list', [UserController::class, 'userListView'])->name('user.li
 Route::post('/user/list', [UserController::class, ''])->middleware(['auth','UserIsAdmin']);
 Route::get('/user/add', [UserController::class, 'addUserView'])->name('user.add')->middleware(['auth','UserIsAdmin']);
 Route::post('/user/add', [UserController::class, 'addUser'])->middleware(['auth','UserIsAdmin']);
-
+Route::post('/user/remove', [UserController::class, 'removeUser'])->name('user.remove')->middleware(['auth','UserIsAdmin']);
 
 Route::get('/event/list', [EventController::class, 'eventListView'])->name('event.list')->middleware(['auth','UserIsAdmin']);
 Route::post('/event/list', [EventController::class, ''])->middleware(['auth','UserIsAdmin']);
 Route::get('/event/add', [EventController::class, 'addEventView'])->name('event.add')->middleware(['auth','UserIsAdmin']);
 Route::post('/event/add', [EventController::class, 'addEvent'])->middleware(['auth','UserIsAdmin']);
+Route::post('/event/remove', [EventController::class, 'removeEvent'])->name('event.remove')->middleware(['auth','UserIsAdmin']);
 
 Route::get('/certificate/list', [CertificateController::class, 'certificateListView'])->name('certificate.list')->middleware(['auth']);
 Route::get('/certificate/view/{id}', [CertificateController::class, 'certificateView'])->name('certificate.view');
 Route::get('/certificate/add', [CertificateController::class, 'addCertificateView'])->name('certificate.add')->middleware(['auth','UserIsAdmin']);
 Route::post('/certificate/add', [CertificateController::class, 'addCertificate'])->middleware(['auth','UserIsAdmin']);
-//Route::get('/certificate/user/{username}', [CertificateController::class, ''])->name('certificate.user')->middleware(['auth']);
-//Route::get('/certificate/user/{username}/{certificateID}', [CertificateController::class, ''])->name('certificate.user.id')->middleware(['auth']);
+Route::post('/certificate/remove', [CertificateController::class, 'removeCertificate'])->name('certificate.remove')->middleware(['auth','UserIsAdmin']);

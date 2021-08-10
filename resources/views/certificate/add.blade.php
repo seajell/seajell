@@ -50,7 +50,7 @@
         </div>
         <div class="mb-3 border border-dark border-3">
             <div class="row my-1 mx-1">
-                <p class="fw-bold">Tarikh: <span class="fw-normal" id="event-name-text"></span></p>
+                <p class="fw-bold">Nama: <span class="fw-normal" id="event-name-text"></span></p>
                 <p class="fw-bold">Tarikh: <span class="fw-normal" id="event-date-text"></span></p>
                 <p class="fw-bold">Lokasi: <span class="fw-normal" id="event-location-text"></span></p>
                 <p class="fw-bold">Nama Penganjur: <span class="fw-normal" id="event-organiser-name-text"></span></p>
