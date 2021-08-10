@@ -17,7 +17,7 @@ class MainController extends Controller
         // Check if system is properly installed. If not redirect to /install route.
         $this->middleware(function ($request, $next) {
             $this->appName = env('APP_NAME', 'SeaJell');
-            $this->appVersion = env('APP_VERSION', 'v1.0');
+            $this->appVersion = env('APP_VERSION', 'v1.0.0');
             $this->orgName = env('ORG_NAME', 'SeaJell');
             // Check if users table exist
             if(Schema::hasTable('users')){
