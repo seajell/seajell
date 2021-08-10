@@ -4,6 +4,7 @@
         <p class="fs-2">Tandatangan</p>
         <p>Anda boleh menjana fail PNG yang diperlukan untuk tandatangan pada sijil acara. <span class="fst-italic">Transparent</span> dan bernisbah 3:1</p>
         <p>Tulis tandatangan anda pada ruang yang disediakan dan muat turun setelah selesai.</p>
+        <p>Penggunaan peranti berskrin besar seperti komputer dan tablet amat digalakkan. Ini kerana skrin kecil tidak mempunyai ruang mencukupi untuk menulis tandatangan.</p>
     </div>
     <div class="container text-center mb-3 d-flex flex-column align-items-center">
         <div id="signature-pad-wrapper">
