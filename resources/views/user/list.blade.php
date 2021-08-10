@@ -5,7 +5,7 @@
         <span><div class="alert alert-success w-100 ml-1">{{ session('removeUserSuccess') }}</div></span>
     @endif
     @error('removeUserError')
-        <div class="alert alert-danger w-75 ml-1">{{ $message }}</div>
+        <span><div class="alert alert-danger w-100 ml-1">{{ $message }}</div></span>
     @enderror
     <div class="row">
         <div class="table-responsive">
@@ -41,7 +41,7 @@
                             <td class="fs-3 text-center"><a class="text-light" href=""><i class="bi bi-eye"></i></a></td>
                             <td class="fs-3 text-center">
                                 @if($user->username != 'admin')
-                                <a class="text-light" href=""><i class="bi bi-pencil-square"></i></a>      
+                                <a class="text-light" href="{{ route('user.update', [$user->username]) }}"><i class="bi bi-pencil-square"></i></a>      
                                 @endif
                             </td>
                             <td class="fs-3 text-center">

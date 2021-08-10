@@ -5,7 +5,7 @@
         <span><div class="alert alert-success w-100 ml-1">{{ session('addUserSuccess') }}</div></span>
     @endif
     @error('userExisted')
-        <div class="alert alert-danger w-75 ml-1">{{ $message }}</div>
+        <span><div class="alert alert-danger w-100 ml-1">{{ $message }}</div></span>
     @enderror
     <form action="" method="post" class="mb-3">
         @csrf

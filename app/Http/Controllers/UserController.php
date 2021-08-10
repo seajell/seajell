@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\MainController;
 
@@ -20,6 +21,22 @@ class UserController extends MainController
     public function addUserView(Request $request){
         return view('user.add')->with(['apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName]);
     }
+    public function updateUserView(Request $request, $username){
+        if(User::where('username', $username)->first()){
+            // Only admins or the user that logged in themselves can update their info
+            if(Gate::allows('authAdmin') || strtolower($username) == Auth::user()->username){
+                $data = User::where('username', $username)->first();
+                return view('user.update')->with(['apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName, 'data' => $data]);
+            }else{
+                abort(403, 'Anda tidak boleh mengakses laman ini.');
+            }
+        }else{
+            abort(404, 'Pengguna tidak dijumpai.');
+        }
+    }
+    /**
+     * Login and Logout
+     */
     public function login(Request $request){
         $username = strtolower($request->username);
         if(User::where('username', '=', $request->username)->first()){
@@ -97,5 +114,48 @@ class UserController extends MainController
             $request->session()->flash('removeUserSuccess', 'Pengguna berjaya dibuang!');
             return back();
         }
+    }
+
+    public function updateUser(Request $request, $username){
+        // Check whether update info or password
+        if($request->has('info')){
+            $validated = $request->validate([
+                'fullname' => ['required'],
+                'email' => ['required', 'email:rfc'],
+                'identification_number' => ['required', 'numeric'],
+                'role' => ['required']
+            ]);
+            if(User::select('username')->where('username', $request->username)->first()){
+                User::updateOrCreate(
+                    ['username' => strtolower($request->username)],
+                    ['fullname' => strtolower($request->fullname), 'email' => strtolower($request->email), 'identification_number' => $request->identification_number, 'role' => strtolower($request->role)]
+                );
+                $request->session()->flash('updateUserSuccess', 'Pengguna berjaya dikemas kini!');
+                return back();
+            }else{
+                return back()->withErrors([
+                    'userNotExisted' => 'Pengguna tidak dijumpai!',
+                ]);
+            }
+        }elseif($request->has('password-update')){
+            $validated = $request->validate([
+                'password' => ['required', 'confirmed']
+            ]);
+            if(User::select('username')->where('username', $request->username)->first()){
+                User::updateOrCreate(
+                    ['username' => strtolower($request->username)],
+                    ['password' => Hash::make($request->password)]
+                );
+                $request->session()->flash('updateUserPasswordSuccess', 'Kata laluan pengguna berjaya dikemas kini!');
+                return back();
+            }else{
+                return back()->withErrors([
+                    'userNotExisted' => 'Pengguna tidak dijumpai!',
+                ]);
+            }
+        }else{
+            return back();
+        }
+        
     }
 }

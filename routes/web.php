@@ -38,6 +38,8 @@ Route::post('/user/list', [UserController::class, ''])->middleware(['auth','User
 Route::get('/user/add', [UserController::class, 'addUserView'])->name('user.add')->middleware(['auth','UserIsAdmin']);
 Route::post('/user/add', [UserController::class, 'addUser'])->middleware(['auth','UserIsAdmin']);
 Route::post('/user/remove', [UserController::class, 'removeUser'])->name('user.remove')->middleware(['auth','UserIsAdmin']);
+Route::get('/user/update/{username}', [UserController::class, 'updateUserView'])->name('user.update')->middleware(['auth']);
+Route::post('/user/update/{username}', [UserController::class, 'updateUser'])->name('user.update')->middleware(['auth']);
 
 Route::get('/event/list', [EventController::class, 'eventListView'])->name('event.list')->middleware(['auth','UserIsAdmin']);
 Route::post('/event/list', [EventController::class, ''])->middleware(['auth','UserIsAdmin']);

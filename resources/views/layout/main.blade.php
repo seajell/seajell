@@ -62,7 +62,7 @@
                         @endif
                     </ul>
                     <span class="navbar-text">
-                        <span class="text-light">Log Masuk Sebagai: <a class="fw-bold" href="{{ route('home') }}">{{ Auth::user()->username }}</a></span>
+                        <span class="text-light">Log Masuk Sebagai: <a class="fw-bold" href="{{ route('user.update', [Auth::user()->username]) }}">{{ Auth::user()->username }}</a></span>
                         <form action="{{ route('logout') }}" method="post">
                             @csrf
                             <button class="btn btn-light" type="submit">Log Keluar</button>
