@@ -1,35 +1,11 @@
 @extends('layout.main')
 @section('content')
-    <p class="fs-2">Tambah Sijil</p>
-    @if(session()->has('addCertificateSuccess'))
-        <span><div class="alert alert-success w-100 ml-1">{{ session('addCertificateSuccess') }}</div></span>
+    <p class="fs-2">Kemas Sijil</p>
+    @if(session()->has('updateCertificateSuccess'))
+        <span><div class="alert alert-success w-100 ml-1">{{ session('updateCertificateSuccess') }}</div></span>
     @endif
     <form action="" method="post" class="mb-3">
         @csrf
-        <div class="mb-3">
-            <div class="row">
-                <label for="username" class="form-label">Username Pengguna</label>   
-            </div>
-            <div class="row">
-                <div class="col-11">
-                    <input type="text" class="form-control w-100" id="username" name="username" placeholder="Masukkan username pengguna." value="{{ old('username') }}">
-                </div>
-                <div class="col-1">
-                    <button type="button" id="username-search" class="btn btn-dark w-100"><i class="bi bi-search"></i></button>
-                </div>
-            </div>
-        </div>
-        @error('username')
-            <div class="alert alert-danger">{{ $message }}</div>
-        @enderror
-        <div class="my-1" id="user-search-status">
-        </div>
-        <div class="mb-3 border border-dark border-3">
-            <div class="row my-1 mx-1">
-                <p class="fw-bold">Nama Peserta: <span class="fw-normal" id="participant-fullname-text"></span></p>
-                <p class="fw-bold">No. Kad Pengenalan: <span class="fw-normal" id="participant-identification-number-text"></span></p>
-            </div>
-        </div>
         <div class="mb-3">
             <div class="row">
                 <label for="event-id" class="form-label">ID Acara</label>   
@@ -94,7 +70,8 @@
             Sijil Pencapaian. Contoh: "Tempat Pertama", "Tempat Kedua", "Tempat Ketiga". <br>
             Sijil Penghargaan. Contoh: "Ahli Jawatankuasa", "Setiusaha".
         </div>
-        <button class="btn btn-dark mt-3" type="submit">Tambah Sijil</button>
+        <input type="hidden" id="user-id" name="user-id" value="{{ $data->user_id }}">
+        <button class="btn btn-dark mt-3" type="submit">Kemas Kini</button>
     </form>
     <script src="{{ asset('js/addCertificateSearch.js') }}"></script>
 @endsection

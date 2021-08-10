@@ -33,6 +33,15 @@ A simple e-Certificate Generator.
 The script will add a new `admin` user, migrate the database and generate the application key.
 10. System installation is completed!
 
+If you're hosting this system in a shared hosting, make sure to edit or add the `.htaccess` file containing the code below in the root folder.
+
+```
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
+```
+
 ## License
 
 This system/project is licensed under [GNU GPLv3](COPYING). Each contributions to this system will

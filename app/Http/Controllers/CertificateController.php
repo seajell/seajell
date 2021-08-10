@@ -29,6 +29,21 @@ class CertificateController extends MainController
             return view('certificate.list')->with(['certificates' => $certificates, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName]);
         }
     }
+
+    public function updateCertificateView(Request $request, $id){
+        if(Certificate::where('id', $id)->first()){
+            // Only admins can update certificates
+            if(Gate::allows('authAdmin')){
+                $data = Certificate::where('id', $id)->first();
+                return view('certificate.update')->with(['apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName, 'data' => $data]);
+            }else{
+                abort(403, 'Anda tidak boleh mengakses laman ini.');
+            }
+        }else{
+            abort(404, 'Sijil tidak dijumpai.');
+        }
+    }
+
     public function addCertificate(Request $request){
         $validated = $request->validate([
             'username' => ['required'],
@@ -65,6 +80,53 @@ class CertificateController extends MainController
             ]);
         }
     }
+
+    public function removeCertificate(Request $request){
+        $id = $request->input('certificate-id');
+        $certificate = Certificate::where('id', $id);
+        $certificate->delete();
+        $request->session()->flash('removeCertificateSuccess', 'Sijil berjaya dibuang!');
+        return back();
+    }
+
+    public function updateCertificate(Request $request, $id){
+        $validated = $request->validate([
+            'user-id' => ['required'],
+            'event-id' => ['required'],
+            'certificate-type' => ['required'],
+            'position' => ['required']
+        ]);
+
+        $eventID = $request->input('event-id');
+        $certificateType = strtolower($request->input('certificate-type'));
+        $position = strtolower($request->input('position'));
+
+        // Recheck if username and event id is existed in case user doesn't input one that actually existed although with the JS help lel
+        if(User::where('id', $request->input('user-id'))->first()){
+            if(Event::where('id', $eventID)->first()){
+                Certificate::updateOrCreate(
+                    ['id' => $id],
+                    [
+                        'user_id' => $request->input('user-id'),
+                        'event_id' => $eventID,
+                        'type' => $certificateType,
+                        'position' => $position
+                    ]
+                );
+                $request->session()->flash('updateCertificateSuccess', 'Sijil berjaya dikemas kini!');
+                return back();
+            }else{
+                return back()->withInput()->withErrors([
+                    'event-id' => 'ID Acara tidak dijumpai!'
+                ]);
+            }
+        }else{
+            return back()->withInput()->withErrors([
+                'username' => 'Username Pengguna tidak dijumpai!'
+            ]);
+        }
+    }
+
     public function certificateView(Request $request, $id){
         $certEvent = Certificate::find($id)->event;
         $borderAvailability = $certEvent->border;
