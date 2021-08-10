@@ -38,7 +38,7 @@
                                 @endif
                             </td>
                             <td class="fs-3 text-center"><a class="text-light" href=""><i class="bi bi-eye"></i></a></td>
-                            <td class="fs-3 text-center"><a class="text-light" href=""><i class="bi bi-pencil-square"></i></a></td>
+                            <td class="fs-3 text-center"><a class="text-light" href="{{ route('event.update', [$event->id]) }}"><i class="bi bi-pencil-square"></i></a></td>
                             <td class="fs-3 text-center"><a class="text-light" href="" data-bs-toggle="modal" data-bs-target="#{{ 'delete-event-modal-' . $event->id}}"><i class="bi bi-trash"></a></i></td>
                         </tr>
                         {{-- 
