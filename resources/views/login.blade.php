@@ -7,12 +7,12 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ asset('bootstraps-icons/font/bootstrap-icons.css') }}">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-    <link rel="shortcut icon" href="{{ asset('/storage/img/logo/SeaJell-Logo.png') }}" type="image/png">
+    <link rel="shortcut icon" href="{{ asset('/storage/logo/SeaJell-Logo.png') }}" type="image/png">
     <title>SeaJell</title>
 </head>
 <body class="min-vh-100">
     <div class="container-fluid d-flex flex-column justify-content-center align-items-center vh-100">
-        <img class="row mb-3" src="{{ asset('/storage/img/logo/SeaJell-Logo.png') }}" alt="SeaJell Logo" style="height: 7em; width: 7em;">
+        <img class="row mb-3" src="{{ asset('/storage/logo/SeaJell-Logo.png') }}" alt="SeaJell Logo" style="height: 7em; width: 7em;">
         <div class="row w-100 mb-3">
             <div class="col-4 rounded-start d-flex flex-column align-items-center justify-content-center bg-dark text-light border border-dark border-2">
                 <p class="fw-bold fs-1">SeaJell</p>
