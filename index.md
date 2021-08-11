@@ -3,10 +3,10 @@
 # Welcome to the SeaJell website.
 ![Banner](assets/GithubBanner.png)
 
-## Installation
-Read the Installation section in [REAMD.md](https://github.com/hanisirfan/seajell#installation) file (typical Laravel app installation procedure).
+## Guides
+All the guides is available on the [wiki](https://github.com/hanisirfan/seajell/wiki/Installation).
 
-## Tutorials
+## Tutorial Videos
 You may watch the tutorial videos made for this project for guidance, [here](tutorials).
 
 ## Screenshots
