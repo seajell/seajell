@@ -8,7 +8,7 @@
 A simple e-Certificate Generator.
 
  # Guides
- You can read all the guide to use the system from the [wiki](https://github.com/hanisirfan/seajell/wiki).
+ You can read all the guide to use the system from the [website](https://github.hanisirfan.xyz/seajell).
 
 ## License
 Copyright (c) Muhammad Hanis Irfan bin Mohd Zaid
