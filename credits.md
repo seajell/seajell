@@ -26,5 +26,4 @@
 
 # License
 
-Copyright (c) Muhammad Hanis Irfan bin Mohd Zaid 2021
-This system/project is licensed under [GNU GPLv3](https://github.com/hanisirfan/seajell/blob/main/COPYING). Each contributions to this system will be licensed under the same terms.
+Copyright (c) Muhammad Hanis Irfan bin Mohd Zaid 2021. This system/project is licensed under [GNU GPLv3](https://github.com/hanisirfan/seajell/blob/main/COPYING). Each contributions to this system will be licensed under the same terms.
