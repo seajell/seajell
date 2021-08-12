@@ -189,6 +189,14 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         @error('background-image')
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
+        <label class="form-label mt-3">Warna Teks (Diperlukan)</label>
+        <x-buk-color-picker name="text-color" class="mb-3" :options="['theme' => 'classic']" />
+        <div id="text_color_help" class="form-text">
+            Kesemua teks pada sijil akan diubah kepada warna ini kecuali teks pada kod QR.
+        </div>
+        @error('text-color')
+            <div class="alert alert-danger">{{ $message }}</div>
+        @enderror
         <label class="form-label mt-3"><span class="fst-italic">Border</span> (Diperlukan)</label>
         <div class="form-check">
             <input class="form-check-input" type="radio" name="border" id="border" value="available" checked>

@@ -146,31 +146,17 @@ class CertificateController extends MainController
     public function certificateView(Request $request, $id){
         if(Certificate::find($id)){
             $certEvent = Certificate::find($id)->event;
-            $borderAvailability = $certEvent->border;
-            $borderHexColor = $certEvent->border_color;
-            
-            // Check if border is gonna be used from the database
-            switch ($borderAvailability) {
-                case 'available':
-                    $borderStatus = TRUE;
-                    break;
-                case 'unavailable':
-                    $borderStatus = FALSE;
-                    break;
-                default:
-                    break;
-            }
             // Check for event visibility
             switch ($certEvent->visibility) {
                 case 'public':
                     // Certificate PDF generated will have QR code with the URL to the certificate in it
-                    $this->generateCertificate($request, $id, array(255, 254, 212), $borderStatus, $borderHexColor);
+                    $this->generateCertificate($request, $id, array(255, 254, 212));
                     break;
                 case 'hidden':
                     // Check if logged in
                     if(Auth::check()){
                         if(Gate::allows('authAdmin') || Certificate::find($id)->user_id == Auth::user()->id){
-                            $this->generateCertificate($request, $id, array(255, 254, 212), $borderStatus, $borderHexColor);
+                            $this->generateCertificate($request, $id, array(255, 254, 212));
                         }else{
                             return redirect()->route('home');
                         }
@@ -186,9 +172,39 @@ class CertificateController extends MainController
         }
     }
 
-    protected function generateCertificate($request, $certificateID, $backgroundColor = array(255, 254, 212), $border = FALSE, $borderColor = '#000'){
+    protected function generateCertificate($request, $certificateID, $backgroundColor = array(255, 254, 212)){
         $certUser = Certificate::find($certificateID)->user;
         $certEvent = Certificate::find($certificateID)->event;
+
+        $borderAvailability = $certEvent->border;
+        if($certEvent->text_color !== NULL && $certEvent->text_color !== ''){
+            $textColor = TCPDF_COLORS::convertHTMLColorToDec($certEvent->text_color, TCPDF_COLORS::$spotcolor);
+            $textColorR = $textColor["R"];
+            $textColorG = $textColor["G"];
+            $textColorB = $textColor["B"];
+        }else{
+            $textColorR = 0;
+            $textColorG = 0;
+            $textColorB = 0;
+        }
+        PDF::SetTextColor($textColorR, $textColorG, $textColorB);
+        if($certEvent->border_color !== NULL && $certEvent->border_color !== ''){
+            $borderColor = TCPDF_COLORS::convertHTMLColorToDec($certEvent->border_color, TCPDF_COLORS::$spotcolor);
+        }else{
+            $borderColor = TCPDF_COLORS::convertHTMLColorToDec("#000000", TCPDF_COLORS::$spotcolor);
+        }
+        
+        // Check if border is gonna be used from the database
+        switch ($borderAvailability) {
+            case 'available':
+                $border = TRUE;
+                break;
+            case 'unavailable':
+                $border = FALSE;
+                break;
+            default:
+                break;
+        }
 
         $userFullname = strtoupper($certUser->fullname);
         $userIdentificationNumber = $certUser->identification_number;
@@ -245,8 +261,6 @@ class CertificateController extends MainController
         // Border
         switch ($border) {
             case TRUE:
-                $borderColor = TCPDF_COLORS::convertHTMLColorToDec($borderColor, TCPDF_COLORS::$spotcolor);
-                $backgroundBorder = array('width' => 5, 'color' => array(255, 0, 255));
                 $borderStyle = array('width' => 1, 'color' => $borderColor);
                 PDF::Rect(5, 5, 200, 287, 'D', array('all' => $borderStyle));
                 break;
@@ -497,9 +511,14 @@ class CertificateController extends MainController
                     'module_width' => 1, 
                     'module_height' => 1
                 );
-                $QRborderColor = TCPDF_COLORS::convertHTMLColorToDec("#000", TCPDF_COLORS::$spotcolor);
-                $QRborderStyle = array('width' => 0.5, 'color' => $QRborderColor);
-                PDF::Rect(135, 272.5, 70, 19.5, 'D', array('all' => $QRborderStyle));
+                
+                if($borderColor !== NULL && $borderColor != ''){
+                    $QRBorderColor = $borderColor;
+                }else{
+                    $QRBorderColor = array(0, 0, 0);
+                }
+                PDF::SetTextColor(0, 0, 0);
+                PDF::Rect(135, 272.5, 70, 19.5, 'DF', array('all' => array('width' => 0.5, 'color' => $QRBorderColor)), array(255, 255, 255));
                 PDF::SetFont('bebasneue', '', 12);
                 PDF::MultiCell($w = 50, $h = 0, $txt = 'Imbas kod QR ini untuk menyemak ketulenan', 0, 'R', 0, 0, 135, 277);
                 PDF::write2DBarcode(url()->current(), 'QRCODE,Q', 186, 273, 18.5, 18.5, $style, 'N');
