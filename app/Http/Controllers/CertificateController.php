@@ -144,43 +144,48 @@ class CertificateController extends MainController
     }
 
     public function certificateView(Request $request, $id){
-        $certEvent = Certificate::find($id)->event;
-        $borderAvailability = $certEvent->border;
-        $borderHexColor = $certEvent->border_color;
-        
-        // Check if border is gonna be used from the database
-        switch ($borderAvailability) {
-            case 'available':
-                $borderStatus = TRUE;
-                break;
-            case 'unavailable':
-                $borderStatus = FALSE;
-                break;
-            default:
-                break;
-        }
-        // Check for event visibility
-        switch ($certEvent->visibility) {
-            case 'public':
-                // Certificate PDF generated will have QR code with the URL to the certificate in it
-                $this->generateCertificate($request, $id, array(255, 254, 212), $borderStatus, $borderHexColor);
-                break;
-            case 'hidden':
-                // Check if logged in
-                if(Auth::check()){
-                    if(Gate::allows('authAdmin') || Certificate::find($id)->user_id == Auth::user()->id){
-                        $this->generateCertificate($request, $id, array(255, 254, 212), $borderStatus, $borderHexColor);
+        if(Certificate::find($id)){
+            $certEvent = Certificate::find($id)->event;
+            $borderAvailability = $certEvent->border;
+            $borderHexColor = $certEvent->border_color;
+            
+            // Check if border is gonna be used from the database
+            switch ($borderAvailability) {
+                case 'available':
+                    $borderStatus = TRUE;
+                    break;
+                case 'unavailable':
+                    $borderStatus = FALSE;
+                    break;
+                default:
+                    break;
+            }
+            // Check for event visibility
+            switch ($certEvent->visibility) {
+                case 'public':
+                    // Certificate PDF generated will have QR code with the URL to the certificate in it
+                    $this->generateCertificate($request, $id, array(255, 254, 212), $borderStatus, $borderHexColor);
+                    break;
+                case 'hidden':
+                    // Check if logged in
+                    if(Auth::check()){
+                        if(Gate::allows('authAdmin') || Certificate::find($id)->user_id == Auth::user()->id){
+                            $this->generateCertificate($request, $id, array(255, 254, 212), $borderStatus, $borderHexColor);
+                        }else{
+                            return redirect()->route('home');
+                        }
                     }else{
                         return redirect()->route('home');
                     }
-                }else{
-                    return redirect()->route('home');
-                }
-                break;
-            default:
-                break;
+                    break;
+                default:
+                    break;
+            }
+        }else{
+            abort(404, 'Sijil tidak dijumpai!');
         }
     }
+
     protected function generateCertificate($request, $certificateID, $backgroundColor = array(255, 254, 212), $border = FALSE, $borderColor = '#000'){
         $certUser = Certificate::find($certificateID)->user;
         $certEvent = Certificate::find($certificateID)->event;
@@ -194,11 +199,6 @@ class CertificateController extends MainController
         $eventOrganiserName = strtoupper($certEvent->organiser_name);
         $certificateType = Certificate::find($certificateID)->type;
         $certificationPosition = strtoupper(Certificate::find($certificateID)->position);
-        $certificationVerifierName = strtoupper(Certificate::find($certificateID)->event->verifier_name);
-        $certificationVerifierPosition = strtoupper(Certificate::find($certificateID)->event->verifier_position);
-        $certificationVerifierSignaturePath = Certificate::find($certificateID)->event->verifier_signature;
-        $organiserLogoPath = $certEvent->organiser_logo;
-        $instituteLogoPath = $certEvent->institute_logo;
         $backgroundImagePath = $certEvent->background_image;
 
         // Generate the certificate
@@ -236,7 +236,6 @@ class CertificateController extends MainController
             if(Storage::disk('public')->exists($backgroundImagePath)){
                 $backgroundImage = '.' . Storage::disk('local')->url($backgroundImagePath);
             }
-            //PDF::Image($backgroundImage, 0, 0, 350, 437, '', '', '', false, 300, '', false, false, 0);
             PDF::Image($backgroundImage, 0, 0, 210, 297, '', '', '', false, 600, '', false, false, 0);
         }else{
             PDF::Rect(0, 0, 210, 297,'F', array(), $backgroundColor);
@@ -249,7 +248,7 @@ class CertificateController extends MainController
                 $borderColor = TCPDF_COLORS::convertHTMLColorToDec($borderColor, TCPDF_COLORS::$spotcolor);
                 $backgroundBorder = array('width' => 5, 'color' => array(255, 0, 255));
                 $borderStyle = array('width' => 1, 'color' => $borderColor);
-                PDF::Rect(25, 15, 160, 270, 'D', array('all' => $borderStyle));
+                PDF::Rect(5, 5, 200, 287, 'D', array('all' => $borderStyle));
                 break;
             case FALSE:
                 break;
@@ -261,27 +260,45 @@ class CertificateController extends MainController
         PDF::addFont('cookie');
         PDF::addFont('badscript');
         PDF::addFont('bebasneue');
+
         /**
          * Logos
          * Check if institute logo is available
          */
-        if($instituteLogoPath !== '' && $instituteLogoPath !== NULL){
-            if(Storage::disk('public')->exists($organiserLogoPath)){
-                $organiserLogo = '.' . Storage::disk('local')->url($organiserLogoPath);
+
+        if($certEvent->logo_first !== '' && $certEvent->logo_first !== NULL && $certEvent->logo_second !== '' && $certEvent->logo_second !== NULL && $certEvent->logo_third !== '' && $certEvent->logo_third !== NULL){
+            // If 3 Logo
+            if(Storage::disk('public')->exists($certEvent->logo_first)){
+                $logoFirstImage = '.' . Storage::disk('local')->url($certEvent->logo_first);
+                PDF::Image($logoFirstImage, $x = 30, $y = 12, $w = 40, $h = 40);
             }
-            if(Storage::disk('public')->exists($instituteLogoPath)){
-                $instituteLogo = '.' . Storage::disk('local')->url($instituteLogoPath);
+            if(Storage::disk('public')->exists($certEvent->logo_second)){
+                $logoSecondImage = '.' . Storage::disk('local')->url($certEvent->logo_second);
+                PDF::Image($logoSecondImage, $x = 85, $y = 12, $w = 40, $h = 40);
             }
-            PDF::Image($organiserLogo, $x = 58, $y = 20, $w = 30, $h = 30);
-            PDF::Image($instituteLogo, $x = 121, $y = 20, $w = 30, $h = 30);
-        }else{
-            if(Storage::disk('public')->exists($organiserLogoPath)){
-                $organiserLogo = '.' . Storage::disk('local')->url($organiserLogoPath);
+            if(Storage::disk('public')->exists($certEvent->logo_third)){
+                $logoThirdImage = '.' . Storage::disk('local')->url($certEvent->logo_third);
+                PDF::Image($logoThirdImage, $x = 140, $y = 12, $w = 40, $h = 40);
             }
-            PDF::Image($organiserLogo, $x = 90, $y = 20, $w = 30, $h = 30);
+        }elseif($certEvent->logo_first !== '' && $certEvent->logo_first !== NULL && $certEvent->logo_second !== '' && $certEvent->logo_second !== NULL){
+            // If 2 Logo
+            if(Storage::disk('public')->exists($certEvent->logo_first)){
+                $logoFirstImage = '.' . Storage::disk('local')->url($certEvent->logo_first);
+                PDF::Image($logoFirstImage, $x = 55, $y = 12, $w = 40, $h = 40);
+            }
+            if(Storage::disk('public')->exists($certEvent->logo_second)){
+                $logoSecondImage = '.' . Storage::disk('local')->url($certEvent->logo_second);
+                PDF::Image($logoSecondImage, $x = 115, $y = 12, $w = 40, $h = 40);
+            }
+        }elseif($certEvent->logo_first !== '' && $certEvent->logo_first !== NULL){
+            // If 1 Logo
+            if(Storage::disk('public')->exists($certEvent->logo_first)){
+                $logoImage = '.' . Storage::disk('local')->url($certEvent->logo_first);
+                PDF::Image($logoImage, $x = 85, $y = 12, $w = 40, $h = 40);
+            }
         }
 
-        PDF::Ln(40);
+        PDF::Ln(42);
         PDF::SetFont('cookie', 'BI', 45);
         PDF::Cell($w = 0, $h = 1, $txt = $certificateTypeText, $align = 'C', $border = '1', $calign = 'C');
 
@@ -299,98 +316,180 @@ class CertificateController extends MainController
                 break;
         }
         
-        PDF::Ln(5);
-        PDF::SetFont('badscript', 'I', 13);
+        PDF::Ln(1);
+        PDF::SetFont('badscript', 'I', 14);
         PDF::Cell($w = 0, $h = 1, $txt = $certificateIntro, $align = 'C', $border = '1', $calign = 'C');
 
-        PDF::SetFont('bebasneue', 'B', 13);
-        PDF::MultiCell(160, 0, $userFullname, 0, 'C', 0, 1, 25);
+        PDF::SetFont('bebasneue', 'B', 14);
+        PDF::MultiCell(190, 0, $userFullname, 0, 'C', 0, 1, 10);
 
-        PDF::SetFont('bebasneue', 'B', 13);
+        PDF::SetFont('bebasneue', 'B', 14);
         PDF::Cell($w = 0, $h = 1, $txt = '(' . $userIdentificationNumber . ')', $align = 'C', $border = '1', $calign = 'C');
         switch ($certificateType) {
             case 'participation':
-                PDF::Ln(10);
-                PDF::SetFont('badscript', 'I', 13);
+                PDF::Ln(2);
+                PDF::SetFont('badscript', 'I', 14);
                 PDF::Cell($w = 0, $h = 1, $txt = 'Telah menyertai', $align = 'C', $border = '1', $calign = 'C');
 
-                PDF::SetFont('bebasneue', 'B', 13);
-                PDF::MultiCell(160, 0, $eventName, 0, 'C', 0, 1, 25);
+                PDF::SetFont('bebasneue', 'B', 14);
+                PDF::MultiCell(190, 0, $eventName, 0, 'C', 0, 1, 10);
                 break;
             case 'achievement':
-                PDF::Ln(10);
-                PDF::SetFont('badscript', 'I', 13);
+                PDF::Ln(2);
+                PDF::SetFont('badscript', 'I', 14);
                 PDF::Cell($w = 0, $h = 1, $txt = 'Di atas pencapaian', $align = 'C', $border = '1', $calign = 'C');
 
-                PDF::SetFont('bebasneue', 'B', 13);
-                PDF::Cell($w = 0, $h = 1, $txt = $certificationPosition, $align = 'C', $border = '1', $calign = 'C');
+                PDF::SetFont('bebasneue', 'B', 14);
+                PDF::MultiCell(190, 0, $certificationPosition, 0, 'C', 0, 1, 10);
                 
-                PDF::Ln();
-                PDF::SetFont('badscript', 'I', 13);
+                PDF::Ln(2);
+                PDF::SetFont('badscript', 'I', 14);
                 PDF::Cell($w = 0, $h = 1, $txt = 'Dalam', $align = 'C', $border = '1', $calign = 'C');
 
-                PDF::SetFont('bebasneue', 'B', 13);
-                PDF::MultiCell(160, 0, $eventName, 0, 'C', 0, 1, 25);
+                PDF::SetFont('bebasneue', 'B', 14);
+                PDF::MultiCell(190, 0, $eventName, 0, 'C', 0, 1, 10);
                 break;
             case 'appreciation':
-                PDF::Ln(10);
-                PDF::SetFont('badscript', 'I', 13);
+                PDF::Ln(2);
+                PDF::SetFont('badscript', 'I', 14);
                 PDF::Cell($w = 0, $h = 1, $txt = 'atas sumbangan dan komitmen sebagai', $align = 'C', $border = '1', $calign = 'C');
 
-                PDF::SetFont('bebasneue', 'B', 13);
+                PDF::SetFont('bebasneue', 'B', 14);
                 PDF::Cell($w = 0, $h = 1, $txt = $certificationPosition, $align = 'C', $border = '1', $calign = 'C');
                 
-                PDF::Ln();
-                PDF::SetFont('badscript', 'I', 13);
+                PDF::Ln(2);
+                PDF::SetFont('badscript', 'I', 14);
                 PDF::Cell($w = 0, $h = 1, $txt = 'Dalam', $align = 'C', $border = '1', $calign = 'C');
 
-                PDF::SetFont('bebasneue', 'B', 13);
-                PDF::MultiCell(160, 0, $eventName, 0, 'C', 0, 1, 25);
+                PDF::SetFont('bebasneue', 'B', 14);
+                PDF::MultiCell(190, 0, $eventName, 0, 'C', 0, 1, 10);
                 break;
             default:
                 break;
         }
         
-
-        PDF::Ln(10);
-        PDF::SetFont('badscript', 'I', 13);
+        // To Do: Category Issue #22
+        PDF::Ln(2);
+        PDF::SetFont('badscript', 'I', 14);
+        PDF::Cell($w = 0, $h = 1, $txt = 'Kategori', $align = 'C', $border = '1', $calign = 'C');
+        PDF::SetFont('bebasneue', 'B', 14);
+        PDF::MultiCell(190, 0, $eventOrganiserName, 0, 'C', 0, 1, 10);
+        
+        PDF::Ln(2);
+        PDF::SetFont('badscript', 'I', 14);
         PDF::Cell($w = 0, $h = 1, $txt = 'Pada', $align = 'C', $border = '1', $calign = 'C');
 
-        PDF::SetFont('bebasneue', 'B', 13);
-        PDF::MultiCell(160, 0, $eventDate, 0, 'C', 0, 1, 25);
+        PDF::SetFont('bebasneue', 'B', 14);
+        PDF::MultiCell(190, 0, $eventDate, 0, 'C', 0, 1, 10);
 
-        PDF::Ln(10);
-        PDF::SetFont('badscript', 'I', 13);
+        PDF::Ln(2);
+        PDF::SetFont('badscript', 'I', 14);
         PDF::Cell($w = 0, $h = 1, $txt = 'Bertempat di', $align = 'C', $border = '1', $calign = 'C');
-        PDF::SetFont('bebasneue', 'B', 13);
-        PDF::MultiCell(160, 0, $eventLocation, 0, 'C', 0, 1, 25);
+        PDF::SetFont('bebasneue', 'B', 14);
+        PDF::MultiCell(190, 0, $eventLocation, 0, 'C', 0, 1, 10);
 
-        PDF::Ln(10);
-        PDF::SetFont('badscript', 'I', 13);
+        PDF::Ln(2);
+        PDF::SetFont('badscript', 'I', 14);
         PDF::Cell($w = 0, $h = 1, $txt = 'Anjuran', $align = 'C', $border = '1', $calign = 'C');
-        PDF::SetFont('bebasneue', 'B', 13);
-        PDF::MultiCell(160, 0, $eventOrganiserName, 0, 'C', 0, 1, 25);
+        PDF::SetFont('bebasneue', 'B', 14);
+        PDF::MultiCell(190, 0, $eventOrganiserName, 0, 'C', 0, 1, 10);
 
-        // Generate QR Code and re-adjust the signature position if visibility is set to PUBLIC 
+        /**
+         * Signatures
+         */
+
+        // If 3 signature
+        if($certEvent->signature_first !== '' && $certEvent->signature_first !== NULL && $certEvent->signature_second !== '' && $certEvent->signature_second !== NULL && $certEvent->signature_third !== '' && $certEvent->signature_third !== NULL){
+            // First
+            if(Storage::disk('public')->exists($certEvent->signature_first)){
+                $certificationVerifierSignature = '.' . Storage::disk('local')->url($certEvent->signature_first);
+            }
+            PDF::Image($certificationVerifierSignature, $x = 25, $y = 216, $w = 46.8, $h = 15.6);
+
+            PDF::SetFont('bebasneue', '', 12);
+            PDF::MultiCell($w = 55, $h = 0, $txt = '...........................................................', 0, 'C', 0, 0, 21, 226);
+            PDF::Ln();
+            PDF::MultiCell($w = 55, $h = 0, $txt = '(' . $certEvent->signature_first_name . ')', 0, 'C', 0, 0, 21);
+            PDF::Ln();
+            PDF::MultiCell($w = 55, $h = 0, $txt = $certEvent->signature_first_position, 0, 'C', 0, 0, 21);
+
+            // Second
+            if(Storage::disk('public')->exists($certEvent->signature_second)){
+                $certificationVerifierSignature = '.' . Storage::disk('local')->url($certEvent->signature_second);
+            }
+            PDF::Image($certificationVerifierSignature, $x = 82, $y = 216, $w = 46.8, $h = 15.6);
+
+            PDF::SetFont('bebasneue', '', 12);
+            PDF::MultiCell($w = 55, $h = 0, $txt = '...........................................................', 0, 'C', 0, 0, 78, 226);
+            PDF::Ln();
+            PDF::MultiCell($w = 55, $h = 0, $txt = '(' . $certEvent->signature_second_name . ')', 0, 'C', 0, 0, 78);
+            PDF::Ln();
+            PDF::MultiCell($w = 55, $h = 0, $txt = $certEvent->signature_second_position, 0, 'C', 0, 0, 78);
+
+            // Third
+            if(Storage::disk('public')->exists($certEvent->signature_third)){
+                $certificationVerifierSignature = '.' . Storage::disk('local')->url($certEvent->signature_third);
+            }
+            PDF::Image($certificationVerifierSignature, $x = 140, $y = 216, $w = 46.8, $h = 15.6);
+
+            PDF::SetFont('bebasneue', '', 12);
+            PDF::MultiCell($w = 55, $h = 0, $txt = '...........................................................', 0, 'C', 0, 0, 136, 226);
+            PDF::Ln();
+            PDF::MultiCell($w = 55, $h = 0, $txt = '(' . $certEvent->signature_third_name . ')', 0, 'C', 0, 0, 136);
+            PDF::Ln();
+            PDF::MultiCell($w = 55, $h = 0, $txt = $certEvent->signature_third_position, 0, 'C', 0, 0, 136);
+        }elseif($certEvent->signature_first !== '' && $certEvent->signature_first !== NULL && $certEvent->signature_second !== '' && $certEvent->signature_second !== NULL){
+            // If 2 signature
+
+            // First
+            if(Storage::disk('public')->exists($certEvent->signature_first)){
+                $certificationVerifierSignature = '.' . Storage::disk('local')->url($certEvent->signature_first);
+            }
+            PDF::Image($certificationVerifierSignature, $x = 50, $y = 216, $w = 46.8, $h = 15.6);
+
+            PDF::SetFont('bebasneue', '', 12);
+            PDF::MultiCell($w = 55, $h = 0, $txt = '...........................................................', 0, 'C', 0, 0, 46, 226);
+            PDF::Ln();
+            PDF::MultiCell($w = 55, $h = 0, $txt = '(' . $certEvent->signature_first_name . ')', 0, 'C', 0, 0, 46);
+            PDF::Ln();
+            PDF::MultiCell($w = 55, $h = 0, $txt = $certEvent->signature_first_position, 0, 'C', 0, 0, 46);
+
+            // Second
+            if(Storage::disk('public')->exists($certEvent->signature_second)){
+                $certificationVerifierSignature = '.' . Storage::disk('local')->url($certEvent->signature_second);
+            }
+            PDF::Image($certificationVerifierSignature, $x = 110, $y = 216, $w = 46.8, $h = 15.6);
+
+            PDF::SetFont('bebasneue', '', 12);
+            PDF::MultiCell($w = 55, $h = 0, $txt = '...........................................................', 0, 'C', 0, 0, 106, 226);
+            PDF::Ln();
+            PDF::MultiCell($w = 55, $h = 0, $txt = '(' . $certEvent->signature_second_name . ')', 0, 'C', 0, 0, 106);
+            PDF::Ln();
+            PDF::MultiCell($w = 55, $h = 0, $txt = $certEvent->signature_second_position, 0, 'C', 0, 0, 106);
+        }elseif($certEvent->signature_first !== '' && $certEvent->signature_first !== NULL){
+            // If 1 signature
+
+            // First
+            if(Storage::disk('public')->exists($certEvent->signature_first)){
+                $certificationVerifierSignature = '.' . Storage::disk('local')->url($certEvent->signature_first);
+            }
+            PDF::Image($certificationVerifierSignature, $x = 82, $y = 216, $w = 46.8, $h = 15.6);
+
+            PDF::SetFont('bebasneue', '', 12);
+            PDF::MultiCell($w = 55, $h = 0, $txt = '...........................................................', 0, 'C', 0, 0, 78, 226);
+            PDF::Ln();
+            PDF::MultiCell($w = 55, $h = 0, $txt = '(' . $certEvent->signature_first_name . ')', 0, 'C', 0, 0, 78);
+            PDF::Ln();
+            PDF::MultiCell($w = 55, $h = 0, $txt = $certEvent->signature_first_position, 0, 'C', 0, 0, 78);
+        }
+       
+        /**
+         * QR code
+         */
         switch ($certEvent->visibility) {
             case 'public':
-                /**
-                 * Signature is visibility is PUBLIC
-                 */
-                if(Storage::disk('public')->exists($certificationVerifierSignaturePath)){
-                    $certificationVerifierSignature = '.' . Storage::disk('local')->url($certificationVerifierSignaturePath);
-                }
-                PDF::Image($certificationVerifierSignature, $x = 40, $y = 225, $w = 39, $h = 13);
-
-                PDF::SetFont('bebasneue', '', 12);
-                PDF::SetXY(40, 235);
-                PDF::MultiCell($w = 100, $h = 0, $txt = '...............................................', 0, 'L', 0, 0, 40);
-                PDF::Ln();
-                PDF::MultiCell($w = 100, $h = 0, $txt = '(' . $certificationVerifierName . ')', 0, 'L', 0, 0, 40);
-                PDF::Ln();
-                PDF::MultiCell($w = 100, $h = 0, $txt = $certificationVerifierPosition, 0, 'L', 0, 0, 40);
                 $style = array(
-                    'border' => 0,
+                    'border' => false,
                     'vpadding' => 0.5,
                     'hpadding' => 0.5,
                     'fgcolor' => array(0,0,0),
@@ -398,24 +497,14 @@ class CertificateController extends MainController
                     'module_width' => 1, 
                     'module_height' => 1
                 );
-                PDF::write2DBarcode(url()->current(), 'QRCODE,Q', 145, 240, 30, 30, $style, 'N');
+                $QRborderColor = TCPDF_COLORS::convertHTMLColorToDec("#000", TCPDF_COLORS::$spotcolor);
+                $QRborderStyle = array('width' => 0.5, 'color' => $QRborderColor);
+                PDF::Rect(135, 272.5, 70, 19.5, 'D', array('all' => $QRborderStyle));
+                PDF::SetFont('bebasneue', '', 12);
+                PDF::MultiCell($w = 50, $h = 0, $txt = 'Imbas kod QR ini untuk menyemak ketulenan', 0, 'R', 0, 0, 135, 277);
+                PDF::write2DBarcode(url()->current(), 'QRCODE,Q', 186, 273, 18.5, 18.5, $style, 'N');
                 break;
             case 'hidden':
-                /**
-                 * Signature is visibility is HIDDEN
-                 */
-                if(Storage::disk('public')->exists($certificationVerifierSignaturePath)){
-                    $certificationVerifierSignature = '.' . Storage::disk('local')->url($certificationVerifierSignaturePath);
-                }
-                PDF::Image($certificationVerifierSignature, $x = 85, $y = 225, $w = 39, $h = 13);
-
-                PDF::SetFont('bebasneue', '', 12);
-                PDF::SetXY(105, 235);
-                PDF::MultiCell($w = 160, $h = 0, $txt = '...............................................', 0, 'C', 0, 0, 25);
-                PDF::Ln();
-                PDF::MultiCell($w = 160, $h = 0, $txt = '(' . $certificationVerifierName . ')', 0, 'C', 0, 0, 25);
-                PDF::Ln();
-                PDF::MultiCell($w = 160, $h = 0, $txt = $certificationVerifierPosition, 0, 'C', 0, 0, 25);
                 break;
             default:
                 break;

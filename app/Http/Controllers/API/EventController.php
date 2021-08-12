@@ -14,14 +14,13 @@ class EventController extends Controller
                 'Empty_Err' => 'Empty id given!'
             ]);
         }else{
-            $event = Event::select('name', 'date', 'location', 'institute_name', 'organiser_name', 'visibility')->where('id', $id)->first();
+            $event = Event::select('name', 'date', 'location', 'organiser_name', 'visibility')->where('id', $id)->first();
             if($event){
                 return response()->json([
                     'name' => $event->name,
                     'date' => $event->date,
                     'location' => $event->location,
                     'organiser_name' => $event->organiser_name,
-                    'institute_name' => $event->institute_name,
                     'visibility' => $event->visibility
                 ]);
             }else{

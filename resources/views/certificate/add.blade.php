@@ -71,7 +71,6 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                 <p class="fw-bold">Tarikh: <span class="fw-normal" id="event-date-text"></span></p>
                 <p class="fw-bold">Lokasi: <span class="fw-normal" id="event-location-text"></span></p>
                 <p class="fw-bold">Nama Penganjur: <span class="fw-normal" id="event-organiser-name-text"></span></p>
-                <p class="fw-bold">Nama Institusi: <span class="fw-normal" id="event-institute-name-text"></span></p>
                 <p class="fw-bold">Keterlihatan: <span class="fw-normal" id="event-visibility-text"></span></p>
             </div>
         </div>

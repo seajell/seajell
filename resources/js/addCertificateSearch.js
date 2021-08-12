@@ -71,7 +71,6 @@ if (typeof(eventSearchBtn) != 'undefined' && eventSearchBtn != null){
             let date = data.date;
             let location = data.location;
             let organiserName = data.organiser_name;
-            let instituteName = data.institute_name;
             let visibility = data.visibility;
             let eventSearchStatus = document.querySelector('#event-search-status');
             if(typeof name !== 'undefined'){
@@ -80,13 +79,11 @@ if (typeof(eventSearchBtn) != 'undefined' && eventSearchBtn != null){
                 let eventDateText = document.querySelector('#event-date-text');
                 let eventLocationText = document.querySelector('#event-location-text');
                 let eventOrganiserNameText = document.querySelector('#event-organiser-name-text');
-                let eventInstituteNameText = document.querySelector('#event-institute-name-text');
                 let eventVisibilityText = document.querySelector('#event-visibility-text');
                 eventNameText.textContent = name.toUpperCase();
                 eventDateText.textContent = date;
                 eventLocationText.textContent = location.toUpperCase();
                 eventOrganiserNameText.textContent = organiserName.toUpperCase();
-                eventInstituteNameText.textContent = instituteName.toUpperCase();
                 switch (visibility) {
                     case 'public':
                         visibility = 'awam'
