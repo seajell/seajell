@@ -44,70 +44,118 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         @error('event-location')
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
-        <div class="mb-3">
-            <label for="institute-name" class="form-label">Nama Institusi (Pilihan)</label>
-            <input type="text" class="form-control" id="institute-name" name="institute-name" placeholder="Masukkan nama institusi." value="{{ old('institute-name') }}">
-        </div>
-        @error('institute-name')
-            <div class="alert alert-danger">{{ $message }}</div>
-        @enderror
-        <div class="mb-3">
-            <label for="insititute-logo" class="form-label">Logo Institusi (Pilihan)</label>
-            <input class="form-control" type="file" id="insititute-logo" name="institute-logo">
-        </div>
-        <div id="institute_logo_help" class="form-text">
-            Logo mestilah menggunakan format PNG. <br>
-            Resolusi logo mestilah paling kurang 300 x 300 piksel dan bernisbah 1:1 bagi memastikan gambar yang jelas. <br>
-            Gambar <span class="fst-italic">transparent</span> lebih digalakkan.
-        </div>
-        @error('insititute-logo')
-            <div class="alert alert-danger">{{ $message }}</div>
-        @enderror
         <div class="my-3">
-            <label for="organiser-name" class="form-label">Nama Penganjur (Diperlukan)</label>
+            <label for="organiser-name" class="form-label">Nama Penganjur</label>
             <input type="text" class="form-control" id="organiser-name" name="organiser-name" placeholder="Masukkan nama penganjur." value="{{ old('organiser-name') }}">
         </div>
         @error('organiser-name')
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
+
+        <hr>
+        <p class="fs-5">Logo</p>
         <div class="mb-3">
-            <label for="organiser-logo" class="form-label">Logo Penganjur (Diperlukan)</label>
-            <input class="form-control" type="file" id="organiser-logo" name="organiser-logo">
+            <label for="logo-first" class="form-label">Logo Pertama (Diperlukan)</label>
+            <input class="form-control" type="file" id="logo-first" name="logo-first">
         </div>
-        <div id="organiser_logo_help" class="form-text">
+        @error('logo-first')
+            <div class="alert alert-danger">{{ $message }}</div>
+        @enderror
+        <div class="mb-3">
+            <label for="logo-second" class="form-label">Logo Kedua (Pilihan)</label>
+            <input class="form-control" type="file" id="logo-second" name="logo-second">
+        </div>
+        @error('logo-second')
+            <div class="alert alert-danger">{{ $message }}</div>
+        @enderror
+        <div class="mb-3">
+            <label for="logo-third" class="form-label">Logo Ketiga (Pilihan)</label>
+            <input class="form-control" type="file" id="logo-third" name="logo-third">
+        </div>
+        @error('logo-third')
+            <div class="alert alert-danger">{{ $message }}</div>
+        @enderror
+        <div id="logo_help" class="form-text">
             Logo mestilah menggunakan format PNG. <br>
             Resolusi logo mestilah paling kurang 300 x 300 piksel dan bernisbah 1:1 bagi memastikan gambar yang jelas. <br>
             Gambar <span class="fst-italic">transparent</span> lebih digalakkan.
         </div>
-        @error('organiser-logo')
+
+        <hr>
+        <p class="fs-5">Pengesahan</p>
+        {{-- First Signature --}}
+        <div class="my-3">
+            <label for="signature-first-name" class="form-label">Nama Pengesah Pertama (Diperlukan)</label>
+            <input type="text" class="form-control" id="signature-first-name" name="signature-first-name" placeholder="Masukkan nama pengesah." value="{{ old('signature-first-name') }}">
+        </div>
+        @error('signature-first-name')
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
         <div class="my-3">
-            <label for="verifier-name" class="form-label">Nama Pengesah (Diperlukan)</label>
-            <input type="text" class="form-control" id="verifier-name" name="verifier-name" placeholder="Masukkan nama pengesah." value="{{ old('verifier-name') }}">
+            <label for="signature-first-position" class="form-label">Jawatan Pengesah Pertama (Diperlukan)</label>
+            <input type="text" class="form-control" id="signature-first-position" name="signature-first-position" placeholder="Masukkan jawatan pengesah." value="{{ old('signature-first-position') }}">
         </div>
-        @error('verifier-name')
-            <div class="alert alert-danger">{{ $message }}</div>
-        @enderror
-        <div class="my-3">
-            <label for="verifier-position" class="form-label">Jawatan Pengesah (Diperlukan)</label>
-            <input type="text" class="form-control" id="verifier-position" name="verifier-position" placeholder="Masukkan jawatan pengesah." value="{{ old('verifier-position') }}">
-        </div>
-        @error('verifier-position')
+        @error('signature-first-position')
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
         <div class="mb-3">
-            <label for="verifier-signature" class="form-label">Tandatangan Pengesah (Diperlukan)</label>
-            <input class="form-control" type="file" id="verifier-signature" name="verifier-signature">
+            <label for="signature-first" class="form-label">Tandatangan Pengesah Pertama (Diperlukan)</label>
+            <input class="form-control" type="file" id="signature-first" name="signature-first">
         </div>
-        <div id="verifier_signature_help" class="form-text">
-            Gambar tandatangan mestilah menggunakan format PNG. <br>
-            Resolusi tandatangan mestilah paling kurang 300 x 100 piksel dan bernisbah 3:1 bagi memastikan tandatangan yang jelas. <br>
-            Gambar tandatangan <span class="fst-italic">transparent</span> adalah diawajibkan.
-        </div>
-        @error('verifier-signature')
+        @error('signature-first')
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
+        {{-- Second Signature --}}
+        <div class="my-3">
+            <label for="signature-second-name" class="form-label">Nama Pengesah Kedua (Pilihan)</label>
+            <input type="text" class="form-control" id="signature-second-name" name="signature-second-name" placeholder="Masukkan nama pengesah." value="{{ old('signature-second-name') }}">
+        </div>
+        @error('signature-second-name')
+            <div class="alert alert-danger">{{ $message }}</div>
+        @enderror
+        <div class="my-3">
+            <label for="signature-second-position" class="form-label">Jawatan Pengesah Kedua (Pilihan)</label>
+            <input type="text" class="form-control" id="signature-second-position" name="signature-second-position" placeholder="Masukkan jawatan pengesah." value="{{ old('signature-second-position') }}">
+        </div>
+        @error('signature-second-position')
+            <div class="alert alert-danger">{{ $message }}</div>
+        @enderror
+        <div class="mb-3">
+            <label for="signature-second" class="form-label">Tandatangan Pengesah Kedua (Pilihan)</label>
+            <input class="form-control" type="file" id="signature-second" name="signature-second">
+        </div>
+        @error('signature-second')
+            <div class="alert alert-danger">{{ $message }}</div>
+        @enderror
+        {{-- Third Signature --}}
+        <div class="my-3">
+            <label for="signature-third-name" class="form-label">Nama Pengesah Ketiga (Pilihan)</label>
+            <input type="text" class="form-control" id="signature-third-name" name="signature-third-name" placeholder="Masukkan nama pengesah." value="{{ old('signature-third-name') }}">
+        </div>
+        @error('signature-third-name')
+            <div class="alert alert-danger">{{ $message }}</div>
+        @enderror
+        <div class="my-3">
+            <label for="signature-third-position" class="form-label">Jawatan Pengesah Ketiga (Pilihan)</label>
+            <input type="text" class="form-control" id="signature-third-position" name="signature-third-position" placeholder="Masukkan jawatan pengesah." value="{{ old('signature-third-position') }}">
+        </div>
+        @error('signature-third-position')
+            <div class="alert alert-danger">{{ $message }}</div>
+        @enderror
+        <div class="mb-3">
+            <label for="signature-third" class="form-label">Tandatangan Pengesah Ketiga (Pilihan)</label>
+            <input class="form-control" type="file" id="signature-third" name="signature-third">
+        </div>
+        @error('signature-third')
+            <div class="alert alert-danger">{{ $message }}</div>
+        @enderror
+        <div id="signature_help" class="form-text">
+            Gambar tandatangan mestilah menggunakan format PNG. <br>
+            Resolusi tandatangan mestilah paling kurang 300 x 100 piksel dan bernisbah 3:1 bagi memastikan tandatangan yang jelas. <br>
+            Gambar tandatangan <span class="fst-italic">transparent</span> adalah diwajibkan. <br>
+            Anda boleh menjana gambar tandatangan di laman <a href="{{ route('signature') }}">tandatangan</a>.
+        </div>
+        
         <hr>
         <p class="fs-5">Penyesuaian Gaya Sijil </p>
         <label class="form-label mt-3">Keterlihatan (Diperlukan)</label>

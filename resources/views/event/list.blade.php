@@ -31,7 +31,6 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                         <th class="col-2 text-center">Lokasi</th>
                         <th class="col-2 text-center">Nama Acara</th>
                         <th class="col-2 text-center">Nama Penganjur</th>
-                        <th class="col-2 text-center">Nama Institusi</th>
                         <th class="col-1 text-center">Keterlihatan</th>
                         <th class="col-1 text-center">Lihat</th>
                         <th class="col-1 text-center">Kemas Kini</th>
@@ -46,7 +45,6 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                             <td>{{ strtoupper($event->location) }}</td>
                             <td>{{ strtoupper($event->name) }}</td>
                             <td>{{ strtoupper($event->organiser_name) }}</td>
-                            <td>{{ strtoupper($event->institute_name) }}</td>
                             <td>
                                 @if($event->visibility == 'public')
                                     AWAM
