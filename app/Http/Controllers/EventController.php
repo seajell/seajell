@@ -76,6 +76,7 @@ class EventController extends MainController
             'signature-second' => ['image', 'mimes:png'],
             'signature-third' => ['image', 'mimes:png'],
             'background-image' => ['image', 'mimes:png'],
+            'text-color' => ['required'],
             'border' => ['required'],
         ]);
         $eventName = $request->input('event-name');
@@ -89,6 +90,7 @@ class EventController extends MainController
         $visibility = $request->input('visibility');
         $borderStatus = $request->input('border');
         $borderColor = $request->input('border-color');
+        $textColor = $request->input('text-color');
         // Check if border is needed
         switch ($borderStatus) {
             case 'available':
@@ -201,6 +203,7 @@ class EventController extends MainController
             'signature_third' => $signatureThirdSavePath,
             'visibility' => strtolower($visibility),
             'background_image' => $backgroundImageSavePath,
+            'text_color' => $textColor,
             'border' => $borderStatus,
             'border_color' => $borderColor,
         ]);
