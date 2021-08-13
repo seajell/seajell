@@ -99,7 +99,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             Penghargaan: Diberikan kepada seseorang yang membantu dalam menjayakan acara. Contoh: Ahli Jawatankuasa Pertandingan.
         </div>
         <div class="my-3">
-            <label for="position" class="form-label">Kedudukan</label>
+            <label for="position" class="form-label">Kedudukan (Diperlukan)</label>
             <input type="text" class="form-control" id="position" name="position" placeholder="Masukkan posisi peserta." value="{{ old('position') }}">
         </div>
         @error('position')
@@ -109,6 +109,16 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             Sijil Penyertaan. Contoh: "Peserta". <br>
             Sijil Pencapaian. Contoh: "Tempat Pertama", "Tempat Kedua", "Tempat Ketiga". <br>
             Sijil Penghargaan. Contoh: "Ahli Jawatankuasa", "Setiusaha".
+        </div>
+        <div class="my-3">
+            <label for="category" class="form-label">Kategori (Pilihan)</label>
+            <input type="text" class="form-control" id="category" name="category" placeholder="Masukkan kategori sijil." value="{{ old('category') }}">
+        </div>
+        @error('category')
+            <div class="alert alert-danger">{{ $message }}</div>
+        @enderror
+        <div id="category_help mb-3" class="form-text">
+            Kategori untuk pertandingan yang disertai peserta.
         </div>
         <button class="btn btn-dark mt-3" type="submit">Tambah Sijil</button>
     </form>

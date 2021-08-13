@@ -37,7 +37,8 @@ class Certificate extends Model
         'user_id',
         'event_id',
         'type',
-        'position'
+        'position',
+        'category'
     ];
 
     /**
