@@ -39,10 +39,10 @@ class CertificateController extends MainController
     }
     public function certificateListView(Request $request){
         if(Gate::allows('authAdmin')){
-            $certificates = Certificate::select('certificates.uid', 'certificates.type', 'certificates.position', 'users.fullname', 'events.name')->join('users', 'certificates.user_id', '=', 'users.id')->join('events', 'certificates.event_id', '=', 'events.id')->paginate(7);
+            $certificates = Certificate::select('certificates.uid', 'certificates.type', 'certificates.position', 'certificates.category', 'users.fullname', 'events.name')->join('users', 'certificates.user_id', '=', 'users.id')->join('events', 'certificates.event_id', '=', 'events.id')->paginate(7);
             return view('certificate.list')->with(['appVersion' => $this->appVersion, 'certificates' => $certificates, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName]);
         }else{
-            $certificates = Certificate::select('certificates.uid', 'certificates.type', 'certificates.position', 'users.fullname', 'events.name')->join('users', 'certificates.user_id', '=', 'users.id')->join('events', 'certificates.event_id', '=', 'events.id')->where('username', Auth::user()->username)->paginate(7);
+            $certificates = Certificate::select('certificates.uid', 'certificates.type', 'certificates.position', 'certificates.category', 'users.fullname', 'events.name')->join('users', 'certificates.user_id', '=', 'users.id')->join('events', 'certificates.event_id', '=', 'events.id')->where('username', Auth::user()->username)->paginate(7);
             return view('certificate.list')->with(['appVersion' => $this->appVersion, 'certificates' => $certificates, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName]);
         }
     }
@@ -62,7 +62,7 @@ class CertificateController extends MainController
     }
 
     public function addCertificate(Request $request){
-            $validated = $request->validate([
+        $validated = $request->validate([
             'username' => ['required'],
             'event-id' => ['required'],
             'certificate-type' => ['required'],
@@ -75,6 +75,11 @@ class CertificateController extends MainController
         $eventID = $request->input('event-id');
         $certificateType = strtolower($request->input('certificate-type'));
         $position = strtolower($request->input('position'));
+        if($request->category !== NULL && $request->category !== ''){
+            $category = $request->category;
+        }else{
+            $category = '';
+        }
         // Recheck if username and event id is existed in case user doesn't input one that actually existed although with the JS help lel
         if(User::where('username', $username)->first()){
             if(Event::where('id', $eventID)->first()){
@@ -84,7 +89,8 @@ class CertificateController extends MainController
                     'user_id' => $userID,
                     'event_id' => $eventID,
                     'type' => $certificateType,
-                    'position' => $position
+                    'position' => $position,
+                    'category' => $category
                 ]);
                 $request->session()->flash('addCertificateSuccess', 'Sijil berjaya ditambah!');
                 return back();
@@ -132,6 +138,12 @@ class CertificateController extends MainController
             'position' => ['required']
         ]);
 
+        if($request->category !== NULL && $request->category !== ''){
+            $category = $request->category;
+        }else{
+            $category = '';
+        }
+
         $eventID = $request->input('event-id');
         $certificateType = strtolower($request->input('certificate-type'));
         $position = strtolower($request->input('position'));
@@ -145,7 +157,8 @@ class CertificateController extends MainController
                         'user_id' => $request->input('user-id'),
                         'event_id' => $eventID,
                         'type' => $certificateType,
-                        'position' => $position
+                        'position' => $position,
+                        'category' => $category
                     ]
                 );
                 $request->session()->flash('updateCertificateSuccess', 'Sijil berjaya dikemas kini!');
@@ -402,11 +415,18 @@ class CertificateController extends MainController
         }
         
         // To Do: Category Issue #22
-        PDF::Ln(2);
-        PDF::SetFont('badscript', 'I', 14);
-        PDF::Cell($w = 0, $h = 1, $txt = 'Kategori', $align = 'C', $border = '1', $calign = 'C');
-        PDF::SetFont('bebasneue', 'B', 14);
-        PDF::MultiCell(190, 0, $eventOrganiserName, 0, 'C', 0, 1, 10);
+        if(Certificate::where('uid', $certificateID)->first()){
+            if(Certificate::where('uid', $certificateID)->first()->category){
+                $category = Certificate::where('uid', $certificateID)->first()->category;
+                if($category !== NULL && $category !== ''){
+                    PDF::Ln(2);
+                    PDF::SetFont('badscript', 'I', 14);
+                    PDF::Cell($w = 0, $h = 1, $txt = 'Kategori', $align = 'C', $border = '1', $calign = 'C');
+                    PDF::SetFont('bebasneue', 'B', 14);
+                    PDF::MultiCell(190, 0, strtoupper($category), 0, 'C', 0, 1, 10);
+                }
+            }
+        }
         
         PDF::Ln(2);
         PDF::SetFont('badscript', 'I', 14);

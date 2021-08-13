@@ -27,10 +27,11 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                 <thead>
                     <tr>
                         <th class="col-1 text-center">ID Unik</th>
-                        <th class="col-2 text-center">Nama Pengguna</th>
-                        <th class="col-3 text-center">Nama Acara</th>
-                        <th class="col-2 text-center">Jenis Sijil</th>
-                        <th class="col-1 text-center">Kedudukan</th>
+                        <th class="col text-center">Nama Pengguna</th>
+                        <th class="col text-center">Nama Acara</th>
+                        <th class="col text-center">Jenis Sijil</th>
+                        <th class="col text-center">Kategori</th>
+                        <th class="col text-center">Kedudukan</th>
                         <th class="col-1 text-center">Lihat</th>
                         @can('authAdmin')
                             <th class="col-1 text-center">Kemas Kini</th>
@@ -57,6 +58,13 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                                         @break
                                     @default
                                 @endswitch
+                            </td>
+                            <td>
+                                @if($certificate->category !== NULL && $certificate->category !== '')
+                                    {{ strtoupper($certificate->category) }} 
+                                @else
+                                    {{ "TIADA" }}
+                                @endif
                             </td>
                             <td>{{ strtoupper($certificate->position) }}</td>
                             <td class="fs-3 text-center"><a class="text-light" href="{{ route('certificate.view', [$certificate->uid]) }}" target="_blank"><i class="bi bi-eye"></i></a></td>

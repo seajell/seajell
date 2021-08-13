@@ -23,7 +23,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
     @endif
     @php
         
-        if(old('event-id') != NULL){ // event-id
+        if(old('event-id') != NULL){ 
             $valueEventID = old('event-id');
         }else{
             if($data != NULL && $data != ''){
@@ -37,7 +37,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             }
         }
 
-        if(old('position') != NULL){ // event-id
+        if(old('position') != NULL){ 
             $valuePosition = old('position');
         }else{
             if($data != NULL && $data != ''){
@@ -48,6 +48,20 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                 }
             }else{
                 $valuePosition = "";
+            }
+        }
+
+        if(old('category') != NULL){ 
+            $valueCategory = old('category');
+        }else{
+            if($data != NULL && $data != ''){
+                if($data->category != NULL && $data->category != ''){
+                    $valueCategory = strtoupper($data->category);
+                }else{
+                    $valueCategory = "";
+                }
+            }else{
+                $valueCategory = "";
             }
         }
 
@@ -107,7 +121,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             Penghargaan: Diberikan kepada seseorang yang membantu dalam menjayakan acara. Contoh: Ahli Jawatankuasa Pertandingan.
         </div>
         <div class="my-3">
-            <label for="position" class="form-label">Kedudukan</label>
+            <label for="position" class="form-label">Kedudukan (Diperlukan)</label>
             <input type="text" class="form-control" id="position" name="position" placeholder="Masukkan posisi peserta." value="{{ $valuePosition }}">
         </div>
         @error('position')
@@ -117,6 +131,16 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             Sijil Penyertaan. Contoh: "Peserta". <br>
             Sijil Pencapaian. Contoh: "Tempat Pertama", "Tempat Kedua", "Tempat Ketiga". <br>
             Sijil Penghargaan. Contoh: "Ahli Jawatankuasa", "Setiusaha".
+        </div>
+        <div class="my-3">
+            <label for="category" class="form-label">Kategori (Pilihan)</label>
+            <input type="text" class="form-control" id="category" name="category" placeholder="Masukkan kategori sijil." value="{{ $valueCategory }}">
+        </div>
+        @error('category')
+            <div class="alert alert-danger">{{ $message }}</div>
+        @enderror
+        <div id="category_help mb-3" class="form-text">
+            Kategori untuk pertandingan yang disertai peserta.
         </div>
         <input type="hidden" id="user-id" name="user-id" value="{{ $data->user_id }}">
         <button class="btn btn-dark mt-3" type="submit">Kemas Kini</button>
