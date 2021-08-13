@@ -50,9 +50,9 @@ Route::get('/event/update/{id}', [EventController::class, 'updateEventView'])->n
 Route::post('/event/update/{id}', [EventController::class, 'updateEvent'])->middleware(['auth','UserIsAdmin']);
 
 Route::get('/certificate/list', [CertificateController::class, 'certificateListView'])->name('certificate.list')->middleware(['auth']);
-Route::get('/certificate/view/{id}', [CertificateController::class, 'certificateView'])->name('certificate.view');
+Route::get('/certificate/view/{uid}', [CertificateController::class, 'certificateView'])->name('certificate.view');
 Route::get('/certificate/add', [CertificateController::class, 'addCertificateView'])->name('certificate.add')->middleware(['auth','UserIsAdmin']);
 Route::post('/certificate/add', [CertificateController::class, 'addCertificate'])->middleware(['auth','UserIsAdmin']);
 Route::post('/certificate/remove', [CertificateController::class, 'removeCertificate'])->name('certificate.remove')->middleware(['auth','UserIsAdmin']);
-Route::get('/certificate/update/{id}', [CertificateController::class, 'updateCertificateView'])->name('certificate.update')->middleware(['auth','UserIsAdmin']);
-Route::post('/certificate/update/{id}', [CertificateController::class, 'updateCertificate'])->middleware(['auth','UserIsAdmin']);
+Route::get('/certificate/update/{uid}', [CertificateController::class, 'updateCertificateView'])->name('certificate.update')->middleware(['auth','UserIsAdmin']);
+Route::post('/certificate/update/{uid}', [CertificateController::class, 'updateCertificate'])->middleware(['auth','UserIsAdmin']);
