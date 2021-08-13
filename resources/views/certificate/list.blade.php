@@ -26,7 +26,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             <table class="table table-dark table-striped w-100 rounded-3 table-bordered border-light align-middle">
                 <thead>
                     <tr>
-                        <th class="col-1 text-center">ID</th>
+                        <th class="col-1 text-center">ID Unik</th>
                         <th class="col-2 text-center">Nama Pengguna</th>
                         <th class="col-3 text-center">Nama Acara</th>
                         <th class="col-2 text-center">Jenis Sijil</th>
@@ -41,7 +41,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                 <tbody>
                     @foreach ($certificates as $certificate)
                         <tr>
-                            <th class="text-center">{{ $certificate->id }}</th>
+                            <th class="text-center">{{ $certificate->uid }}</th>
                             <td>{{ strtoupper($certificate->fullname) }}</td>
                             <td>{{ strtoupper($certificate->name) }}</td>
                             <td>
@@ -59,27 +59,27 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                                 @endswitch
                             </td>
                             <td>{{ strtoupper($certificate->position) }}</td>
-                            <td class="fs-3 text-center"><a class="text-light" href="{{ route('certificate.view', [$certificate->id]) }}" target="_blank"><i class="bi bi-eye"></i></a></td>
+                            <td class="fs-3 text-center"><a class="text-light" href="{{ route('certificate.view', [$certificate->uid]) }}" target="_blank"><i class="bi bi-eye"></i></a></td>
                             @can('authAdmin')
-                                <td class="fs-3 text-center"><a class="text-light" href="{{ route('certificate.update', [$certificate->id]) }}"><i class="bi bi-pencil-square"></i></a></td>
-                                <td class="fs-3 text-center"><a class="text-light" href="" data-bs-toggle="modal" data-bs-target="#{{ 'delete-certificate-modal-' . $certificate->id}}"><i class="bi bi-trash"></a></i></td>
+                                <td class="fs-3 text-center"><a class="text-light" href="{{ route('certificate.update', [$certificate->uid]) }}"><i class="bi bi-pencil-square"></i></a></td>
+                                <td class="fs-3 text-center"><a class="text-light" href="" data-bs-toggle="modal" data-bs-target="#{{ 'delete-certificate-modal-' . $certificate->uid}}"><i class="bi bi-trash"></a></i></td>
                             @endcan   
                         </tr>
                             {{-- 
                             Modal for delete confirmation 
                             --}}
-                            <div class="modal fade" id="{{ 'delete-certificate-modal-' . $certificate->id}}" tabindex="-1" aria-labelledby="{{ 'delete-certificate-modal-' . $certificate->id}}" aria-hidden="true">
+                            <div class="modal fade" id="{{ 'delete-certificate-modal-' . $certificate->uid}}" tabindex="-1" aria-labelledby="{{ 'delete-certificate-modal-' . $certificate->uid}}" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <form action="{{ route('certificate.remove') }}" method="post">
                                             @csrf
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="{{ 'delete-certificate-modal-' . $certificate->id . '-label'}}">Buang Sijil</h5>
+                                                <h5 class="modal-title" id="{{ 'delete-certificate-modal-' . $certificate->uid . '-label'}}">Buang Sijil</h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
                                                 <p>Anda yakin ingin membuang sijil ini?</p>
-                                                <p class="fw-bold">ID Sijil: <span class="fw-normal">{{ $certificate->id }}</span></p>
+                                                <p class="fw-bold">ID Unik Sijil: <span class="fw-normal">{{ $certificate->uid }}</span></p>
                                                 <p class="fw-bold">Nama Pengguna: <span class="fw-normal">{{ strtoupper($certificate->fullname) }}</span></p>
                                                 <p class="fw-bold">Nama Acara: <span class="fw-normal">{{ strtoupper($certificate->name) }}</span></p>
                                                 <p class="fw-bold">Jenis Sijil: <span class="fw-normal">
@@ -96,7 +96,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                                                         @default
                                                     @endswitch
                                                 </span></p>
-                                                <input type="text" name="certificate-id" id="certificate-id" value="{{ $certificate->id }}" hidden>
+                                                <input type="text" name="certificate-id" id="certificate-id" value="{{ $certificate->uid }}" hidden>
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Tidak</button>

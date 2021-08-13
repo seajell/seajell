@@ -25,6 +25,7 @@ use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Event;
 use App\Models\Certificate;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -38,19 +39,19 @@ class CertificateController extends MainController
     }
     public function certificateListView(Request $request){
         if(Gate::allows('authAdmin')){
-            $certificates = Certificate::select('certificates.id', 'certificates.type', 'certificates.position', 'users.fullname', 'events.name')->join('users', 'certificates.user_id', '=', 'users.id')->join('events', 'certificates.event_id', '=', 'events.id')->paginate(7);
+            $certificates = Certificate::select('certificates.uid', 'certificates.type', 'certificates.position', 'users.fullname', 'events.name')->join('users', 'certificates.user_id', '=', 'users.id')->join('events', 'certificates.event_id', '=', 'events.id')->paginate(7);
             return view('certificate.list')->with(['appVersion' => $this->appVersion, 'certificates' => $certificates, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName]);
         }else{
-            $certificates = Certificate::select('certificates.id', 'certificates.type', 'certificates.position', 'users.fullname', 'events.name')->join('users', 'certificates.user_id', '=', 'users.id')->join('events', 'certificates.event_id', '=', 'events.id')->where('username', Auth::user()->username)->paginate(7);
+            $certificates = Certificate::select('certificates.uid', 'certificates.type', 'certificates.position', 'users.fullname', 'events.name')->join('users', 'certificates.user_id', '=', 'users.id')->join('events', 'certificates.event_id', '=', 'events.id')->where('username', Auth::user()->username)->paginate(7);
             return view('certificate.list')->with(['appVersion' => $this->appVersion, 'certificates' => $certificates, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName]);
         }
     }
 
-    public function updateCertificateView(Request $request, $id){
-        if(Certificate::where('id', $id)->first()){
+    public function updateCertificateView(Request $request, $uid){
+        if(Certificate::where('uid', $uid)->first()){
             // Only admins can update certificates
             if(Gate::allows('authAdmin')){
-                $data = Certificate::where('id', $id)->first();
+                $data = Certificate::where('uid', $uid)->join('events', 'certificates.event_id', '=', 'events.id')->first();
                 return view('certificate.update')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName, 'data' => $data]);
             }else{
                 abort(403, 'Anda tidak boleh mengakses laman ini.');
@@ -61,23 +62,25 @@ class CertificateController extends MainController
     }
 
     public function addCertificate(Request $request){
-        $validated = $request->validate([
+            $validated = $request->validate([
             'username' => ['required'],
             'event-id' => ['required'],
             'certificate-type' => ['required'],
             'position' => ['required']
         ]);
 
+        $uidArray = Certificate::select('uid')->get();
+        $uid = $this->generateUID(15, $uidArray);
         $username = strtolower($request->input('username'));
         $eventID = $request->input('event-id');
         $certificateType = strtolower($request->input('certificate-type'));
         $position = strtolower($request->input('position'));
-
         // Recheck if username and event id is existed in case user doesn't input one that actually existed although with the JS help lel
         if(User::where('username', $username)->first()){
             if(Event::where('id', $eventID)->first()){
                 $userID = User::select('id')->where('username', $username)->first()->id;
                 Certificate::create([
+                    'uid' => $uid,
                     'user_id' => $userID,
                     'event_id' => $eventID,
                     'type' => $certificateType,
@@ -97,15 +100,31 @@ class CertificateController extends MainController
         }
     }
 
+    // Generate unique UID for certificates
+    protected function generateUID($length, $uidArray){
+        $uid = Str::random($length);
+        if(count($uidArray) > 0){
+            for ($i=0; $i < count($uidArray); $i++) { 
+                $dbUID = $uidArray[$i]->uid;
+                while($uid == $dbUID){
+                    $uid = Str::random($length);
+                }
+            }
+        }else{
+            $uid = Str::random($length);
+        }
+        return $uid;
+    }
+
     public function removeCertificate(Request $request){
-        $id = $request->input('certificate-id');
-        $certificate = Certificate::where('id', $id);
+        $uid = $request->input('certificate-id');
+        $certificate = Certificate::where('uid', $uid);
         $certificate->delete();
         $request->session()->flash('removeCertificateSuccess', 'Sijil berjaya dibuang!');
         return back();
     }
 
-    public function updateCertificate(Request $request, $id){
+    public function updateCertificate(Request $request, $uid){
         $validated = $request->validate([
             'user-id' => ['required'],
             'event-id' => ['required'],
@@ -121,7 +140,7 @@ class CertificateController extends MainController
         if(User::where('id', $request->input('user-id'))->first()){
             if(Event::where('id', $eventID)->first()){
                 Certificate::updateOrCreate(
-                    ['id' => $id],
+                    ['uid' => $uid],
                     [
                         'user_id' => $request->input('user-id'),
                         'event_id' => $eventID,
@@ -143,20 +162,20 @@ class CertificateController extends MainController
         }
     }
 
-    public function certificateView(Request $request, $id){
-        if(Certificate::find($id)){
-            $certEvent = Certificate::find($id)->event;
+    public function certificateView(Request $request, $uid){
+        if(Certificate::where('uid', $uid)){
+            $certEvent = Certificate::where('uid', $uid)->first()->event;
             // Check for event visibility
             switch ($certEvent->visibility) {
                 case 'public':
                     // Certificate PDF generated will have QR code with the URL to the certificate in it
-                    $this->generateCertificate($request, $id, array(255, 254, 212));
+                    $this->generateCertificate($request, $uid, array(255, 254, 212));
                     break;
                 case 'hidden':
                     // Check if logged in
                     if(Auth::check()){
-                        if(Gate::allows('authAdmin') || Certificate::find($id)->user_id == Auth::user()->id){
-                            $this->generateCertificate($request, $id, array(255, 254, 212));
+                        if(Gate::allows('authAdmin') || Certificate::where('uid', $uid)->first()->user_id == Auth::user()->id){
+                            $this->generateCertificate($request, $uid, array(255, 254, 212));
                         }else{
                             return redirect()->route('home');
                         }
@@ -173,8 +192,8 @@ class CertificateController extends MainController
     }
 
     protected function generateCertificate($request, $certificateID, $backgroundColor = array(255, 254, 212)){
-        $certUser = Certificate::find($certificateID)->user;
-        $certEvent = Certificate::find($certificateID)->event;
+        $certUser = Certificate::where('uid', $certificateID)->first()->user;
+        $certEvent = Certificate::where('uid', $certificateID)->first()->event;
 
         $borderAvailability = $certEvent->border;
         if($certEvent->text_color !== NULL && $certEvent->text_color !== ''){
@@ -213,8 +232,8 @@ class CertificateController extends MainController
         $eventDate = $dateExploded[2] . '/' . $dateExploded[1] . '/' . $dateExploded[0];
         $eventLocation = strtoupper($certEvent->location);
         $eventOrganiserName = strtoupper($certEvent->organiser_name);
-        $certificateType = Certificate::find($certificateID)->type;
-        $certificationPosition = strtoupper(Certificate::find($certificateID)->position);
+        $certificateType = Certificate::where('uid', $certificateID)->first()->type;
+        $certificationPosition = strtoupper(Certificate::where('uid', $certificateID)->first()->position);
         $backgroundImagePath = $certEvent->background_image;
 
         // Generate the certificate

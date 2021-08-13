@@ -33,6 +33,7 @@ class Certificate extends Model
      * @var array
      */
     protected $fillable = [
+        'uid',
         'user_id',
         'event_id',
         'type',

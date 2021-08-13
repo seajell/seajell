@@ -21,6 +21,37 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
     @if(session()->has('updateCertificateSuccess'))
         <span><div class="alert alert-success w-100 ml-1">{{ session('updateCertificateSuccess') }}</div></span>
     @endif
+    @php
+        
+        if(old('event-id') != NULL){ // event-id
+            $valueEventID = old('event-id');
+        }else{
+            if($data != NULL && $data != ''){
+                if($data->id != NULL && $data->id != ''){
+                    $valueEventID = strtoupper($data->id);
+                }else{
+                    $valueEventID = "";
+                }
+            }else{
+                $valueEventID = "";
+            }
+        }
+
+        if(old('position') != NULL){ // event-id
+            $valuePosition = old('position');
+        }else{
+            if($data != NULL && $data != ''){
+                if($data->position != NULL && $data->position != ''){
+                    $valuePosition = strtoupper($data->position);
+                }else{
+                    $valuePosition = "";
+                }
+            }else{
+                $valuePosition = "";
+            }
+        }
+
+    @endphp
     <form action="" method="post" class="mb-3">
         @csrf
         <div class="mb-3">
@@ -29,7 +60,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             </div>
             <div class="row">
                 <div class="col-11">
-                    <input type="text" class="form-control w-100" id="event-id" name="event-id" placeholder="Masukkan ID acara." value="{{ old('event-id') }}">
+                    <input type="text" class="form-control w-100" id="event-id" name="event-id" placeholder="Masukkan ID acara." value="{{ $valueEventID }}">
                 </div>
                 <div class="col-1">
                     <button type="button" id="event-search" class="btn btn-dark w-100"><i class="bi bi-search"></i></button>
@@ -77,7 +108,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         </div>
         <div class="my-3">
             <label for="position" class="form-label">Kedudukan</label>
-            <input type="text" class="form-control" id="position" name="position" placeholder="Masukkan posisi peserta." value="{{ old('position') }}">
+            <input type="text" class="form-control" id="position" name="position" placeholder="Masukkan posisi peserta." value="{{ $valuePosition }}">
         </div>
         @error('position')
             <div class="alert alert-danger">{{ $message }}</div>
