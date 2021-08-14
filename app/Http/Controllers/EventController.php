@@ -114,7 +114,7 @@ class EventController extends MainController
 
         $logoFirstName = $logoFirst->getClientOriginalName();
         $logoFirstImage = Image::make($logoFirst)->resize(300, 300)->encode('png');
-        $logoFirstSavePath = '/img/organiser/'. Carbon::now()->timestamp . '-' . $logoFirstName;
+        $logoFirstSavePath = '/img/logo/'. Carbon::now()->timestamp . '-' . $logoFirstName;
         Storage::disk('public')->put($logoFirstSavePath, $logoFirstImage);
 
         // If only one of the second or third logo is added, it will be uploaded as second logo.
@@ -278,7 +278,32 @@ class EventController extends MainController
 
     public function removeEvent(Request $request){
         $id = $request->input('event-id');
-        $event = Event::where('id', $id);
+        $event = Event::where('id', $id)->first();
+        $firstLogo = $event->logo_first;
+        $secondLogo = $event->logo_second;
+        $thirdLogo = $event->logo_third;
+        $firstSignature = $event->signature_first;
+        $secondSignature = $event->signature_second;
+        $thirdSignature = $event->signature_third;
+        // Deletes the images
+        if (Storage::disk('public')->exists($firstLogo)) {
+            Storage::disk('public')->delete($firstLogo);
+        }
+        if (Storage::disk('public')->exists($secondLogo)) {
+            Storage::disk('public')->delete($secondLogo);
+        }
+        if (Storage::disk('public')->exists($thirdLogo)) {
+            Storage::disk('public')->delete($thirdLogo);
+        }
+        if (Storage::disk('public')->exists($firstSignature)) {
+            Storage::disk('public')->delete($firstSignature);
+        }
+        if (Storage::disk('public')->exists($secondSignature)) {
+            Storage::disk('public')->delete($secondSignature);
+        }
+        if (Storage::disk('public')->exists($thirdSignature)) {
+            Storage::disk('public')->delete($thirdSignature);
+        }
         $event->delete();
         $request->session()->flash('removeEventSuccess', 'Acara berjaya dibuang!');
         return back();
