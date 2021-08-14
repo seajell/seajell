@@ -61,7 +61,6 @@ class EventController extends MainController
     }
 
     public function addEvent(Request $request){
-        // Refer https://github.com/hanisirfan/seajell/issues/31
         $validated = $request->validate([
             'event-name' => ['required'],
             'event-date' => ['required', 'date'],
@@ -118,28 +117,43 @@ class EventController extends MainController
         $logoFirstSavePath = '/img/organiser/'. Carbon::now()->timestamp . '-' . $logoFirstName;
         Storage::disk('public')->put($logoFirstSavePath, $logoFirstImage);
 
-        // Check if second logo is uploaded (since it's not required)
-        if($request->hasFile('logo-second')){
+        // If only one of the second or third logo is added, it will be uploaded as second logo.
+        // If both is added, it will occupied their own column
+
+        if($request->hasFile('logo-second') && $request->hasFile('logo-third')){
+            // Check if both files uploaded
             $logoSecondName = $request->file('logo-second')->getClientOriginalName();
             $logoSecondImage = Image::make($request->file('logo-second'))->resize(300, 300)->encode('png');
             $logoSecondSavePath = '/img/logo/'. Carbon::now()->timestamp . '-' . $logoSecondName;
             Storage::disk('public')->put($logoSecondSavePath, $logoSecondImage);
-        }else{
-            $logoSecondSavePath = '';
-        }
 
-        // Check if third logo is uploaded (since it's not required)
-        if($request->hasFile('logo-third')){
             $logoThirdName = $request->file('logo-third')->getClientOriginalName();
             $logoThirdImage = Image::make($request->file('logo-third'))->resize(300, 300)->encode('png');
             $logoThirdSavePath = '/img/logo/'. Carbon::now()->timestamp . '-' . $logoThirdName;
             Storage::disk('public')->put($logoThirdSavePath, $logoThirdImage);
+        }elseif($request->hasFile('logo-second')){
+            // Check if only second logo added. The data will be added to the second logo column.
+            $logoSecondName = $request->file('logo-second')->getClientOriginalName();
+            $logoSecondImage = Image::make($request->file('logo-second'))->resize(300, 300)->encode('png');
+            $logoSecondSavePath = '/img/logo/'. Carbon::now()->timestamp . '-' . $logoSecondName;
+            Storage::disk('public')->put($logoSecondSavePath, $logoSecondImage);
+            $logoThirdSavePath = '';
+        }elseif($request->hasFile('logo-third')){
+            // Check if only third logo is added. The data will be added to the second logo column.
+            $logoThirdName = $request->file('logo-third')->getClientOriginalName();
+            $logoThirdImage = Image::make($request->file('logo-third'))->resize(300, 300)->encode('png');
+            $logoSecondSavePath = '/img/logo/'. Carbon::now()->timestamp . '-' . $logoThirdName;
+            Storage::disk('public')->put($logoSecondSavePath, $logoThirdImage);
+            $logoThirdSavePath = '';
         }else{
+            // Fallback in case both second and third logo is not added.
+            $logoSecondSavePath = '';
             $logoThirdSavePath = '';
         }
 
         /**
          * Signatures
+         * Somewhat same as above.
          */
 
         $signatureFirstName = $request->input('signature-first-name');
@@ -150,24 +164,74 @@ class EventController extends MainController
         $signatureFirstSavePath = '/img/signature/'. Carbon::now()->timestamp . '-' . $signatureFirstImageName;
         Storage::disk('public')->put($signatureFirstSavePath, $signatureFirstImage);
 
-        // Check if second logo is uploaded (since it's not required)
-        if($request->hasFile('signature-second')){
+        // Check if one of the inputs of signature second and third is added, then required the others (name, position, image)
+        if(!empty($request->input('signature-second-name')) || !empty($request->input('signature-second-name')) || $request->hasFile('signature-second')){
+            $validated = $request->validate([
+                'signature-second' => ['required', 'image', 'mimes:png'],
+                'signature-second-name' => ['required'],
+                'signature-second-position' => ['required']
+            ]);
+        }
+
+        if(!empty($request->input('signature-third-name')) || !empty($request->input('signature-third-name')) || $request->hasFile('signature-third')){
+            $validated = $request->validate([
+                'signature-third' => ['required', 'image', 'mimes:png'],
+                'signature-third-name' => ['required'],
+                'signature-third-position' => ['required']
+            ]);
+        }
+
+        if($request->hasFile('signature-second') && $request->hasFile('signature-third')){
             $signatureSecondName = $request->file('signature-second')->getClientOriginalName();
             $signatureSecondImage = Image::make($request->file('signature-second'))->resize(300, 100)->encode('png');
             $signatureSecondSavePath = '/img/signature/'. Carbon::now()->timestamp . '-' . $signatureSecondName;
             Storage::disk('public')->put($signatureSecondSavePath, $signatureSecondImage);
-        }else{
-            $signatureSecondSavePath = '';
-        }
 
-        // Check if third logo is uploaded (since it's not required)
-        if($request->hasFile('signature-third')){
             $signatureThirdName = $request->file('signature-third')->getClientOriginalName();
             $signatureThirdImage = Image::make($request->file('signature-third'))->resize(300, 100)->encode('png');
             $signatureThirdSavePath = '/img/signature/'. Carbon::now()->timestamp . '-' . $signatureThirdName;
             Storage::disk('public')->put($signatureThirdSavePath, $signatureThirdImage);
-        }else{
+
+            $signatureSecondMainName = $request->input('signature-second-name');
+            $signatureSecondMainPosition = $request->input('signature-second-position');
+
+            $signatureThirdMainName = $request->input('signature-third-name');
+            $signatureThirdMainPosition = $request->input('signature-third-position');
+        }elseif($request->hasFile('signature-second')){
+            // Check if second signature is uploaded (since it's not required)
+            $signatureSecondName = $request->file('signature-second')->getClientOriginalName();
+            $signatureSecondImage = Image::make($request->file('signature-second'))->resize(300, 100)->encode('png');
+            $signatureSecondSavePath = '/img/signature/'. Carbon::now()->timestamp . '-' . $signatureSecondName;
+            Storage::disk('public')->put($signatureSecondSavePath, $signatureSecondImage);
             $signatureThirdSavePath = '';
+
+            $signatureSecondMainName = $request->input('signature-second-name');
+            $signatureSecondMainPosition = $request->input('signature-second-position');
+
+            $signatureThirdMainName = '';
+            $signatureThirdMainPosition = '';
+        }elseif($request->hasFile('signature-third')){
+            // Check if third signature is uploaded (since it's not required)
+            $signatureThirdName = $request->file('signature-third')->getClientOriginalName();
+            $signatureThirdImage = Image::make($request->file('signature-third'))->resize(300, 100)->encode('png');
+            $signatureSecondSavePath = '/img/signature/'. Carbon::now()->timestamp . '-' . $signatureThirdName;
+            Storage::disk('public')->put($signatureSecondSavePath, $signatureThirdImage);
+            $signatureThirdSavePath = '';
+
+            $signatureSecondMainName = $request->input('signature-third-name');
+            $signatureSecondMainPosition = $request->input('signature-third-position');
+
+            $signatureThirdMainName = '';
+            $signatureThirdMainPosition = '';
+        }else{
+            $signatureSecondSavePath = '';
+            $signatureThirdSavePath = '';
+
+            $signatureSecondMainName = '';
+            $signatureSecondMainPosition = '';
+
+            $signatureThirdMainName = '';
+            $signatureThirdMainPosition = '';
         }
 
          /**
@@ -195,11 +259,11 @@ class EventController extends MainController
             'signature_first_name' => strtolower($signatureFirstName),
             'signature_first_position' => $signatureFirstPosition,
             'signature_first' => $signatureFirstSavePath,
-            'signature_second_name' => strtolower($request->input('signature-second-name')),
-            'signature_second_position' => strtolower($request->input('signature-second-position')),
+            'signature_second_name' => strtolower($signatureSecondMainName),
+            'signature_second_position' => strtolower($signatureSecondMainPosition),
             'signature_second' => $signatureSecondSavePath,
-            'signature_third_name' => strtolower($request->input('signature-third-name')),
-            'signature_third_position' => strtolower($request->input('signature-third-position')),
+            'signature_third_name' => strtolower($signatureThirdMainName),
+            'signature_third_position' => strtolower($signatureThirdMainPosition),
             'signature_third' => $signatureThirdSavePath,
             'visibility' => strtolower($visibility),
             'background_image' => $backgroundImageSavePath,
