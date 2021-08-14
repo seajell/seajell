@@ -91,15 +91,17 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
             @can('authAdmin')
-            <label for="role" class="form-label">Peranan Pengguna</label>
-            <select class="form-select mb-3" name="role" id="role" aria-label="role">
-                <option value="participant">Peserta</option>
-                <option value="admin">Admin</option>
-            </select>
-            @error('role')
-                <div class="alert alert-danger">{{ $message }}</div>
-            @enderror
-        @endcan
+                @if($data->role !== 'superadmin')
+                    <label for="role" class="form-label">Peranan Pengguna</label>
+                    <select class="form-select mb-3" name="role" id="role" aria-label="role">
+                        <option value="participant">Peserta</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                    @error('role')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror   
+                @endif
+            @endcan
         <button class="btn btn-dark" type="submit" name="info">Kemas Kini Maklumat</button>
     </form>
     <p class="fs-2">Kemas Kini Kata Laluan</p>
