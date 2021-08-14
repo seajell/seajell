@@ -51,7 +51,7 @@ class EventController extends MainController
             // Only admins can update event info
             if(Gate::allows('authAdmin')){
                 $data = Event::where('id', $id)->first();
-                    return view('event.update')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName, 'data' => $data]);
+                return view('event.update')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName, 'data' => $data]);
             }else{
                 abort(403, 'Anda tidak boleh mengakses laman ini.');
             }
@@ -310,31 +310,18 @@ class EventController extends MainController
     }
 
     public function updateEvent(Request $request, $id){
-        $validated = $request->validate([
-            'event-name' => ['required'],
-            'event-date' => ['required', 'date'],
-            'event-location' => ['required'],
-            'organiser-name' => ['required'],
-            // 'organiser-logo' => ['required', 'mimes:png'],
-            'visibility' => ['required'],
-            'institute-logo' => ['image', 'mimes:png'],
-            'verifier-name' => ['required'],
-            'verifier-position' => ['required'],
-            'background-image' => ['image', 'mimes:png'],
-            'border' => ['required'],
-        ]);
         $eventName = $request->input('event-name');
         $eventDate = $request->input('event-date');
         $eventLocation = $request->input('event-location');
         $organiserName = $request->input('organiser-name');
-        $organiserLogo = $request->file('organiser-logo');
+        $logoFirst = $request->file('logo-first');
+        $signatureFirst = $request->file('signature-first');
+        $signatureFirstName = $request->input('signature-first-name');
+        $signatureFirstPosition = $request->input('signature-first-position');
         $visibility = $request->input('visibility');
-        $verifierName = $request->input('verifier-name');
-        $verifierPosition = $request->input('verifier-position');
-        $verifierSignature = $request->file('verifier-signature');
         $borderStatus = $request->input('border');
         $borderColor = $request->input('border-color');
-
+        $textColor = $request->input('text-color');
         // Check if border is needed
         switch ($borderStatus) {
             case 'available':
@@ -351,53 +338,180 @@ class EventController extends MainController
             default:
                 break;
         }
-        
-        // Check if institute logo is uploaded (since it's not required)
-        if($request->hasFile('institute-logo')){
-            $instituteLogoName = $request->file('institute-logo')->getClientOriginalName();
-            $instituteLogoImage = Image::make($request->file('institute-logo'))->resize(300, 300)->encode('png');
-            $instituteLogoSavePath = '/img/institute/'. Carbon::now()->timestamp . '-' . $instituteLogoName;
-            Storage::disk('public')->put($instituteLogoSavePath, $instituteLogoImage);
+
+        /**
+         * Logos
+         * Make sure if logo name is added, the other inputs like the logo and position is also added for non-required logo
+         */
+
+        if($request->hasFile('logo-first')){
+            $logoFirstName = $logoFirst->getClientOriginalName();
+            $logoFirstImage = Image::make($logoFirst)->resize(300, 300)->encode('png');
+            $logoFirstSavePath = '/img/logo/'. Carbon::now()->timestamp . '-' . $logoFirstName;
+            Storage::disk('public')->put($logoFirstSavePath, $logoFirstImage);
         }else{
-            // Get path from database
-            $instituteLogoSavePath = Event::where('id', $id)->first()->institute_logo;
+            if(!empty(Event::where('id', $id)->first()->logo_first)){
+                $logoFirstSavePath = Event::where('id', $id)->first()->logo_first;
+            }
         }
 
-        if(!empty($request->input('institute-name'))){
-            $instituteName = $request->input('institute-name');
-        }elseif(empty($request->input('institute-name'))){
-            $instituteName = Event::where('id', $id)->first()->institute_name;
+        // If only one of the second or third logo is added, it will be uploaded as second logo.
+        // If both is added, it will occupied their own column
+
+        if($request->hasFile('logo-second') && $request->hasFile('logo-third')){
+            // Check if both files uploaded
+            $logoSecondName = $request->file('logo-second')->getClientOriginalName();
+            $logoSecondImage = Image::make($request->file('logo-second'))->resize(300, 300)->encode('png');
+            $logoSecondSavePath = '/img/logo/'. Carbon::now()->timestamp . '-' . $logoSecondName;
+            Storage::disk('public')->put($logoSecondSavePath, $logoSecondImage);
+
+            $logoThirdName = $request->file('logo-third')->getClientOriginalName();
+            $logoThirdImage = Image::make($request->file('logo-third'))->resize(300, 300)->encode('png');
+            $logoThirdSavePath = '/img/logo/'. Carbon::now()->timestamp . '-' . $logoThirdName;
+            Storage::disk('public')->put($logoThirdSavePath, $logoThirdImage);
+        }elseif($request->hasFile('logo-second')){
+            // Check if only second logo added. The data will be added to the second logo column.
+            $logoSecondName = $request->file('logo-second')->getClientOriginalName();
+            $logoSecondImage = Image::make($request->file('logo-second'))->resize(300, 300)->encode('png');
+            $logoSecondSavePath = '/img/logo/'. Carbon::now()->timestamp . '-' . $logoSecondName;
+            Storage::disk('public')->put($logoSecondSavePath, $logoSecondImage);
+
+            if(!empty(Event::where('id', $id)->first()->logo_third)){
+                $logoThirdSavePath = Event::where('id', $id)->first()->logo_third;
+            }else{
+                $logoThirdSavePath = '';
+            }
+        }elseif($request->hasFile('logo-third')){
+            // First check if there's data in second column, if not insert the data there. If have, insert in third column.
+            if(empty(Event::where('id', $id)->first()->logo_second)){
+                $logoThirdName = $request->file('logo-third')->getClientOriginalName();
+                $logoThirdImage = Image::make($request->file('logo-third'))->resize(300, 300)->encode('png');
+                $logoSecondSavePath = '/img/logo/'. Carbon::now()->timestamp . '-' . $logoThirdName;
+                Storage::disk('public')->put($logoSecondSavePath, $logoThirdImage);
+
+                // Insert all third column data if available
+                if(!empty(Event::where('id', $id)->first()->logo_third)){
+                    $logoThirdSavePath = Event::where('id', $id)->first()->logo_third;
+                }else{
+                    $logoThirdSavePath = '';
+                }
+            }else{
+                $logoThirdName = $request->file('logo-third')->getClientOriginalName();
+                $logoThirdImage = Image::make($request->file('logo-third'))->resize(300, 300)->encode('png');
+                $logoThirdSavePath = '/img/logo/'. Carbon::now()->timestamp . '-' . $logoThirdName;
+                Storage::disk('public')->put($logoThirdSavePath, $logoThirdImage);
+
+                // Insert all second column data if available
+                if(!empty(Event::where('id', $id)->first()->logo_second)){
+                    $logoSecondSavePath = Event::where('id', $id)->first()->logo_second;
+                }else{
+                    $logoSecondSavePath = '';
+                }
+            }
+            
         }else{
-            $instituteName = '';
+            // Fallback in case both second and third logo is not added.
+            if(!empty(Event::where('id', $id)->first()->logo_second)){
+                $logoSecondSavePath = Event::where('id', $id)->first()->logo_second;
+            }else{
+                $logoSecondSavePath = '';
+            }
+
+            if(!empty(Event::where('id', $id)->first()->logo_third)){
+                $logoThirdSavePath = Event::where('id', $id)->first()->logo_third;
+            }else{
+                $logoThirdSavePath = '';
+            }
         }
 
-        // Check if organiser is uploaded (since it's not required)
-        if($request->hasFile('organiser-logo')){
-            $validated = $request->validate([
-                'organiser-logo' => ['required', 'mimes:png']
-            ]);
-            $organiserLogoName = $request->file('organiser-logo')->getClientOriginalName();
-            $organiserLogoImage = Image::make($organiserLogo)->resize(300, 300)->encode('png');
-            $organiserLogoSavePath = '/img/organiser/'. Carbon::now()->timestamp . '-' . $organiserLogoName;
-            Storage::disk('public')->put($organiserLogoSavePath, $organiserLogoImage);
-        }else{
-            // Get path from database
-            $organiserLogoSavePath = Event::where('id', $id)->first()->organiser_logo;
-        }
+        /**
+         * Signatures
+         * Somewhat same as above.
+         * 
+         * To Do
+         */
+
+        $signatureFirstName = $request->input('signature-first-name');
+        $signatureFirstPosition = $request->input('signature-first-position');
         
-        // Check if verifier signature is uploaded (since it's not required)
-        if($request->hasFile('verifier-signature')){
+        $signatureFirstImageName = $signatureFirst->getClientOriginalName();
+        $signatureFirstImage = Image::make($signatureFirst)->resize(300, 100)->encode('png');
+        $signatureFirstSavePath = '/img/signature/'. Carbon::now()->timestamp . '-' . $signatureFirstImageName;
+        Storage::disk('public')->put($signatureFirstSavePath, $signatureFirstImage);
+
+        // Check if one of the inputs of signature second and third is added, then required the others (name, position, image)
+        if(!empty($request->input('signature-second-name')) || !empty($request->input('signature-second-name')) || $request->hasFile('signature-second')){
             $validated = $request->validate([
-                'verifier-signature' => ['required', 'mimes:png']
+                'signature-second' => ['required', 'image', 'mimes:png'],
+                'signature-second-name' => ['required'],
+                'signature-second-position' => ['required']
             ]);
-            $verifierSignatureName = $verifierSignature->getClientOriginalName();
-            $verifierSignatureImage = Image::make($verifierSignature)->resize(300, 100)->encode('png');
-            $verifierSignatureSavePath = '/img/signature/'. Carbon::now()->timestamp . '-' . $verifierSignatureName;
-            Storage::disk('public')->put($verifierSignatureSavePath, $verifierSignatureImage);
-        }else{
-            // Get path from database
-            $verifierSignatureSavePath = Event::where('id', $id)->first()->verifier_signature;
         }
+
+        if(!empty($request->input('signature-third-name')) || !empty($request->input('signature-third-name')) || $request->hasFile('signature-third')){
+            $validated = $request->validate([
+                'signature-third' => ['required', 'image', 'mimes:png'],
+                'signature-third-name' => ['required'],
+                'signature-third-position' => ['required']
+            ]);
+        }
+
+        if($request->hasFile('signature-second') && $request->hasFile('signature-third')){
+            $signatureSecondName = $request->file('signature-second')->getClientOriginalName();
+            $signatureSecondImage = Image::make($request->file('signature-second'))->resize(300, 100)->encode('png');
+            $signatureSecondSavePath = '/img/signature/'. Carbon::now()->timestamp . '-' . $signatureSecondName;
+            Storage::disk('public')->put($signatureSecondSavePath, $signatureSecondImage);
+
+            $signatureThirdName = $request->file('signature-third')->getClientOriginalName();
+            $signatureThirdImage = Image::make($request->file('signature-third'))->resize(300, 100)->encode('png');
+            $signatureThirdSavePath = '/img/signature/'. Carbon::now()->timestamp . '-' . $signatureThirdName;
+            Storage::disk('public')->put($signatureThirdSavePath, $signatureThirdImage);
+
+            $signatureSecondMainName = $request->input('signature-second-name');
+            $signatureSecondMainPosition = $request->input('signature-second-position');
+
+            $signatureThirdMainName = $request->input('signature-third-name');
+            $signatureThirdMainPosition = $request->input('signature-third-position');
+        }elseif($request->hasFile('signature-second')){
+            // Check if second signature is uploaded (since it's not required)
+            $signatureSecondName = $request->file('signature-second')->getClientOriginalName();
+            $signatureSecondImage = Image::make($request->file('signature-second'))->resize(300, 100)->encode('png');
+            $signatureSecondSavePath = '/img/signature/'. Carbon::now()->timestamp . '-' . $signatureSecondName;
+            Storage::disk('public')->put($signatureSecondSavePath, $signatureSecondImage);
+            $signatureThirdSavePath = '';
+
+            $signatureSecondMainName = $request->input('signature-second-name');
+            $signatureSecondMainPosition = $request->input('signature-second-position');
+
+            $signatureThirdMainName = '';
+            $signatureThirdMainPosition = '';
+        }elseif($request->hasFile('signature-third')){
+            // Check if third signature is uploaded (since it's not required)
+            $signatureThirdName = $request->file('signature-third')->getClientOriginalName();
+            $signatureThirdImage = Image::make($request->file('signature-third'))->resize(300, 100)->encode('png');
+            $signatureSecondSavePath = '/img/signature/'. Carbon::now()->timestamp . '-' . $signatureThirdName;
+            Storage::disk('public')->put($signatureSecondSavePath, $signatureThirdImage);
+            $signatureThirdSavePath = '';
+
+            $signatureSecondMainName = $request->input('signature-third-name');
+            $signatureSecondMainPosition = $request->input('signature-third-position');
+
+            $signatureThirdMainName = '';
+            $signatureThirdMainPosition = '';
+        }else{
+            $signatureSecondSavePath = '';
+            $signatureThirdSavePath = '';
+
+            $signatureSecondMainName = '';
+            $signatureSecondMainPosition = '';
+
+            $signatureThirdMainName = '';
+            $signatureThirdMainPosition = '';
+        }
+
+         /**
+          * Background image
+          */
 
         // Check if background image is uploaded (since it's not required)
         if($request->hasFile('background-image')){
@@ -406,25 +520,31 @@ class EventController extends MainController
             $backgroundImageSavePath = '/img/background_image/'. Carbon::now()->timestamp . '-' . $backgroundImageName;
             Storage::disk('public')->put($backgroundImageSavePath, $backgroundImageImage);
         }else{
-            // Get path from database
-            $backgroundImageSavePath = Event::where('id', $id)->first()->background_image;
+            $backgroundImageSavePath = '';
         }
 
-        Event::updateOrCreate(
-            ['id' => $id],
+        $flight = Flight::updateOrCreate(
+            ['id', $id],
             [
                 'name' => strtolower($eventName),
                 'date' => $eventDate,
                 'location' => strtolower($eventLocation),
                 'organiser_name' => strtolower($organiserName),
-                'organiser_logo' => $organiserLogoSavePath,
-                'institute_name' => $instituteName,
-                'institute_logo' => $instituteLogoSavePath,
+                'logo_first' => $logoFirstSavePath,
+                'logo_second' => $logoSecondSavePath,
+                'logo_third' => $logoThirdSavePath,
+                'signature_first_name' => strtolower($signatureFirstName),
+                'signature_first_position' => $signatureFirstPosition,
+                'signature_first' => $signatureFirstSavePath,
+                'signature_second_name' => strtolower($signatureSecondMainName),
+                'signature_second_position' => strtolower($signatureSecondMainPosition),
+                'signature_second' => $signatureSecondSavePath,
+                'signature_third_name' => strtolower($signatureThirdMainName),
+                'signature_third_position' => strtolower($signatureThirdMainPosition),
+                'signature_third' => $signatureThirdSavePath,
                 'visibility' => strtolower($visibility),
-                'verifier_signature' => $verifierSignatureSavePath,
-                'verifier_name' => strtolower($verifierName),
-                'verifier_position' => strtolower($verifierPosition),
                 'background_image' => $backgroundImageSavePath,
+                'text_color' => $textColor,
                 'border' => $borderStatus,
                 'border_color' => $borderColor,
             ]

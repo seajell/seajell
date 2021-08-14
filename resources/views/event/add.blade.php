@@ -230,7 +230,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
         <label class="form-label mt-3">Warna Teks (Diperlukan)</label>
-        <x-buk-color-picker name="text-color" class="mb-3" :options="['theme' => 'classic']" />
+        <x-buk-color-picker name="text-color" class="mb-3" :options="['theme' => 'classic', 'default' => '#000000']" />
         <div id="text_color_help" class="form-text">
             Kesemua teks pada sijil akan diubah kepada warna ini kecuali teks pada kod QR.
         </div>
