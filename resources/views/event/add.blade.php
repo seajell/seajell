@@ -98,7 +98,8 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         <div id="logo_help" class="form-text">
             Logo mestilah menggunakan format PNG. <br>
             Resolusi logo mestilah paling kurang 300 x 300 piksel dan bernisbah 1:1 bagi memastikan gambar yang jelas. <br>
-            Gambar <span class="fst-italic">transparent</span> lebih digalakkan.
+            Gambar <span class="fst-italic">transparent</span> lebih digalakkan. <br>
+            Jika anda memasukkan logo di ruangan ketiga tanpa memasukkan logo diruangan kedua, maka logo tersebut akan dikira sebagai logo yang dimasukkan pada ruangan kedua.
         </div>
 
         <hr>
@@ -193,7 +194,8 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             Gambar tandatangan mestilah menggunakan format PNG. <br>
             Resolusi tandatangan mestilah paling kurang 300 x 100 piksel dan bernisbah 3:1 bagi memastikan tandatangan yang jelas. <br>
             Gambar tandatangan <span class="fst-italic">transparent</span> adalah diwajibkan. <br>
-            Anda boleh menjana gambar tandatangan di laman <a href="{{ route('signature') }}">tandatangan</a>.
+            Anda boleh menjana gambar tandatangan di laman <a href="{{ route('signature') }}">tandatangan</a>. <br>
+            Jika anda memasukkan maklumat pengesah di ruangan ketiga tanpa memasukkan maklumat pengesah diruangan kedua, maka maklumat pengesah tersebut akan dikira sebagai maklumat pengesah yang dimasukkan pada ruangan kedua.
         </div>
         
         <hr>

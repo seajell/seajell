@@ -310,14 +310,21 @@ class EventController extends MainController
     }
 
     public function updateEvent(Request $request, $id){
+        $validated = $request->validate([
+            'event-name' => ['required'],
+            'event-date' => ['required', 'date'],
+            'event-location' => ['required'],
+            'organiser-name' => ['required'],
+            'signature-first-name' => ['required'],
+            'signature-first-position' => ['required'],
+            'background-image' => ['image', 'mimes:png'],
+            'text-color' => ['required'],
+            'border' => ['required'],
+        ]);
         $eventName = $request->input('event-name');
         $eventDate = $request->input('event-date');
         $eventLocation = $request->input('event-location');
         $organiserName = $request->input('organiser-name');
-        $logoFirst = $request->file('logo-first');
-        $signatureFirst = $request->file('signature-first');
-        $signatureFirstName = $request->input('signature-first-name');
-        $signatureFirstPosition = $request->input('signature-first-position');
         $visibility = $request->input('visibility');
         $borderStatus = $request->input('border');
         $borderColor = $request->input('border-color');
@@ -345,9 +352,17 @@ class EventController extends MainController
          */
 
         if($request->hasFile('logo-first')){
+            $logoFirst = $request->file('logo-first');
             $logoFirstName = $logoFirst->getClientOriginalName();
             $logoFirstImage = Image::make($logoFirst)->resize(300, 300)->encode('png');
             $logoFirstSavePath = '/img/logo/'. Carbon::now()->timestamp . '-' . $logoFirstName;
+            // Deletes old image
+            if(!empty(Event::where('id', $id)->first()->logo_first)){
+                $oldImage = Event::where('id', $id)->first()->logo_first;
+                if(Storage::disk('public')->exists($oldImage)){
+                    Storage::disk('public')->delete($oldImage);
+                }
+            }
             Storage::disk('public')->put($logoFirstSavePath, $logoFirstImage);
         }else{
             if(!empty(Event::where('id', $id)->first()->logo_first)){
@@ -363,17 +378,38 @@ class EventController extends MainController
             $logoSecondName = $request->file('logo-second')->getClientOriginalName();
             $logoSecondImage = Image::make($request->file('logo-second'))->resize(300, 300)->encode('png');
             $logoSecondSavePath = '/img/logo/'. Carbon::now()->timestamp . '-' . $logoSecondName;
+            // Deletes old image
+            if(!empty(Event::where('id', $id)->first()->logo_second)){
+                $oldImage = Event::where('id', $id)->first()->logo_second;
+                if(Storage::disk('public')->exists($oldImage)){
+                    Storage::disk('public')->delete($oldImage);
+                }
+            }
             Storage::disk('public')->put($logoSecondSavePath, $logoSecondImage);
 
             $logoThirdName = $request->file('logo-third')->getClientOriginalName();
             $logoThirdImage = Image::make($request->file('logo-third'))->resize(300, 300)->encode('png');
             $logoThirdSavePath = '/img/logo/'. Carbon::now()->timestamp . '-' . $logoThirdName;
+            // Deletes old image
+            if(!empty(Event::where('id', $id)->first()->logo_third)){
+                $oldImage = Event::where('id', $id)->first()->logo_third;
+                if(Storage::disk('public')->exists($oldImage)){
+                    Storage::disk('public')->delete($oldImage);
+                }
+            }
             Storage::disk('public')->put($logoThirdSavePath, $logoThirdImage);
         }elseif($request->hasFile('logo-second')){
             // Check if only second logo added. The data will be added to the second logo column.
             $logoSecondName = $request->file('logo-second')->getClientOriginalName();
             $logoSecondImage = Image::make($request->file('logo-second'))->resize(300, 300)->encode('png');
             $logoSecondSavePath = '/img/logo/'. Carbon::now()->timestamp . '-' . $logoSecondName;
+            // Deletes old image
+            if(!empty(Event::where('id', $id)->first()->logo_second)){
+                $oldImage = Event::where('id', $id)->first()->logo_second;
+                if(Storage::disk('public')->exists($oldImage)){
+                    Storage::disk('public')->delete($oldImage);
+                }
+            }
             Storage::disk('public')->put($logoSecondSavePath, $logoSecondImage);
 
             if(!empty(Event::where('id', $id)->first()->logo_third)){
@@ -387,6 +423,13 @@ class EventController extends MainController
                 $logoThirdName = $request->file('logo-third')->getClientOriginalName();
                 $logoThirdImage = Image::make($request->file('logo-third'))->resize(300, 300)->encode('png');
                 $logoSecondSavePath = '/img/logo/'. Carbon::now()->timestamp . '-' . $logoThirdName;
+                // Deletes old image
+                if(!empty(Event::where('id', $id)->first()->logo_second)){
+                    $oldImage = Event::where('id', $id)->first()->logo_second;
+                    if(Storage::disk('public')->exists($oldImage)){
+                        Storage::disk('public')->delete($oldImage);
+                    }
+                }
                 Storage::disk('public')->put($logoSecondSavePath, $logoThirdImage);
 
                 // Insert all third column data if available
@@ -399,6 +442,13 @@ class EventController extends MainController
                 $logoThirdName = $request->file('logo-third')->getClientOriginalName();
                 $logoThirdImage = Image::make($request->file('logo-third'))->resize(300, 300)->encode('png');
                 $logoThirdSavePath = '/img/logo/'. Carbon::now()->timestamp . '-' . $logoThirdName;
+                // Deletes old image
+                if(!empty(Event::where('id', $id)->first()->logo_third)){
+                    $oldImage = Event::where('id', $id)->first()->logo_third;
+                    if(Storage::disk('public')->exists($oldImage)){
+                        Storage::disk('public')->delete($oldImage);
+                    }
+                }
                 Storage::disk('public')->put($logoThirdSavePath, $logoThirdImage);
 
                 // Insert all second column data if available
@@ -410,7 +460,7 @@ class EventController extends MainController
             }
             
         }else{
-            // Fallback in case both second and third logo is not added.
+            // Fallback in case both second and third logo is not added. Uses old data from db if exist.
             if(!empty(Event::where('id', $id)->first()->logo_second)){
                 $logoSecondSavePath = Event::where('id', $id)->first()->logo_second;
             }else{
@@ -426,31 +476,46 @@ class EventController extends MainController
 
         /**
          * Signatures
-         * Somewhat same as above.
-         * 
-         * To Do
          */
 
-        $signatureFirstName = $request->input('signature-first-name');
-        $signatureFirstPosition = $request->input('signature-first-position');
+        // Checks if signature-first-name is exist and have data in it.
+        if($request->filled('signature-first-name')){
+            $signatureFirstName = $request->input('signature-first-name');
+            $signatureFirstPosition = $request->input('signature-first-position');
+            $signatureFirstName = $request->input('signature-first-name');
+            $signatureFirstPosition = $request->input('signature-first-position');
+            if($request->hasFile('signature-first')){
+                $signatureFirst = $request->file('signature-first');
+                $signatureFirstImageName = $signatureFirst->getClientOriginalName();
+                $signatureFirstImage = Image::make($signatureFirst)->resize(300, 100)->encode('png');
+                $signatureFirstSavePath = '/img/signature/'. Carbon::now()->timestamp . '-' . $signatureFirstImageName;
+                // Deletes old image
+                if(!empty(Event::where('id', $id)->first()->signature_first)){
+                    $oldImage = Event::where('id', $id)->first()->signature_first;
+                    if(Storage::disk('public')->exists($oldImage)){
+                        Storage::disk('public')->delete($oldImage);
+                    }
+                }
+                Storage::disk('public')->put($signatureFirstSavePath, $signatureFirstImage);
+            }else{
+                if(!empty(Event::where('id', $id)->first()->signature_first)){
+                    $signatureFirstSavePath = Event::where('id', $id)->first()->signature_first;
+                }else{
+                    $signatureFirstSavePath = '';
+                }
+            }
+        }
         
-        $signatureFirstImageName = $signatureFirst->getClientOriginalName();
-        $signatureFirstImage = Image::make($signatureFirst)->resize(300, 100)->encode('png');
-        $signatureFirstSavePath = '/img/signature/'. Carbon::now()->timestamp . '-' . $signatureFirstImageName;
-        Storage::disk('public')->put($signatureFirstSavePath, $signatureFirstImage);
-
         // Check if one of the inputs of signature second and third is added, then required the others (name, position, image)
-        if(!empty($request->input('signature-second-name')) || !empty($request->input('signature-second-name')) || $request->hasFile('signature-second')){
+        if($request->filled('signature-second-name') || $request->filled('signature-second-name') || $request->hasFile('signature-second')){
             $validated = $request->validate([
-                'signature-second' => ['required', 'image', 'mimes:png'],
                 'signature-second-name' => ['required'],
                 'signature-second-position' => ['required']
             ]);
         }
 
-        if(!empty($request->input('signature-third-name')) || !empty($request->input('signature-third-name')) || $request->hasFile('signature-third')){
+        if($request->filled('signature-third-name') || $request->filled('signature-third-name') || $request->hasFile('signature-third')){
             $validated = $request->validate([
-                'signature-third' => ['required', 'image', 'mimes:png'],
                 'signature-third-name' => ['required'],
                 'signature-third-position' => ['required']
             ]);
@@ -460,11 +525,25 @@ class EventController extends MainController
             $signatureSecondName = $request->file('signature-second')->getClientOriginalName();
             $signatureSecondImage = Image::make($request->file('signature-second'))->resize(300, 100)->encode('png');
             $signatureSecondSavePath = '/img/signature/'. Carbon::now()->timestamp . '-' . $signatureSecondName;
+            // Deletes old image
+            if(!empty(Event::where('id', $id)->first()->signature_second)){
+                $oldImage = Event::where('id', $id)->first()->signature_second;
+                if(Storage::disk('public')->exists($oldImage)){
+                    Storage::disk('public')->delete($oldImage);
+                }
+            }
             Storage::disk('public')->put($signatureSecondSavePath, $signatureSecondImage);
 
             $signatureThirdName = $request->file('signature-third')->getClientOriginalName();
             $signatureThirdImage = Image::make($request->file('signature-third'))->resize(300, 100)->encode('png');
             $signatureThirdSavePath = '/img/signature/'. Carbon::now()->timestamp . '-' . $signatureThirdName;
+            // Deletes old image
+            if(!empty(Event::where('id', $id)->first()->signature_third)){
+                $oldImage = Event::where('id', $id)->first()->signature_third;
+                if(Storage::disk('public')->exists($oldImage)){
+                    Storage::disk('public')->delete($oldImage);
+                }
+            }
             Storage::disk('public')->put($signatureThirdSavePath, $signatureThirdImage);
 
             $signatureSecondMainName = $request->input('signature-second-name');
@@ -473,40 +552,137 @@ class EventController extends MainController
             $signatureThirdMainName = $request->input('signature-third-name');
             $signatureThirdMainPosition = $request->input('signature-third-position');
         }elseif($request->hasFile('signature-second')){
-            // Check if second signature is uploaded (since it's not required)
+            // Check if only second signature is uploaded (since it's not required)
             $signatureSecondName = $request->file('signature-second')->getClientOriginalName();
             $signatureSecondImage = Image::make($request->file('signature-second'))->resize(300, 100)->encode('png');
             $signatureSecondSavePath = '/img/signature/'. Carbon::now()->timestamp . '-' . $signatureSecondName;
+            // Deletes old image
+            if(!empty(Event::where('id', $id)->first()->signature_second)){
+                $oldImage = Event::where('id', $id)->first()->signature_second;
+                if(Storage::disk('public')->exists($oldImage)){
+                    Storage::disk('public')->delete($oldImage);
+                }
+            }
             Storage::disk('public')->put($signatureSecondSavePath, $signatureSecondImage);
-            $signatureThirdSavePath = '';
 
             $signatureSecondMainName = $request->input('signature-second-name');
             $signatureSecondMainPosition = $request->input('signature-second-position');
 
-            $signatureThirdMainName = '';
-            $signatureThirdMainPosition = '';
+            
+            if(!empty(Event::where('id', $id)->first()->signature_third_name)){
+                $signatureThirdMainName = Event::where('id', $id)->first()->signature_third_name;
+            }else{
+                $signatureThirdMainName = '';
+            }
+            if(!empty(Event::where('id', $id)->first()->signature_third_position)){
+                $signatureThirdMainPosition = Event::where('id', $id)->first()->signature_third_position;
+            }else{
+                $signatureThirdMainPosition = '';
+            }
+            if(!empty(Event::where('id', $id)->first()->signature_third)){
+                $signatureThirdSavePath = Event::where('id', $id)->first()->signature_third;
+            }else{
+                $signatureThirdSavePath = '';
+            }
+            
         }elseif($request->hasFile('signature-third')){
-            // Check if third signature is uploaded (since it's not required)
-            $signatureThirdName = $request->file('signature-third')->getClientOriginalName();
-            $signatureThirdImage = Image::make($request->file('signature-third'))->resize(300, 100)->encode('png');
-            $signatureSecondSavePath = '/img/signature/'. Carbon::now()->timestamp . '-' . $signatureThirdName;
-            Storage::disk('public')->put($signatureSecondSavePath, $signatureThirdImage);
-            $signatureThirdSavePath = '';
+            // Check if only third signature is uploaded (since it's not required)
 
-            $signatureSecondMainName = $request->input('signature-third-name');
-            $signatureSecondMainPosition = $request->input('signature-third-position');
+            // If second signature is empty in db is empty, insert the third data into the second column
+            if(empty(Event::where('id', $id)->first()->signature_second)){
+                $signatureThirdName = $request->file('signature-third')->getClientOriginalName();
+                $signatureThirdImage = Image::make($request->file('signature-third'))->resize(300, 100)->encode('png');
+                $signatureSecondSavePath = '/img/signature/'. Carbon::now()->timestamp . '-' . $signatureThirdName;
+                // Deletes old image
+                if(!empty(Event::where('id', $id)->first()->signature_second)){
+                    $oldImage = Event::where('id', $id)->first()->signature_second;
+                    if(Storage::disk('public')->exists($oldImage)){
+                        Storage::disk('public')->delete($oldImage);
+                    }
+                }
+                Storage::disk('public')->put($signatureSecondSavePath, $signatureThirdImage);
+                $signatureSecondMainName = $request->input('signature-third-name');
+                $signatureSecondMainPosition = $request->input('signature-third-position');
 
-            $signatureThirdMainName = '';
-            $signatureThirdMainPosition = '';
+                if(!empty(Event::where('id', $id)->first()->signature_third_name)){
+                    $signatureThirdMainName = Event::where('id', $id)->first()->signature_third_name;
+                }else{
+                    $signatureThirdMainName = '';
+                }
+                if(!empty(Event::where('id', $id)->first()->signature_third_position)){
+                    $signatureThirdMainPosition = Event::where('id', $id)->first()->signature_third_position;
+                }else{
+                    $signatureThirdMainPosition = '';
+                }
+                if(!empty(Event::where('id', $id)->first()->signature_third)){
+                    $signatureThirdSavePath = Event::where('id', $id)->first()->signature_third;
+                }else{
+                    $signatureThirdSavePath = '';
+                }
+            }else{
+                $signatureThirdName = $request->file('signature-third')->getClientOriginalName();
+                $signatureThirdImage = Image::make($request->file('signature-third'))->resize(300, 100)->encode('png');
+                $signatureThirdSavePath = '/img/signature/'. Carbon::now()->timestamp . '-' . $signatureThirdName;
+                // Deletes old image
+                if(!empty(Event::where('id', $id)->first()->signature_third)){
+                    $oldImage = Event::where('id', $id)->first()->signature_third;
+                    if(Storage::disk('public')->exists($oldImage)){
+                        Storage::disk('public')->delete($oldImage);
+                    }
+                }
+                Storage::disk('public')->put($signatureThirdSavePath, $signatureThirdImage);
+                $signatureThirdMainName = $request->input('signature-third-name');
+                $signatureThirdMainPosition = $request->input('signature-third-position');
+
+                if(!empty(Event::where('id', $id)->first()->signature_second_name)){
+                    $signatureSecondMainName = Event::where('id', $id)->first()->signature_second_name;
+                }else{
+                    $signatureSecondMainName = '';
+                }
+                if(!empty(Event::where('id', $id)->first()->signature_second_position)){
+                    $signatureSecondMainPosition = Event::where('id', $id)->first()->signature_second_position;
+                }else{
+                    $signatureSecondMainPosition = '';
+                }
+                if(!empty(Event::where('id', $id)->first()->signature_second)){
+                    $signatureSecondSavePath = Event::where('id', $id)->first()->signature_second;
+                }else{
+                    $signatureSecondSavePath = '';
+                }
+            }
         }else{
-            $signatureSecondSavePath = '';
-            $signatureThirdSavePath = '';
+            // Fallback in case both second and third signature is not added. Uses old data from db if exist.
+            if(!empty(Event::where('id', $id)->first()->signature_second_name)){
+                $signatureSecondMainName = Event::where('id', $id)->first()->signature_second_name;
+            }else{
+                $signatureSecondMainName = '';
+            }
+            if(!empty(Event::where('id', $id)->first()->signature_second_position)){
+                $signatureSecondMainPosition = Event::where('id', $id)->first()->signature_second_position;
+            }else{
+                $signatureSecondMainPosition = '';
+            }
+            if(!empty(Event::where('id', $id)->first()->signature_second)){
+                $signatureSecondSavePath = Event::where('id', $id)->first()->signature_second;
+            }else{
+                $signatureSecondSavePath = '';
+            }
 
-            $signatureSecondMainName = '';
-            $signatureSecondMainPosition = '';
-
-            $signatureThirdMainName = '';
-            $signatureThirdMainPosition = '';
+            if(!empty(Event::where('id', $id)->first()->signature_third_name)){
+                $signatureThirdMainName = Event::where('id', $id)->first()->signature_third_name;
+            }else{
+                $signatureThirdMainName = '';
+            }
+            if(!empty(Event::where('id', $id)->first()->signature_third_position)){
+                $signatureThirdMainPosition = Event::where('id', $id)->first()->signature_third_position;
+            }else{
+                $signatureThirdMainPosition = '';
+            }
+            if(!empty(Event::where('id', $id)->first()->signature_third)){
+                $signatureThirdSavePath = Event::where('id', $id)->first()->signature_third;
+            }else{
+                $signatureThirdSavePath = '';
+            }
         }
 
          /**
@@ -518,14 +694,26 @@ class EventController extends MainController
             $backgroundImageName = $request->file('background-image')->getClientOriginalName();
             $backgroundImageImage = Image::make($request->file('background-image'))->resize(794, 1123)->encode('png');
             $backgroundImageSavePath = '/img/background_image/'. Carbon::now()->timestamp . '-' . $backgroundImageName;
+            // Deletes old image
+            if(!empty(Event::where('id', $id)->first()->background_image)){
+                $oldImage = Event::where('id', $id)->first()->background_image;
+                if(Storage::disk('public')->exists($oldImage)){
+                    Storage::disk('public')->delete($oldImage);
+                }
+            }
             Storage::disk('public')->put($backgroundImageSavePath, $backgroundImageImage);
         }else{
-            $backgroundImageSavePath = '';
+            // Uses old data from db
+            if(!empty(Event::where('id', $id)->first()->background_image)){
+                $backgroundImageSavePath = Event::where('id', $id)->first()->background_image;
+            }else{
+                $backgroundImageSavePath = '';
+            }
         }
 
-        $flight = Flight::updateOrCreate(
-            ['id', $id],
+        Event::upsert([
             [
+                'id' => $id,
                 'name' => strtolower($eventName),
                 'date' => $eventDate,
                 'location' => strtolower($eventLocation),
@@ -548,7 +736,30 @@ class EventController extends MainController
                 'border' => $borderStatus,
                 'border_color' => $borderColor,
             ]
-        );
+        ], ['id'], [
+            'name', 
+            'date', 
+            'location', 
+            'organiser_name', 
+            'logo_first', 
+            'logo_second',
+            'logo_third',
+            'signature_first_name',
+            'signature_first_position',
+            'signature_first',
+            'signature_second_name',
+            'signature_second_position',
+            'signature_second',
+            'signature_third_name',
+            'signature_third_position',
+            'signature_third',
+            'visibility',
+            'background_image',
+            'text_color',
+            'border',
+            'border_color',
+        
+        ]);
 
         $request->session()->flash('updateEventSuccess', 'Acara berjaya dikemas kini!');
         return back();

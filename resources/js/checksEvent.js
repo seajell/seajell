@@ -1,3 +1,5 @@
+const { isEmpty } = require("lodash");
+
 document.addEventListener("DOMContentLoaded", function (event) {
     // Disable the inputs unless they click the checks.
     
@@ -29,9 +31,11 @@ document.addEventListener("DOMContentLoaded", function (event) {
     var signatureSecondName = document.querySelector('#signature-second-name');
     var signatureSecondPosition = document.querySelector('#signature-second-position');
     var signatureSecond = document.querySelector('#signature-second');
-    signatureSecondName.disabled = true;
-    signatureSecondPosition.disabled = true;
-    signatureSecond.disabled = true;
+    if(isEmpty(signatureSecondName.value)){
+        signatureSecondName.disabled = true;
+        signatureSecondPosition.disabled = true;
+        signatureSecond.disabled = true;
+    }
     signatureSecondCheck.addEventListener('change', function (event) {
         if (signatureSecondCheck.checked) {
             signatureSecondName.disabled = false;
@@ -48,9 +52,11 @@ document.addEventListener("DOMContentLoaded", function (event) {
     var signatureThirdName = document.querySelector('#signature-third-name');
     var signatureThirdPosition = document.querySelector('#signature-third-position');
     var signatureThird = document.querySelector('#signature-third');
-    signatureThirdName.disabled = true;
-    signatureThirdPosition.disabled = true;
-    signatureThird.disabled = true;
+    if(isEmpty(signatureThirdName.value)){
+        signatureThirdName.disabled = true;
+        signatureThirdPosition.disabled = true;
+        signatureThird.disabled = true;
+    }
     signatureThirdCheck.addEventListener('change', function (event) {
         if (signatureThirdCheck.checked) {
             signatureThirdName.disabled = false;

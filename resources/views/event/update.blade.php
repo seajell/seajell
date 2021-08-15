@@ -21,7 +21,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
     <p>Jika tiada sebarang perubahan pada gambar-gambar, maka gambar lama akan digunakan.</p>
     <p>Pastikan anda membuat semakan sebelum menekan butang kemas kini.</p>
     @if(session()->has('updateEventSuccess'))
-        <span><div class="alert alert-success w-100 ml-1">{{ session('addEventSuccess') }}</div></span>
+        <span><div class="alert alert-success w-100 ml-1">{{ session('updateEventSuccess') }}</div></span>
     @endif
     @php
         if(!empty(old('event-name'))){ 
@@ -253,6 +253,12 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                         Ada
                     </label>
                 </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="logo-second-check-remove" name="logo-second-check-remove">
+                    <label class="form-check-label" for="logo-second-check-remove">
+                        Buang
+                    </label>
+                </div>
             </div>
         </div>
         @error('logo-second')
@@ -273,6 +279,12 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                         Ada
                     </label>
                 </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="logo-third-check-remove" name="logo-third-check-remove">
+                    <label class="form-check-label" for="logo-third-check-remove">
+                        Buang
+                    </label>
+                </div>
             </div>
         </div>
         @error('logo-third')
@@ -281,7 +293,9 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         <div id="logo_help" class="form-text">
             Logo mestilah menggunakan format PNG. <br>
             Resolusi logo mestilah paling kurang 300 x 300 piksel dan bernisbah 1:1 bagi memastikan gambar yang jelas. <br>
-            Gambar <span class="fst-italic">transparent</span> lebih digalakkan.
+            Gambar <span class="fst-italic">transparent</span> lebih digalakkan. <br>
+            Jika anda memasukkan logo di ruangan ketiga tanpa memasukkan logo diruangan kedua, maka logo tersebut akan dikira sebagai logo yang dimasukkan pada ruangan kedua. <br>
+            Tandakan pada kotak "Buang" jika anda mahu membuang logo sedia ada pada ruang tersebut.
         </div>
 
         <hr>
@@ -325,6 +339,12 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                         Ada
                     </label>
                 </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="signature-second-check-remove" name="signature-second-check-remove">
+                    <label class="form-check-label" for="signature-second-check-remove">
+                        Buang
+                    </label>
+                </div>
             </div>
         </div>
         @error('signature-second-name')
@@ -360,6 +380,12 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                         Ada
                     </label>
                 </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="signature-third-check-remove" name="signature-third-check-remove">
+                    <label class="form-check-label" for="signature-third-check-remove">
+                        Buang
+                    </label>
+                </div>
             </div>
         </div>
         @error('signature-third-name')
@@ -386,24 +412,46 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             Gambar tandatangan mestilah menggunakan format PNG. <br>
             Resolusi tandatangan mestilah paling kurang 300 x 100 piksel dan bernisbah 3:1 bagi memastikan tandatangan yang jelas. <br>
             Gambar tandatangan <span class="fst-italic">transparent</span> adalah diwajibkan. <br>
-            Anda boleh menjana gambar tandatangan di laman <a href="{{ route('signature') }}">tandatangan</a>.
+            Anda boleh menjana gambar tandatangan di laman <a href="{{ route('signature') }}">tandatangan</a>. <br>
+            Jika anda memasukkan maklumat pengesah di ruangan ketiga tanpa memasukkan maklumat pengesah diruangan kedua, maka maklumat pengesah tersebut akan dikira sebagai maklumat pengesah yang dimasukkan pada ruangan kedua. <br>
+            Tandakan pada kotak "Buang" jika anda mahu membuang logo sedia ada pada ruang tersebut.
         </div>
         
         <hr>
         <p class="fs-5">Penyesuaian Gaya Sijil </p>
         <label class="form-label mt-3">Keterlihatan (Diperlukan)</label>
-        <div class="form-check">
-            <input class="form-check-input" type="radio" name="visibility" id="visibility1" value="public" checked>
-            <label class="form-check-label" for="visibility">
-              Awam
-            </label>
-        </div>
-        <div class="form-check mb-3">
-            <input class="form-check-input" type="radio" name="visibility" value="hidden" id="visibility2">
-            <label class="form-check-label" for="visibility">
-              Tersembunyi
-            </label>
-        </div>
+        @switch($data->visibility)
+            @case('public')
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="visibility" id="visibility1" value="public" checked>
+                    <label class="form-check-label" for="visibility">
+                    Awam
+                    </label>
+                </div>
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="radio" name="visibility" value="hidden" id="visibility2">
+                    <label class="form-check-label" for="visibility">
+                    Tersembunyi
+                    </label>
+                </div>
+                @break
+            @case('hidden')
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="visibility" id="visibility1" value="public">
+                    <label class="form-check-label" for="visibility">
+                    Awam
+                    </label>
+                </div>
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="radio" name="visibility" value="hidden" id="visibility2" checked>
+                    <label class="form-check-label" for="visibility">
+                    Tersembunyi
+                    </label>
+                </div>
+                @break
+            @default
+                @break
+        @endswitch
         <div id="visibility_help" class="form-text">
             Awam: Semua orang dapat akses kepada sijil jika mempunyai pautan sijil tersebut. <br>
             Tersembunyi: Hanya pemilik sijil dapat akses selepas log masuk.
@@ -411,6 +459,9 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         @error('visibility')
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
+        @if(Storage::disk('public')->exists($data->background_image))
+            <img class="img-thumbnail" style="width: 7em; height: 9.9em;" src="{{ asset('storage' . $data->background_image) }}" alt="Background Image">
+        @endif
         <div class="my-3">
             <label for="background-image" class="form-label">Gambar Latar Belakang (Pilihan)</label>
             <input class="form-control" type="file" id="background-image" name="background-image">
@@ -430,19 +481,40 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         @error('text-color')
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
+
         <label class="form-label mt-3"><span class="fst-italic">Border</span> (Diperlukan)</label>
-        <div class="form-check">
-            <input class="form-check-input" type="radio" name="border" id="border1" value="available" checked>
-            <label class="form-check-label" for="border">
-              Ada
-            </label>
-        </div>
-        <div class="form-check mb-3">
-            <input class="form-check-input" type="radio" name="border" value="unavailable" id="border2">
-            <label class="form-check-label" for="border">
-              Tiada
-            </label>
-        </div>
+        @switch($data->border)
+            @case('available')
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="border" id="border1" value="available" checked>
+                    <label class="form-check-label" for="border">
+                    Ada
+                    </label>
+                </div>
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="radio" name="border" value="unavailable" id="border2">
+                    <label class="form-check-label" for="border">
+                    Tiada
+                    </label>
+                </div>
+                @break
+            @case('unavailable')
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="border" id="border1" value="available">
+                    <label class="form-check-label" for="border">
+                    Ada
+                    </label>
+                </div>
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="radio" name="border" value="unavailable" id="border2" checked>
+                    <label class="form-check-label" for="border">
+                    Tiada
+                    </label>
+                </div>
+                @break
+            @default
+                @break    
+        @endswitch
         <div id="border_help" class="form-text">
             <span class="fst-italic">Border</span> akan dilukis pada sijil yang dijana.
         </div>
