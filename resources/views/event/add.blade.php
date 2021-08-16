@@ -61,16 +61,36 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         @error('logo-first')
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
-        <div class="mb-3">
+        <div class="mb-3 row">
             <label for="logo-second" class="form-label">Logo Kedua (Pilihan)</label>
-            <input class="form-control" type="file" id="logo-second" name="logo-second">
+            <div class="col-10">
+                <input class="form-control" type="file" id="logo-second" name="logo-second">
+            </div>
+            <div class="col-2">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="logo-second-check">
+                    <label class="form-check-label" for="logo-second-check">
+                        Ada
+                    </label>
+                </div>
+            </div>
         </div>
         @error('logo-second')
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
-        <div class="mb-3">
+        <div class="mb-3 row">
             <label for="logo-third" class="form-label">Logo Ketiga (Pilihan)</label>
-            <input class="form-control" type="file" id="logo-third" name="logo-third">
+            <div class="col-10">
+                <input class="form-control" type="file" id="logo-third" name="logo-third">
+            </div>
+            <div class="col-2">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="logo-third-check">
+                    <label class="form-check-label" for="logo-third-check">
+                        Ada
+                    </label>
+                </div>
+            </div>
         </div>
         @error('logo-third')
             <div class="alert alert-danger">{{ $message }}</div>
@@ -78,7 +98,8 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         <div id="logo_help" class="form-text">
             Logo mestilah menggunakan format PNG. <br>
             Resolusi logo mestilah paling kurang 300 x 300 piksel dan bernisbah 1:1 bagi memastikan gambar yang jelas. <br>
-            Gambar <span class="fst-italic">transparent</span> lebih digalakkan.
+            Gambar <span class="fst-italic">transparent</span> lebih digalakkan. <br>
+            Jika anda memasukkan logo di ruangan ketiga tanpa memasukkan logo diruangan kedua, maka logo tersebut akan dikira sebagai logo yang dimasukkan pada ruangan kedua.
         </div>
 
         <hr>
@@ -106,9 +127,19 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
         {{-- Second Signature --}}
-        <div class="my-3">
+        <div class="my-3 row">
             <label for="signature-second-name" class="form-label">Nama Pengesah Kedua (Pilihan)</label>
-            <input type="text" class="form-control" id="signature-second-name" name="signature-second-name" placeholder="Masukkan nama pengesah." value="{{ old('signature-second-name') }}">
+            <div class="col-10">
+                <input type="text" class="form-control" id="signature-second-name" name="signature-second-name" placeholder="Masukkan nama pengesah." value="{{ old('signature-second-name') }}">
+            </div>
+            <div class="col-2">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="signature-second-check">
+                    <label class="form-check-label" for="signature-second-check">
+                        Ada
+                    </label>
+                </div>
+            </div>
         </div>
         @error('signature-second-name')
             <div class="alert alert-danger">{{ $message }}</div>
@@ -128,9 +159,19 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
         {{-- Third Signature --}}
-        <div class="my-3">
+        <div class="my-3 row">
             <label for="signature-third-name" class="form-label">Nama Pengesah Ketiga (Pilihan)</label>
-            <input type="text" class="form-control" id="signature-third-name" name="signature-third-name" placeholder="Masukkan nama pengesah." value="{{ old('signature-third-name') }}">
+            <div class="col-10">
+                <input type="text" class="form-control" id="signature-third-name" name="signature-third-name" placeholder="Masukkan nama pengesah." value="{{ old('signature-third-name') }}">
+            </div>
+            <div class="col-2">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="signature-third-check">
+                    <label class="form-check-label" for="signature-third-check">
+                        Ada
+                    </label>
+                </div>
+            </div>
         </div>
         @error('signature-third-name')
             <div class="alert alert-danger">{{ $message }}</div>
@@ -153,20 +194,21 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             Gambar tandatangan mestilah menggunakan format PNG. <br>
             Resolusi tandatangan mestilah paling kurang 300 x 100 piksel dan bernisbah 3:1 bagi memastikan tandatangan yang jelas. <br>
             Gambar tandatangan <span class="fst-italic">transparent</span> adalah diwajibkan. <br>
-            Anda boleh menjana gambar tandatangan di laman <a href="{{ route('signature') }}">tandatangan</a>.
+            Anda boleh menjana gambar tandatangan di laman <a href="{{ route('signature') }}">tandatangan</a>. <br>
+            Jika anda memasukkan maklumat pengesah di ruangan ketiga tanpa memasukkan maklumat pengesah diruangan kedua, maka maklumat pengesah tersebut akan dikira sebagai maklumat pengesah yang dimasukkan pada ruangan kedua.
         </div>
         
         <hr>
         <p class="fs-5">Penyesuaian Gaya Sijil </p>
         <label class="form-label mt-3">Keterlihatan (Diperlukan)</label>
         <div class="form-check">
-            <input class="form-check-input" type="radio" name="visibility" id="visibility" value="public" checked>
+            <input class="form-check-input" type="radio" name="visibility" id="visibility1" value="public" checked>
             <label class="form-check-label" for="visibility">
               Awam
             </label>
         </div>
         <div class="form-check mb-3">
-            <input class="form-check-input" type="radio" name="visibility" value="hidden" id="visibility">
+            <input class="form-check-input" type="radio" name="visibility" value="hidden" id="visibility2">
             <label class="form-check-label" for="visibility">
               Tersembunyi
             </label>
@@ -190,7 +232,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
         <label class="form-label mt-3">Warna Teks (Diperlukan)</label>
-        <x-buk-color-picker name="text-color" class="mb-3" :options="['theme' => 'classic']" />
+        <x-buk-color-picker name="text-color" class="mb-3" :options="['theme' => 'classic', 'default' => '#000000']" />
         <div id="text_color_help" class="form-text">
             Kesemua teks pada sijil akan diubah kepada warna ini kecuali teks pada kod QR.
         </div>
@@ -199,13 +241,13 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         @enderror
         <label class="form-label mt-3"><span class="fst-italic">Border</span> (Diperlukan)</label>
         <div class="form-check">
-            <input class="form-check-input" type="radio" name="border" id="border" value="available" checked>
+            <input class="form-check-input" type="radio" name="border" id="border1" value="available" checked>
             <label class="form-check-label" for="border">
               Ada
             </label>
         </div>
         <div class="form-check mb-3">
-            <input class="form-check-input" type="radio" name="border" value="unavailable" id="border">
+            <input class="form-check-input" type="radio" name="border" value="unavailable" id="border2">
             <label class="form-check-label" for="border">
               Tiada
             </label>
@@ -226,4 +268,5 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         @enderror
         <button class="btn btn-dark mt-3" type="submit">Tambah Acara</button>
     </form>
+    <script src="{{ asset('js/checksEvent.js') }}"></script>
 @endsection
