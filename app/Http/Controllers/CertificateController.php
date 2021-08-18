@@ -182,13 +182,13 @@ class CertificateController extends MainController
             switch ($certEvent->visibility) {
                 case 'public':
                     // Certificate PDF generated will have QR code with the URL to the certificate in it
-                    $this->generateCertificate($request, $uid, array(255, 254, 212));
+                    $this->generateCertificate($request, $uid, array(255, 254, 212), 'I');
                     break;
                 case 'hidden':
                     // Check if logged in
                     if(Auth::check()){
                         if(Gate::allows('authAdmin') || Certificate::where('uid', $uid)->first()->user_id == Auth::user()->id){
-                            $this->generateCertificate($request, $uid, array(255, 254, 212));
+                            $this->generateCertificate($request, $uid, array(255, 254, 212), 'I');
                         }else{
                             return redirect()->route('home');
                         }
@@ -204,7 +204,7 @@ class CertificateController extends MainController
         }
     }
 
-    protected function generateCertificate($request, $certificateID, $backgroundColor = array(255, 254, 212)){
+    protected function generateCertificate($request, $certificateID, $backgroundColor = array(255, 254, 212), $mode = 'I'){
         $certUser = Certificate::where('uid', $certificateID)->first()->user;
         $certEvent = Certificate::where('uid', $certificateID)->first()->event;
 
@@ -306,7 +306,60 @@ class CertificateController extends MainController
         PDF::addFont('cookie');
         PDF::addFont('badscript');
         PDF::addFont('bebasneue');
+        PDF::addFont('poppins');
+        PDF::addFont('poiretone');
+        PDF::addFont('lobster');
+        PDF::addFont('oleoscript');
+        PDF::addFont('architectsdaughter');
+        PDF::addFont('righteous');
+        PDF::addFont('berkshireswash');
+        PDF::addFont('satisfy');
+        PDF::addFont('fredokaone');
+        PDF::addFont('kaushanscript');
+        PDF::addFont('rancho');
+        PDF::addFont('carterone');
 
+        // Font Sets
+        // The font size must be set to match the font set appropriate sizes.
+        $fontSetOne = ['cookie', 'badscript', 'bebasneue', 'bebasneue'];
+        $fontSetTwo = ['lobster', 'poiretone', 'poppins', 'poppins'];
+        $fontSetThree = ['oleoscript', 'architectsdaughter', 'righteous', 'righteous'];
+        $fontSetFour = ['berkshireswash', 'satisfy', 'fredokaone', 'fredokaone'];
+        $fontSetFive = ['kaushanscript', 'rancho', 'carterone', 'carterone'];
+
+        $fontSizeOne = [45, 14, 14, 11];
+        $fontSizeTwo = [40, 17, 12, 8.5];
+        $fontSizeThree = [45, 15, 13, 8.8];
+        $fontSizeFour = [45, 14.8, 11, 8];
+        $fontSizeFive = [45, 16, 12, 8.8];
+
+        // To Do: Font set selection on add event page
+        switch ($certEvent->font_set) {
+            case 1:
+                $font = $fontSetOne;
+                $fontSize = $fontSizeOne;
+                break;
+            case 2:
+                $font = $fontSetTwo;
+                $fontSize = $fontSizeTwo;
+                break;
+            case 3:
+                $font = $fontSetThree;
+                $fontSize = $fontSizeThree;
+                break;
+            case 4:
+                $font = $fontSetFour;
+                $fontSize = $fontSizeFour;
+                break;
+            case 5:
+                $font = $fontSetFive;
+                $fontSize = $fontSizeFive;
+                break;
+            default:
+                $font = $fontSetOne;
+                $fontSize = $fontSizeOne;
+                break;
+        }
         /**
          * Logos
          * Check if institute logo is available
@@ -345,7 +398,7 @@ class CertificateController extends MainController
         }
 
         PDF::Ln(42);
-        PDF::SetFont('cookie', 'BI', 45);
+        PDF::SetFont($font[0], 'BI', $fontSize[0]);
         PDF::Cell($w = 0, $h = 1, $txt = $certificateTypeText, $align = 'C', $border = '1', $calign = 'C');
 
         switch ($certificateType) {
@@ -363,93 +416,94 @@ class CertificateController extends MainController
         }
         
         PDF::Ln(1);
-        PDF::SetFont('badscript', 'I', 14);
+        PDF::SetFont($font[1], 'I', $fontSize[1]);
         PDF::Cell($w = 0, $h = 1, $txt = $certificateIntro, $align = 'C', $border = '1', $calign = 'C');
 
-        PDF::SetFont('bebasneue', 'B', 14);
+        PDF::SetFont($font[2], 'B', $fontSize[2]);
         PDF::MultiCell(190, 0, $userFullname, 0, 'C', 0, 1, 10);
 
-        PDF::SetFont('bebasneue', 'B', 14);
+        PDF::SetFont($font[2], 'B', $fontSize[2]);
         PDF::Cell($w = 0, $h = 1, $txt = '(' . $userIdentificationNumber . ')', $align = 'C', $border = '1', $calign = 'C');
         switch ($certificateType) {
             case 'participation':
                 PDF::Ln(2);
-                PDF::SetFont('badscript', 'I', 14);
+                PDF::SetFont($font[1], 'I', $fontSize[1]);
                 PDF::Cell($w = 0, $h = 1, $txt = 'Telah menyertai', $align = 'C', $border = '1', $calign = 'C');
 
-                PDF::SetFont('bebasneue', 'B', 14);
+                PDF::SetFont($font[2], 'B', $fontSize[2]);
                 PDF::MultiCell(190, 0, $eventName, 0, 'C', 0, 1, 10);
                 break;
             case 'achievement':
                 PDF::Ln(2);
-                PDF::SetFont('badscript', 'I', 14);
+                PDF::SetFont($font[1], 'I', $fontSize[1]);
                 PDF::Cell($w = 0, $h = 1, $txt = 'Di atas pencapaian', $align = 'C', $border = '1', $calign = 'C');
 
-                PDF::SetFont('bebasneue', 'B', 14);
+                PDF::SetFont($font[2], 'B', $fontSize[2]);
                 PDF::MultiCell(190, 0, $certificationPosition, 0, 'C', 0, 1, 10);
                 
                 PDF::Ln(2);
-                PDF::SetFont('badscript', 'I', 14);
+                PDF::SetFont($font[1], 'I', $fontSize[1]);
                 PDF::Cell($w = 0, $h = 1, $txt = 'Dalam', $align = 'C', $border = '1', $calign = 'C');
 
-                PDF::SetFont('bebasneue', 'B', 14);
+                PDF::SetFont($font[2], 'B', $fontSize[2]);
                 PDF::MultiCell(190, 0, $eventName, 0, 'C', 0, 1, 10);
                 break;
             case 'appreciation':
                 PDF::Ln(2);
-                PDF::SetFont('badscript', 'I', 14);
+                PDF::SetFont($font[1], 'I', $fontSize[1]);
                 PDF::Cell($w = 0, $h = 1, $txt = 'atas sumbangan dan komitmen sebagai', $align = 'C', $border = '1', $calign = 'C');
 
-                PDF::SetFont('bebasneue', 'B', 14);
+                PDF::SetFont($font[2], 'B', $fontSize[2]);
                 PDF::Cell($w = 0, $h = 1, $txt = $certificationPosition, $align = 'C', $border = '1', $calign = 'C');
                 
                 PDF::Ln(2);
-                PDF::SetFont('badscript', 'I', 14);
+                PDF::SetFont($font[1], 'I', $fontSize[1]);
                 PDF::Cell($w = 0, $h = 1, $txt = 'Dalam', $align = 'C', $border = '1', $calign = 'C');
 
-                PDF::SetFont('bebasneue', 'B', 14);
+                PDF::SetFont($font[2], 'B', $fontSize[2]);
                 PDF::MultiCell(190, 0, $eventName, 0, 'C', 0, 1, 10);
                 break;
             default:
                 break;
         }
         
-        // To Do: Category Issue #22
         if(Certificate::where('uid', $certificateID)->first()){
             if(Certificate::where('uid', $certificateID)->first()->category){
                 $category = Certificate::where('uid', $certificateID)->first()->category;
                 if($category !== NULL && $category !== ''){
                     PDF::Ln(2);
-                    PDF::SetFont('badscript', 'I', 14);
+                    PDF::SetFont($font[1], 'I', $fontSize[1]);
                     PDF::Cell($w = 0, $h = 1, $txt = 'Kategori', $align = 'C', $border = '1', $calign = 'C');
-                    PDF::SetFont('bebasneue', 'B', 14);
+                    PDF::SetFont($font[2], 'B', $fontSize[2]);
                     PDF::MultiCell(190, 0, strtoupper($category), 0, 'C', 0, 1, 10);
                 }
             }
         }
         
         PDF::Ln(2);
-        PDF::SetFont('badscript', 'I', 14);
+        PDF::SetFont($font[1], 'I', $fontSize[1]);
         PDF::Cell($w = 0, $h = 1, $txt = 'Pada', $align = 'C', $border = '1', $calign = 'C');
 
-        PDF::SetFont('bebasneue', 'B', 14);
+        PDF::SetFont($font[2], 'B', $fontSize[2]);
         PDF::MultiCell(190, 0, $eventDate, 0, 'C', 0, 1, 10);
 
         PDF::Ln(2);
-        PDF::SetFont('badscript', 'I', 14);
+        PDF::SetFont($font[1], 'I', $fontSize[1]);
         PDF::Cell($w = 0, $h = 1, $txt = 'Bertempat di', $align = 'C', $border = '1', $calign = 'C');
-        PDF::SetFont('bebasneue', 'B', 14);
+        PDF::SetFont($font[2], 'B', $fontSize[2]);
         PDF::MultiCell(190, 0, $eventLocation, 0, 'C', 0, 1, 10);
 
         PDF::Ln(2);
-        PDF::SetFont('badscript', 'I', 14);
+        PDF::SetFont($font[1], 'I', $fontSize[1]);
         PDF::Cell($w = 0, $h = 1, $txt = 'Anjuran', $align = 'C', $border = '1', $calign = 'C');
-        PDF::SetFont('bebasneue', 'B', 14);
+        PDF::SetFont($font[2], 'B', $fontSize[2]);
         PDF::MultiCell(190, 0, $eventOrganiserName, 0, 'C', 0, 1, 10);
 
         /**
          * Signatures
          */
+
+        $dots = '............................................';
 
         // If 3 signature
         if($certEvent->signature_first !== '' && $certEvent->signature_first !== NULL && $certEvent->signature_second !== '' && $certEvent->signature_second !== NULL && $certEvent->signature_third !== '' && $certEvent->signature_third !== NULL){
@@ -459,12 +513,12 @@ class CertificateController extends MainController
             }
             PDF::Image($certificationVerifierSignature, $x = 25, $y = 216, $w = 46.8, $h = 15.6);
 
-            PDF::SetFont('bebasneue', '', 12);
-            PDF::MultiCell($w = 55, $h = 0, $txt = '...........................................................', 0, 'C', 0, 0, 21, 226);
+            PDF::SetFont($font[3], '', $fontSize[3]);
+            PDF::MultiCell($w = 55, $h = 0, $txt = $dots, 0, 'C', 0, 0, 21, 230);
             PDF::Ln();
-            PDF::MultiCell($w = 55, $h = 0, $txt = '(' . $certEvent->signature_first_name . ')', 0, 'C', 0, 0, 21);
+            PDF::MultiCell($w = 55, $h = 0, $txt = '(' . strtoupper($certEvent->signature_first_name) . ')', 0, 'C', 0, 0, 21);
             PDF::Ln();
-            PDF::MultiCell($w = 55, $h = 0, $txt = $certEvent->signature_first_position, 0, 'C', 0, 0, 21);
+            PDF::MultiCell($w = 55, $h = 0, $txt = strtoupper($certEvent->signature_first_position), 0, 'C', 0, 0, 21);
 
             // Second
             if(Storage::disk('public')->exists($certEvent->signature_second)){
@@ -472,12 +526,12 @@ class CertificateController extends MainController
             }
             PDF::Image($certificationVerifierSignature, $x = 82, $y = 216, $w = 46.8, $h = 15.6);
 
-            PDF::SetFont('bebasneue', '', 12);
-            PDF::MultiCell($w = 55, $h = 0, $txt = '...........................................................', 0, 'C', 0, 0, 78, 226);
+            PDF::SetFont($font[3], '', $fontSize[3]);
+            PDF::MultiCell($w = 55, $h = 0, $txt = $dots, 0, 'C', 0, 0, 78, 230);
             PDF::Ln();
-            PDF::MultiCell($w = 55, $h = 0, $txt = '(' . $certEvent->signature_second_name . ')', 0, 'C', 0, 0, 78);
+            PDF::MultiCell($w = 55, $h = 0, $txt = '(' . strtoupper($certEvent->signature_second_name) . ')', 0, 'C', 0, 0, 78);
             PDF::Ln();
-            PDF::MultiCell($w = 55, $h = 0, $txt = $certEvent->signature_second_position, 0, 'C', 0, 0, 78);
+            PDF::MultiCell($w = 55, $h = 0, $txt = strtoupper($certEvent->signature_second_position), 0, 'C', 0, 0, 78);
 
             // Third
             if(Storage::disk('public')->exists($certEvent->signature_third)){
@@ -485,12 +539,12 @@ class CertificateController extends MainController
             }
             PDF::Image($certificationVerifierSignature, $x = 140, $y = 216, $w = 46.8, $h = 15.6);
 
-            PDF::SetFont('bebasneue', '', 12);
-            PDF::MultiCell($w = 55, $h = 0, $txt = '...........................................................', 0, 'C', 0, 0, 136, 226);
+            PDF::SetFont($font[3], '', $fontSize[3]);
+            PDF::MultiCell($w = 55, $h = 0, $txt = $dots, 0, 'C', 0, 0, 136, 230);
             PDF::Ln();
-            PDF::MultiCell($w = 55, $h = 0, $txt = '(' . $certEvent->signature_third_name . ')', 0, 'C', 0, 0, 136);
+            PDF::MultiCell($w = 55, $h = 0, $txt = '(' . strtoupper($certEvent->signature_third_name) . ')', 0, 'C', 0, 0, 136);
             PDF::Ln();
-            PDF::MultiCell($w = 55, $h = 0, $txt = $certEvent->signature_third_position, 0, 'C', 0, 0, 136);
+            PDF::MultiCell($w = 55, $h = 0, $txt = strtoupper($certEvent->signature_third_position), 0, 'C', 0, 0, 136);
         }elseif($certEvent->signature_first !== '' && $certEvent->signature_first !== NULL && $certEvent->signature_second !== '' && $certEvent->signature_second !== NULL){
             // If 2 signature
 
@@ -500,12 +554,12 @@ class CertificateController extends MainController
             }
             PDF::Image($certificationVerifierSignature, $x = 50, $y = 216, $w = 46.8, $h = 15.6);
 
-            PDF::SetFont('bebasneue', '', 12);
-            PDF::MultiCell($w = 55, $h = 0, $txt = '...........................................................', 0, 'C', 0, 0, 46, 226);
+            PDF::SetFont($font[3], '', $fontSize[3]);
+            PDF::MultiCell($w = 55, $h = 0, $txt = $dots, 0, 'C', 0, 0, 46, 230);
             PDF::Ln();
-            PDF::MultiCell($w = 55, $h = 0, $txt = '(' . $certEvent->signature_first_name . ')', 0, 'C', 0, 0, 46);
+            PDF::MultiCell($w = 55, $h = 0, $txt = '(' . strtoupper($certEvent->signature_first_name) . ')', 0, 'C', 0, 0, 46);
             PDF::Ln();
-            PDF::MultiCell($w = 55, $h = 0, $txt = $certEvent->signature_first_position, 0, 'C', 0, 0, 46);
+            PDF::MultiCell($w = 55, $h = 0, $txt = strtoupper($certEvent->signature_first_position), 0, 'C', 0, 0, 46);
 
             // Second
             if(Storage::disk('public')->exists($certEvent->signature_second)){
@@ -513,12 +567,12 @@ class CertificateController extends MainController
             }
             PDF::Image($certificationVerifierSignature, $x = 110, $y = 216, $w = 46.8, $h = 15.6);
 
-            PDF::SetFont('bebasneue', '', 12);
-            PDF::MultiCell($w = 55, $h = 0, $txt = '...........................................................', 0, 'C', 0, 0, 106, 226);
+            PDF::SetFont($font[3], '', $fontSize[3]);
+            PDF::MultiCell($w = 55, $h = 0, $txt = $dots, 0, 'C', 0, 0, 106, 230);
             PDF::Ln();
-            PDF::MultiCell($w = 55, $h = 0, $txt = '(' . $certEvent->signature_second_name . ')', 0, 'C', 0, 0, 106);
+            PDF::MultiCell($w = 55, $h = 0, $txt = '(' . strtoupper($certEvent->signature_second_name) . ')', 0, 'C', 0, 0, 106);
             PDF::Ln();
-            PDF::MultiCell($w = 55, $h = 0, $txt = $certEvent->signature_second_position, 0, 'C', 0, 0, 106);
+            PDF::MultiCell($w = 55, $h = 0, $txt = strtoupper($certEvent->signature_second_position), 0, 'C', 0, 0, 106);
         }elseif($certEvent->signature_first !== '' && $certEvent->signature_first !== NULL){
             // If 1 signature
 
@@ -528,12 +582,12 @@ class CertificateController extends MainController
             }
             PDF::Image($certificationVerifierSignature, $x = 82, $y = 216, $w = 46.8, $h = 15.6);
 
-            PDF::SetFont('bebasneue', '', 12);
-            PDF::MultiCell($w = 55, $h = 0, $txt = '...........................................................', 0, 'C', 0, 0, 78, 226);
+            PDF::SetFont($font[3], '', $fontSize[3]);
+            PDF::MultiCell($w = 55, $h = 0, $txt = $dots, 0, 'C', 0, 0, 78, 230);
             PDF::Ln();
-            PDF::MultiCell($w = 55, $h = 0, $txt = '(' . $certEvent->signature_first_name . ')', 0, 'C', 0, 0, 78);
+            PDF::MultiCell($w = 55, $h = 0, $txt = '(' . strtoupper($certEvent->signature_first_name) . ')', 0, 'C', 0, 0, 78);
             PDF::Ln();
-            PDF::MultiCell($w = 55, $h = 0, $txt = $certEvent->signature_first_position, 0, 'C', 0, 0, 78);
+            PDF::MultiCell($w = 55, $h = 0, $txt = strtoupper($certEvent->signature_first_position), 0, 'C', 0, 0, 78);
         }
        
         /**
@@ -568,7 +622,7 @@ class CertificateController extends MainController
                 break;
         }
 
-        PDF::Output('SeaJell_e_Certificate.pdf', 'I');
+        PDF::Output('SeaJell_e_Certificate.pdf', $mode);
         PDF::reset();
     }
 }
