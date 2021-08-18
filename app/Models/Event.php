@@ -52,7 +52,8 @@ class Event extends Model
         'visibility',
         'border',
         'border_color',
-        'text_color'
+        'text_color',
+        'font_set'
     ];
 
     /**

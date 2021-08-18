@@ -333,8 +333,33 @@ class CertificateController extends MainController
         $fontSizeFour = [45, 14.8, 11, 8];
         $fontSizeFive = [45, 16, 12, 8.8];
 
-        $font = $fontSetOne;
-        $fontSize = $fontSizeOne;
+        // To Do: Font set selection on add event page
+        switch ($certEvent->font_set) {
+            case 1:
+                $font = $fontSetOne;
+                $fontSize = $fontSizeOne;
+                break;
+            case 2:
+                $font = $fontSetTwo;
+                $fontSize = $fontSizeTwo;
+                break;
+            case 3:
+                $font = $fontSetThree;
+                $fontSize = $fontSizeThree;
+                break;
+            case 4:
+                $font = $fontSetFour;
+                $fontSize = $fontSizeFour;
+                break;
+            case 5:
+                $font = $fontSetFive;
+                $fontSize = $fontSizeFive;
+                break;
+            default:
+                $font = $fontSetOne;
+                $fontSize = $fontSizeOne;
+                break;
+        }
         /**
          * Logos
          * Check if institute logo is available

@@ -2,3 +2,5 @@
 !.gitignore
 !logo
 !logo/**
+!fontset
+!fontset/**

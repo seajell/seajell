@@ -76,6 +76,7 @@ class EventController extends MainController
             'signature-third' => ['image', 'mimes:png'],
             'background-image' => ['image', 'mimes:png'],
             'text-color' => ['required'],
+            'font-set' => ['required'],
             'border' => ['required'],
         ]);
         $eventName = $request->input('event-name');
@@ -268,6 +269,7 @@ class EventController extends MainController
             'visibility' => strtolower($visibility),
             'background_image' => $backgroundImageSavePath,
             'text_color' => $textColor,
+            'font_set' => $request->input('font-set'),
             'border' => $borderStatus,
             'border_color' => $borderColor,
         ]);
@@ -319,6 +321,7 @@ class EventController extends MainController
             'signature-first-position' => ['required'],
             'background-image' => ['image', 'mimes:png'],
             'text-color' => ['required'],
+            'font-set' => ['required'],
             'border' => ['required'],
         ]);
         $eventName = $request->input('event-name');
@@ -737,6 +740,7 @@ class EventController extends MainController
                 'visibility' => strtolower($visibility),
                 'background_image' => $backgroundImageSavePath,
                 'text_color' => $textColor,
+                'font_set' => $request->input('font-set'),
                 'border' => $borderStatus,
                 'border_color' => $borderColor,
             ]
@@ -759,6 +763,7 @@ class EventController extends MainController
             'signature_third',
             'visibility',
             'background_image',
+            'font_set',
             'text_color',
             'border',
             'border_color',

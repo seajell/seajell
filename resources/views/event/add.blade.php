@@ -200,6 +200,27 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         
         <hr>
         <p class="fs-5">Penyesuaian Gaya Sijil </p>
+        <label for="role" class="form-label">Set Font</label>
+        <select class="form-select mb-3" name="font-set" id="font-set" aria-label="font-set">
+            <option value="1">Set 1</option>
+            <option value="2">Set 2</option>
+            <option value="3">Set 3</option>
+            <option value="4">Set 4</option>
+            <option value="5">Set 5</option>
+        </select>
+        @error('font-set')
+            <div class="alert alert-danger">{{ $message }}</div>
+        @enderror
+        <div id="form_set_help" class="form-text">
+            <p>Set font ini menentukan font yang akan digunakan pada sijil. Lihat contoh hasil daripada set font di bawah:</p>
+            <ul>
+                <li><a href="{{ asset('storage/fontset/1/1.pdf') }}" target="_blank">Set 1</a></li>
+                <li><a href="{{ asset('storage/fontset/2/2.pdf') }}" target="_blank">Set 2</a></li>
+                <li><a href="{{ asset('storage/fontset/3/3.pdf') }}" target="_blank">Set 3</a></li>
+                <li><a href="{{ asset('storage/fontset/4/4.pdf') }}" target="_blank">Set 4</a></li>
+                <li><a href="{{ asset('storage/fontset/5/5.pdf') }}" target="_blank">Set 5</a></li>
+            </ul>
+        </div>
         <label class="form-label mt-3">Keterlihatan (Diperlukan)</label>
         <div class="form-check">
             <input class="form-check-input" type="radio" name="visibility" id="visibility1" value="public" checked>
@@ -241,13 +262,13 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         @enderror
         <label class="form-label mt-3"><span class="fst-italic">Border</span> (Diperlukan)</label>
         <div class="form-check">
-            <input class="form-check-input" type="radio" name="border" id="border1" value="available" checked>
+            <input class="form-check-input" type="radio" name="border" id="border1" value="available">
             <label class="form-check-label" for="border">
               Ada
             </label>
         </div>
         <div class="form-check mb-3">
-            <input class="form-check-input" type="radio" name="border" value="unavailable" id="border2">
+            <input class="form-check-input" type="radio" name="border" value="unavailable" id="border2" checked>
             <label class="form-check-label" for="border">
               Tiada
             </label>
