@@ -241,9 +241,19 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         @error('visibility')
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
-        <div class="my-3">
+        <div class="my-3 row">
             <label for="background-image" class="form-label">Gambar Latar Belakang (Pilihan)</label>
-            <input class="form-control" type="file" id="background-image" name="background-image">
+            <div class="col-10">
+                <input class="form-control" type="file" id="background-image" name="background-image">
+            </div>
+            <div class="col-2">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="checked" id="background-image-check" name="background-image-check">
+                    <label class="form-check-label" for="background-image-check">
+                        Ada
+                    </label>
+                </div>
+            </div>
         </div>
         <div id="background_image_help" class="form-text">
             Gambar latar belakang mestilah menggunakan format PNG. <br>
