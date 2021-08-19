@@ -27,7 +27,10 @@ document.addEventListener("DOMContentLoaded", function (event) {
         }else{
             logoSecond.disabled = true;
         }
+    }else{
+        logoSecond.disabled = true;
     }
+
     logoSecondCheck.addEventListener('change', function (event) {
         if (logoSecondCheck.checked) {
             logoSecond.disabled = false;
@@ -42,7 +45,10 @@ document.addEventListener("DOMContentLoaded", function (event) {
         }else{
             logoThird.disabled = true;
         }
+    }else{
+        logoThird.disabled = true;
     }
+
     logoThirdCheck.addEventListener('change', function (event) {
         if (logoThirdCheck.checked) {
             logoThird.disabled = false;
@@ -97,7 +103,10 @@ document.addEventListener("DOMContentLoaded", function (event) {
         }else{
             backgroundImage.disabled = true;
         }
+    }else{
+        backgroundImage.disabled = true;
     }
+
     backgroundImageCheck.addEventListener('change', function (event) {
         if (backgroundImageCheck.checked) {
             backgroundImage.disabled = false;
