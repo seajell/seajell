@@ -322,7 +322,6 @@ class CertificateController extends MainController
 
         // Font Sets
         // The font size must be set to match the font set appropriate sizes.
-        // Testing for 160 characters of A's.
         // Had to use the same font for verifier name and position since it's the only best combination.
         // Font 1: Certificate type
         // Font 2: Odd
@@ -335,11 +334,13 @@ class CertificateController extends MainController
         $fontSetFour = ['berkshireswash', 'satisfy', 'fredokaone', 'bebasneue', 'poppins'];
         $fontSetFive = ['kaushanscript', 'rancho', 'carterone', 'bebasneue', 'poppins'];
 
-        $fontSizeOne = [45, 14, 14, 13, 10];
-        $fontSizeTwo = [34.5, 14, 11, 13, 10];
-        $fontSizeThree = [35, 13, 11.5, 13, 10];
-        $fontSizeFour = [32, 14, 11, 13, 10];
-        $fontSizeFive = [30, 16.5, 11, 13, 10];
+        // Adding 1.5 to the font sizes since it's too small. After testing and evaluating, the font sizes below should be good enough. I think.
+        // Hoping there's no one or event that their name is too long.
+        $fontSizeOne = [45, 14, 14, 14.5, 11.5];
+        $fontSizeTwo = [36, 15.5, 12.5, 14.5, 11.5];
+        $fontSizeThree = [36.5, 14.5, 13, 14.5, 11.5];
+        $fontSizeFour = [33.5, 15.5, 12.5, 14.5, 11.5];
+        $fontSizeFive = [31.5, 18, 12.5, 14.5, 11.5];
 
         // To Do: Font set selection on add event page
         switch ($certEvent->font_set) {
