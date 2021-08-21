@@ -19,6 +19,7 @@
 namespace App\Http\Controllers;
 
 use PDF;
+use ZipArchive;
 use TCPDF_FONTS;
 use TCPDF_COLORS;
 use Carbon\Carbon;
@@ -230,13 +231,13 @@ class CertificateController extends MainController
             switch ($certEvent->visibility) {
                 case 'public':
                     // Certificate PDF generated will have QR code with the URL to the certificate in it
-                    $this->generateCertificate($request, $uid, 'I');
+                    $this->generateCertificate($uid, 'I');
                     break;
                 case 'hidden':
                     // Check if logged in
                     if(Auth::check()){
                         if(Gate::allows('authAdmin') || Certificate::where('uid', $uid)->first()->user_id == Auth::user()->id){
-                            $this->generateCertificate($request, $uid, 'I');
+                            $this->generateCertificate($uid, 'I');
                         }else{
                             return redirect()->route('home');
                         }
@@ -252,7 +253,7 @@ class CertificateController extends MainController
         }
     }
 
-    protected function generateCertificate($request, $certificateID, $mode = 'I'){
+    protected function generateCertificate($certificateID, $mode = 'I', $savePath = NULL){
         $certUser = Certificate::where('uid', $certificateID)->first()->user;
         $certEvent = Certificate::where('uid', $certificateID)->first()->event;
 
@@ -674,8 +675,98 @@ class CertificateController extends MainController
             default:
                 break;
         }
-
-        PDF::Output('SeaJell_e_Certificate.pdf', $mode);
+        
+        switch($mode){
+            case 'I':
+                PDF::Output('SeaJell_e_Certificate_' . $certificateID . '.pdf', 'I');
+                break;
+            case 'F':
+                if(!empty($savePath)){
+                    $fullPath = $savePath . 'SeaJell_e_Certificate_' . $certificateID . '.pdf';
+                    PDF::Output($fullPath, 'F');
+                }
+                break;
+            default:
+            PDF::Output('SeaJell_e_Certificate_' . $certificateID . '.pdf', 'I');
+                break;
+        }
         PDF::reset();
+    }
+
+    public function downloadCertificateCollection(Request $request){
+        /**
+         * Admin can download all certificates for a participant or an event.
+         * Participant can download certificates only for themselves.
+         * Downloads for event or user is limited to the user who tries to download it to every 24 hours.
+         */
+        if(Gate::allows('authAdmin')){
+            // Admin tries to download
+            $validated = $request->validate([
+                'id_username' => ['required']
+            ]);
+            if($request->has('collection_download_options')){
+                switch ($request->input('collection_download_options')) {
+                    case 'participant':
+                        if(User::where('role', 'participant')->where('username' , strtolower($request->input('id_username')))->first()){
+                            if(Certificate::join('users', 'certificates.user_id', 'users.id')->where('users.username', strtolower($request->input('id_username')))->first()){
+                                $certificates = Certificate::join('users', 'certificates.user_id', 'users.id')->where('users.username', strtolower($request->input('id_username')))->select('certificates.uid')->get();
+                                $currentTimestamp = Carbon::now()->timestamp;
+                                $folderName = 'user_' . $currentTimestamp; // Folder name to save all certificate in storage/app/certificate folder
+                                $savePath = storage_path('app/certificate/' . $folderName . '/');
+                                Storage::disk('local')->makeDirectory('/certificate/' . $folderName);
+                                // Saves all certificates relating to user to storage/app/certificate folder
+                                foreach ($certificates as $certificate) {
+                                    $this->generateCertificate($certificate->uid, 'F', $savePath);
+                                }
+                                // Archive all certificates to a zip file
+                                $zipName = $folderName . '.zip';
+                                $zip = new ZipArchive;
+                                $zipSavePath = storage_path('app/certificate/' . $folderName . '/' . $zipName);
+                                if ($zip->open($zipSavePath, ZipArchive::CREATE) === TRUE){
+                                    $files = Storage::disk('local')->files('/certificate/' . $folderName);
+                                    foreach ($files as $key => $value) {
+                                        $fileNameInZip = basename($value);
+                                        $filePath = storage_path('app/') . $value;
+                                        $zip->addFile($filePath, $fileNameInZip);
+                                    }
+                                    
+                                    $zip->close();
+                                }
+                                $downloadZipPath = $savePath . $folderName . '.zip';
+                                return response()->download($downloadZipPath);
+                            }else{
+                                return back()->withErrors([
+                                    'collectionNoCertificate' => 'Tiada sijil untuk koleksi tersebut!',
+                                ]);
+                            }
+                        }else{
+                            return back()->withErrors([
+                                'collectionUserNotFound' => 'Peserta tidak wujud!',
+                            ]);
+                        }
+                        break;
+                    case 'event':
+                        if(Event::where('id', $request->input('id_username'))->first()){
+                            // Saves all certificates relating to event to storage/app/certificate folder
+
+                        }else{
+                            return back()->withErrors([
+                                'collectionEventNotFound' => 'Acara tidak wujud!',
+                            ]);
+                        }
+                        break;
+                    default:
+                        return redirect()->back();
+                        break;
+                }
+            }
+        }else{
+
+        }if(!Gate::allows('authAdmin')){
+            // Participant tries to download
+
+        }else{
+            return redirect()->back();
+        }
     }
 }

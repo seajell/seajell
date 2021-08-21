@@ -112,6 +112,67 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         <span><div class="alert alert-success w-100 ml-1">{{ session('removeCertificateSuccess') }}</div></span>
     @endif
     <div class="row">
+        <div class="row my-3">
+            <div class="col-3">
+                <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#certificateCollectionDownloadModal"><i class="bi bi-download"></i> Muat Turun Koleksi Sijil</button>
+            </div>
+            <div class="col-9">
+                @error('id_username')
+                    <div class="alert alert-danger">Ruangan ID / Username diperlukan.</div>
+                @enderror
+                @error('collectionUserNotFound')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
+                @error('collectionEventNotFound')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror 
+                @error('collectionNoCertificate')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror 
+                @error('collection_limit')
+                    <div class="alert alert-danger">
+                        <p>Muat turun seterusnya boleh dilakukan selepas <span>00:00</span></p>
+                    </div>
+                @enderror  
+            </div>
+            {{-- Modal for certificate collection download --}}
+            <div class="modal fade" id="certificateCollectionDownloadModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <form action="{{ route('certificate.collection') }}" method="get">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="certificateCollectionDownloadModalLabel">Muat Turun Koleksi Sijil</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                @can('authAdmin')
+                                    <p>Muat turun koleksi sijil bagi peserta dan acara dihadkan kepada 24 jam untuk setiap cubaan.</p>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="collection_download_options" id="collectionDownloadOptions1" value="participant" checked>
+                                        <label class="form-check-label" for="collectionDownloadOptions1">Peserta</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="collection_download_options" id="collectionDownloadOptions2" value="event">
+                                        <label class="form-check-label" for="collectionDownloadOptions2">Acara</label>
+                                    </div>
+                                    <div class="form-floating mt-3">
+                                        <input type="text" class="form-control" id="id_username" name="id_username" placeholder="id_username">
+                                        <label for="id_username">ID Acara / Username</label>
+                                    </div>
+                                @endcan
+                                @cannot('authAdmin')
+                                    <p>Muat turun koleksi sijil dihadkan kepada 24 jam untuk setiap cubaan.</p>
+                                @endcannot
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                                <button type="submit" class="btn btn-dark"><i class="bi bi-download"></i> Muat Turun</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
         <div class="table-responsive">
             <table class="table table-dark table-striped w-100 rounded-3 table-bordered border-light align-middle">
                 @if ($certificates->count() > 0)
