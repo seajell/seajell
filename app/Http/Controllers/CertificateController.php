@@ -38,13 +38,61 @@ class CertificateController extends MainController
         return view('certificate.add')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName]);
     }
     public function certificateListView(Request $request){
-        if(Gate::allows('authAdmin')){
-            $certificates = Certificate::select('certificates.uid', 'certificates.type', 'certificates.position', 'certificates.category', 'users.fullname', 'events.name')->join('users', 'certificates.user_id', '=', 'users.id')->join('events', 'certificates.event_id', '=', 'events.id')->paginate(7);
-            return view('certificate.list')->with(['appVersion' => $this->appVersion, 'certificates' => $certificates, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName]);
+        $pagination = 15;
+            // Check for filters and search
+        if($request->filled('sort_by') AND $request->filled('sort_order') AND $request->has('search')){
+            $sortBy = $request->sort_by;
+            $sortOrder = $request->sort_order;
+            $search = $request->search;
+            if(!empty($search)){
+                switch($search){
+                    case 'penghargaan':
+                        $search = 'appreciation';
+                        break;
+                    case 'pencapaian':
+                        $search = 'achievement';
+                        break;
+                    case 'penyertaan':
+                        $search = 'participation';
+                        break;
+                    default:
+                        $search = $search;
+                        break;
+                }
+                if(Gate::allows('authAdmin')){
+                    $certificates = Certificate::join('users', 'certificates.user_id', 'users.id')->join('events', 'certificates.event_id', 'events.id')->select('certificates.uid', 'users.fullname', 'users.username','events.name', 'certificates.type', 'certificates.position', 'certificates.category')->where('certificates.uid', 'LIKE', "%{$search}%")->orWhere('users.fullname', 'LIKE', "%{$search}%")->orWhere('events.name', 'LIKE', "%{$search}%")->orWhere('certificates.type', 'LIKE', "%{$search}%")->orWhere('certificates.position', 'LIKE', "%{$search}%")->orWhere('certificates.category', 'LIKE', "%{$search}%")->orderBy($sortBy, $sortOrder)->paginate($pagination)->withQueryString();
+                }else{
+                    $certificates = Certificate::join('users', 'certificates.user_id', 'users.id')->join('events', 'certificates.event_id', 'events.id')->select('certificates.uid', 'users.fullname', 'users.username', 'events.name', 'certificates.type', 'certificates.position', 'certificates.category')->where('users.username', '=', Auth::user()->username)->where('certificates.uid', 'LIKE', "%{$search}%")->orWhere('users.fullname', 'LIKE', "%{$search}%")->orWhere('events.name', 'LIKE', "%{$search}%")->orWhere('certificates.type', 'LIKE', "%{$search}%")->orWhere('certificates.position', 'LIKE', "%{$search}%")->orWhere('certificates.category', 'LIKE', "%{$search}%")->orderBy($sortBy, $sortOrder)->paginate($pagination)->withQueryString();
+                }
+            }else{
+                if(Gate::allows('authAdmin')){
+                    $certificates = Certificate::join('users', 'certificates.user_id', 'users.id')->join('events', 'certificates.event_id', 'events.id')->select('certificates.uid', 'users.fullname', 'users.username', 'events.name', 'certificates.type', 'certificates.position', 'certificates.category')->orderBy($sortBy, $sortOrder)->paginate($pagination)->withQueryString();
+                }else{
+                    $certificates = Certificate::join('users', 'certificates.user_id', 'users.id')->join('events', 'certificates.event_id', 'events.id')->select('certificates.uid', 'users.fullname', 'users.username', 'events.name', 'certificates.type', 'certificates.position', 'certificates.category')->where('users.username', '=', Auth::user()->username)->orderBy($sortBy, $sortOrder)->paginate($pagination)->withQueryString();
+                }
+            }
+            $sortAndSearch = [
+                'sortBy' => $sortBy,
+                'sortOrder' => $sortOrder,
+                'search' => $search
+            ];
+            return view('certificate.list')->with(['sortAndSearch' => $sortAndSearch, 'certificates' => $certificates, 'appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName]);
         }else{
-            $certificates = Certificate::select('certificates.uid', 'certificates.type', 'certificates.position', 'certificates.category', 'users.fullname', 'events.name')->join('users', 'certificates.user_id', '=', 'users.id')->join('events', 'certificates.event_id', '=', 'events.id')->where('username', Auth::user()->username)->paginate(7);
-            return view('certificate.list')->with(['appVersion' => $this->appVersion, 'certificates' => $certificates, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName]);
+            if(Gate::allows('authAdmin')){
+                $certificates = Certificate::join('users', 'certificates.user_id', 'users.id')->join('events', 'certificates.event_id', 'events.id')->select('certificates.uid', 'users.fullname', 'users.username', 'events.name', 'certificates.type', 'certificates.position', 'certificates.category')->paginate($pagination)->withQueryString();
+            }else{
+                $certificates = Certificate::join('users', 'certificates.user_id', 'users.id')->join('events', 'certificates.event_id', 'events.id')->select('certificates.uid', 'users.fullname', 'users.username', 'events.name', 'certificates.type', 'certificates.position', 'certificates.category')->where('users.username', '=', Auth::user()->username)->paginate($pagination)->withQueryString();
+            }
+            return view('certificate.list')->with(['certificates' => $certificates, 'appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName]);
         }
+
+        // if(Gate::allows('authAdmin')){
+        //     $certificates = Certificate::select('certificates.uid', 'certificates.type', 'certificates.position', 'certificates.category', 'users.fullname', 'events.name')->join('users', 'certificates.user_id', '=', 'users.id')->join('events', 'certificates.event_id', '=', 'events.id')->paginate(7);
+        //     return view('certificate.list')->with(['appVersion' => $this->appVersion, 'certificates' => $certificates, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName]);
+        // }else{
+        //     $certificates = Certificate::select('certificates.uid', 'certificates.type', 'certificates.position', 'certificates.category', 'users.fullname', 'events.name')->join('users', 'certificates.user_id', '=', 'users.id')->join('events', 'certificates.event_id', '=', 'events.id')->where('username', Auth::user()->username)->paginate(7);
+        //     return view('certificate.list')->with(['appVersion' => $this->appVersion, 'certificates' => $certificates, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName]);
+        // }
     }
 
     public function updateCertificateView(Request $request, $uid){
