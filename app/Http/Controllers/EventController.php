@@ -29,17 +29,27 @@ use App\Http\Controllers\MainController;
 class EventController extends MainController
 {
     public function eventListView(Request $request){
-        // id
-        // name
-        // date
-        // location
-        // organiser-name
-        // organiser-logo
-        // institute-name
-        // institute-logo
-        // visibility
-        $events = Event::paginate(7);
-        return view('event.list')->with(['events' => $events, 'appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName]);
+        $pagination = 15;
+        $events = Event::paginate($pagination)->withQueryString();
+            // Check for filters and search
+        if($request->filled('sort_by') AND $request->filled('sort_order') AND $request->has('search')){
+            $sortBy = $request->sort_by;
+            $sortOrder = $request->sort_order;
+            $search = $request->search;
+            if(!empty($search)){
+                $events = Event::where('id', 'LIKE', "%{$search}%")->orWhere('name', 'LIKE', "%{$search}%")->orWhere('date', 'LIKE', "%{$search}%")->orWhere('location', 'LIKE', "%{$search}%")->orWhere('organiser_name', 'LIKE', "%{$search}%")->orWhere('visibility', 'LIKE', "%{$search}%")->orderBy($sortBy, $sortOrder)->paginate($pagination)->withQueryString();
+            }else{
+                $events = Event::orderBy($sortBy, $sortOrder)->paginate($pagination)->withQueryString();
+            }
+            $sortAndSearch = [
+                'sortBy' => $sortBy,
+                'sortOrder' => $sortOrder,
+                'search' => $search
+            ];
+            return view('event.list')->with(['sortAndSearch' => $sortAndSearch,'events' => $events, 'appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName]);
+        }else{
+            return view('event.list')->with(['events' => $events, 'appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName]);
+        }
     }
 
     public function addEventView(Request $request){

@@ -31,8 +31,27 @@ class UserController extends MainController
         return view('login')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName]);
     }
     public function userListView(Request $request){
-        $users = User::select('id', 'username', 'fullname', 'email', 'role')->paginate(7);
-        return view('user.list')->with(['users' => $users, 'appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName]);
+        $pagination = 15;
+        $users = User::paginate($pagination)->withQueryString();
+            // Check for filters and search
+        if($request->filled('sort_by') AND $request->filled('sort_order') AND $request->has('search')){
+            $sortBy = $request->sort_by;
+            $sortOrder = $request->sort_order;
+            $search = $request->search;
+            if(!empty($search)){
+                $users = User::where('id', 'LIKE', "%{$search}%")->orWhere('username', 'LIKE', "%{$search}%")->orWhere('fullname', 'LIKE', "%{$search}%")->orWhere('email', 'LIKE', "%{$search}%")->orWhere('role', 'LIKE', "%{$search}%")->orderBy($sortBy, $sortOrder)->paginate($pagination)->withQueryString();
+            }else{
+                $users = User::orderBy($sortBy, $sortOrder)->paginate($pagination)->withQueryString();
+            }
+            $sortAndSearch = [
+                'sortBy' => $sortBy,
+                'sortOrder' => $sortOrder,
+                'search' => $search
+            ];
+            return view('user.list')->with(['sortAndSearch' => $sortAndSearch,'users' => $users, 'appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName]);
+        }else{
+            return view('user.list')->with(['users' => $users, 'appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName]);
+        }
     }
     public function addUserView(Request $request){
         return view('user.add')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName]);
