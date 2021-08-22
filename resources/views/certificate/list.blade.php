@@ -113,10 +113,10 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
     @endif
     <div class="row">
         <div class="row my-3">
-            <div class="col-3">
+            <div class="col-4">
                 <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#certificateCollectionDownloadModal"><i class="bi bi-download"></i> Muat Turun Koleksi Sijil</button>
             </div>
-            <div class="col-9">
+            <div class="col-8">
                 @error('id_username')
                     <div class="alert alert-danger">Ruangan ID / Username diperlukan.</div>
                 @enderror
@@ -131,9 +131,17 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                 @enderror 
                 @error('collectionLimit')
                     <div class="alert alert-danger">
+                        <p>Muat turun telah dihadkan!</p>
                         <p>Muat turun seterusnya boleh dilakukan selepas <span class="fw-bold">{{ $message }}</span></p>
                     </div>
-                @enderror  
+                @enderror
+                @if(session()->has('collectionDownloadSuccessPath'))
+                    <div class="alert alert-success">
+                        <div class="row">
+                            <span>Klik pautan ini untuk muat turun koleksi: <a href="{{ session('collectionDownloadSuccessPath') }}" class="fw-bold">MUAT TURUN</a></span>
+                        </div>
+                    </div>
+                @endif  
             </div>
             {{-- Modal for certificate collection download --}}
             <div class="modal fade" id="certificateCollectionDownloadModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -146,7 +154,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                             </div>
                             <div class="modal-body">
                                 @can('authAdmin')
-                                    <p>Muat turun koleksi sijil bagi peserta dan acara dihadkan kepada 24 jam untuk setiap cubaan.</p>
+                                    <p>Muat turun koleksi sijil bagi peserta dan acara dihadkan kepada 24 jam untuk setiap muat turun.</p>
                                     <p class="text-danger">Perhatian: Muat turun bagi koleksi yang mempunyai banyak sijil akan mengurangkan prestasi server sewaktu proses muat turun!</p>
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="collection_download_options" id="collectionDownloadOptions1" value="participant" checked>
@@ -162,7 +170,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                                     </div>
                                 @endcan
                                 @cannot('authAdmin')
-                                    <p>Muat turun koleksi sijil dihadkan kepada 24 jam untuk setiap cubaan.</p>
+                                    <p>Muat turun koleksi sijil bagi peserta dan acara dihadkan kepada 24 jam untuk setiap muat turun.</p>
                                 @endcannot
                             </div>
                             <div class="modal-footer">
