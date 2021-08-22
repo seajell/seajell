@@ -4,3 +4,5 @@
 !logo/**
 !fontset
 !fontset/**
+!errors
+!errors/**

@@ -227,7 +227,7 @@ class CertificateController extends MainController
     }
 
     public function certificateView(Request $request, $uid){
-        if(Certificate::where('uid', $uid)){
+        if(Certificate::where('uid', $uid)->first()){
             $certEvent = Certificate::where('uid', $uid)->first()->event;
             // Check for event visibility
             switch ($certEvent->visibility) {
