@@ -762,7 +762,7 @@ class CertificateController extends MainController
                                 if(CertificateCollectionHistory::where('user_id', $participantID)->orWhere('event_id', strtolower($request->input('id_username')))->first()){
                                     $latestRequest = CertificateCollectionHistory::where('user_id', $participantID)->orWhere('event_id', strtolower($request->input('id_username')))->latest('requested_on')->first();
                                     if(Carbon::now()->toDateTimeString() > $latestRequest->next_available_download){
-                                        // If the date already passed the last download
+                                        // If the date already passed the last download of 24 hour
                                         $request->session()->flash('collectionDownloadSuccess', 'Koleksi sijil berjaya dimuat turun!');
                                         return response()->download($this->saveCertificateCollection($request));
                                     }else{

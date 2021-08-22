@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
@@ -21,6 +22,7 @@ use App\Http\Controllers\InstallationController;
 /**
  * Installation
  */
+
 Route::get('/install', [InstallationController::class, 'installView'])->name('install.view');
 Route::get('/install/config', [InstallationController::class, 'installConfigView'])->name('install.config');
 Route::post('/install/config', [InstallationController::class, 'install']);
