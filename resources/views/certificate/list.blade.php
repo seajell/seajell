@@ -129,9 +129,9 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                 @error('collectionNoCertificate')
                     <div class="alert alert-danger">{{ $message }}</div>
                 @enderror 
-                @error('collection_limit')
+                @error('collectionLimit')
                     <div class="alert alert-danger">
-                        <p>Muat turun seterusnya boleh dilakukan selepas <span>00:00</span></p>
+                        <p>Muat turun seterusnya boleh dilakukan selepas <span class="fw-bold">{{ $message }}</span></p>
                     </div>
                 @enderror  
             </div>
@@ -147,6 +147,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                             <div class="modal-body">
                                 @can('authAdmin')
                                     <p>Muat turun koleksi sijil bagi peserta dan acara dihadkan kepada 24 jam untuk setiap cubaan.</p>
+                                    <p class="text-danger">Perhatian: Muat turun bagi koleksi yang mempunyai banyak sijil akan mengurangkan prestasi server sewaktu proses muat turun!</p>
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="collection_download_options" id="collectionDownloadOptions1" value="participant" checked>
                                         <label class="form-check-label" for="collectionDownloadOptions1">Peserta</label>

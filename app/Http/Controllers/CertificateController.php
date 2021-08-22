@@ -32,6 +32,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\MainController;
+use App\Models\CertificateCollectionHistory;
+use App\Models\CertificateCollectionDeletionSchedule;
 
 class CertificateController extends MainController
 {
@@ -693,6 +695,52 @@ class CertificateController extends MainController
         PDF::reset();
     }
 
+    protected function saveCertificateCollection($request){
+        $certificates = Certificate::join('users', 'certificates.user_id', 'users.id')->where('users.username', strtolower($request->input('id_username')))->select('certificates.uid')->get();
+        $currentTimestamp = Carbon::now()->timestamp;
+        $folderName = 'user_' . $currentTimestamp; // Folder name to save all certificate in storage/app/certificate folder
+        $savePath = storage_path('app/certificate/' . $folderName . '/');
+        Storage::disk('local')->makeDirectory('/certificate/' . $folderName);
+        // Saves all certificates relating to user to storage/app/certificate folder
+        foreach ($certificates as $certificate) {
+            $this->generateCertificate($certificate->uid, 'F', $savePath);
+        }
+        // Archive all certificates to a zip file
+        $zipName = $folderName . '.zip';
+        $zip = new ZipArchive;
+        $zipSavePath = storage_path('app/certificate/' . $folderName . '/' . $zipName);
+        if ($zip->open($zipSavePath, ZipArchive::CREATE) === TRUE){
+            $files = Storage::disk('local')->files('/certificate/' . $folderName);
+            foreach ($files as $key => $value) {
+                $fileNameInZip = basename($value);
+                $filePath = storage_path('app/') . $value;
+                $zip->addFile($filePath, $fileNameInZip);
+            }
+            
+            $zip->close();
+        }
+        $downloadZipPath = $savePath . $folderName . '.zip';
+        // Get participant ID from username
+        $participantID = User::select('id')->where('username', strtolower($request->input('id_username')))->first()->id;
+        // Certificates Total
+        $certificatesTotal = $certificates->count();
+        // Current Date and Next 24 hour
+        $currentDateTime = Carbon::now()->toDateTimeString();
+        $next24HourDateTime = Carbon::parse($currentDateTime)->addDays(1);
+        CertificateCollectionHistory::create([
+            'requested_by' => Auth::user()->id,
+            'requested_on' => $currentDateTime,
+            'next_available_download' => $next24HourDateTime,
+            'user_id' => $participantID,
+            'event_id' => NULL,
+            'certificates_total' => $certificatesTotal
+        ]);
+        CertificateCollectionDeletionSchedule::create([
+            'folder_name' => $folderName,
+            'delete_after' => $next24HourDateTime
+        ]);
+        return $downloadZipPath;
+    }
     public function downloadCertificateCollection(Request $request){
         /**
          * Admin can download all certificates for a participant or an event.
@@ -709,31 +757,24 @@ class CertificateController extends MainController
                     case 'participant':
                         if(User::where('role', 'participant')->where('username' , strtolower($request->input('id_username')))->first()){
                             if(Certificate::join('users', 'certificates.user_id', 'users.id')->where('users.username', strtolower($request->input('id_username')))->first()){
-                                $certificates = Certificate::join('users', 'certificates.user_id', 'users.id')->where('users.username', strtolower($request->input('id_username')))->select('certificates.uid')->get();
-                                $currentTimestamp = Carbon::now()->timestamp;
-                                $folderName = 'user_' . $currentTimestamp; // Folder name to save all certificate in storage/app/certificate folder
-                                $savePath = storage_path('app/certificate/' . $folderName . '/');
-                                Storage::disk('local')->makeDirectory('/certificate/' . $folderName);
-                                // Saves all certificates relating to user to storage/app/certificate folder
-                                foreach ($certificates as $certificate) {
-                                    $this->generateCertificate($certificate->uid, 'F', $savePath);
-                                }
-                                // Archive all certificates to a zip file
-                                $zipName = $folderName . '.zip';
-                                $zip = new ZipArchive;
-                                $zipSavePath = storage_path('app/certificate/' . $folderName . '/' . $zipName);
-                                if ($zip->open($zipSavePath, ZipArchive::CREATE) === TRUE){
-                                    $files = Storage::disk('local')->files('/certificate/' . $folderName);
-                                    foreach ($files as $key => $value) {
-                                        $fileNameInZip = basename($value);
-                                        $filePath = storage_path('app/') . $value;
-                                        $zip->addFile($filePath, $fileNameInZip);
+                                // Check for download limit
+                                $participantID = User::select('id')->where('username', strtolower($request->input('id_username')))->first()->id;
+                                if(CertificateCollectionHistory::where('user_id', $participantID)->orWhere('event_id', strtolower($request->input('id_username')))->first()){
+                                    $latestRequest = CertificateCollectionHistory::where('user_id', $participantID)->orWhere('event_id', strtolower($request->input('id_username')))->latest('requested_on')->first();
+                                    if(Carbon::now()->toDateTimeString() > $latestRequest->next_available_download){
+                                        // If the date already passed the last download
+                                        $request->session()->flash('collectionDownloadSuccess', 'Koleksi sijil berjaya dimuat turun!');
+                                        return response()->download($this->saveCertificateCollection($request));
+                                    }else{
+                                        return back()->withErrors([
+                                            'collectionLimit' => $latestRequest->next_available_download,
+                                        ]);
                                     }
-                                    
-                                    $zip->close();
+                                }else{
+                                    // No old download history
+                                    $request->session()->flash('collectionDownloadSuccess', 'Koleksi sijil berjaya dimuat turun!');
+                                    return response()->download($this->saveCertificateCollection($request));
                                 }
-                                $downloadZipPath = $savePath . $folderName . '.zip';
-                                return response()->download($downloadZipPath);
                             }else{
                                 return back()->withErrors([
                                     'collectionNoCertificate' => 'Tiada sijil untuk koleksi tersebut!',
