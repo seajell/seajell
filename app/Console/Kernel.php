@@ -2,7 +2,11 @@
 
 namespace App\Console;
 
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Console\Scheduling\Schedule;
+use App\Console\Commands\DeleteCertificateCollection;
+use App\Models\CertificateCollectionDeletionSchedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 class Kernel extends ConsoleKernel
@@ -13,7 +17,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        Commands\DeleteCertificateCollection::class
     ];
 
     /**
@@ -24,7 +28,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        // Task to delete certificate collection folder every 3 hours.
+        $schedule->command('deleteCertificateCollection')->everyThreeHours();
     }
 
     /**
@@ -38,4 +43,5 @@ class Kernel extends ConsoleKernel
 
         require base_path('routes/console.php');
     }
+
 }

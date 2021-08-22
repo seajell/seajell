@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
@@ -21,6 +22,7 @@ use App\Http\Controllers\InstallationController;
 /**
  * Installation
  */
+
 Route::get('/install', [InstallationController::class, 'installView'])->name('install.view');
 Route::get('/install/config', [InstallationController::class, 'installConfigView'])->name('install.config');
 Route::post('/install/config', [InstallationController::class, 'install']);
@@ -56,3 +58,5 @@ Route::post('/certificate/add', [CertificateController::class, 'addCertificate']
 Route::post('/certificate/remove', [CertificateController::class, 'removeCertificate'])->name('certificate.remove')->middleware(['auth','UserIsAdmin']);
 Route::get('/certificate/update/{uid}', [CertificateController::class, 'updateCertificateView'])->name('certificate.update')->middleware(['auth','UserIsAdmin']);
 Route::post('/certificate/update/{uid}', [CertificateController::class, 'updateCertificate'])->middleware(['auth','UserIsAdmin']);
+// Download Certificate Collection
+Route::get('/certificate/collection', [CertificateController::class, 'downloadCertificateCollection'])->name('certificate.collection')->middleware(['auth']);

@@ -19,6 +19,7 @@
 namespace App\Http\Controllers;
 
 use PDF;
+use ZipArchive;
 use TCPDF_FONTS;
 use TCPDF_COLORS;
 use Carbon\Carbon;
@@ -31,6 +32,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\MainController;
+use App\Models\CertificateCollectionHistory;
+use App\Models\CertificateCollectionDeletionSchedule;
 
 class CertificateController extends MainController
 {
@@ -230,13 +233,13 @@ class CertificateController extends MainController
             switch ($certEvent->visibility) {
                 case 'public':
                     // Certificate PDF generated will have QR code with the URL to the certificate in it
-                    $this->generateCertificate($request, $uid, 'I');
+                    $this->generateCertificate($uid, 'I');
                     break;
                 case 'hidden':
                     // Check if logged in
                     if(Auth::check()){
                         if(Gate::allows('authAdmin') || Certificate::where('uid', $uid)->first()->user_id == Auth::user()->id){
-                            $this->generateCertificate($request, $uid, 'I');
+                            $this->generateCertificate($uid, 'I');
                         }else{
                             return redirect()->route('home');
                         }
@@ -252,7 +255,7 @@ class CertificateController extends MainController
         }
     }
 
-    protected function generateCertificate($request, $certificateID, $mode = 'I'){
+    protected function generateCertificate($certificateID, $mode = 'I', $savePath = NULL){
         $certUser = Certificate::where('uid', $certificateID)->first()->user;
         $certEvent = Certificate::where('uid', $certificateID)->first()->event;
 
@@ -674,8 +677,188 @@ class CertificateController extends MainController
             default:
                 break;
         }
-
-        PDF::Output('SeaJell_e_Certificate.pdf', $mode);
+        
+        switch($mode){
+            case 'I':
+                PDF::Output('SeaJell_e_Certificate_' . $certificateID . '.pdf', 'I');
+                break;
+            case 'F':
+                if(!empty($savePath)){
+                    $fullPath = $savePath . 'SeaJell_e_Certificate_' . $certificateID . '.pdf';
+                    PDF::Output($fullPath, 'F');
+                }
+                break;
+            default:
+            PDF::Output('SeaJell_e_Certificate_' . $certificateID . '.pdf', 'I');
+                break;
+        }
         PDF::reset();
+    }
+
+    protected function saveCertificateCollection($request, $certificates, $folderFor, $historyDataUser, $historyDataEvent){
+        $currentTimestamp = Carbon::now()->timestamp;
+        $folderName = $folderFor . $currentTimestamp; // Folder name to save all certificate in storage/app/certificate folder
+        $savePath = storage_path('app/certificate/' . $folderName . '/');
+        Storage::disk('local')->makeDirectory('/certificate/' . $folderName);
+        // Saves all certificates relating to user to storage/app/certificate folder
+        foreach ($certificates as $certificate) {
+            $this->generateCertificate($certificate->uid, 'F', $savePath);
+        }
+        // Archive all certificates to a zip file
+        $zipName = $folderName . '.zip';
+        $zip = new ZipArchive;
+        $zipSavePath = storage_path('app/certificate/' . $folderName . '/' . $zipName);
+        if ($zip->open($zipSavePath, ZipArchive::CREATE) === TRUE){
+            $files = Storage::disk('local')->files('/certificate/' . $folderName);
+            foreach ($files as $key => $value) {
+                $fileNameInZip = basename($value);
+                $filePath = storage_path('app/') . $value;
+                $zip->addFile($filePath, $fileNameInZip);
+            }
+            
+            $zip->close();
+        }
+        $downloadZipPath = asset('certificate/' . $folderName . '/' . $folderName . '.zip');
+        // Certificates Total
+        $certificatesTotal = $certificates->count();
+        // Current Date and Next 24 hour
+        $currentDateTime = Carbon::now()->toDateTimeString();
+        $next24HourDateTime = Carbon::parse($currentDateTime)->addDays(1);
+        CertificateCollectionHistory::create([
+            'requested_by' => Auth::user()->id,
+            'requested_on' => $currentDateTime,
+            'next_available_download' => $next24HourDateTime,
+            'user_id' => $historyDataUser,
+            'event_id' => $historyDataEvent,
+            'certificates_total' => $certificatesTotal
+        ]);
+        CertificateCollectionDeletionSchedule::create([
+            'folder_name' => $folderName,
+            'delete_after' => $next24HourDateTime
+        ]);
+        return $downloadZipPath;
+    }
+
+    public function downloadCertificateCollection(Request $request){
+        /**
+         * Admin can download all certificates for a participant or an event.
+         * Participant can download certificates only for themselves.
+         * Downloads for event or user is limited to the user who tries to download it to every 24 hours.
+         */
+        if(Gate::allows('authAdmin')){
+            // Admin tries to download
+            $validated = $request->validate([
+                'id_username' => ['required']
+            ]);
+            if($request->has('collection_download_options')){
+                switch ($request->input('collection_download_options')) {
+                    case 'participant':
+                        if(User::where('role', 'participant')->where('username' , strtolower($request->input('id_username')))->first()){
+                            // Checks if certificate exist.
+                            if(Certificate::join('users', 'certificates.user_id', 'users.id')->where('users.username', strtolower($request->input('id_username')))->first()){
+                                // Check for download limit
+                                $participantID = User::select('id')->where('username', strtolower($request->input('id_username')))->first()->id;
+                                $certificates = Certificate::join('users', 'certificates.user_id', 'users.id')->where('users.username', strtolower($request->input('id_username')))->select('certificates.uid')->get();
+                                $folderFor = 'user_';
+                                $historyDataUser = User::select('id')->where('username', strtolower($request->input('id_username')))->first()->id;
+                                $historyDataEvent = NULL;
+                                // If collection download is for a user and is done by current authenticated user
+                                if(CertificateCollectionHistory::where('user_id', $participantID)->where('requested_by', Auth::user()->id)->first()){
+                                    $latestRequest = CertificateCollectionHistory::where('user_id', $participantID)->where('requested_by', Auth::user()->id)->latest('requested_on')->first();
+                                    if(Carbon::now()->toDateTimeString() > $latestRequest->next_available_download){
+                                        // If the date already passed the last download for 24 hour
+                                        $request->session()->flash('collectionDownloadSuccessPath', $this->saveCertificateCollection($request, $certificates, $folderFor, $historyDataUser, $historyDataEvent));
+                                        return back();
+                                    }else{
+                                        return back()->withErrors([
+                                            'collectionLimit' => $latestRequest->next_available_download,
+                                        ]);
+                                    }
+                                }else{
+                                    // No old download history
+                                    $request->session()->flash('collectionDownloadSuccessPath', $this->saveCertificateCollection($request, $certificates, $folderFor, $historyDataUser, $historyDataEvent));
+                                    return back();
+                                }
+                            }else{
+                                return back()->withErrors([
+                                    'collectionNoCertificate' => 'Tiada sijil untuk koleksi tersebut!',
+                                ]);
+                            }
+                        }else{
+                            return back()->withErrors([
+                                'collectionUserNotFound' => 'Peserta tidak wujud!',
+                            ]);
+                        }
+                        break;
+                    case 'event':
+                        if(Event::where('id', $request->input('id_username'))->first()){
+                            // Checks if certificate exist
+                            if(Certificate::where('event_id', $request->input('id_username'))->first()){
+                                // Check for download limit
+                                $certificates = Certificate::where('event_id', $request->input('id_username'))->select('certificates.uid')->get();
+                                $folderFor = 'event_';
+                                $historyDataUser = NULL;
+                                $historyDataEvent = $request->input('id_username');
+                                if(CertificateCollectionHistory::where('event_id', $request->input('id_username'))->first()){
+                                    $latestRequest = CertificateCollectionHistory::where('event_id', $request->input('id_username'))->latest('requested_on')->first();
+                                    if(Carbon::now()->toDateTimeString() > $latestRequest->next_available_download){
+                                        // If the date already passed the last download for 24 hour
+                                        $request->session()->flash('collectionDownloadSuccessPath', $this->saveCertificateCollection($request, $certificates, $folderFor, $historyDataUser, $historyDataEvent));
+                                        return back();
+                                    }else{
+                                        return back()->withErrors([
+                                            'collectionLimit' => $latestRequest->next_available_download,
+                                        ]);
+                                    }
+                                }else{
+                                    // No old download history
+                                    $request->session()->flash('collectionDownloadSuccessPath', $this->saveCertificateCollection($request, $certificates, $folderFor, $historyDataUser, $historyDataEvent));
+                                    return back();
+                                }
+                            }
+                        }else{
+                            return back()->withErrors([
+                                'collectionEventNotFound' => 'Acara tidak wujud!',
+                            ]);
+                        }
+                        break;
+                    default:
+                        return redirect()->back();
+                }
+            }
+        }elseif(!Gate::allows('authAdmin')){
+            // Participant downloads collection for themself
+            if(Certificate::where('user_id', Auth::user()->id)->first()){
+                // Check for download limit
+                $participantID = Auth::user()->id;
+                $certificates = Certificate::where('user_id', $participantID)->select('certificates.uid')->get();
+                $folderFor = 'user_';
+                $historyDataUser = $participantID;
+                $historyDataEvent = NULL;
+                // If collection download is for a user and is done by current authenticated user
+                if(CertificateCollectionHistory::where('user_id', $participantID)->where('requested_by', Auth::user()->id)->first()){
+                    $latestRequest = CertificateCollectionHistory::where('user_id', $participantID)->where('requested_by', Auth::user()->id)->latest('requested_on')->first();
+                    if(Carbon::now()->toDateTimeString() > $latestRequest->next_available_download){
+                        // If the date already passed the last download for 24 hour
+                        $request->session()->flash('collectionDownloadSuccessPath', $this->saveCertificateCollection($request, $certificates, $folderFor, $historyDataUser, $historyDataEvent));
+                        return back();
+                    }else{
+                        return back()->withErrors([
+                            'collectionLimit' => $latestRequest->next_available_download,
+                        ]);
+                    }
+                }else{
+                    // No old download history
+                    $request->session()->flash('collectionDownloadSuccessPath', $this->saveCertificateCollection($request, $certificates, $folderFor, $historyDataUser, $historyDataEvent));
+                    return back();
+                }
+            }else{
+                return back()->withErrors([
+                    'collectionNoCertificate' => 'Tiada sijil untuk koleksi tersebut!',
+                ]);
+            }
+        }else{
+            return redirect()->back();
+        }
     }
 }
