@@ -85,7 +85,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
     <form action="{{ route('user.add.bulk') }}" method="post" class="mb-3" enctype="multipart/form-data">
         @csrf
         <p class="fs-4">Tambah Pengguna Secara Pukal</p>
-        <p>Anda hanya boleh menambah 50 pengguna pada satu-satu masa.</p>
+        <p>Anda hanya boleh menambah 500 pengguna pada satu-satu masa.</p>
         <p>Jika terdapat duplikasi baris yang mempunyai username yang sama, baris terkini akan ditambah.</p>
         <p>Dapatkan templat dengan menekan butang muat turun di bawah.</p>
         <a href="{{ asset('storage/template/Template_User_ms_MY.xlsx') }}" class="btn btn-dark"><i class="bi bi-download"></i> Muat Turun Templat</a>
