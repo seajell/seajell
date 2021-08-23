@@ -63,3 +63,4 @@ Route::get('/certificate/collection', [CertificateController::class, 'downloadCe
 
 // Bulk add route
 Route::post('/user/addBulk', [UserController::class, 'addUserBulk'])->name('user.add.bulk')->middleware(['auth','UserIsAdmin']);
+Route::post('/certificate/addBulk', [CertificateController::class, 'addCertificateBulk'])->name('certificate.add.bulk')->middleware(['auth','UserIsAdmin']);

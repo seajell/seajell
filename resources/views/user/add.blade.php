@@ -90,7 +90,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         <p>Dapatkan templat dengan menekan butang muat turun di bawah.</p>
         <a href="{{ asset('storage/template/Template_User_ms_MY.xlsx') }}" class="btn btn-dark"><i class="bi bi-download"></i> Muat Turun Templat</a>
         <div class="my-3">
-            <label for="user_list" class="form-label">Senarai Pengguna</label>
+            <label for="user_list" class="form-label">Fail Senarai Pengguna</label>
             <input class="form-control" type="file" id="user_list" name="user_list">
         </div>
         @if(session()->has('spreadsheetSuccess'))

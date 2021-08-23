@@ -160,7 +160,6 @@ class UserController extends MainController
             die('Error loading file: '.$e->getMessage());
         }
         // Get all available rows. If a row is empty (in the username field), the rest of the row will be ignored. Warn the admin.
-        //$rows =  $spreadsheet->getActiveSheet()->rangeToArray('B8:B57', NULL, FALSE, FALSE, TRUE);
         $rows = $spreadsheet->getActiveSheet()->rangeToArray('B8:B507', NULL, FALSE, FALSE, TRUE);
         if(empty($rows[8]['B'])){
             return back()->withErrors([

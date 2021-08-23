@@ -193,6 +193,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             }
         }
 
+
         if(!empty($data->font_set)){ 
             switch ($data->font_set) {
                 case 1:
@@ -238,6 +239,12 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                     $fontSetSelected5 = "";
                     break;
             }
+        }else{
+            $fontSetSelected1 = "";
+            $fontSetSelected2 = "";
+            $fontSetSelected3 = "";
+            $fontSetSelected4 = "";
+            $fontSetSelected5 = "";
         }
 
 
