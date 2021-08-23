@@ -6,3 +6,5 @@
 !fontset/**
 !errors
 !errors/**
+!template
+!template/**

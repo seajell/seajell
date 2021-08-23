@@ -92,14 +92,17 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         @enderror
             @can('authAdmin')
                 @if($data->role !== 'superadmin')
-                    <label for="role" class="form-label">Peranan Pengguna</label>
-                    <select class="form-select mb-3" name="role" id="role" aria-label="role">
-                        <option value="participant">Peserta</option>
-                        <option value="admin">Admin</option>
-                    </select>
-                    @error('role')
-                        <div class="alert alert-danger">{{ $message }}</div>
-                    @enderror   
+                    {{-- Only superadmin can edit someone else's role --}}
+                    @if(Auth::user()->role == 'superadmin')
+                        <label for="role" class="form-label">Peranan Pengguna</label>
+                        <select class="form-select mb-3" name="role" id="role" aria-label="role">
+                            <option value="participant">Peserta</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                        @error('role')
+                            <div class="alert alert-danger">{{ $message }}</div>
+                        @enderror   
+                    @endif
                 @endif
             @endcan
         <button class="btn btn-dark" type="submit" name="info">Kemas Kini Maklumat</button>
