@@ -20,6 +20,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\LoginActivity;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
@@ -91,12 +92,17 @@ class UserController extends MainController
     
             if (Auth::attempt($credentials)) {
                 $request->session()->regenerate();
-                $id = User::select('id')->where('username', '=', $username)->first()->id;
-                $user = User::find($id);
+                $userID = User::select('id')->where('username', '=', $username)->first()->id;
+                $user = User::find($userID);
                 $token = $user->createToken('apitoken');
                 // Add Bearer API Token to session
                 $request->session()->put('bearerAPIToken', $token->plainTextToken);
-                return redirect()->intended('');
+                LoginActivity::create([
+                    'user_id' => $userID,
+                    'ip_address' => $request->ip(),
+                    'http_user_agent' => $request->server('HTTP_USER_AGENT')
+                ]);
+                return redirect()->intended();
             }
     
             return back()->withInput()->withErrors([
