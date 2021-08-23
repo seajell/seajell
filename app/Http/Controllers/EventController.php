@@ -696,7 +696,7 @@ class EventController extends MainController
           */
 
         // Check if background image is uploaded (since it's not required)
-        if(!empty($request->input('logo-third-check'))){
+        if(!empty($request->input('background-image-check'))){
             if($request->hasFile('background-image')){
                 $backgroundImageName = $request->file('background-image')->getClientOriginalName();
                 $backgroundImageImage = Image::make($request->file('background-image'))->resize(794, 1123)->encode('png');
