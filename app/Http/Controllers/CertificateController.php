@@ -31,9 +31,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 use App\Http\Controllers\MainController;
 use App\Models\CertificateCollectionHistory;
 use App\Models\CertificateCollectionDeletionSchedule;
+use PhpOffice\PhpSpreadsheet\Reader\Exception as PHPSpreadsheetReaderException;
 
 class CertificateController extends MainController
 {
@@ -155,6 +157,149 @@ class CertificateController extends MainController
                 'username' => 'Username Pengguna tidak dijumpai!'
             ]);
         }
+    }
+
+    public function addCertificateBulk(Request $request){
+        $validated = $request->validate([
+            'certificate_list' => ['required', 'mimes:xlsx']
+        ]);
+        $inputFile = $request->file('certificate_list');
+        $reader = IOFactory::createReader('Xlsx');
+        $reader->setReadDataOnly(true);
+        $reader->setLoadSheetsOnly('1'); // Only read from worksheet named 1
+        try {
+            $spreadsheet = $reader->load($inputFile);
+        } catch(PHPSpreadsheetReaderException $e) {
+            die('Error loading file: '.$e->getMessage());
+        }
+        // Get all available rows. If a row is empty (in the username field), the rest of the row will be ignored. Warn the admin.
+        $rows = $spreadsheet->getActiveSheet()->rangeToArray('B8:B507', NULL, FALSE, FALSE, TRUE);
+
+        // Check if event ID inserted and exist
+        $eventID = $spreadsheet->getActiveSheet()->getCell('C6')->getValue();
+        if(empty($eventID)){
+            return back()->withErrors([
+                'sheetEventEmpty' => '[C6] ID acara kosong!',
+            ]);
+        }
+
+        if(!Event::where('id', $eventID)->first()){
+            return back()->withErrors([
+                'sheetEventNotFound' => '[C6] Acara tidak dijumpai!',
+            ]);
+        }
+
+        if(empty($rows[8]['B'])){
+            return back()->withErrors([
+                'sheetAtleastOne' => 'Sekurang-kurangnya satu data sijil diperlukan!',
+            ]);
+        }
+
+        $availableRows = [];
+        foreach ($rows as $row => $value) {
+            if(!empty($value['B'])){
+                array_push($availableRows, $row);
+            }else{
+                // If one row is empty in the username field, all the following rows will be ignored.
+                break;
+            }
+        }
+
+        $certificateData = [];
+        foreach ($availableRows as $row) {
+            $data = $spreadsheet->getActiveSheet()->rangeToArray('B' . $row . ':E' . $row, NULL, FALSE, FALSE, TRUE);
+            array_push($certificateData, $data);
+        }
+        $spreadsheetErr = [];
+        $validCertificateList = [];
+        foreach($certificateData as $dataIndex){
+            foreach($dataIndex as $data){
+                $username = strtolower($data['B']);
+                $type = $data['C'];
+                $position = strtolower($data['D']);
+                $category = strtolower($data['E']);
+                $currentRow = key($dataIndex);
+
+                // Check if user already
+                if($username == 'admin'){
+                    // Check if adding user named 'admin'
+                    $error = '[B' . $currentRow . '] ' . 'Anda tidak boleh menambah sijil untuk pengguna: admin!';
+                    array_push($spreadsheetErr, $error);
+                }elseif(!User::where('username', strtolower($username))->first()){
+                    // If user not found
+                    $error = '[B' . $currentRow . '] ' . 'Pengguna dengan username tersebut tidak dijumpai!';
+                    array_push($spreadsheetErr, $error);
+                }else{
+                    $userIDValid = User::select('id')->where('username', $username)->first()->id;
+                    // Certificate type
+                    if(empty($type)){
+                        $error = '[C' . $currentRow . '] ' . 'Ruangan jenis kosong!';
+                        array_push($spreadsheetErr, $error);
+                    }else{
+                        // Check if type valid
+                        // Only 1, 2 and 3 can be inserted for type
+                        // 1 = participation
+                        // 2 = achievement
+                        // 3 = appreciation
+                        if($type == 1 || $type == 2 || $type == 3){
+                            switch($type){
+                                case 1:
+                                    $typeValid = 'participation';
+                                    break;
+                                case 2:
+                                    $typeValid = 'achievement';
+                                    break;
+                                case 3:
+                                    $typeValid = 'appreciation';
+                                    break;
+                                default:
+                            }
+                        }else{
+                            $error = '[C' . $currentRow . '] ' . 'Hanya masukkan nombor yang diperlukan di ruangan jenis!';
+                            array_push($spreadsheetErr, $error);
+                        }
+                    }
+
+                    if(empty($position)){
+                        $error = '[D' . $currentRow . '] ' . 'Ruangan posisi kosong!';
+                        array_push($spreadsheetErr, $error);
+                    }else{
+                        $positionValid = $position;
+                    }
+                    
+                    if(empty($category)){
+                        $categoryValid = NULL;
+                    }else{
+                        $categoryValid = $category;
+                    }
+    
+                    // Check if all valid data have been set
+                    if(!empty($userIDValid) && !empty($eventID) && !empty($typeValid) && !empty($positionValid) && !empty($categoryValid)){
+                        $uidArray = Certificate::select('uid')->get();
+                        $uid = $this->generateUID(15, $uidArray);
+                        $validCertificate = [
+                            'uid' => $uid,
+                            'user_id' => $userIDValid,
+                            'event_id' => $eventID,
+                            'type' => $typeValid,
+                            'position' => $positionValid,
+                            'category' => $categoryValid
+                        ];
+                        array_push($validCertificateList, $validCertificate);
+                    }
+                }
+            }
+        }
+        // If if there's no problem with the spreadsheet, if doesn't, proceed to add the users.
+        if(count($spreadsheetErr) > 0){
+            $request->session()->flash('spreadsheetErr', $spreadsheetErr);
+            return back();
+        }else{
+            Certificate::upsert($validCertificateList, ['uid'], ['uid', 'user_id', 'event_id', 'type', 'position', 'category']);
+            $request->session()->flash('spreadsheetSuccess', count($validCertificateList) . ' sijil berjaya ditambah secara pukal!');
+            return back();
+        }
+
     }
 
     // Generate unique UID for certificates

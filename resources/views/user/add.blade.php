@@ -24,7 +24,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
     @error('userExisted')
         <span><div class="alert alert-danger w-100 ml-1">{{ $message }}</div></span>
     @enderror
-    <form action="" method="post" class="mb-3">
+    <form action="" method="post" class="mb-5">
         @csrf
         <div class="mb-3">
             <label for="username" class="form-label">Username Pengguna</label>
@@ -81,5 +81,42 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
         <button class="btn btn-dark" type="submit">Cipta Akaun Pengguna</button>
+    </form>
+    <form action="{{ route('user.add.bulk') }}" method="post" class="mb-3" enctype="multipart/form-data">
+        @csrf
+        <p class="fs-4">Tambah Pengguna Secara Pukal</p>
+        <p>Anda hanya boleh menambah 500 pengguna pada satu-satu masa.</p>
+        <p>Jika terdapat duplikasi baris yang mempunyai username yang sama, baris terkini akan ditambah.</p>
+        <p>Dapatkan templat dengan menekan butang muat turun di bawah.</p>
+        <a href="{{ asset('storage/template/Template_User_ms_MY.xlsx') }}" class="btn btn-dark"><i class="bi bi-download"></i> Muat Turun Templat</a>
+        <div class="my-3">
+            <label for="user_list" class="form-label">Fail Senarai Pengguna</label>
+            <input class="form-control" type="file" id="user_list" name="user_list">
+        </div>
+        @if(session()->has('spreadsheetSuccess'))
+            <span><div class="alert alert-success w-100 ml-1">{{ session('spreadsheetSuccess') }}</div></span>
+        @endif
+        @error('user_list')
+            <div class="alert alert-danger">{{ $message }}</div>
+        @enderror
+        @error('sheetAtleastOne')
+            <div class="alert alert-danger">{{ $message }}</div>
+        @enderror
+        @if(session()->has('spreadsheetErr'))
+            @if(count(session('spreadsheetErr')) > 0)
+                <div class="my-3 alert alert-danger">
+                    <p class="fw-bold">Ralat ({{ count(session('spreadsheetErr')) }}):</p>
+                    <button class="btn btn-outline-danger" type="button" data-bs-toggle="collapse" data-bs-target="#errorCollapse" aria-expanded="false" aria-controls="errorCollapse"><i class="bi bi-arrows-expand"></i> Senarai Ralat</button>
+                    <div class="collapse mt-3" id="errorCollapse">
+                        <div class="card card-body">
+                            @for ($i = 0; $i < count(session('spreadsheetErr')); $i++)
+                                <p class="mt-1">{{ $i + 1 . ": " }}{{ session('spreadsheetErr')[$i] }}</p>
+                            @endfor
+                        </div>
+                    </div>
+                </div>
+            @endif
+        @endif
+        <button class="btn btn-dark mb-3" type="submit">Cipta Akaun Pengguna Secara Pukal</button>
     </form>
 @endsection

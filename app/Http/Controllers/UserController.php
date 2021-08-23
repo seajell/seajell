@@ -23,7 +23,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 use App\Http\Controllers\MainController;
+use PhpOffice\PhpSpreadsheet\Reader\Exception as PHPSpreadsheetReaderException;
 
 class UserController extends MainController
 {
@@ -142,6 +144,150 @@ class UserController extends MainController
                 'userExisted' => 'Pengguna telah wujud!',
             ]);
         }
+    }
+
+    public function addUserBulk(Request $request){
+        $validated = $request->validate([
+            'user_list' => ['required', 'mimes:xlsx']
+        ]);
+        $inputFile = $request->file('user_list');
+        $reader = IOFactory::createReader('Xlsx');
+        $reader->setReadDataOnly(true);
+        $reader->setLoadSheetsOnly('1'); // Only read from worksheet named 1
+        try {
+            $spreadsheet = $reader->load($inputFile);
+        } catch(PHPSpreadsheetReaderException $e) {
+            die('Error loading file: '.$e->getMessage());
+        }
+        // Get all available rows. If a row is empty (in the username field), the rest of the row will be ignored. Warn the admin.
+        $rows = $spreadsheet->getActiveSheet()->rangeToArray('B8:B507', NULL, FALSE, FALSE, TRUE);
+        if(empty($rows[8]['B'])){
+            return back()->withErrors([
+                'sheetAtleastOne' => 'Sekurang-kurangnya satu data pengguna diperlukan!',
+            ]);
+        }
+
+        $availableRows = [];
+        foreach ($rows as $row => $value) {
+            if(!empty($value['B'])){
+                array_push($availableRows, $row);
+            }else{
+                // If one row is empty in the username field, all the following rows will be ignored.
+                break;
+            }
+        }
+
+        $userData = [];
+        foreach ($availableRows as $row) {
+            $data = $spreadsheet->getActiveSheet()->rangeToArray('B' . $row . ':G' . $row, NULL, FALSE, FALSE, TRUE);
+            array_push($userData, $data);
+        }
+        $spreadsheetErr = [];
+        $validUserList = [];
+        foreach($userData as $dataIndex){
+            foreach($dataIndex as $data){
+                $username = strtolower($data['B']);
+                $fullname = strtolower($data['C']);
+                $email = strtolower($data['D']);
+                $password = $data['E'];
+                $identificationNo = $data['F'];
+                $role = $data['G'];
+                $currentRow = key($dataIndex);
+
+                // Check if user already existed with the username
+                if($username == 'admin'){
+                    // Check if adding user named 'admin'
+                    $error = '[B' . $currentRow . '] ' . 'Anda tidak boleh menambah pengguna yang mempunyai username: admin!';
+                    array_push($spreadsheetErr, $error);
+                }elseif(User::where('username', strtolower($username))->first()){
+                    $error = '[B' . $currentRow . '] ' . 'Pengguna dengan username tersebut telah wujud!';
+                    array_push($spreadsheetErr, $error);
+                }else{
+                    $usernameValid = $username;
+
+                    if(empty($fullname)){
+                        $error = '[C' . $currentRow . '] ' . 'Ruangan nama penuh kosong!';
+                        array_push($spreadsheetErr, $error);
+                    }else{
+                        $fullnameValid = $fullname;
+                    }
+    
+                    if(empty($email)){
+                        $error = '[D' . $currentRow . '] ' . 'Ruangan alamat e-mel kosong!';
+                        array_push($spreadsheetErr, $error);
+                    }else{
+                        // Check if email valid
+                        if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                            $error = '[D' . $currentRow . '] ' . 'Alamat e-mel mestilah merupakan alamat e-mel yang sah!';
+                            array_push($spreadsheetErr, $error);
+                        }else{
+                            $emailValid = $email;
+                        }
+                    }
+    
+                    if(empty($password)){
+                        $error = '[E' . $currentRow . '] ' . 'Ruangan kata laluan kosong!';
+                        array_push($spreadsheetErr, $error);
+                    }else{
+                        $passwordValid = $password;
+                    }
+    
+                    if(empty($identificationNo)){
+                        $error = '[F' . $currentRow . '] ' . 'Ruangan nombor pengenalan kosong!';
+                        array_push($spreadsheetErr, $error);
+                    }else{
+                        $identificationNoValid = $identificationNo;
+                    }
+    
+                    if(empty($role)){
+                        $error = '[G' . $currentRow . '] ' . 'Ruangan peranan kosong!';
+                        array_push($spreadsheetErr, $error);
+                    }else{
+                        // Check if role valid
+                        // Only 1 and 2 can be inserted for role
+                        // 1 = participant
+                        // 2 = admin
+                        if($role == 1 || $role == 2){
+                            switch ($role) {
+                                case 1:
+                                    $roleValid = 'participant';
+                                    break;
+                                case 2:
+                                    $roleValid = 'admin';
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }else{
+                            $error = '[G' . $currentRow . '] ' . 'Hanya masukkan nombor yang diperlukan di ruangan peranan!';
+                            array_push($spreadsheetErr, $error);
+                        }
+                    }
+                    // Check if all valid data have been set
+                    if(!empty($usernameValid) && !empty($fullnameValid) && !empty($emailValid) && !empty($passwordValid) && !empty($identificationNoValid) && !empty($roleValid)){
+                        $validUser = [
+                            'username' => $usernameValid,
+                            'fullname' => $fullnameValid,
+                            'email' => $emailValid,
+                            'password' => Hash::make($passwordValid),
+                            'identification_number' => $identificationNoValid,
+                            'role' => $roleValid
+                        ];
+                        array_push($validUserList, $validUser);
+                    }
+                }
+            }
+        }
+        // If if there's no problem with the spreadsheet, if doesn't, proceed to add the users.
+        if(count($spreadsheetErr) > 0){
+            $request->session()->flash('spreadsheetErr', $spreadsheetErr);
+            return back();
+        }else{
+            User::upsert($validUserList, ['username'], ['fullname', 'email', 'password', 'identification_number', 'role']);
+            $request->session()->flash('spreadsheetSuccess', count($validUserList) . ' pengguna berjaya ditambah secara pukal!');
+            return back();
+        }
+
     }
 
     public function removeUser(Request $request){
