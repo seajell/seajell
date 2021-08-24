@@ -57,7 +57,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             </div>
         </div>
         <div class="row text-center text-light">
-            <p><a class="text-decoration-underline text-light" href="https://github.hanisirfan.xyz/seajell" target="_blank">SeaJell</a> {{ $appVersion }}</p>
+            <p><a class="text-decoration-underline text-light" href="https://projects.hanisirfan.xyz/seajell" target="_blank">SeaJell</a> {{ $appVersion }}</p>
             <p>Hak Cipta &copy; <a href="http://hanisirfan.xyz">Muhammad Hanis Irfan bin Mohd Zaid</a> 2021</p>
         </div>
     </div>
