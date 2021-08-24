@@ -65,4 +65,5 @@ Route::get('/certificate/collection', [CertificateController::class, 'downloadCe
 Route::post('/user/addBulk', [UserController::class, 'addUserBulk'])->name('user.add.bulk')->middleware(['auth','UserIsAdmin']);
 Route::post('/certificate/addBulk', [CertificateController::class, 'addCertificateBulk'])->name('certificate.add.bulk')->middleware(['auth','UserIsAdmin']);
 
+// Statistic route
 Route::get('/statistic', [HomeController::class, 'statisticView'])->name('statistic')->middleware(['auth','UserIsAdmin']);

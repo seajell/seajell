@@ -3,6 +3,7 @@
 /public/css
 /public/js
 /public/storage
+/public/certificate
 /public/bootstraps-icons
 /storage/*.key
 /vendor

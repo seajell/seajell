@@ -24,9 +24,9 @@
      inkscape:pagecheckerboard="1"
      inkscape:document-units="px"
      showgrid="false"
-     inkscape:zoom="0.68385417"
-     inkscape:cx="1135.476"
-     inkscape:cy="256.63366"
+     inkscape:zoom="0.96711586"
+     inkscape:cx="966.27513"
+     inkscape:cy="575.42227"
      inkscape:window-width="1920"
      inkscape:window-height="1051"
      inkscape:window-x="-9"
@@ -87,6 +87,24 @@
        xlink:href="#a"
        gradientTransform="scale(1.395081,0.71680426)"
        gradientUnits="userSpaceOnUse" />
+    <rect
+       x="657.62549"
+       y="355.69678"
+       width="730.00562"
+       height="179.9164"
+       id="rect2373-59" />
+    <rect
+       x="657.62549"
+       y="355.69678"
+       width="730.00562"
+       height="179.9164"
+       id="rect2373-5" />
+    <rect
+       x="657.62549"
+       y="355.69678"
+       width="730.00562"
+       height="179.9164"
+       id="rect2373-59-8" />
   </defs>
   <g
      inkscape:label="Error Text"
@@ -705,16 +723,6 @@
        style="display:inline;fill:none;stroke:none;stroke-width:2.5;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        rx="46.763252"
        ry="46.763142" />
-    <text
-       xml:space="preserve"
-       transform="matrix(0.45693665,0,0,0.45693665,-214.41604,-93.92573)"
-       id="text2371"
-       style="font-size:83.1496px;line-height:1.25;font-family:sans-serif;text-align:center;white-space:pre;shape-inside:url(#rect2373);stroke-width:0.579037"><tspan
-         x="833.62923"
-         y="429.26517"
-         id="tspan11588"><tspan
-           style="font-weight:bold;font-family:'Josefin Sans';-inkscape-font-specification:'Josefin Sans Bold'"
-           id="tspan11586">Error 500</tspan></tspan></text>
     <g
        id="g10624"
        transform="translate(-4.8476543)">
@@ -2286,6 +2294,35 @@
            id="path22-4"
            style="fill:#ffff00;stroke:none" />
       </g>
+    </g>
+    <g
+       id="g5204"
+       transform="translate(1.0986328e-5,-4.4860636)">
+      <g
+         id="g8570-5"
+         transform="translate(-1.1398472,-6.4157161)">
+        <text
+           xml:space="preserve"
+           transform="matrix(0.45693665,0,0,0.45693665,-213.27619,-93.92573)"
+           id="text2371"
+           style="font-size:83.1496px;line-height:1.25;font-family:sans-serif;text-align:center;white-space:pre;shape-inside:url(#rect2373-59-8);stroke-width:0.579037"><tspan
+             x="833.62923"
+             y="429.26517"
+             id="tspan3599"><tspan
+               style="font-weight:bold;font-family:'Josefin Sans';-inkscape-font-specification:'Josefin Sans Bold'"
+               id="tspan3597">Error 500</tspan></tspan></text>
+      </g>
+      <text
+         xml:space="preserve"
+         style="font-size:18px;line-height:1.25;font-family:sans-serif;text-align:center;text-anchor:middle;stroke-width:0.264583"
+         x="253.45999"
+         y="114.08276"
+         id="text3691"><tspan
+           sodipodi:role="line"
+           id="tspan3689"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:18px;font-family:'Josefin Sans';-inkscape-font-specification:'Josefin Sans Bold';stroke-width:0.264583"
+           x="253.45999"
+           y="114.08276">Internal Server Error</tspan></text>
     </g>
   </g>
 </svg>

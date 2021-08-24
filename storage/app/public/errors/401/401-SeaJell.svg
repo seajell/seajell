@@ -24,8 +24,8 @@
      inkscape:document-units="px"
      showgrid="false"
      inkscape:zoom="0.5"
-     inkscape:cx="863"
-     inkscape:cy="129"
+     inkscape:cx="697"
+     inkscape:cy="603"
      inkscape:window-width="1920"
      inkscape:window-height="1051"
      inkscape:window-x="-9"
@@ -40,13 +40,44 @@
        width="730.00562"
        height="179.9164"
        id="rect2373" />
+    <rect
+       x="657.62549"
+       y="355.69678"
+       width="730.00562"
+       height="179.9164"
+       id="rect2373-5" />
+    <rect
+       x="657.62549"
+       y="355.69678"
+       width="730.00562"
+       height="179.9164"
+       id="rect2373-3" />
+    <rect
+       x="657.62549"
+       y="355.69678"
+       width="730.00562"
+       height="179.9164"
+       id="rect2373-5-8" />
+    <rect
+       x="657.62549"
+       y="355.69678"
+       width="730.00562"
+       height="179.9164"
+       id="rect2373-59" />
+    <rect
+       x="657.62549"
+       y="355.69678"
+       width="730.00562"
+       height="179.9164"
+       id="rect2373-59-8" />
   </defs>
   <g
      inkscape:label="Error Text"
      inkscape:groupmode="layer"
      id="layer1">
     <g
-       id="g11479">
+       id="g11479"
+       transform="translate(-18.653523)">
       <g
          id="g11434"
          transform="rotate(75,311.75086,99.852873)">
@@ -243,15 +274,69 @@
            sodipodi:nodetypes="ccccccc" />
       </g>
     </g>
-    <text
-       xml:space="preserve"
-       transform="matrix(0.45693665,0,0,0.45693665,-214.41604,-93.92573)"
-       id="text2371"
-       style="font-size:83.1496px;line-height:1.25;font-family:sans-serif;text-align:center;white-space:pre;shape-inside:url(#rect2373);stroke-width:0.579037"><tspan
-         x="843.9813"
-         y="429.26517"
-         id="tspan1191"><tspan
-           style="font-weight:bold;font-family:'Josefin Sans';-inkscape-font-specification:'Josefin Sans Bold'"
-           id="tspan1189">Error 401</tspan></tspan></text>
+    <g
+       id="g1669"
+       transform="translate(-7.8967325)">
+      <g
+         id="g5204-6"
+         transform="matrix(1.0203471,0,0,1.0203471,3.8916134,-6.2794096)"
+         style="fill:#ffffff;stroke-width:0.980059">
+        <g
+           id="g8570-1-2"
+           transform="translate(-1.1398472,-6.4157161)"
+           style="fill:#ffffff;stroke-width:0.980059">
+          <text
+             xml:space="preserve"
+             transform="matrix(0.45693665,0,0,0.45693665,-213.27619,-93.92573)"
+             id="text2371-4-2"
+             style="font-size:83.1496px;line-height:1.25;font-family:sans-serif;text-align:center;white-space:pre;shape-inside:url(#rect2373-59-8);fill:#ffffff;stroke-width:0.56749"><tspan
+               x="843.9813"
+               y="429.26517"
+               id="tspan1739"><tspan
+                 style="font-weight:bold;font-family:'Josefin Sans';-inkscape-font-specification:'Josefin Sans Bold'"
+                 id="tspan1737">Error 401</tspan></tspan></text>
+        </g>
+        <text
+           xml:space="preserve"
+           style="font-size:18px;line-height:1.25;font-family:sans-serif;text-align:center;text-anchor:middle;fill:#ffffff;stroke-width:0.259307"
+           x="253.45999"
+           y="114.08276"
+           id="text3691-2"><tspan
+             sodipodi:role="line"
+             id="tspan3689-1"
+             style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:18px;font-family:'Josefin Sans';-inkscape-font-specification:'Josefin Sans Bold';fill:#ffffff;stroke-width:0.259307"
+             x="253.45999"
+             y="114.08276">Unauthorized</tspan></text>
+      </g>
+      <g
+         id="g5204"
+         transform="translate(9.0365841,-4.4247445)">
+        <g
+           id="g8570-1"
+           transform="translate(-1.1398472,-6.4157161)">
+          <text
+             xml:space="preserve"
+             transform="matrix(0.45693665,0,0,0.45693665,-213.27619,-93.92573)"
+             id="text2371-4"
+             style="font-size:83.1496px;line-height:1.25;font-family:sans-serif;text-align:center;white-space:pre;shape-inside:url(#rect2373-59);stroke-width:0.579037"><tspan
+               x="843.9813"
+               y="429.26517"
+               id="tspan1743"><tspan
+                 style="font-weight:bold;font-family:'Josefin Sans';-inkscape-font-specification:'Josefin Sans Bold'"
+                 id="tspan1741">Error 401</tspan></tspan></text>
+        </g>
+        <text
+           xml:space="preserve"
+           style="font-size:18px;line-height:1.25;font-family:sans-serif;text-align:center;text-anchor:middle;stroke-width:0.264583"
+           x="253.45999"
+           y="114.08276"
+           id="text3691"><tspan
+             sodipodi:role="line"
+             id="tspan3689"
+             style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:18px;font-family:'Josefin Sans';-inkscape-font-specification:'Josefin Sans Bold';stroke-width:0.264583"
+             x="253.45999"
+             y="114.08276">Unauthorized</tspan></text>
+      </g>
+    </g>
   </g>
 </svg>

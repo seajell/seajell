@@ -1,10 +1,10 @@
 @extends('errors.layout')
 @section('title')
-    Error 400
+    Error 429
 @endsection
 @section('content')
     <div class="row d-flex justify-content-center align-items-center">
-        <img src="{{ asset('storage/errors/400/400-SeaJell.svg') }}" class="img-fluid" alt="Error Image" style="width: 85vw;">
+        <img src="{{ asset('storage/errors/429/429-SeaJell.svg') }}" class="img-fluid" alt="Error Image" style="width: 85vw;">
     </div>
     <div class="row d-flex justify-content-center align-items-center mt-3 mb-5">
         <h2 class="text-center text-light mb-5">{{ $exception->getMessage() }}</h2>
