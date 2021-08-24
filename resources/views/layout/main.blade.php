@@ -79,6 +79,11 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                                     </ul>
                                 </li>
                             @endif
+                            @if(Gate::allows('authAdmin'))
+                                <li class="nav-item">
+                                    <a class="nav-link" aria-current="page" href="{{ route('statistic') }}">Statistik</a>
+                                </li>
+                            @endif
                         </ul>
                         <span class="navbar-text">
                             <span class="text-light">Log Masuk Sebagai: <a class="fw-bold" href="{{ route('user.update', [Auth::user()->username]) }}">{{ strtoupper(Auth::user()->username) }}</a></span>

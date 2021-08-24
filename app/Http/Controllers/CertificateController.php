@@ -30,6 +30,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use App\Models\CertificateViewActivity;
 use Illuminate\Support\Facades\Storage;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use App\Http\Controllers\MainController;
@@ -90,14 +91,6 @@ class CertificateController extends MainController
             }
             return view('certificate.list')->with(['certificates' => $certificates, 'appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName]);
         }
-
-        // if(Gate::allows('authAdmin')){
-        //     $certificates = Certificate::select('certificates.uid', 'certificates.type', 'certificates.position', 'certificates.category', 'users.fullname', 'events.name')->join('users', 'certificates.user_id', '=', 'users.id')->join('events', 'certificates.event_id', '=', 'events.id')->paginate(7);
-        //     return view('certificate.list')->with(['appVersion' => $this->appVersion, 'certificates' => $certificates, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName]);
-        // }else{
-        //     $certificates = Certificate::select('certificates.uid', 'certificates.type', 'certificates.position', 'certificates.category', 'users.fullname', 'events.name')->join('users', 'certificates.user_id', '=', 'users.id')->join('events', 'certificates.event_id', '=', 'events.id')->where('username', Auth::user()->username)->paginate(7);
-        //     return view('certificate.list')->with(['appVersion' => $this->appVersion, 'certificates' => $certificates, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName]);
-        // }
     }
 
     public function updateCertificateView(Request $request, $uid){
@@ -374,6 +367,13 @@ class CertificateController extends MainController
     public function certificateView(Request $request, $uid){
         if(Certificate::where('uid', $uid)->first()){
             $certEvent = Certificate::where('uid', $uid)->first()->event;
+            $certID = Certificate::select('id')->where('uid', $uid)->first()->id;
+            // Add view activity history
+            CertificateViewActivity::create([
+                'certificate_id' => $certID,
+                'ip_address' => $request->ip(),
+                'http_user_agent' => $request->server('HTTP_USER_AGENT')
+            ]);
             // Check for event visibility
             switch ($certEvent->visibility) {
                 case 'public':
