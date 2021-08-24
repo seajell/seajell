@@ -593,7 +593,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         @error('border-color')
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
-        <button class="btn btn-dark mt-3" type="submit">Kemas Kini</button>
+        <button class="btn btn-outline-light mt-3" type="submit">Kemas Kini</button>
     </form>
     <script src="{{ asset('js/checksEvent.js') }}"></script>
 @endsection

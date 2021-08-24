@@ -29,9 +29,9 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         </div>
         <div class="row my-3 w-100" style="height: 10vh;">
             <div class="col-12 w-100 h-100 d-flex justify-content-around align-items-center ">
-                <button type="button" id="signature-pad-clear" class="btn btn-dark w-25"><i class="bi bi-eraser"></i> Bersihkan Pad</button>
-                <button type="button" id="signature-pad-undo" class="btn btn-dark w-25"><i class="bi bi-arrow-counterclockwise"></i> Undur</button>
-                <button type="button" id="signature-pad-save" class="btn btn-dark w-25"><i class="bi bi-download"></i> Muat Turun</button>
+                <button type="button" id="signature-pad-clear" class="btn btn-outline-light w-25"><i class="bi bi-eraser"></i> Bersihkan Pad</button>
+                <button type="button" id="signature-pad-undo" class="btn btn-outline-light w-25"><i class="bi bi-arrow-counterclockwise"></i> Undur</button>
+                <button type="button" id="signature-pad-save" class="btn btn-outline-light w-25"><i class="bi bi-download"></i> Muat Turun</button>
             </div>
         </div>
     </div>

@@ -105,7 +105,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                     @endif
                 @endif
             @endcan
-        <button class="btn btn-dark" type="submit" name="info">Kemas Kini Maklumat</button>
+        <button class="btn btn-outline-light" type="submit" name="info">Kemas Kini Maklumat</button>
     </form>
     <p class="fs-2">Kemas Kini Kata Laluan</p>
     @if(session()->has('updateUserPasswordSuccess'))
@@ -127,6 +127,6 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             <label for="password_confirmation " class="form-label">Sahkan Kata Laluan</label>
             <input type="password" class="form-control" id="password_confirmation " name="password_confirmation" placeholder="Masukkan kata laluan pengguna semula.">
         </div>
-        <button class="btn btn-dark" type="submit" name="password-update">Kemas Kini Kata Laluan</button>
+        <button class="btn btn-outline-light" type="submit" name="password-update">Kemas Kini Kata Laluan</button>
     </form>
 @endsection

@@ -30,7 +30,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
     <title>{{$orgName . ' - ' . $appName }}</title>
     @bukStyles(true)
 </head>
-<body>
+<body style="background-color: #495057">
     <div class="container min-vh-100">
         <header>
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark border border-dark rounded-bottom">
@@ -97,7 +97,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             </nav>
         </header>
         <main>
-            <div class="row shadow my-3">
+            <div class="row shadow my-3 bg-dark text-light rounded-3">
                 @yield('content')
             </div>
         </main>

@@ -31,7 +31,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                 </select>
                 <label for="floatingSelect">Jangka Masa</label>
             </div>
-            <button class="btn btn-dark btn-sm w-25" type="button" id="update-options-btn">Kemas Kini</button>
+            <button class="btn btn-outline-light btn-sm w-25" type="button" id="update-options-btn">Kemas Kini</button>
         </div>
         <div class="row my-3">
             <div class="col-12 d-flex flex-column justify-content-center align-items-center" id="update-status"></div>
@@ -39,7 +39,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 h-100 mb-3" id="statistics">
             <div class="table-responsive">
                 <p class="fs-5">Jumlah Log Masuk</p>
-                <table class="table table-dark table-hover table-striped">
+                <table class="table table-dark table-hover table-striped table-bordered border-light align-middle">
                     <tr>
                         <th>Peserta</th>
                         <th>Admin</th>
@@ -59,13 +59,13 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
               </div>
             <div>
                 <p class="fs-5">Jumlah Lihat / Muat Turun Sijil</p>
-                <div class="border border-dark border-3 h-75 d-flex justify-content-center align-items-center">
+                <div class="border border-light border-3 h-75 d-flex justify-content-center align-items-center">
                     <p class="fs-1" id="total-viewed">0</p>
                 </div>
             </div>
             <div>
                 <p class="fs-5">Jumlah Sijil Ditambah</p>
-                <div class="border border-dark border-3 h-75 d-flex justify-content-center align-items-center">
+                <div class="border border-light border-3 h-75 d-flex justify-content-center align-items-center">
                     <p class="fs-1" id="total-added">0</p>
                 </div>
             </div>

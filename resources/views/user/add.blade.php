@@ -80,7 +80,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         @error('role')
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
-        <button class="btn btn-dark" type="submit">Cipta Akaun Pengguna</button>
+        <button class="btn btn-outline-light" type="submit">Cipta Akaun Pengguna</button>
     </form>
     <form action="{{ route('user.add.bulk') }}" method="post" class="mb-3" enctype="multipart/form-data">
         @csrf
@@ -88,7 +88,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         <p>Anda hanya boleh menambah 500 pengguna pada satu-satu masa.</p>
         <p>Jika terdapat duplikasi baris yang mempunyai username yang sama, baris terkini akan ditambah.</p>
         <p>Dapatkan templat dengan menekan butang muat turun di bawah.</p>
-        <a href="{{ asset('storage/template/Template_User_ms_MY.xlsx') }}" class="btn btn-dark"><i class="bi bi-download"></i> Muat Turun Templat</a>
+        <a href="{{ asset('storage/template/Template_User_ms_MY.xlsx') }}" class="btn btn-outline-light"><i class="bi bi-download"></i> Muat Turun Templat</a>
         <div class="my-3">
             <label for="user_list" class="form-label">Fail Senarai Pengguna</label>
             <input class="form-control" type="file" id="user_list" name="user_list">
@@ -117,6 +117,6 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                 </div>
             @endif
         @endif
-        <button class="btn btn-dark mb-3" type="submit">Cipta Akaun Pengguna Secara Pukal</button>
+        <button class="btn btn-outline-light mb-3" type="submit">Cipta Akaun Pengguna Secara Pukal</button>
     </form>
 @endsection

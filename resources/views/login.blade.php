@@ -27,7 +27,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
     <link rel="shortcut icon" href="{{ asset('/storage/logo/SeaJell-Logo.png') }}" type="image/png">
     <title>SeaJell</title>
 </head>
-<body class="min-vh-100">
+<body class="min-vh-100" style="background-color: #495057">
     <div class="container-fluid d-flex flex-column justify-content-center align-items-center vh-100">
         <img class="row mb-3" src="{{ asset('/storage/logo/SeaJell-Logo.png') }}" alt="SeaJell Logo" style="height: 7em; width: 7em;">
         <div class="row w-100 mb-3">
@@ -52,12 +52,12 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                     @error('password')
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
-                    <button class="btn btn-dark mb-3" type="submit">Log Masuk</button>
+                    <button class="btn btn-outline-dark mb-3" type="submit">Log Masuk</button>
                 </form>
             </div>
         </div>
-        <div class="row text-center">
-            <p>Sistem <a class="text-decoration-underline text-dark" href="https://github.hanisirfan.xyz/seajell" target="_blank">SeaJell</a> {{ $appVersion }}</p>
+        <div class="row text-center text-light">
+            <p><a class="text-decoration-underline text-light" href="https://github.hanisirfan.xyz/seajell" target="_blank">SeaJell</a> {{ $appVersion }}</p>
             <p>Hak Cipta &copy; <a href="http://hanisirfan.xyz">Muhammad Hanis Irfan bin Mohd Zaid</a> 2021</p>
         </div>
     </div>

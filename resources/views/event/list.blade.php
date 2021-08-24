@@ -48,7 +48,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                 <input type="text" class="form-control" name="search" placeholder="Carian">
             </div>
             <div class="col-5 col-md-2">
-                <button type="submit" class="btn btn-dark hvr-shrink w-100"><i class="bi bi-search"></i> Cari</button>
+                <button type="submit" class="btn btn-outline-light hvr-shrink w-100"><i class="bi bi-search"></i> Cari</button>
             </div>
             @if(!empty($sortAndSearch))
                 <div class="col-12 row gy-3">
@@ -67,7 +67,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                         <p class="col-12">CARIAN: <span class="fst-italic">{{ strtoupper($sortAndSearch['search']) }}</span></p>
                     @endif
                     <div class="col-12">
-                        <a href="{{ route('event.list') }}" class="btn btn-dark"><i class="bi bi-file-minus"></i> Kosongkan Carian Dan Susunan</a>
+                        <a href="{{ route('event.list') }}" class="btn btn-outline-light"><i class="bi bi-file-minus"></i> Kosongkan Carian Dan Susunan</a>
                     </div>
                 </div>
             @endif
@@ -88,7 +88,6 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                             <th class="col-2 text-center">Nama Acara</th>
                             <th class="col-2 text-center">Nama Penganjur</th>
                             <th class="col-1 text-center">Keterlihatan</th>
-                            <th class="col-1 text-center">Lihat</th>
                             <th class="col-1 text-center">Kemas Kini</th>
                             <th class="col-1 text-center">Buang</th>
                         </tr>
@@ -108,14 +107,13 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                                         TERSEMBUNYI
                                     @endif
                                 </td>
-                                <td class="fs-3 text-center"><a class="text-light" href=""><i class="bi bi-eye"></i></a></td>
                                 <td class="fs-3 text-center"><a class="text-light" href="{{ route('event.update', [$event->id]) }}"><i class="bi bi-pencil-square"></i></a></td>
                                 <td class="fs-3 text-center"><a class="text-light" href="" data-bs-toggle="modal" data-bs-target="#{{ 'delete-event-modal-' . $event->id}}"><i class="bi bi-trash"></a></i></td>
                             </tr>
                             {{-- 
                                 Modal for delete confirmation 
                                 --}}
-                                <div class="modal fade" id="{{ 'delete-event-modal-' . $event->id}}" tabindex="-1" aria-labelledby="{{ 'delete-event-modal-' . $event->id}}" aria-hidden="true">
+                                <div class="modal text-dark fade" id="{{ 'delete-event-modal-' . $event->id}}" tabindex="-1" aria-labelledby="{{ 'delete-event-modal-' . $event->id}}" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <form action="{{ route('event.remove') }}" method="post">
@@ -134,7 +132,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                                                     <input type="text" name="event-id" id="event-id" value="{{ $event->id }}" hidden>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Tidak</button>
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tidak</button>
                                                     <button type="submit" class="btn btn-danger">Ya</button>
                                                 </div>
                                             </form>
