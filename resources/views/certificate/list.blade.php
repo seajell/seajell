@@ -48,7 +48,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                 <input type="text" class="form-control" name="search" placeholder="Carian">
             </div>
             <div class="col-5 col-md-2">
-                <button type="submit" class="btn btn-dark hvr-shrink w-100"><i class="bi bi-search"></i> Cari</button>
+                <button type="submit" class="btn btn-outline-light hvr-shrink w-100"><i class="bi bi-search"></i> Cari</button>
             </div>
             @if(!empty($sortAndSearch))
                 <div class="col-12 row gy-3">
@@ -102,7 +102,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                         @endswitch
                     @endif
                     <div class="col-12">
-                        <a href="{{ route('certificate.list') }}" class="btn btn-dark"><i class="bi bi-file-minus"></i> Kosongkan Carian Dan Susunan</a>
+                        <a href="{{ route('certificate.list') }}" class="btn btn-outline-light"><i class="bi bi-file-minus"></i> Kosongkan Carian Dan Susunan</a>
                     </div>
                 </div>
             @endif
@@ -114,7 +114,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
     <div class="row">
         <div class="row my-3">
             <div class="col-4">
-                <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#certificateCollectionDownloadModal"><i class="bi bi-download"></i> Muat Turun Koleksi Sijil</button>
+                <button type="button" class="btn btn-outline-light" data-bs-toggle="modal" data-bs-target="#certificateCollectionDownloadModal"><i class="bi bi-download"></i> Muat Turun Koleksi Sijil</button>
             </div>
             <div class="col-8">
                 @error('id_username')
@@ -144,7 +144,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                 @endif  
             </div>
             {{-- Modal for certificate collection download --}}
-            <div class="modal fade" id="certificateCollectionDownloadModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade text-dark" id="certificateCollectionDownloadModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <form action="{{ route('certificate.collection') }}" method="get">
                         <div class="modal-content">
@@ -175,7 +175,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                                <button type="submit" class="btn btn-dark"><i class="bi bi-download"></i> Muat Turun</button>
+                                <button type="submit" class="btn btn-outline-dark"><i class="bi bi-download"></i> Muat Turun</button>
                             </div>
                         </div>
                     </form>
@@ -237,7 +237,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                                 {{-- 
                                 Modal for delete confirmation 
                                 --}}
-                                <div class="modal fade" id="{{ 'delete-certificate-modal-' . $certificate->uid}}" tabindex="-1" aria-labelledby="{{ 'delete-certificate-modal-' . $certificate->uid}}" aria-hidden="true">
+                                <div class="modal text-dark fade" id="{{ 'delete-certificate-modal-' . $certificate->uid}}" tabindex="-1" aria-labelledby="{{ 'delete-certificate-modal-' . $certificate->uid}}" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <form action="{{ route('certificate.remove') }}" method="post">
@@ -268,7 +268,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                                                     <input type="text" name="certificate-id" id="certificate-id" value="{{ $certificate->uid }}" hidden>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Tidak</button>
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tidak</button>
                                                     <button type="submit" class="btn btn-danger">Ya</button>
                                                 </div>
                                             </form>

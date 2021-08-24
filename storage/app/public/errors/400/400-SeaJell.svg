@@ -24,15 +24,15 @@
      inkscape:pagecheckerboard="1"
      inkscape:document-units="px"
      showgrid="false"
-     inkscape:zoom="0.48355792"
-     inkscape:cx="417.73693"
-     inkscape:cy="534.57919"
+     inkscape:zoom="0.96711584"
+     inkscape:cx="992.1252"
+     inkscape:cy="415.15192"
      inkscape:window-width="1920"
      inkscape:window-height="1051"
      inkscape:window-x="-9"
      inkscape:window-y="-9"
      inkscape:window-maximized="1"
-     inkscape:current-layer="g1008-9" />
+     inkscape:current-layer="layer1" />
   <defs
      id="defs2">
     <linearGradient
@@ -72,6 +72,18 @@
        x2="487.47101"
        y2="173.53517"
        gradientUnits="userSpaceOnUse" />
+    <rect
+       x="657.62549"
+       y="355.69678"
+       width="730.00562"
+       height="179.9164"
+       id="rect2373-59" />
+    <rect
+       x="657.62549"
+       y="355.69678"
+       width="730.00562"
+       height="179.9164"
+       id="rect2373-5" />
   </defs>
   <g
      inkscape:label="Error Text"
@@ -780,15 +792,33 @@
            style="fill:#161616;fill-opacity:1;stroke:#110200;stroke-width:33.809;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
       </g>
     </g>
-    <text
-       xml:space="preserve"
-       transform="matrix(0.45693665,0,0,0.45693665,-214.41604,-93.92573)"
-       id="text2371"
-       style="font-size:83.1496px;line-height:1.25;font-family:sans-serif;text-align:center;white-space:pre;shape-inside:url(#rect2373);stroke-width:0.579037"><tspan
-         x="832.17412"
-         y="429.26517"
-         id="tspan11976"><tspan
-           style="font-weight:bold;font-family:'Josefin Sans';-inkscape-font-specification:'Josefin Sans Bold'"
-           id="tspan11974">Error 400</tspan></tspan></text>
+    <g
+       id="g5204">
+      <g
+         id="g8570"
+         transform="translate(-1.1398472,-6.4157161)">
+        <text
+           xml:space="preserve"
+           transform="matrix(0.45693665,0,0,0.45693665,-213.27619,-93.92573)"
+           id="text2371"
+           style="font-size:83.1496px;line-height:1.25;font-family:sans-serif;text-align:center;white-space:pre;shape-inside:url(#rect2373-59);stroke-width:0.579037"><tspan
+             x="832.17412"
+             y="429.26517"
+             id="tspan5562"><tspan
+               style="font-weight:bold;font-family:'Josefin Sans';-inkscape-font-specification:'Josefin Sans Bold'"
+               id="tspan5560">Error 400</tspan></tspan></text>
+      </g>
+      <text
+         xml:space="preserve"
+         style="font-size:18px;line-height:1.25;font-family:sans-serif;text-align:center;text-anchor:middle;stroke-width:0.264583"
+         x="253.45999"
+         y="114.08276"
+         id="text3691"><tspan
+           sodipodi:role="line"
+           id="tspan3689"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:18px;font-family:'Josefin Sans';-inkscape-font-specification:'Josefin Sans Bold';stroke-width:0.264583"
+           x="253.45999"
+           y="114.08276">Bad Request</tspan></text>
+    </g>
   </g>
 </svg>

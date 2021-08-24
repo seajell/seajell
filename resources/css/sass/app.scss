@@ -5,7 +5,7 @@
 }
 
 a{
-    color: #212529;
+    color: #f8f9fa;
 }
 
 .page-link{
@@ -13,8 +13,8 @@ a{
 }
 
 .page-item.active .page-link{
-    color: #fff;
-    background-color: #212529;
+    color: #212529;
+    background-color: #fff;
     border-color: #212529;
 }
 
@@ -26,9 +26,14 @@ a{
 #signature-pad{
     width: 100%;
     height: 100%;
+    background-color: #fff;
 }
 
 .form-check-input:checked{
-    background-color: #212529;
-    border-color: #212529;
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+.form-floating>label {
+    color: #212529;
 }

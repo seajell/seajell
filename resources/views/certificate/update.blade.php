@@ -77,7 +77,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                     <input type="text" class="form-control w-100" id="event-id" name="event-id" placeholder="Masukkan ID acara." value="{{ $valueEventID }}">
                 </div>
                 <div class="col-1">
-                    <button type="button" id="event-search" class="btn btn-dark w-100"><i class="bi bi-search"></i></button>
+                    <button type="button" id="event-search" class="btn btn-outline-light w-100"><i class="bi bi-search"></i></button>
                 </div>
             </div>
         </div>
@@ -143,7 +143,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             Kategori untuk pertandingan yang disertai peserta.
         </div>
         <input type="hidden" id="user-id" name="user-id" value="{{ $data->user_id }}">
-        <button class="btn btn-dark mt-3" type="submit">Kemas Kini</button>
+        <button class="btn btn-outline-light mt-3" type="submit">Kemas Kini</button>
     </form>
     <script src="{{ asset('js/addCertificateSearch.js') }}"></script>
 @endsection

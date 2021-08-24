@@ -32,7 +32,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                     <input type="text" class="form-control w-100" id="username" name="username" placeholder="Masukkan username pengguna." value="{{ old('username') }}">
                 </div>
                 <div class="col-1">
-                    <button type="button" id="username-search" class="btn btn-dark w-100"><i class="bi bi-search"></i></button>
+                    <button type="button" id="username-search" class="btn btn-outline-light w-100"><i class="bi bi-search"></i></button>
                 </div>
             </div>
         </div>
@@ -56,7 +56,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                     <input type="text" class="form-control w-100" id="event-id" name="event-id" placeholder="Masukkan ID acara." value="{{ old('event-id') }}">
                 </div>
                 <div class="col-1">
-                    <button type="button" id="event-search" class="btn btn-dark w-100"><i class="bi bi-search"></i></button>
+                    <button type="button" id="event-search" class="btn btn-outline-light w-100"><i class="bi bi-search"></i></button>
                 </div>
             </div>
         </div>
@@ -120,7 +120,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         <div id="category_help mb-3" class="form-text">
             Kategori untuk pertandingan yang disertai peserta.
         </div>
-        <button class="btn btn-dark mt-3" type="submit">Tambah Sijil</button>
+        <button class="btn btn-outline-light mt-3" type="submit">Tambah Sijil</button>
     </form>
     <form action="{{ route('certificate.add.bulk') }}" method="post" class="mb-3" enctype="multipart/form-data">
         @csrf
@@ -128,7 +128,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         <p>Anda hanya boleh menambah 500 sijil bagi acara yang sama pada satu-satu masa.</p>
         <p>Pastikan acara dan username pengguna yang dimasukkan wujud.</p>
         <p>Dapatkan templat dengan menekan butang muat turun di bawah.</p>
-        <a href="{{ asset('storage/template/Template_Certificate_ms_MY.xlsx') }}" class="btn btn-dark"><i class="bi bi-download"></i> Muat Turun Templat</a>
+        <a href="{{ asset('storage/template/Template_Certificate_ms_MY.xlsx') }}" class="btn btn-outline-light"><i class="bi bi-download"></i> Muat Turun Templat</a>
         <div class="my-3">
             <label for="certificate_list" class="form-label">Fail Senarai Sijil</label>
             <input class="form-control" type="file" id="certificate_list" name="certificate_list">
@@ -163,7 +163,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                 </div>
             @endif
         @endif
-        <button class="btn btn-dark mb-3" type="submit">Tambah Sijil Secara Pukal</button>
+        <button class="btn btn-outline-light mb-3" type="submit">Tambah Sijil Secara Pukal</button>
     </form>
     <script src="{{ asset('js/addCertificateSearch.js') }}"></script>
 @endsection

@@ -47,7 +47,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                 <input type="text" class="form-control" name="search" placeholder="Carian">
             </div>
             <div class="col-5 col-md-2">
-                <button type="submit" class="btn btn-dark hvr-shrink w-100"><i class="bi bi-search"></i> Cari</button>
+                <button type="submit" class="btn btn-outline-light hvr-shrink w-100"><i class="bi bi-search"></i> Cari</button>
             </div>
             @if(!empty($sortAndSearch))
                 <div class="col-12 row gy-3">
@@ -66,7 +66,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                         <p class="col-12">CARIAN: <span class="fst-italic">{{ strtoupper($sortAndSearch['search']) }}</span></p>
                     @endif
                     <div class="col-12">
-                        <a href="{{ route('user.list') }}" class="btn btn-dark"><i class="bi bi-file-minus"></i> Kosongkan Carian Dan Susunan</a>
+                        <a href="{{ route('user.list') }}" class="btn btn-outline-light"><i class="bi bi-file-minus"></i> Kosongkan Carian Dan Susunan</a>
                     </div>
                 </div>
             @endif
@@ -89,7 +89,6 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                             <th class="col-3 text-center">Nama Penuh</th>
                             <th class="col-2 text-center">Alamat E-mel</th>
                             <th class="col-1 text-center">Peranan</th>
-                            <th class="col-1 text-center">Lihat</th>
                             <th class="col-1 text-center">Kemas Kini</th>
                             <th class="col-1 text-center">Buang</th>
                         </tr>
@@ -110,7 +109,6 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                                     SUPERADMIN
                                 @endif
                                 </td>
-                                <td class="fs-3 text-center"><a class="text-light" href=""><i class="bi bi-eye"></i></a></td>
                                 <td class="fs-3 text-center">
                                     @if($user->username != 'admin')
                                     <a class="text-light" href="{{ route('user.update', [$user->username]) }}"><i class="bi bi-pencil-square"></i></a>      
@@ -125,7 +123,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                             {{-- 
                                 Modal for delete confirmation 
                                 --}}
-                            <div class="modal fade" id="{{ 'delete-user-modal-' . $user->username}}" tabindex="-1" aria-labelledby="{{ 'delete-user-modal-' . $user->username . '-label'}}" aria-hidden="true">
+                            <div class="modal text-dark fade" id="{{ 'delete-user-modal-' . $user->username}}" tabindex="-1" aria-labelledby="{{ 'delete-user-modal-' . $user->username . '-label'}}" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <form action="{{ route('user.remove') }}" method="post">
@@ -142,7 +140,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                                                 <input type="text" name="username" id="username" value="{{ $user->username }}" hidden>
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Tidak</button>
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tidak</button>
                                                 <button type="submit" class="btn btn-danger">Ya</button>
                                             </div>
                                         </form>
