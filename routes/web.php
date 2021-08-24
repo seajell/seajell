@@ -29,7 +29,7 @@ Route::post('/install/config', [InstallationController::class, 'install']);
 Route::get('/install/success', [InstallationController::class, 'installSuccessView'])->name('install.success');
 
 Route::get('/', [HomeController::class, 'view'])->name('home')->middleware(['auth']);
-Route::get('/signature', [HomeController::class, 'signature'])->name('signature')->middleware(['auth']); // Generate signature PNG for certs
+Route::get('/signature', [HomeController::class, 'signatureView'])->name('signature')->middleware(['auth']); // Generate signature PNG for certs
 
 Route::get('/login', [UserController::class, 'loginView'])->name('login');
 Route::post('/login', [UserController::class, 'login']);
@@ -64,3 +64,5 @@ Route::get('/certificate/collection', [CertificateController::class, 'downloadCe
 // Bulk add route
 Route::post('/user/addBulk', [UserController::class, 'addUserBulk'])->name('user.add.bulk')->middleware(['auth','UserIsAdmin']);
 Route::post('/certificate/addBulk', [CertificateController::class, 'addCertificateBulk'])->name('certificate.add.bulk')->middleware(['auth','UserIsAdmin']);
+
+Route::get('/statistic', [HomeController::class, 'statisticView'])->name('statistic')->middleware(['auth','UserIsAdmin']);

@@ -22,6 +22,7 @@ class CreateCertificateCollectionHistoriesTable extends Migration
             $table->foreignId('user_id')->nullable()->constrained()->onUpdate('no action')->onDelete('no action'); // If the collection requested is for a user
             $table->foreignId('event_id')->nullable()->constrained()->onUpdate('no action')->onDelete('no action'); // If the collection requested is for an event
             $table->bigInteger('certificates_total');
+            $table->timestamps();
         });
     }
 

@@ -27,7 +27,11 @@ class HomeController extends MainController
         return view('home')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName]);
     }
 
-    public function signature(Request $request){
+    public function signatureView(Request $request){
         return view('signature')->with(['appVersion' => $this->appVersion,'apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName]);
+    }
+
+    public function statisticView(Request $request){
+        return view('statistic')->with(['appVersion' => $this->appVersion,'apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName]);
     }
 }
