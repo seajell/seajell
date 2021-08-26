@@ -42,7 +42,7 @@ class CertificateController extends MainController
 {
     public function authenticity(Request $request, $uid){
         if(Certificate::where('uid', $uid)->first()){
-            $certificate = Certificate::select('users.fullname', 'certificates.uid', 'certificates.type', 'events.name', 'events.date', 'events.organiser_name', 'certificates.position', 'certificates.category')->join('users', 'certificates.user_id', 'users.id')->join('events', 'certificates.event_id', 'events.id')->where('certificates.uid', $uid)->first();
+            $certificate = Certificate::select('users.fullname', 'certificates.uid', 'certificates.type', 'events.name', 'events.date', 'events.organiser_name', 'events.signature_first', 'events.signature_first_name', 'events.signature_first_position', 'events.signature_second', 'events.signature_second_name', 'events.signature_second_position', 'events.signature_third', 'events.signature_third_name', 'events.signature_third_position', 'certificates.position', 'certificates.category')->join('users', 'certificates.user_id', 'users.id')->join('events', 'certificates.event_id', 'events.id')->where('certificates.uid', $uid)->first();
             return view('certificate.authenticity')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName, 'certificate' => $certificate]);
         }else{
             abort(404, 'Sijil tidak dijumpai.');

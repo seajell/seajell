@@ -31,7 +31,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                 </select>
                 <label for="floatingSelect">Jangka Masa</label>
             </div>
-            <button class="btn btn-outline-light btn-sm w-25" type="button" id="update-options-btn">Kemas Kini</button>
+            <button class="btn btn-outline-light btn-sm w-25" type="button" id="update-options-btn"><i class="bi bi-arrow-repeat"></i> Kemas Kini</button>
         </div>
         <div class="row my-3">
             <div class="col-12 d-flex flex-column justify-content-center align-items-center" id="update-status"></div>

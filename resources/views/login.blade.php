@@ -52,7 +52,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                     @error('password')
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
-                    <button class="btn btn-outline-dark mb-3" type="submit">Log Masuk</button>
+                    <button class="btn btn-outline-dark mb-3" type="submit"><i class="bi bi-door-open"></i> Log Masuk</button>
                 </form>
             </div>
         </div>

@@ -42,9 +42,11 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                     </button>
                     <div class="collapse navbar-collapse" id="navbarText">
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                            <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="{{ route('home') }}">Laman Utama</a>
-                            </li>
+                            @auth
+                                <li class="nav-item">
+                                    <a class="nav-link active" aria-current="page" href="{{ route('home') }}">Laman Utama</a>
+                                </li>
+                            @endauth
                             @if(Gate::allows('authAdmin'))
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -92,7 +94,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                                 <span class="text-light">Log Masuk Sebagai: <a class="fw-bold" href="{{ route('user.update', [Auth::user()->username]) }}">{{ strtoupper(Auth::user()->username) }}</a></span>
                                 <form action="{{ route('logout') }}" method="post">
                                     @csrf
-                                    <button class="btn btn-light" type="submit">Log Keluar</button>
+                                    <button class="btn btn-light" type="submit"><i class="bi bi-door-closed"></i> Log Keluar</button>
                                 </form>
                             </span>
                         @endauth
