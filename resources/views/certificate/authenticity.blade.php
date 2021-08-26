@@ -67,6 +67,36 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                 <th>Nama Penganjur</th>
                 <td>{{ strtoupper($certificate->organiser_name) }}</td>
             </tr>
+            <tr>
+                <th>Pengesahan</th>
+                <td>
+                    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
+                        @if(Storage::disk('public')->exists($certificate->signature_first))
+                            <div class="col d-flex flex-column justify-content-center">
+                                <img src="{{ asset('storage/' . $certificate->signature_first) }}" alt="signature" class="bg-light mb-2">
+                                <p>{{ strtoupper($certificate->signature_first_name) }}</p>
+                                <p class="fst-italic">{{ strtoupper($certificate->signature_first_position) }}</p>
+                            </div>
+                        @endif
+                        @if(Storage::disk('public')->exists($certificate->signature_second))
+                            <div class="col d-flex flex-column justify-content-center">
+                                <img src="{{ asset('storage/' . $certificate->signature_second) }}" alt="signature" class="bg-light mb-2">
+                                <p>{{ strtoupper($certificate->signature_second_name) }}</p>
+                                <p class="fst-italic">{{ strtoupper($certificate->signature_second_position) }}</p>
+                            </div>
+                        @endif
+                        @if(Storage::disk('public')->exists($certificate->signature_third))
+                            <div class="col d-flex flex-column justify-content-center">
+                                <img src="{{ asset('storage/' . $certificate->signature_third) }}" alt="signature" class="bg-light mb-2">
+                                <p>{{ strtoupper($certificate->signature_third_name) }}</p>
+                                <p class="fst-italic">{{ strtoupper($certificate->signature_third_position) }}</p>
+                            </div>
+                        @endif
+                    </div>
+                </td>
+            </tr>
         </table>
+        <p class="align-middle fs-5 text-warning"><i class="bi bi-patch-check-fill fs-5 text-warning"></i> Sijil ini telah dijana di <a href="{{ 'http://' . Request::getHost() }}" class="fw-bold text-warning">{{ Request::getHost() }}</a></p>
+        <a href="{{ route('certificate.view', ['uid' => $certificate->uid]) }}" class="btn btn-outline-light"><i class="bi bi-eye"></i> Lihat Sijil</a>
     </div>
 @endsection
