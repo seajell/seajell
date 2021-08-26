@@ -56,18 +56,20 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                                     </ul>
                                 </li>
                             @endif
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Sijil
-                                </a>
-                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    
-                                <li><a class="dropdown-item" href="{{ route('certificate.list') }}">Senarai Sijil</a></li>
-                                @if(Gate::allows('authAdmin'))
-                                    <li><a class="dropdown-item" href="{{ route('certificate.add') }}">Tambah Sijil</a></li>
-                                @endif
-                                </ul>
-                            </li>
+                            @auth
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Sijil
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        
+                                    <li><a class="dropdown-item" href="{{ route('certificate.list') }}">Senarai Sijil</a></li>
+                                    @if(Gate::allows('authAdmin'))
+                                        <li><a class="dropdown-item" href="{{ route('certificate.add') }}">Tambah Sijil</a></li>
+                                    @endif
+                                    </ul>
+                                </li>
+                            @endauth
                             @if(Gate::allows('authAdmin'))
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -85,13 +87,15 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                                 </li>
                             @endif
                         </ul>
-                        <span class="navbar-text">
-                            <span class="text-light">Log Masuk Sebagai: <a class="fw-bold" href="{{ route('user.update', [Auth::user()->username]) }}">{{ strtoupper(Auth::user()->username) }}</a></span>
-                            <form action="{{ route('logout') }}" method="post">
-                                @csrf
-                                <button class="btn btn-light" type="submit">Log Keluar</button>
-                            </form>
-                        </span>
+                        @auth
+                            <span class="navbar-text">
+                                <span class="text-light">Log Masuk Sebagai: <a class="fw-bold" href="{{ route('user.update', [Auth::user()->username]) }}">{{ strtoupper(Auth::user()->username) }}</a></span>
+                                <form action="{{ route('logout') }}" method="post">
+                                    @csrf
+                                    <button class="btn btn-light" type="submit">Log Keluar</button>
+                                </form>
+                            </span>
+                        @endauth
                     </div>
                 </div>
             </nav>

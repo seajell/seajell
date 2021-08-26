@@ -67,3 +67,7 @@ Route::post('/certificate/addBulk', [CertificateController::class, 'addCertifica
 
 // Statistic route
 Route::get('/statistic', [HomeController::class, 'statisticView'])->name('statistic')->middleware(['auth','UserIsAdmin']);
+
+// Authenticity check  page
+
+Route::get('/certificate/authenticity/{uid}', [CertificateController::class, 'authenticity'])->name('authenticity');
