@@ -70,4 +70,4 @@ Route::get('/statistic', [HomeController::class, 'statisticView'])->name('statis
 
 // Authenticity check  page
 
-Route::get('/authenticity/{id}', [CertificateController::class, 'authenticity'])->name('authenticity');
+Route::get('/certificate/authenticity/{uid}', [CertificateController::class, 'authenticity'])->name('authenticity');

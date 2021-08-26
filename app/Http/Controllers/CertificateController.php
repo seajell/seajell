@@ -40,6 +40,15 @@ use PhpOffice\PhpSpreadsheet\Reader\Exception as PHPSpreadsheetReaderException;
 
 class CertificateController extends MainController
 {
+    public function authenticity(Request $request, $uid){
+        if(Certificate::where('uid', $uid)->first()){
+            $certificate = Certificate::select('users.fullname', 'certificates.uid', 'certificates.type', 'events.name', 'events.date', 'events.organiser_name', 'certificates.position', 'certificates.category')->join('users', 'certificates.user_id', 'users.id')->join('events', 'certificates.event_id', 'events.id')->where('certificates.uid', $uid)->first();
+            return view('certificate.authenticity')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName, 'certificate' => $certificate]);
+        }else{
+            abort(404, 'Sijil tidak dijumpai.');
+        }
+    }
+
     public function addCertificateView(Request $request){
         return view('certificate.add')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName]);
     }
@@ -396,7 +405,7 @@ class CertificateController extends MainController
                     break;
             }
         }else{
-            abort(404, 'Sijil tidak dijumpai!');
+            abort(404, 'Sijil tidak dijumpai.');
         }
     }
 
@@ -814,8 +823,9 @@ class CertificateController extends MainController
                 PDF::SetTextColor(0, 0, 0);
                 PDF::Rect(135, 272.5, 70, 19.5, 'DF', array('all' => array('width' => 0.5, 'color' => $QRBorderColor)), array(255, 255, 255));
                 PDF::SetFont('bebasneue', '', 12);
-                PDF::MultiCell($w = 50, $h = 0, $txt = 'Imbas kod QR ini untuk menyemak ketulenan', 0, 'R', 0, 0, 135, 277);
-                PDF::write2DBarcode(url()->current(), 'QRCODE,Q', 186, 273, 18.5, 18.5, $style, 'N');
+                PDF::MultiCell($w = 50, $h = 0, $txt = 'Imbas Kod QR Ini Untuk Menyemak Ketulenan', 0, 'L', 0, 0, 137, 274);
+                PDF::MultiCell($w = 50, $h = 0, $txt = 'ID Sijil: ' . $certificateID, 0, 'L', 0, 0, 137, 286);
+                PDF::write2DBarcode(url('certificate/authenticity/' . $certificateID), 'QRCODE,Q', 186, 273, 18.5, 18.5, $style, 'N');
                 break;
             case 'hidden':
                 break;
