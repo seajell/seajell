@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\SystemController;
 use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\InstallationController;
 
@@ -69,5 +70,8 @@ Route::post('/certificate/addBulk', [CertificateController::class, 'addCertifica
 Route::get('/statistic', [HomeController::class, 'statisticView'])->name('statistic')->middleware(['auth','UserIsAdmin']);
 
 // Authenticity check  page
-
 Route::get('/certificate/authenticity/{uid}', [CertificateController::class, 'authenticity'])->name('authenticity');
+
+// System settings route
+Route::get('/system', [SystemController::class, 'systemView'])->name('system')->middleware(['auth','UserIsAdmin']);
+Route::post('/system', [SystemController::class, 'systemUpdate'])->middleware(['auth','UserIsAdmin']);

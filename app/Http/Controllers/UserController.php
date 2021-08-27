@@ -31,7 +31,7 @@ use PhpOffice\PhpSpreadsheet\Reader\Exception as PHPSpreadsheetReaderException;
 class UserController extends MainController
 {
     public function loginView(Request $request){
-        return view('login')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName]);
+        return view('login')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting]);
     }
     public function userListView(Request $request){
         $pagination = 15;
@@ -51,24 +51,24 @@ class UserController extends MainController
                 'sortOrder' => $sortOrder,
                 'search' => $search
             ];
-            return view('user.list')->with(['sortAndSearch' => $sortAndSearch,'users' => $users, 'appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName]);
+            return view('user.list')->with(['sortAndSearch' => $sortAndSearch,'users' => $users, 'appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting]);
         }else{
-            return view('user.list')->with(['users' => $users, 'appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName]);
+            return view('user.list')->with(['users' => $users, 'appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting]);
         }
     }
     public function addUserView(Request $request){
-        return view('user.add')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName]);
+        return view('user.add')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting]);
     }
     public function updateUserView(Request $request, $username){
         if(User::where('username', $username)->first()){
             // Only admins or the user that logged in themselves can update their info
             if(Gate::allows('authAdmin') || strtolower($username) == Auth::user()->username){
                 $data = User::where('username', $username)->first();
-                return view('user.update')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName, 'data' => $data]);
+                return view('user.update')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting, 'data' => $data]);
                 // Only the user 'admin' can update their info. Other admins can't update the 'admin' user.
                 if($username == 'admin' && Auth::user()->username == 'admin'){
                     $data = User::where('username', $username)->first();
-                    return view('user.update')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName, 'data' => $data]);
+                    return view('user.update')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting, 'data' => $data]);
                 }else{
                     abort(403, 'Anda tidak boleh mengakses laman ini.');
                 }

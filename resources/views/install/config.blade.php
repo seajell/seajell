@@ -15,6 +15,31 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
 
+@php
+
+    if(!empty(old('system-language'))){
+        switch (old('system-language')) {
+            case 'en':
+                $systemLanguageSelectedEn = 'selected';
+                $systemLanguageSelectedMs = '';
+                break;
+            case 'ms-MY':
+                $systemLanguageSelectedEn = '';
+                $systemLanguageSelectedMs = 'selected';
+                break;
+            default:
+                $systemLanguageSelectedEn = 'selected';
+                $systemLanguageSelectedMs = '';
+                break;
+        }
+        $systemLanguageSelectedEn = '';
+        $systemLanguageSelectedMs = '';
+    }else{
+        $systemLanguageSelectedEn = '';
+        $systemLanguageSelectedMs = '';
+    }
+@endphp
+
 @extends('install.layout')
 @section('page') Konfigurasi Sistem @endsection
 @section('content')
@@ -23,9 +48,9 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
     <h2>Konfigurasi</h2>
     <hr class="border-light w-100 border-4">
     <div class="form-list w-50 mb-5 d-flex flex-column justify-content-around">
-        <form action="{{ route('install.config') }}" method="POST">
+        <form action="{{ route('install.config') }}" method="POST" enctype="multipart/form-data">
             {{-- Admin account 
-            Username: admin (Default: User cannot choose)
+            Username: admin (Default: User cannot choose the username)
             Password: (User could choose)
             --}}
             @csrf
@@ -55,6 +80,30 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                 <input type="password" class="form-control" name="password_confirmation" id="password_confirmation" placeholder="">
                 <label class="text-dark" for="password_confirmation">Sahkan Kata Laluan</label>
             </div>
+            <h3 class="mt-2">Tetapan Sistem</h3>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="system-name" name="system-name" placeholder="System name" value="{{ old('system-name') }}">
+                <label for="system-name">Nama</label>
+            </div>
+            @error('system-name')
+                <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
+            <label for="system-language" class="form-label">Bahasa</label>
+            <select class="form-select mb-3" aria-label="System language" name="system-language" id="system-language">
+                <option value="en" {{ $systemLanguageSelectedEn }}>English</option>
+                <option value="ms-MY" {{ $systemLanguageSelectedMs }}>Malay</option>
+            </select>
+            @error('system-language')
+                <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
+            <div class="mb-3">
+                <label for="system-logo" class="form-label">Logo</label>
+                <input class="form-control" type="file" id="system-logo" name="system-logo">
+                <div id="systemLogoHelp" class="form-text">Logo ini akan digunakan pada bar navigasi dan favicon.</div>
+            </div>
+            @error('system-logo')
+                <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
             <button type="submit" class="btn w-50 my-5 hvr-shrink btn-outline-light fs-4">Pasang <i class="bi bi-gear"></i></button>
         </form>
     </div>

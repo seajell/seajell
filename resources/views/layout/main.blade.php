@@ -25,9 +25,20 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ asset('bootstraps-icons/font/bootstrap-icons.css') }}">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-    <link rel="shortcut icon" href="{{ asset('/storage/logo/SeaJell-Logo.png') }}" type="image/png">
+    @if(!empty($systemSetting->logo))
+        <link rel="shortcut icon" href="{{ asset('storage/') . $systemSetting->logo }}" type="image/png">
+    @else
+        <link rel="shortcut icon" href="{{ asset('/storage/logo/SeaJell-Logo.png') }}" type="image/png">
+    @endif
     <meta name="api-token" content="{{ $apiToken }}">
-    <title>{{$orgName . ' - ' . $appName }}</title>
+    <title>
+        @if(!empty($systemSetting->name))
+            {{ strtoupper($systemSetting->name) }}
+        @else
+            {{ 'SeaJell' }}
+        @endif
+        {{ '- SeaJell' }}
+    </title>
     @bukStyles(true)
 </head>
 <body style="background-color: #495057">
@@ -35,8 +46,18 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         <header>
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark border border-dark rounded-bottom">
                 <div class="container-fluid">
-                    <a class="navbar-brand" href="{{ route('home') }}"><img class="row mb-3" src="{{ asset('/storage/logo/SeaJell-Logo.png') }}" alt="SeaJell Logo" style="height: 3em; width: 3em;"></a>
-                    <a class="navbar-brand" href="{{ route('home') }}">SeaJell</a>
+                    @if(Storage::disk('public')->exists($systemSetting->logo))
+                        <a class="navbar-brand mx-3 system-logo" href="{{ route('home') }}"><img class="row mb-3" src="{{ asset('storage/') . $systemSetting->logo }}" alt="SeaJell Logo" style="height: 5em; width: 5em;"></a>
+                    @else
+                        <a class="navbar-brand mx-3 system-logo" href="{{ route('home') }}"><img class="row mb-3" src="{{ asset('/storage/logo/SeaJell-Logo.png') }}" alt="SeaJell Logo" style="height: 3em; width: 3em;"></a>
+                    @endif
+                    <a class="navbar-brand" href="{{ route('home') }}">
+                        @if(!empty($systemSetting->name))
+                            {{ strtoupper($systemSetting->name) }}
+                        @else
+                            {{ 'SeaJell' }}
+                        @endif
+                    </a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
@@ -86,6 +107,11 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                             @if(Gate::allows('authAdmin'))
                                 <li class="nav-item">
                                     <a class="nav-link" aria-current="page" href="{{ route('statistic') }}">Statistik</a>
+                                </li>
+                            @endif
+                            @if(Gate::allows('authAdmin'))
+                                <li class="nav-item">
+                                    <a class="nav-link" aria-current="page" href="{{ route('system') }}">Sistem</a>
                                 </li>
                             @endif
                         </ul>
