@@ -18,11 +18,15 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\SystemSetting;
 use App\Models\InstituteSetting;
+use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Storage;
 
 class InstallationController extends Controller
 {
@@ -67,15 +71,42 @@ class InstallationController extends Controller
         $validated = $request->validate([
             'adminFullName' => 'required',
             'adminEmailAddress' => 'required|email',
-            'password' => 'required|confirmed'
+            'password' => 'required|confirmed',
+            'system-name' => ['required'],
+            'system-language' => ['required'],
+            'system-logo' => ['required', 'image', 'mimes:png']
         ]);
         $adminFullname = $request->adminFullName;
         $adminEmailAddress = $request->adminEmailAddress;
         $password = $request->password;
+        $systemName = $request->input('system-name');
+        $systemLanguage = $request->input('system-language');
+        $systemLogo = $request->file('system-logo');
+
+        if($request->hasFile('system-logo')){
+            $systemLogoName = $request->file('system-logo')->getClientOriginalName();
+            $systemLogoImage = Image::make($request->file('system-logo'))->resize(300, 300)->encode('png');
+            $systemLogoSavePath = '/img/system/logo/'. Carbon::now()->timestamp . '-' . $systemLogoName;
+            Storage::disk('public')->put($systemLogoSavePath, $systemLogoImage);
+        }else{
+            $systemLogoSavePath = $systemSetting = SystemSetting::where('id', 1)->first()->logo;
+        }
+
         // Create admin user and migrate the database.
         Artisan::call('install', [
             'password' => $password, 'fullname' => $adminFullname, 'email' => $adminEmailAddress
         ]);
+
+        SystemSetting::upsert([
+            [
+                'id' => 1,
+                'name' => strtolower($systemName),
+                'logo' => $systemLogoSavePath,
+                'language' => $systemLanguage
+            ]
+        ], ['id'], ['name', 'logo', 'language']);
+
+
         // Return to installation success page.
         return redirect()->route('install.success');
     }

@@ -37,3 +37,9 @@ a{
 .form-floating>label {
     color: #212529;
 }
+
+.system-logo{
+    filter: drop-shadow(0.03em 0.03em #495057);
+    -webkit-filter: drop-shadow(0.03em 0.03em #495057);
+    -moz-filter: drop-shadow(0.03em 0.03em #495057);
+}

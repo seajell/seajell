@@ -33,21 +33,20 @@ class MainController extends Controller
     {
         // Check if system is properly installed. If not redirect to /install route.
         $this->middleware(function ($request, $next) {
-            $this->appName = env('APP_NAME', 'SeaJell');
-            $this->appVersion = env('APP_VERSION', 'v1.0.0');
-            $this->systemSetting = SystemSetting::select('id', 'name', 'logo', 'language')->where('id', 1)->first();
             // Check if users table exist
             if(Schema::hasTable('users')){
                 // Check if admin user not exist
                 if(!User::where('username', 'admin')->first()){
                     return redirect()->route('install.view');
                 }else{       
-                    if ($request->session()->has('bearerAPIToken')) {
-
+                    if($request->session()->has('bearerAPIToken')){
                         $this->apiToken = $request->session()->get('bearerAPIToken');
                     }else{
                         $this->apiToken = NULL;
                     }
+                    $this->appName = env('APP_NAME', 'SeaJell');
+                    $this->appVersion = env('APP_VERSION', 'v2.0.0');
+                    $this->systemSetting = SystemSetting::select('id', 'name', 'logo', 'language')->where('id', 1)->first();
                     return $next($request);
                 }
             }else{

@@ -47,9 +47,9 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark border border-dark rounded-bottom">
                 <div class="container-fluid">
                     @if(Storage::disk('public')->exists($systemSetting->logo))
-                        <a class="navbar-brand mx-3" href="{{ route('home') }}"><img class="row mb-3" src="{{ asset('storage/') . $systemSetting->logo }}" alt="SeaJell Logo" style="height: 5em; width: 5em;"></a>
+                        <a class="navbar-brand mx-3 system-logo" href="{{ route('home') }}"><img class="row mb-3" src="{{ asset('storage/') . $systemSetting->logo }}" alt="SeaJell Logo" style="height: 5em; width: 5em;"></a>
                     @else
-                        <a class="navbar-brand mx-3" href="{{ route('home') }}"><img class="row mb-3" src="{{ asset('/storage/logo/SeaJell-Logo.png') }}" alt="SeaJell Logo" style="height: 3em; width: 3em;"></a>
+                        <a class="navbar-brand mx-3 system-logo" href="{{ route('home') }}"><img class="row mb-3" src="{{ asset('/storage/logo/SeaJell-Logo.png') }}" alt="SeaJell Logo" style="height: 3em; width: 3em;"></a>
                     @endif
                     <a class="navbar-brand" href="{{ route('home') }}">
                         @if(!empty($systemSetting->name))

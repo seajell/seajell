@@ -42,9 +42,9 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
 <body class="min-vh-100" style="background-color: #495057">
     <div class="container-fluid d-flex flex-column justify-content-center align-items-center vh-100">
         @if(Storage::disk('public')->exists($systemSetting->logo))
-            <img class="row mb-3" src="{{ asset('storage/') . $systemSetting->logo }}" alt="SeaJell Logo" style="height: 10em; width: 10em;">
+            <img class="row mb-3 system-logo" src="{{ asset('storage/') . $systemSetting->logo }}" alt="SeaJell Logo" style="height: 10em; width: 10em;">
         @else
-            <img class="row mb-3" src="{{ asset('/storage/logo/SeaJell-Logo.png') }}" alt="SeaJell Logo" style="height: 10em; width: 10em;">
+            <img class="row mb-3 system-logo" src="{{ asset('/storage/logo/SeaJell-Logo.png') }}" alt="SeaJell Logo" style="height: 10em; width: 10em;">
         @endif
        
         <div class="row w-100 mb-3">

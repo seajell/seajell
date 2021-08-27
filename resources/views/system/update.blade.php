@@ -21,6 +21,40 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
     }elseif(!empty($systemSetting->name)){
         $systemNameValue = strtoupper($systemSetting->name);
     }
+
+    if(!empty(old('system-language'))){
+        switch (old('system-language')) {
+            case 'en':
+                $systemLanguageSelectedEn = 'selected';
+                $systemLanguageSelectedMs = '';
+                break;
+            case 'ms-MY':
+                $systemLanguageSelectedEn = '';
+                $systemLanguageSelectedMs = 'selected';
+                break;
+            default:
+                $systemLanguageSelectedEn = 'selected';
+                $systemLanguageSelectedMs = '';
+                break;
+        }
+        $systemLanguageSelectedEn = '';
+        $systemLanguageSelectedMs = '';
+    }elseif(!empty($systemSetting->language)){
+        switch ($systemSetting->language) {
+            case 'en':
+                $systemLanguageSelectedEn = 'selected';
+                $systemLanguageSelectedMs = '';
+                break;
+            case 'ms-MY':
+                $systemLanguageSelectedEn = '';
+                $systemLanguageSelectedMs = 'selected';
+                break;
+            default:
+                $systemLanguageSelectedEn = 'selected';
+                $systemLanguageSelectedMs = '';
+                break;
+        }
+    }
 @endphp
 
 @extends('layout.main')
@@ -41,8 +75,8 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         @enderror
         <label for="system-language" class="form-label">Bahasa</label>
         <select class="form-select mb-3" aria-label="System language" name="system-language" id="system-language">
-            <option selected value="en">English</option>
-            <option value="ms-MY">Malay</option>
+            <option value="en" {{ $systemLanguageSelectedEn }}>English</option>
+            <option value="ms-MY" {{ $systemLanguageSelectedMs }}>Malay</option>
         </select>
         @error('system-language')
             <div class="alert alert-danger">{{ $message }}</div>
