@@ -43,14 +43,14 @@ class CertificateController extends MainController
     public function authenticity(Request $request, $uid){
         if(Certificate::where('uid', $uid)->first()){
             $certificate = Certificate::select('users.fullname', 'certificates.uid', 'certificates.type', 'events.name', 'events.date', 'events.organiser_name', 'events.signature_first', 'events.signature_first_name', 'events.signature_first_position', 'events.signature_second', 'events.signature_second_name', 'events.signature_second_position', 'events.signature_third', 'events.signature_third_name', 'events.signature_third_position', 'certificates.position', 'certificates.category')->join('users', 'certificates.user_id', 'users.id')->join('events', 'certificates.event_id', 'events.id')->where('certificates.uid', $uid)->first();
-            return view('certificate.authenticity')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName, 'certificate' => $certificate]);
+            return view('certificate.authenticity')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting, 'certificate' => $certificate]);
         }else{
             abort(404, 'Sijil tidak dijumpai.');
         }
     }
 
     public function addCertificateView(Request $request){
-        return view('certificate.add')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName]);
+        return view('certificate.add')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting]);
     }
     public function certificateListView(Request $request){
         $pagination = 15;
@@ -91,14 +91,14 @@ class CertificateController extends MainController
                 'sortOrder' => $sortOrder,
                 'search' => $search
             ];
-            return view('certificate.list')->with(['sortAndSearch' => $sortAndSearch, 'certificates' => $certificates, 'appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName]);
+            return view('certificate.list')->with(['sortAndSearch' => $sortAndSearch, 'certificates' => $certificates, 'appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting]);
         }else{
             if(Gate::allows('authAdmin')){
                 $certificates = Certificate::join('users', 'certificates.user_id', 'users.id')->join('events', 'certificates.event_id', 'events.id')->select('certificates.uid', 'users.fullname', 'users.username', 'events.name', 'certificates.type', 'certificates.position', 'certificates.category')->paginate($pagination)->withQueryString();
             }else{
                 $certificates = Certificate::join('users', 'certificates.user_id', 'users.id')->join('events', 'certificates.event_id', 'events.id')->select('certificates.uid', 'users.fullname', 'users.username', 'events.name', 'certificates.type', 'certificates.position', 'certificates.category')->where('users.username', '=', Auth::user()->username)->paginate($pagination)->withQueryString();
             }
-            return view('certificate.list')->with(['certificates' => $certificates, 'appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName]);
+            return view('certificate.list')->with(['certificates' => $certificates, 'appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting]);
         }
     }
 
@@ -107,7 +107,7 @@ class CertificateController extends MainController
             // Only admins can update certificates
             if(Gate::allows('authAdmin')){
                 $data = Certificate::where('uid', $uid)->join('events', 'certificates.event_id', '=', 'events.id')->first();
-                return view('certificate.update')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName, 'data' => $data]);
+                return view('certificate.update')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting, 'data' => $data]);
             }else{
                 abort(403, 'Anda tidak boleh mengakses laman ini.');
             }
@@ -457,7 +457,7 @@ class CertificateController extends MainController
         // Generate the certificate
 
         // Try to find way to add custom fonts
-        $title = $this->orgName . ' - ' . 'SeaJell';
+        $title = ucwords($this->systemSetting->name) . ' - ' . 'SeaJell';
         PDF::SetCreator('SeaJell');
         PDF::SetAuthor('SeaJell');
         switch ($certificateType) {

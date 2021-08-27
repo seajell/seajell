@@ -25,14 +25,37 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
     <link rel="stylesheet" href="{{ asset('bootstraps-icons/font/bootstrap-icons.css') }}">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="shortcut icon" href="{{ asset('/storage/logo/SeaJell-Logo.png') }}" type="image/png">
-    <title>SeaJell</title>
+    @if(!empty($systemSetting->logo))
+        <link rel="shortcut icon" href="{{ asset('storage/') . $systemSetting->logo }}" type="image/png">
+    @else
+        <link rel="shortcut icon" href="{{ asset('/storage/logo/SeaJell-Logo.png') }}" type="image/png">
+    @endif
+    <title>
+        @if(!empty($systemSetting->name))
+            {{ strtoupper($systemSetting->name) }}
+        @else
+            {{ 'SeaJell' }}
+        @endif
+        {{ '- SeaJell' }}
+    </title>
 </head>
 <body class="min-vh-100" style="background-color: #495057">
     <div class="container-fluid d-flex flex-column justify-content-center align-items-center vh-100">
-        <img class="row mb-3" src="{{ asset('/storage/logo/SeaJell-Logo.png') }}" alt="SeaJell Logo" style="height: 7em; width: 7em;">
+        @if(Storage::disk('public')->exists($systemSetting->logo))
+            <img class="row mb-3" src="{{ asset('storage/') . $systemSetting->logo }}" alt="SeaJell Logo" style="height: 10em; width: 10em;">
+        @else
+            <img class="row mb-3" src="{{ asset('/storage/logo/SeaJell-Logo.png') }}" alt="SeaJell Logo" style="height: 10em; width: 10em;">
+        @endif
+       
         <div class="row w-100 mb-3">
             <div class="col-4 rounded-start d-flex flex-column align-items-center justify-content-center bg-dark text-light border border-dark border-2">
-                <p class="fw-bold fs-1">SeaJell</p>
+                <p class="fw-bold fs-2 text-center">
+                    @if(!empty($systemSetting->name))
+                        {{ strtoupper($systemSetting->name) }}
+                    @else
+                        {{ 'SeaJell' }}
+                    @endif
+                </p>
                 <p class="fw-normal fs-4">Log Masuk</p>
             </div>
             <div class="col-8 rounded-end bg-light text-dark border border-dark border-2">

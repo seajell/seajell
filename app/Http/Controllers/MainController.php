@@ -20,6 +20,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\SystemSetting;
 use Illuminate\Support\Facades\Schema;
 
 class MainController extends Controller
@@ -27,14 +28,14 @@ class MainController extends Controller
     protected $apiToken;
     protected $appName;
     protected $appVersion;
-    protected $orgName;
+    protected $systemSetting;
     public function __construct()
     {
         // Check if system is properly installed. If not redirect to /install route.
         $this->middleware(function ($request, $next) {
             $this->appName = env('APP_NAME', 'SeaJell');
             $this->appVersion = env('APP_VERSION', 'v1.0.0');
-            $this->orgName = env('ORG_NAME', 'SeaJell');
+            $this->systemSetting = SystemSetting::select('id', 'name', 'logo', 'language')->where('id', 1)->first();
             // Check if users table exist
             if(Schema::hasTable('users')){
                 // Check if admin user not exist

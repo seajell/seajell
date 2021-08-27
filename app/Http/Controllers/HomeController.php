@@ -24,14 +24,14 @@ use App\Http\Controllers\MainController;
 class HomeController extends MainController
 {
     public function view(Request $request){
-        return view('home')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName]);
+        return view('home')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting]);
     }
 
     public function signatureView(Request $request){
-        return view('signature')->with(['appVersion' => $this->appVersion,'apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName]);
+        return view('signature')->with(['appVersion' => $this->appVersion,'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting]);
     }
 
     public function statisticView(Request $request){
-        return view('statistic')->with(['appVersion' => $this->appVersion,'apiToken' => $this->apiToken, 'appName' => $this->appName, 'orgName' => $this->orgName]);
+        return view('statistic')->with(['appVersion' => $this->appVersion,'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting]);
     }
 }
