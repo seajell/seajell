@@ -70,6 +70,20 @@ class EventController extends MainController
         }
     }
 
+    public function layoutView(Request $request, $id){
+        if(Event::where('id', $id)->first()){
+            // Only admins can update event info
+            if(Gate::allows('authAdmin')){
+                $data = Event::where('id', $id)->first();
+                return view('event.layout')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting, 'data' => $data]);
+            }else{
+                abort(403, 'Anda tidak boleh mengakses laman ini.');
+            }
+        }else{
+            abort(404, 'Acara tidak dijumpai.');
+        }
+    }
+
     public function addEvent(Request $request){
         $validated = $request->validate([
             'event-name' => ['required'],

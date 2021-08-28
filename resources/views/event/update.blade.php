@@ -639,5 +639,12 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         @enderror
         <button class="btn btn-outline-light mt-3" type="submit">Kemas Kini</button>
     </form>
+    <div class="row">
+        <p class="mt-3 fs-4">Susun Atur Sijil</p>
+        <span><a href="{{ route('event.layout', $data->id) }}" class="btn btn-outline-light w-25"><i class="bi bi-columns"></i> Susun Atur Sijil</a></span>
+        <div id="border_color_help" class="form-text mt-3">
+            <p>Klik butang ke atas untuk mengubah susun atur sijil.</p>
+        </div>
+    </div>
     <script src="{{ asset('js/checksEvent.js') }}"></script>
 @endsection
