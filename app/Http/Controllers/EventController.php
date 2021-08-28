@@ -88,6 +88,7 @@ class EventController extends MainController
             'text-color' => ['required'],
             'font-set' => ['required'],
             'border' => ['required'],
+            'certificate-orientation' => ['required']
         ]);
         $eventName = $request->input('event-name');
         $eventDate = $request->input('event-date');
@@ -101,6 +102,7 @@ class EventController extends MainController
         $borderStatus = $request->input('border');
         $borderColor = $request->input('border-color');
         $textColor = $request->input('text-color');
+        $certificateOrientation = $request->input('certificate-orientation');
         // Check if border is needed
         switch ($borderStatus) {
             case 'available':
@@ -282,6 +284,7 @@ class EventController extends MainController
             'font_set' => $request->input('font-set'),
             'border' => $borderStatus,
             'border_color' => $borderColor,
+            'orientation' => $certificateOrientation
         ]);
 
         $request->session()->flash('addEventSuccess', 'Acara berjaya ditambah!');
@@ -333,6 +336,7 @@ class EventController extends MainController
             'text-color' => ['required'],
             'font-set' => ['required'],
             'border' => ['required'],
+            'certificate-orientation' => ['required']
         ]);
         $eventName = $request->input('event-name');
         $eventDate = $request->input('event-date');
@@ -342,6 +346,7 @@ class EventController extends MainController
         $borderStatus = $request->input('border');
         $borderColor = $request->input('border-color');
         $textColor = $request->input('text-color');
+        $certificateOrientation = $request->input('certificate-orientation');
         // Check if border is needed
         switch ($borderStatus) {
             case 'available':
@@ -753,6 +758,7 @@ class EventController extends MainController
                 'font_set' => $request->input('font-set'),
                 'border' => $borderStatus,
                 'border_color' => $borderColor,
+                'orientation' => $certificateOrientation
             ]
         ], ['id'], [
             'name', 
@@ -777,6 +783,7 @@ class EventController extends MainController
             'text_color',
             'border',
             'border_color',
+            'orientation'
         
         ]);
 
