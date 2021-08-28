@@ -53,7 +53,8 @@ class Event extends Model
         'border',
         'border_color',
         'text_color',
-        'font_set'
+        'font_set',
+        'orientation'
     ];
 
     /**

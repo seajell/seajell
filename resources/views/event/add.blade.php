@@ -200,7 +200,36 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         
         <hr>
         <p class="fs-5">Penyesuaian Gaya Sijil </p>
-        <label for="role" class="form-label">Set Font</label>
+        @php
+            if(!empty(old('certificate-orientation'))){
+                switch (old('certificate-orientation')) {
+                    case 'L':
+                        $orientationSelectedPotrait = '';
+                        $orientationSelectedLandscape = 'selected';
+                        break;
+                    case 'P':
+                        $orientationSelectedPotrait = 'selected';
+                        $orientationSelectedLandscape = '';
+                        break;
+                    default:
+                        $orientationSelectedPotrait = 'selected';
+                        $orientationSelectedLandscape = '';
+                        break;
+                }
+            }else{
+                $orientationSelectedPotrait = 'selected';
+                $orientationSelectedLandscape = '';
+            }
+        @endphp
+        <label for="certificate-orientation" class="form-label">Orientasi (Diperlukan)</label>
+        <select class="form-select mb-3" name="certificate-orientation" id="certificate-orientation" aria-label="certificate-orientation">
+            <option value="P" {{ $orientationSelectedPotrait }}>Potret</option>
+            <option value="L" {{ $orientationSelectedLandscape }}>Landskap</option>
+        </select>
+        @error('certificate-orientation')
+            <div class="alert alert-danger">{{ $message }}</div>
+        @enderror
+        <label for="role" class="form-label">Set Font (Diperlukan)</label>
         <select class="form-select mb-3" name="font-set" id="font-set" aria-label="font-set">
             <option value="1">Set 1</option>
             <option value="2">Set 2</option>
