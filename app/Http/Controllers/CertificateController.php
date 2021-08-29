@@ -851,9 +851,11 @@ class CertificateController extends MainController
         PDF::reset();
     }
 
-    public function generateCertificateHTML($certificateID, $mode = 'I', $savePath = NULL){
-        $data = ['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting];
-        $pdf = PDF::loadView('certificate.layout', $data);
+    protected function generateCertificateHTML($certificateID, $mode = 'I', $savePath = NULL){
+        $eventID = Certificate::select('event_id')->where('uid', $certificateID)->first()->event_id;
+        $data = Event::where('id', $eventID)->first();
+        $viewData = ['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting, 'data' => $data];
+        $pdf = PDF::loadView('certificate.layout', $viewData);
         return $pdf->stream();
     }
 

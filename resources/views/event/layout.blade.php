@@ -55,7 +55,13 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         </div>
     </header>
     <main class="min-vh-100 w-100">
+        {{ $data }}
         <div class="d-flex justify-content-center align-items-center">
+            {{-- $fontSetOne = ['cookie', 'badscript', 'bebasneue', 'bebasneue', 'poppins'];
+            $fontSetTwo = ['lobster', 'poiretone', 'poppins', 'bebasneue', 'poppins'];
+            $fontSetThree = ['oleoscript', 'architectsdaughter', 'righteous', 'bebasneue', 'poppins'];
+            $fontSetFour = ['berkshireswash', 'satisfy', 'fredokaone', 'bebasneue', 'poppins'];
+            $fontSetFive = ['kaushanscript', 'rancho', 'carterone', 'bebasneue', 'poppins']; --}}
             {{-- <div id="logo-first" style="background: url({{ asset('storage' . $data->logo_first) }}); background-repeat: no-repeat; background-size: 100%; height: 12em; width: 12em; position: absolute; top: 3%; left: 15%;"></div> --}}
             <div id="canvas" style="background: #fff; height: 297mm; width: 210mm; position: relative;">
                 <style>
@@ -63,30 +69,100 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                         margin: 0%;
                     }
 
-                    .details-text-type{
-                        font-size: 12mm; 
-                        font-weight: bold;
-                    }
-
-                    .details-text-first{
-                        font-size: 4mm;
-                    }
-
-                    .details-text-second{
-                        font-size: 5mm;
-                    }
-
-                    .signature-text{
-                        font-size: 4mm;
-                    }
-
-                    #qr-code-text{
-                        font-size: 4mm;
-                    }
                     @page{ 
                         margin: 0px; 
                     }
                 </style>
+                {{-- Importing fonts --}}
+                @switch($data->font_set)
+                    @case(1)
+                        <style>
+                            @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap');
+                            
+                            body{
+                                font-family: 'Josefin Sans', sans-serif;
+                            }
+                        </style>
+                        @break
+                    @case(2)
+                        <style>
+                            @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap');
+                            
+                            body{
+                                font-family: 'Josefin Sans', sans-serif;
+                            }
+                        </style>
+                        @break
+                    @case(3)
+                        <style>
+                            @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap');
+                            
+                            body{
+                                font-family: 'Josefin Sans', sans-serif;
+                            }
+                        </style>
+                        @break
+                    @case(4)
+                        <style>
+                            @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap');
+                            
+                            body{
+                                font-family: 'Josefin Sans', sans-serif;
+                            }
+                        </style>
+                        @break
+                    @case(5)
+                        <style>
+                            @font-face {
+                                font-family: firstFont;
+                                src: url(https://fonts.googleapis.com/css2?family=Cookie&display=swap);
+                            }
+                            @font-face {
+                                font-family: secondFont;
+                                src: url(sansation_light.woff);
+                            }
+
+                            @font-face {
+                                font-family: thirdFont;
+                                src: url(sansation_light.woff);
+                            }
+
+                            .details-text-type{
+                                font-size: 12mm; 
+                                font-weight: bold;
+                                font-family: firstFont;
+                            }
+
+                            .details-text-first{
+                                font-size: 4mm;
+                                font-family: secondFont;
+                            }
+
+                            .details-text-second{
+                                font-size: 5mm;
+                                font-family: thirdFont;
+                            }
+
+                            .signature-text{
+                                font-size: 4mm;
+                                font-family: thirdFont;
+                            }
+
+                            #qr-code-text{
+                                font-size: 4mm;
+                                font-family: thirdFont;
+                            }
+                        </style>
+                        @break
+                    @default
+                        <style>
+                            @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap');
+                            
+                            body{
+                                font-family: 'Josefin Sans', sans-serif;
+                            }
+                        </style>
+                @endswitch
                 @php
                     $defaultText = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum blandit eros eu turpis smmper u.';
                     $defaultTextSmall = 'Lorem ipsum dolor sit amet, consectetur adipiscin.';

@@ -6,6 +6,7 @@
 /public/certificate
 /public/bootstraps-icons
 /storage/*.key
+!/storage/fonts/.gitignore
 /vendor
 .env
 .env.backup
