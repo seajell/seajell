@@ -56,7 +56,8 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
     </header>
     <main class="min-vh-100 w-100">
         <div class="d-flex justify-content-center align-items-center">
-            <div style="background: #fff; height: 89.1vw; width: 63vw; position: relative;">
+            {{-- <div id="logo-first" style="background: url({{ asset('storage' . $data->logo_first) }}); background-repeat: no-repeat; background-size: 100%; height: 12em; width: 12em; position: absolute; top: 3%; left: 15%;"></div> --}}
+            <div id="canvas" style="background: #fff; height: 99vw; width: 70vw; position: relative;">
                 <style>
                     p{
                         margin: 0%;
@@ -79,11 +80,10 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                         font-size: 1em;
                     }
                 </style>
-                {{-- <div id="logo-first" style="background: url({{ asset('storage' . $data->logo_first) }}); background-repeat: no-repeat; background-size: 100%; height: 12em; width: 12em; position: absolute; top: 3%; left: 15%;"></div> --}}
                 <div id="logo-first" style="background: #000; background-repeat: no-repeat; background-size: 100%; height: 12em; width: 12em; position: absolute; top: 1%; left: 15%;"></div>
-                <div id="logo-second" style="background: #000; background-repeat: no-repeat; background-size: 100%; height: 12em; width: 12em; position: absolute; top: 1%; left: 40%;"></div>
-                <div id="logo-third" style="background: #000; background-repeat: no-repeat; background-size: 100%; height: 12em; width: 12em; position: absolute; top: 1%; left: 65%;"></div>
-                <div id="details" style="height: 44em; width: 40em; position: absolute; top: 16%; left: 17%; text-align: center; display: flex; flex-direction: column; align-items: center;">
+                <div id="logo-second" style="background: #000; background-repeat: no-repeat; background-size: 100%; height: 12em; width: 12em; position: absolute; top: 1%; left: 41%;"></div>
+                <div id="logo-third" style="background: #000; background-repeat: no-repeat; background-size: 100%; height: 12em; width: 12em; position: absolute; top: 1%; left: 67%;"></div>
+                <div id="details" style="height: 44em; width: 40em; position: absolute; top: 16%; left: 20%; text-align: center;">
                     @php
                         $defaultText = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum blandit eros eu turpis semper ultrices. Ut porta turpis fusce.';
                     @endphp
@@ -122,7 +122,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                         <p style="font-weight: bold;" class="details-text-second">{{ $defaultText }}</p>
                     </div>
                 </div>
-                <div id="signature-first" class="signature-text" style="width: 19em; top: 68%; left: 2%; position: absolute; text-align: center; display: flex; flex-direction: column; align-items: center;">
+                <div id="signature-first" class="signature-text" style="width: 19em; top: 68%; left: 2%; position: absolute; text-align: center;">
                     <div id="signature-first-image" style="background: #000; background-repeat: no-repeat; background-size: 100%; width: 90%; padding-top: 33.33%;"></div>
                     <div id="signature-first-line">
                         <p>...................................................................................</p>
@@ -134,7 +134,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                         {{ $defaultText }}
                     </div>
                 </div>
-                <div id="signature-second" class="signature-text" style="width: 19em; top: 68%; left: 34.5%; position: absolute; text-align: center; display: flex; flex-direction: column; align-items: center;">
+                <div id="signature-second" class="signature-text" style="width: 19em; top: 68%; left: 36%; position: absolute; text-align: center;">
                     <div id="signature-second-image" style="background: #000; background-repeat: no-repeat; background-size: 100%; width: 90%; padding-top: 33.33%;"></div>
                     <div id="signature-second-line">
                         <p>...................................................................................</p>
@@ -146,7 +146,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                         {{ $defaultText }}
                     </div>
                 </div>
-                <div id="signature-third" class="signature-text" style="width: 19em; top: 68%; left: 67%; position: absolute; text-align: center; display: flex; flex-direction: column; align-items: center;">
+                <div id="signature-third" class="signature-text" style="width: 19em; top: 68%; left: 69%; position: absolute; text-align: center;">
                     <div id="signature-third-image" style="background: #000; background-repeat: no-repeat; background-size: 100%; width: 90%; padding-top: 33.33%;"></div>
                     <div id="signature-third-line">
                         <p>...................................................................................</p>
@@ -158,12 +158,12 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                         {{ $defaultText }}
                     </div>
                 </div>
-                <div id="qr-code" style="height: 6.5em; width: 23.3em; top: 92%; left: 60%; position: absolute; display: flex; border: 0.3em solid black;">
-                    <div id="qr-code-text" style="display: flex; flex-direction: column; justify-content: center;">
-                        <p style="margin-left: 0.5em; width: 95%;">Imbas Kod QR Ini Untuk Menyemak Ketulenan</p>
+                <div id="qr-code" style="height: 6.5em; width: 21.5em; top: 92%; left: 65%; position: absolute; border: 0.3em solid black;">
+                    <div id="qr-code-text" style="width: 15em; height: 6em;">
+                        <p style="margin-left: 0.5em; margin-bottom: 0.7em; width: 95%;">Imbas Kod QR Ini Untuk Menyemak Ketulenan</p>
                         <p style="margin-left: 0.5em; width: 95%;">ID Sijil: AAAA0000</p>
                     </div>
-                    <div id="qr-code-image" style="background: #000; background-repeat: no-repeat; background-size: 100%; width: 40%; padding-top: 25%; position: relative; margin: 0.1em;"></div>
+                    <div id="qr-code-image" style="background: #000; background-repeat: no-repeat; background-size: 100%; width: 5.8em; height: 5.8em; position: absolute; top: 1%; left: 72%;"></div>
                 </div>
             </div>
         </div>

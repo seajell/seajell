@@ -7,7 +7,6 @@
 /public/bootstraps-icons
 /storage/*.key
 /vendor
-!/vendor/tecnickcom/tcpdf/fonts
 .env
 .env.backup
 .phpunit.result.cache

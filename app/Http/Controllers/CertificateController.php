@@ -28,6 +28,7 @@ use App\Models\Event;
 use App\Models\Certificate;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use App\Models\CertificateViewActivity;
@@ -387,13 +388,13 @@ class CertificateController extends MainController
             switch ($certEvent->visibility) {
                 case 'public':
                     // Certificate PDF generated will have QR code with the URL to the certificate in it
-                    $this->generateCertificate($uid, 'I');
+                    $this->generateCertificateHTML($uid, 'I');
                     break;
                 case 'hidden':
                     // Check if logged in
                     if(Auth::check()){
                         if(Gate::allows('authAdmin') || Certificate::where('uid', $uid)->first()->user_id == Auth::user()->id){
-                            $this->generateCertificate($uid, 'I');
+                            $this->generateCertificateHTML($uid, 'I');
                         }else{
                             return redirect()->route('home');
                         }
@@ -848,6 +849,13 @@ class CertificateController extends MainController
                 break;
         }
         PDF::reset();
+    }
+
+    protected function generateCertificateHTML($certificateID, $mode = 'I', $savePath = NULL){
+        $data = ['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting];
+        $pdf = PDF::loadView('event.layout', $data);
+        dd($pdf);
+        return $pdf->stream('invoice.pdf');    
     }
 
     protected function saveCertificateCollection($request, $certificates, $folderFor, $historyDataUser, $historyDataEvent){
