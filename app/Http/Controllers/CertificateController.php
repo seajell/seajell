@@ -853,9 +853,8 @@ class CertificateController extends MainController
 
     protected function generateCertificateHTML($certificateID, $mode = 'I', $savePath = NULL){
         $data = ['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting];
-        $pdf = PDF::loadView('event.layout', $data);
-        dd($pdf);
-        return $pdf->stream('invoice.pdf');    
+        $pdf = PDF::loadView('certificate.layout', $data);
+        return $pdf->save('invoice.pdf');
     }
 
     protected function saveCertificateCollection($request, $certificates, $folderFor, $historyDataUser, $historyDataEvent){

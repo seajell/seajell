@@ -57,14 +57,14 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
     <main class="min-vh-100 w-100">
         <div class="d-flex justify-content-center align-items-center">
             {{-- <div id="logo-first" style="background: url({{ asset('storage' . $data->logo_first) }}); background-repeat: no-repeat; background-size: 100%; height: 12em; width: 12em; position: absolute; top: 3%; left: 15%;"></div> --}}
-            <div id="canvas" style="background: #fff; height: 99vw; width: 70vw; position: relative;">
+            <div id="canvas" style="background: #fff; height: 297mm; width: 210mm; position: relative;">
                 <style>
                     p{
                         margin: 0%;
                     }
 
                     .details-text-type{
-                        font-size: 2.5em; 
+                        font-size: 3em; 
                         font-weight: bold;
                     }
 
@@ -77,16 +77,23 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                     }
 
                     .signature-text{
+                        font-size: 0.9em;
+                    }
+
+                    #qr-code-text{
                         font-size: 1em;
                     }
+                    @page{ 
+                        margin: 0px; 
+                    }
                 </style>
-                <div id="logo-first" style="background: #000; background-repeat: no-repeat; background-size: 100%; height: 12em; width: 12em; position: absolute; top: 1%; left: 15%;"></div>
-                <div id="logo-second" style="background: #000; background-repeat: no-repeat; background-size: 100%; height: 12em; width: 12em; position: absolute; top: 1%; left: 41%;"></div>
-                <div id="logo-third" style="background: #000; background-repeat: no-repeat; background-size: 100%; height: 12em; width: 12em; position: absolute; top: 1%; left: 67%;"></div>
-                <div id="details" style="height: 44em; width: 40em; position: absolute; top: 16%; left: 20%; text-align: center;">
-                    @php
-                        $defaultText = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum blandit eros eu turpis semper ultrices. Ut porta turpis fusce.';
-                    @endphp
+                @php
+                    $defaultText = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum blandit eros eu turpis semper u.';
+                @endphp
+                <div id="logo-first" style="background: #000; background-repeat: no-repeat; background-size: 100%; height: 10em; width: 10em; transform: translate(-50%, 0);  position: absolute; top: 0.5%; left: 20%; z-index: 10;"></div>
+                <div id="logo-second" style="background: #000; background-repeat: no-repeat; background-size: 100%; height: 10em; width: 10em; transform: translate(-50%, 0);  position: absolute; top: 0.5%; left: 50%; z-index: 10;"></div>
+                <div id="logo-third" style="background: #000; background-repeat: no-repeat; background-size: 100%; height: 10em; width: 10em; transform: translate(-50%, 0);  position: absolute; top: 0.5%; left: 80%; z-index: 10;"></div>
+                <div id="details" style="height: 44em; width: 49em; transform: translate(-50%, 0); position: absolute; top: 15%; left: 50%; text-align: center; z-index: 10; background: orange;">
                     <div id="details-type" style="margin-bottom: 0.1em;">
                         <p class="details-text-type">Sijil Pencapaian</p>
                     </div>
@@ -122,7 +129,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                         <p style="font-weight: bold;" class="details-text-second">{{ $defaultText }}</p>
                     </div>
                 </div>
-                <div id="signature-first" class="signature-text" style="width: 19em; top: 68%; left: 2%; position: absolute; text-align: center;">
+                <div id="signature-first" class="signature-text" style="width: 19em; top: 68%; left: 20%; transform: translate(-50%, 0);  position: absolute; text-align: center; z-index: 10;">
                     <div id="signature-first-image" style="background: #000; background-repeat: no-repeat; background-size: 100%; width: 90%; padding-top: 33.33%;"></div>
                     <div id="signature-first-line">
                         <p>...................................................................................</p>
@@ -134,7 +141,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                         {{ $defaultText }}
                     </div>
                 </div>
-                <div id="signature-second" class="signature-text" style="width: 19em; top: 68%; left: 36%; position: absolute; text-align: center;">
+                <div id="signature-second" class="signature-text" style="width: 19em; top: 68%; left: 50%; transform: translate(-50%, 0);  position: absolute; text-align: center; z-index: 10;">
                     <div id="signature-second-image" style="background: #000; background-repeat: no-repeat; background-size: 100%; width: 90%; padding-top: 33.33%;"></div>
                     <div id="signature-second-line">
                         <p>...................................................................................</p>
@@ -146,7 +153,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                         {{ $defaultText }}
                     </div>
                 </div>
-                <div id="signature-third" class="signature-text" style="width: 19em; top: 68%; left: 69%; position: absolute; text-align: center;">
+                <div id="signature-third" class="signature-text" style="width: 19em; top: 68%; left: 80%; transform: translate(-50%, 0);  position: absolute; text-align: center; z-index: 10;">
                     <div id="signature-third-image" style="background: #000; background-repeat: no-repeat; background-size: 100%; width: 90%; padding-top: 33.33%;"></div>
                     <div id="signature-third-line">
                         <p>...................................................................................</p>
@@ -158,13 +165,15 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                         {{ $defaultText }}
                     </div>
                 </div>
-                <div id="qr-code" style="height: 6.5em; width: 21.5em; top: 92%; left: 65%; position: absolute; border: 0.3em solid black;">
+                <div id="qr-code" style="height: 6.5em; width: 21.5em; top: 90%; left: 75%; transform: translate(-50%, 0);  position: absolute; border: 0.3em solid black; z-index: 10;">
                     <div id="qr-code-text" style="width: 15em; height: 6em;">
                         <p style="margin-left: 0.5em; margin-bottom: 0.7em; width: 95%;">Imbas Kod QR Ini Untuk Menyemak Ketulenan</p>
                         <p style="margin-left: 0.5em; width: 95%;">ID Sijil: AAAA0000</p>
                     </div>
                     <div id="qr-code-image" style="background: #000; background-repeat: no-repeat; background-size: 100%; width: 5.8em; height: 5.8em; position: absolute; top: 1%; left: 72%;"></div>
                 </div>
+                <div style="height: 297mm; width: 105mm; top: 0%; left: 0%; position: absolute; background: red; z-index: 1;"></div>
+                <div style="height: 297mm; width: 105mm; top: 0%; left: 50%; position: absolute; background: blue; z-index: 1;"></div>
             </div>
         </div>
     </main>
