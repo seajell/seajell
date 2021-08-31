@@ -853,10 +853,11 @@ class CertificateController extends MainController
 
     protected function generateCertificateHTML($certificateID, $mode = 'I', $savePath = NULL){
         $eventID = Certificate::select('event_id')->where('uid', $certificateID)->first()->event_id;
-        $data = Event::where('id', $eventID)->first();
-        $viewData = ['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting, 'data' => $data];
-        $pdf = PDF::loadView('certificate.layout', $viewData);
-        return $pdf->stream();
+        $eventData = Event::where('id', $eventID)->first();
+        $certificateData = Certificate::select('certificates.uid', 'users.fullname', 'users.identification_number', 'certificates.position', 'certificates.category')->where('uid', $certificateID)->join('users', 'certificates.user_id', '=', 'users.id')->first();
+        $viewData = ['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting, 'eventData' => $eventData, 'certificateData' => $certificateData];
+        $pdf = PDF::loadView('certificate.layout', $viewData)->setPaper('a4', 'potrait')->setWarnings(false)->stream();
+        return $pdf;
     }
 
     protected function saveCertificateCollection($request, $certificates, $folderFor, $historyDataUser, $historyDataEvent){

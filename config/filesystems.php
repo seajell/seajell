@@ -69,6 +69,7 @@ return [
     'links' => [
         public_path('storage') => storage_path('app/public'),
         public_path('certificate') => storage_path('app/certificate'),
+        public_path('fonts') => resource_path('fonts/third_party_all'),
     ],
     
 
