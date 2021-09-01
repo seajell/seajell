@@ -8,6 +8,10 @@
 /public/bootstraps-icons
 /storage/*.key
 !/storage/fonts/.gitignore
+!/storage/app/fonts
+!/storage/app/fonts/.gitignore
+!/storage/app/fonts/*
+!/storage/app/fonts/**
 /vendor
 .env
 .env.backup

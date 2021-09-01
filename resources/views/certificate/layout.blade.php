@@ -8,14 +8,8 @@
 </head>
 <body>
     {{-- Don't forget to remove the height and width of the #canvas element in order to remove overflow --}}
-    @php
-        if(!empty($eventData->background_image)){
-            $backgroundImage = 'url(' . asset('storage' . $eventData->background_image) . ')';
-        }else{
-            $backgroundImage = '#fff';
-        }
-    @endphp
-    <div id="canvas" style="background: {{ $backgroundImage }}; height: 297mm; width: 210mm; position: relative;">
+    <div id="canvas" style="position: relative;">
+        <img src="{{ storage_path('app/public' . $eventData->background_image) }}" alt="Background image" style="position: absolute; width: 100%; height: auto;">
         <style>
             p{
                 margin: 0%;
@@ -54,7 +48,7 @@
                 <style>
                     @font-face {
                         font-family: 'firstFont';
-                        src: url('/fonts/KaushanScript-Regular.ttf') format('truetype');
+                        src: url({{ resource_path("fonts/third_party_all/KaushanScript-Regular.ttf") }}) format('truetype');
                         font-style: normal;
                         font-weight: normal;
                     }
@@ -138,13 +132,13 @@
             $defaultTextSmall = 'Lorem ipsum dolor sit amet, consectetur adipiscin.'; // 50 chars
         @endphp
         @if(!empty($eventData->logo_first))
-            <div id="logo-first" style="background: url({{ asset('storage' . $eventData->logo_first) }}); background-repeat: no-repeat; background-size: 100%; height: 42mm; width: 42mm; transform: translate(-50%, 0);  position: absolute; top: 0.5%; left: 20%; z-index: 10;"></div>
+            <div id="logo-first" style="background: url({{ storage_path('app/public' . $eventData->logo_first) }}); background-repeat: no-repeat; background-size: 100%; height: 42mm; width: 42mm; transform: translate(-50%, 0);  position: absolute; top: 0.5%; left: 20%; z-index: 10;"></div>
         @endif
         @if(!empty($eventData->logo_second))
-            <div id="logo-second" style="background: url({{ asset('storage' . $eventData->logo_second) }}); background-repeat: no-repeat; background-size: 100%; height: 42mm; width: 42mm; transform: translate(-50%, 0);  position: absolute; top: 0.5%; left: 50%; z-index: 10;"></div>
+            <div id="logo-second" style="background: url({{ storage_path('app/public' . $eventData->logo_second) }}); background-repeat: no-repeat; background-size: 100%; height: 42mm; width: 42mm; transform: translate(-50%, 0);  position: absolute; top: 0.5%; left: 50%; z-index: 10;"></div>
         @endif
         @if(!empty($eventData->logo_third))
-            <div id="logo-third" style="background: url({{ asset('storage' . $eventData->logo_third) }}); background-repeat: no-repeat; background-size: 100%; height: 42mm; width: 42mm; transform: translate(-50%, 0);  position: absolute; top: 0.5%; left: 80%; z-index: 10;"></div>
+            <div id="logo-third" style="background: url({{ storage_path('app/public' . $eventData->logo_third) }}); background-repeat: no-repeat; background-size: 100%; height: 42mm; width: 42mm; transform: translate(-50%, 0);  position: absolute; top: 0.5%; left: 80%; z-index: 10;"></div>
         @endif
         <div id="details" style="height: 165mm; width: 155mm; transform: translate(-50%, 0); position: absolute; top: 15%; left: 50%; text-align: center; z-index: 10;">
             <div id="details-type" style="margin-bottom: 0.1mm;">
@@ -271,7 +265,7 @@
         </div>
         @if(!empty($eventData->signature_first))
             <div id="signature-first" style="width: 67mm; top: 71%; left: 18%; transform: translate(-50%, 0);  position: absolute; text-align: center; z-index: 10;">
-                <div id="signature-first-image" style="background: url({{ asset('storage' . $eventData->signature_first) }}); background-repeat: no-repeat; background-size: 100%; width: 90%; padding-top: 33.33%; transform: translate(-50%, 0); position: relative; left: 50%;"></div>
+                <div id="signature-first-image" style="background: url({{ storage_path('app/public' . $eventData->signature_first) }}); background-repeat: no-repeat; background-size: 100%; width: 90%; padding-top: 33.33%; transform: translate(-50%, 0); position: relative; left: 50%;"></div>
                 <div id="signature-first-line" style="font-weight: bold; font-size: 0.8em;">
                     <p>...............................................................</p>
                 </div>
@@ -285,7 +279,7 @@
         @endif
         @if(!empty($eventData->signature_second))
             <div id="signature-second" style="width: 67mm; top: 71%; left: 50%; transform: translate(-50%, 0);  position: absolute; text-align: center; z-index: 10;">
-                <div id="signature-second-image" style="background: url({{ asset('storage' . $eventData->signature_second) }}); background-repeat: no-repeat; background-size: 100%; width: 90%; padding-top: 33.33%; transform: translate(-50%, 0); position: relative; left: 50%;"></div>
+                <div id="signature-second-image" style="background: url({{ storage_path('app/public' . $eventData->signature_second) }}); background-repeat: no-repeat; background-size: 100%; width: 90%; padding-top: 33.33%; transform: translate(-50%, 0); position: relative; left: 50%;"></div>
                 <div id="signature-second-line" style="font-weight: bold; font-size: 0.8em;">
                     <p>...............................................................</p>
                 </div>
@@ -299,7 +293,7 @@
         @endif
         @if(!empty($eventData->signature_third))
             <div id="signature-third" style="width: 67mm; top: 71%; left: 82%; transform: translate(-50%, 0);  position: absolute; text-align: center; z-index: 10;">
-                <div id="signature-third-image" style="background: url({{ asset('storage' . $eventData->signature_third) }}); background-repeat: no-repeat; background-size: 100%; width: 90%; padding-top: 33.33%; transform: translate(-50%, 0); position: relative; left: 50%;"></div>
+                <div id="signature-third-image" style="background: url({{ storage_path('app/public' . $eventData->signature_third) }}); background-repeat: no-repeat; background-size: 100%; width: 90%; padding-top: 33.33%; transform: translate(-50%, 0); position: relative; left: 50%;"></div>
                 <div id="signature-third-line" style="font-weight: bold; font-size: 0.8em;">
                     <p>...............................................................</p>
                 </div>
