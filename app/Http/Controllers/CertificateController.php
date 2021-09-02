@@ -857,7 +857,7 @@ class CertificateController extends MainController
         $certificateData = Certificate::select('certificates.uid', 'users.fullname', 'users.identification_number', 'certificates.position', 'certificates.category', 'certificates.type')->where('uid', $certificateID)->join('users', 'certificates.user_id', '=', 'users.id')->first();
         $viewData = ['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting, 'eventData' => $eventData, 'certificateData' => $certificateData];
         //return view('certificate.layout', $viewData);
-        $pdf = PDF::loadView('certificate.layout', $viewData)->setPaper('a4', 'landscape')->setWarnings(false)->stream();
+        $pdf = PDF::loadView('certificate.layout', $viewData)->setPaper('a4', 'potrait')->setWarnings(false)->stream();
         //PDF::setOptions(['defaultFont' => 'sans-serif', 'isRemoteEnabled' => true]);
         return $pdf;
     }

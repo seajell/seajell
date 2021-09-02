@@ -99,19 +99,13 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             $fontSetFour = ['berkshireswash', 'satisfy', 'fredokaone', 'bebasneue', 'poppins'];
             $fontSetFive = ['kaushanscript', 'rancho', 'carterone', 'bebasneue', 'poppins']; --}}
             {{-- <div id="logo-first" style="background: url({{ asset('storage' . $eventData->logo_first) }}); background-repeat: no-repeat; background-size: 100%; height: 12em; width: 12em; position: absolute; top: 3%; left: 15%;"></div> --}}
-            @php
-                if(!empty($eventData->background_image)){
-                    $backgroundImage = 'url(' . asset('storage' . $eventData->background_image) . ')';
-                }else{
-                    $backgroundImage = '#fff';
-                }
-            @endphp
-            <div id="canvas" style="background: {{ $backgroundImage }}; height: 297mm; width: 210mm; position: relative;">
+            <div id="canvas" style="width: 210mm; height: 297mm; position: relative;">
+                <img src="{{ storage_path('app/public' . $eventData->background_image) }}" alt="Background image" style="position: absolute; width: 100%; height: auto;">
                 <style>
                     p{
                         margin: 0%;
                     }
-
+        
                     @page{ 
                         margin: 0px; 
                         width: 100%;
@@ -145,74 +139,74 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                         <style>
                             @font-face {
                                 font-family: 'firstFont';
-                                src: url('/fonts/KaushanScript-Regular.ttf') format('truetype');
-                                font-style: normal;
+                                src: url("{{ storage_path('app/fonts/third_party_all/KaushanScript-Regular.ttf') }}") format("truetype");
                                 font-weight: normal;
+                                font-style: normal;
                             }
-
+        
                             @font-face {
                                 font-family: 'secondFont';
                                 src: url('/fonts/Rancho-Regular.ttf') format('truetype');
                                 font-style: normal;
                                 font-weight: normal;
                             }
-
+        
                             @font-face {
                                 font-family: 'thirdFont';
                                 src: url('/fonts/CarterOne-Regular.ttf') format('truetype');
                                 font-style: normal;
                                 font-weight: normal;
                             }
-
+        
                             @font-face {
                                 font-family: 'signatureFont';
                                 src: url('/fonts/Poppins-Regular.ttf') format('truetype');
                                 font-style: normal;
                                 font-weight: normal;
                             }
-
+        
                             @font-face {
                                 font-family: 'qrCodeFont';
                                 src: url('/fonts/Poppins-Regular.ttf') format('truetype');
                                 font-style: normal;
                                 font-weight: normal;
                             }
-
+        
                             .details-text-type{
                                 font-size: 3em; 
                                 font-weight: normal;
                                 font-family: 'firstFont';
                                 color: <?= $eventData->text_color ?>;
                             }
-
+        
                             .details-text-first{
                                 font-size: 1.5em;
                                 font-weight: normal;
                                 font-family: 'secondFont';
                                 color: <?= $eventData->text_color ?>;
                             }
-
+        
                             .details-text-second{
                                 font-size: 0.9em;
                                 font-weight: normal;
                                 font-family: 'thirdFont';
                                 color: <?= $eventData->text_color ?>;
                             }
-
+        
                             .signature-text-first{
                                 font-size: 0.95em;
                                 font-weight: normal;
                                 font-family: 'signatureFont';
                                 color: <?= $eventData->text_color ?>;
                             }
-
+        
                             .signature-text-second{
                                 font-size: 0.9em;
                                 font-weight: normal;
                                 font-family: 'signatureFont';
                                 color: <?= $eventData->text_color ?>;
                             }
-
+        
                             #qr-code-text{
                                 font-size: 1em;
                                 font-weight: normal;
@@ -229,13 +223,13 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                     $defaultTextSmall = 'Lorem ipsum dolor sit amet, consectetur adipiscin.'; // 50 chars
                 @endphp
                 @if(!empty($eventData->logo_first))
-                    <div id="logo-first" style="background: url({{ asset('storage' . $eventData->logo_first) }}); background-repeat: no-repeat; background-size: 100%; height: 42mm; width: 42mm; transform: translate(-50%, 0);  position: absolute; top: 0.5%; left: 20%; z-index: 10;"></div>
+                    <div id="logo-first" style="background: url({{ storage_path('app/public' . $eventData->logo_first) }}); background-repeat: no-repeat; background-size: 100%; height: 42mm; width: 42mm; transform: translate(-50%, 0);  position: absolute; top: 0.5%; left: 20%; z-index: 10;"></div>
                 @endif
                 @if(!empty($eventData->logo_second))
-                    <div id="logo-second" style="background: url({{ asset('storage' . $eventData->logo_second) }}); background-repeat: no-repeat; background-size: 100%; height: 42mm; width: 42mm; transform: translate(-50%, 0);  position: absolute; top: 0.5%; left: 50%; z-index: 10;"></div>
+                    <div id="logo-second" style="background: url({{ storage_path('app/public' . $eventData->logo_second) }}); background-repeat: no-repeat; background-size: 100%; height: 42mm; width: 42mm; transform: translate(-50%, 0);  position: absolute; top: 0.5%; left: 50%; z-index: 10;"></div>
                 @endif
                 @if(!empty($eventData->logo_third))
-                    <div id="logo-third" style="background: url({{ asset('storage' . $eventData->logo_third) }}); background-repeat: no-repeat; background-size: 100%; height: 42mm; width: 42mm; transform: translate(-50%, 0);  position: absolute; top: 0.5%; left: 80%; z-index: 10;"></div>
+                    <div id="logo-third" style="background: url({{ storage_path('app/public' . $eventData->logo_third) }}); background-repeat: no-repeat; background-size: 100%; height: 42mm; width: 42mm; transform: translate(-50%, 0);  position: absolute; top: 0.5%; left: 80%; z-index: 10;"></div>
                 @endif
                 <div id="details" style="height: 165mm; width: 155mm; transform: translate(-50%, 0); position: absolute; top: 15%; left: 50%; text-align: center; z-index: 10;">
                     <div id="details-type" style="margin-bottom: 0.1mm;">
@@ -291,7 +285,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                             }else{
                                 $certificateFullname = $defaultText;
                             }
-
+        
                             if(!empty($certificateData->identification_number)){
                                 $certificateIdentificationNumber = $certificateData->identification_number;
                             }else{
@@ -362,7 +356,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                 </div>
                 @if(!empty($eventData->signature_first))
                     <div id="signature-first" style="width: 67mm; top: 71%; left: 18%; transform: translate(-50%, 0);  position: absolute; text-align: center; z-index: 10;">
-                        <div id="signature-first-image" style="background: url({{ asset('storage' . $eventData->signature_first) }}); background-repeat: no-repeat; background-size: 100%; width: 90%; padding-top: 33.33%; transform: translate(-50%, 0); position: relative; left: 50%;"></div>
+                        <div id="signature-first-image" style="background: url({{ storage_path('app/public' . $eventData->signature_first) }}); background-repeat: no-repeat; background-size: 100%; width: 90%; padding-top: 33.33%; transform: translate(-50%, 0); position: relative; left: 50%;"></div>
                         <div id="signature-first-line" style="font-weight: bold; font-size: 0.8em;">
                             <p>...............................................................</p>
                         </div>
@@ -376,7 +370,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                 @endif
                 @if(!empty($eventData->signature_second))
                     <div id="signature-second" style="width: 67mm; top: 71%; left: 50%; transform: translate(-50%, 0);  position: absolute; text-align: center; z-index: 10;">
-                        <div id="signature-second-image" style="background: url({{ asset('storage' . $eventData->signature_second) }}); background-repeat: no-repeat; background-size: 100%; width: 90%; padding-top: 33.33%; transform: translate(-50%, 0); position: relative; left: 50%;"></div>
+                        <div id="signature-second-image" style="background: url({{ storage_path('app/public' . $eventData->signature_second) }}); background-repeat: no-repeat; background-size: 100%; width: 90%; padding-top: 33.33%; transform: translate(-50%, 0); position: relative; left: 50%;"></div>
                         <div id="signature-second-line" style="font-weight: bold; font-size: 0.8em;">
                             <p>...............................................................</p>
                         </div>
@@ -390,7 +384,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                 @endif
                 @if(!empty($eventData->signature_third))
                     <div id="signature-third" style="width: 67mm; top: 71%; left: 82%; transform: translate(-50%, 0);  position: absolute; text-align: center; z-index: 10;">
-                        <div id="signature-third-image" style="background: url({{ asset('storage' . $eventData->signature_third) }}); background-repeat: no-repeat; background-size: 100%; width: 90%; padding-top: 33.33%; transform: translate(-50%, 0); position: relative; left: 50%;"></div>
+                        <div id="signature-third-image" style="background: url({{ storage_path('app/public' . $eventData->signature_third) }}); background-repeat: no-repeat; background-size: 100%; width: 90%; padding-top: 33.33%; transform: translate(-50%, 0); position: relative; left: 50%;"></div>
                         <div id="signature-third-line" style="font-weight: bold; font-size: 0.8em;">
                             <p>...............................................................</p>
                         </div>
