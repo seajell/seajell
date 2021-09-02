@@ -179,21 +179,6 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             }
         }
 
-        if(!empty(old('border-color'))){ 
-            $valueBorderColor = old('border-color');
-        }else{
-            if(!empty($data)){
-                if(!empty($data->border_color)){
-                    $valueBorderColor = strtoupper($data->border_color);
-                }else{
-                    $valueBorderColor = "";
-                }
-            }else{
-                $valueBorderColor = "";
-            }
-        }
-
-
         if(!empty($data->font_set)){ 
             switch ($data->font_set) {
                 case 1:
@@ -589,55 +574,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         @error('text-color')
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
-
-        <label class="form-label mt-3"><span class="fst-italic">Border</span> (Diperlukan)</label>
-        @switch($data->border)
-            @case('available')
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="border" id="border1" value="available" checked>
-                    <label class="form-check-label" for="border">
-                    Ada
-                    </label>
-                </div>
-                <div class="form-check mb-3">
-                    <input class="form-check-input" type="radio" name="border" value="unavailable" id="border2">
-                    <label class="form-check-label" for="border">
-                    Tiada
-                    </label>
-                </div>
-                @break
-            @case('unavailable')
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="border" id="border1" value="available">
-                    <label class="form-check-label" for="border">
-                    Ada
-                    </label>
-                </div>
-                <div class="form-check mb-3">
-                    <input class="form-check-input" type="radio" name="border" value="unavailable" id="border2" checked>
-                    <label class="form-check-label" for="border">
-                    Tiada
-                    </label>
-                </div>
-                @break
-            @default
-                @break    
-        @endswitch
-        <div id="border_help" class="form-text">
-            <span class="fst-italic">Border</span> akan dilukis pada sijil yang dijana.
-        </div>
-        @error('border')
-            <div class="alert alert-danger">{{ $message }}</div>
-        @enderror
-        <label class="form-label mt-3">Warna <span class="fst-italic">Border (Pilihan)</span></label>
-        <x-buk-color-picker name="border-color" class="mb-3" :options='["theme" => "classic", "default" => "${valueBorderColor}"]' />
-        <div id="border_color_help" class="form-text">
-            Hanya pilih jika <span class="fst-italic">Border</span> ditetapkan kepada <span class="fst-italic">Ada</span>.
-        </div>
-        @error('border-color')
-            <div class="alert alert-danger">{{ $message }}</div>
-        @enderror
-        <button class="btn btn-outline-light mt-3" type="submit">Kemas Kini</button>
+        <button class="btn btn-outline-light mt-3" type="submit"><i class="bi bi-pen"></i> Kemas Kini</button>
     </form>
     <div class="row">
         <p class="mt-3 fs-4">Susun Atur Sijil</p>

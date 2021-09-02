@@ -299,33 +299,6 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         @error('text-color')
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
-        <label class="form-label mt-3"><span class="fst-italic">Border</span> (Diperlukan)</label>
-        <div class="form-check">
-            <input class="form-check-input" type="radio" name="border" id="border1" value="available">
-            <label class="form-check-label" for="border">
-              Ada
-            </label>
-        </div>
-        <div class="form-check mb-3">
-            <input class="form-check-input" type="radio" name="border" value="unavailable" id="border2" checked>
-            <label class="form-check-label" for="border">
-              Tiada
-            </label>
-        </div>
-        <div id="border_help" class="form-text">
-            <span class="fst-italic">Border</span> akan dilukis pada sijil yang dijana.
-        </div>
-        @error('border')
-            <div class="alert alert-danger">{{ $message }}</div>
-        @enderror
-        <label class="form-label mt-3">Warna <span class="fst-italic">Border (Pilihan)</span></label>
-        <x-buk-color-picker name="border-color" class="mb-3" :options="['theme' => 'classic']" />
-        <div id="border_color_help" class="form-text">
-            Hanya pilih jika <span class="fst-italic">Border</span> ditetapkan kepada <span class="fst-italic">Ada</span>.
-        </div>
-        @error('border-color')
-            <div class="alert alert-danger">{{ $message }}</div>
-        @enderror
         <button class="btn btn-outline-light mt-3" type="submit">Tambah Acara</button>
     </form>
     <script src="{{ asset('js/checksEvent.js') }}"></script>

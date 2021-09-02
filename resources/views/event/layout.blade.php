@@ -137,7 +137,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                     $fontSetSizeFour = [2.3, 1.3, 1, 1, 0.8, 1];
 
                     $fontSetFive = ['KaushanScript-Regular', 'Rancho-Regular', 'CarterOne-Regular', 'bebasneue', 'Poppins-Regular', 'bebasneue'];
-                    $fontSetSizeFive = [2.3, 1.3, 1, 1, 0.8, 1];
+                    $fontSetSizeFive = [2.3, 1.3, 0.9, 1, 0.8, 1];
         
                     switch ($eventData->font_set) {
                         case 1:

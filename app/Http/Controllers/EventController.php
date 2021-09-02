@@ -101,7 +101,6 @@ class EventController extends MainController
             'background-image' => ['image', 'mimes:png'],
             'text-color' => ['required'],
             'font-set' => ['required'],
-            'border' => ['required'],
             'certificate-orientation' => ['required']
         ]);
         $eventName = $request->input('event-name');
@@ -113,26 +112,8 @@ class EventController extends MainController
         $signatureFirstName = $request->input('signature-first-name');
         $signatureFirstPosition = $request->input('signature-first-position');
         $visibility = $request->input('visibility');
-        $borderStatus = $request->input('border');
-        $borderColor = $request->input('border-color');
         $textColor = $request->input('text-color');
         $certificateOrientation = $request->input('certificate-orientation');
-        // Check if border is needed
-        switch ($borderStatus) {
-            case 'available':
-                // Check if border color have been set
-                if($borderColor != '' && $borderColor != NULL){
-                    $borderColor = $borderColor;
-                }else{
-                    $borderColor = '';
-                }
-                break;
-            case 'unavailable':
-                $borderColor = '';
-                break;
-            default:
-                break;
-        }
 
         /**
          * Logos
@@ -296,8 +277,6 @@ class EventController extends MainController
             'background_image' => $backgroundImageSavePath,
             'text_color' => $textColor,
             'font_set' => $request->input('font-set'),
-            'border' => $borderStatus,
-            'border_color' => $borderColor,
             'orientation' => $certificateOrientation
         ]);
 
@@ -349,7 +328,6 @@ class EventController extends MainController
             'background-image' => ['image', 'mimes:png'],
             'text-color' => ['required'],
             'font-set' => ['required'],
-            'border' => ['required'],
             'certificate-orientation' => ['required']
         ]);
         $eventName = $request->input('event-name');
@@ -357,26 +335,8 @@ class EventController extends MainController
         $eventLocation = $request->input('event-location');
         $organiserName = $request->input('organiser-name');
         $visibility = $request->input('visibility');
-        $borderStatus = $request->input('border');
-        $borderColor = $request->input('border-color');
         $textColor = $request->input('text-color');
         $certificateOrientation = $request->input('certificate-orientation');
-        // Check if border is needed
-        switch ($borderStatus) {
-            case 'available':
-                // Check if border color have been set
-                if($borderColor != '' && $borderColor != NULL){
-                    $borderColor = $borderColor;
-                }else{
-                    $borderColor = '';
-                }
-                break;
-            case 'unavailable':
-                $borderColor = '';
-                break;
-            default:
-                break;
-        }
 
         /**
          * Logos
@@ -770,8 +730,6 @@ class EventController extends MainController
                 'background_image' => $backgroundImageSavePath,
                 'text_color' => $textColor,
                 'font_set' => $request->input('font-set'),
-                'border' => $borderStatus,
-                'border_color' => $borderColor,
                 'orientation' => $certificateOrientation
             ]
         ], ['id'], [
@@ -795,8 +753,6 @@ class EventController extends MainController
             'background_image',
             'font_set',
             'text_color',
-            'border',
-            'border_color',
             'orientation'
         
         ]);
