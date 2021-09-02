@@ -344,11 +344,17 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                         $certificatePosition = 'Lorem Ipsum';
                     }
                 @endphp
-                <p class="details-text-first">{{ $certificateCredit }}</p>
-                <p class="details-text-second">{{ strtoupper($certificatePosition) }}</p>
+                @if(!empty($certificateData->type) && $certificateData->type == 'participation')
+                    <p class="details-text-first">{{ $certificateCredit }}</p>
+                @else
+                    <p class="details-text-first">{{ $certificateCredit }}</p>
+                    <p class="details-text-second">{{ strtoupper($certificatePosition) }}</p>
+                @endif
             </div>
             <div id="details-event-name" style="margin-bottom: 1mm;">
-                <p class="details-text-first">Dalam</p>
+                @if(!empty($certificateData->type) && $certificateData->type != 'participation')
+                    <p class="details-text-first">Dalam</p>
+                @endif
                 <p class="details-text-second">{{ strtoupper($eventData->name) }}</p>
             </div>
             @if(!empty($certificateData->category))

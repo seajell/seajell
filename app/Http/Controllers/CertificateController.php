@@ -388,13 +388,13 @@ class CertificateController extends MainController
             switch ($certEvent->visibility) {
                 case 'public':
                     // Certificate PDF generated will have QR code with the URL to the certificate in it
-                    return $this->generateCertificateHTML($uid, 'I');
+                    return $this->generateCertificateHTML($uid, 'stream');
                     break;
                 case 'hidden':
                     // Check if logged in
                     if(Auth::check()){
                         if(Gate::allows('authAdmin') || Certificate::where('uid', $uid)->first()->user_id == Auth::user()->id){
-                            return $this->generateCertificateHTML($uid, 'I');
+                            return $this->generateCertificateHTML($uid, 'stream');
                         }else{
                             return redirect()->route('home');
                         }
@@ -851,15 +851,24 @@ class CertificateController extends MainController
         PDF::reset();
     }
 
-    protected function generateCertificateHTML($certificateID, $mode = 'I', $savePath = NULL){
+    protected function generateCertificateHTML($certificateID, $mode = 'stream', $savePath = NULL){
+        $certificateFileName = 'SeaJell_e_Certificate_' . $certificateID . '.pdf';
         $eventID = Certificate::select('event_id')->where('uid', $certificateID)->first()->event_id;
         $eventData = Event::where('id', $eventID)->first();
         $certificateData = Certificate::select('certificates.uid', 'users.fullname', 'users.identification_number', 'certificates.position', 'certificates.category', 'certificates.type')->where('uid', $certificateID)->join('users', 'certificates.user_id', '=', 'users.id')->first();
         $viewData = ['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting, 'eventData' => $eventData, 'certificateData' => $certificateData];
-        //return view('certificate.layout', $viewData);
-        $pdf = PDF::loadView('certificate.layout', $viewData)->setPaper('a4', 'potrait')->setWarnings(false)->stream();
-        //PDF::setOptions(['defaultFont' => 'sans-serif', 'isRemoteEnabled' => true]);
-        return $pdf;
+        // Check whether wanna save or stream the certificate
+        switch($mode){
+            case 'stream':
+                $pdf = PDF::loadView('certificate.layout', $viewData)->setPaper('a4', 'potrait')->setWarnings(false)->stream($certificateFileName);
+                return $pdf;
+            case 'save':
+                $fullPath = $savePath . 'SeaJell_e_Certificate_' . $certificateID . '.pdf';
+                PDF::loadView('certificate.layout', $viewData)->setPaper('a4', 'potrait')->setWarnings(false)->save($fullPath);
+            default:
+                $pdf = PDF::loadView('certificate.layout', $viewData)->setPaper('a4', 'potrait')->setWarnings(false)->stream($certificateFileName);
+                return $pdf;
+        }
     }
 
     protected function saveCertificateCollection($request, $certificates, $folderFor, $historyDataUser, $historyDataEvent){
@@ -869,7 +878,7 @@ class CertificateController extends MainController
         Storage::disk('local')->makeDirectory('/certificate/' . $folderName);
         // Saves all certificates relating to user to storage/app/certificate folder
         foreach ($certificates as $certificate) {
-            $this->generateCertificate($certificate->uid, 'F', $savePath);
+            $this->generateCertificateHTML($certificate->uid, 'save', $savePath);
         }
         // Archive all certificates to a zip file
         $zipName = $folderName . '.zip';
