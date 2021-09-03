@@ -229,27 +229,6 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         @error('certificate-orientation')
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
-        <label for="role" class="form-label">Set Font (Diperlukan)</label>
-        <select class="form-select mb-3" name="font-set" id="font-set" aria-label="font-set">
-            <option value="1">Set 1</option>
-            <option value="2">Set 2</option>
-            <option value="3">Set 3</option>
-            <option value="4">Set 4</option>
-            <option value="5">Set 5</option>
-        </select>
-        @error('font-set')
-            <div class="alert alert-danger">{{ $message }}</div>
-        @enderror
-        <div id="form_set_help" class="form-text">
-            <p>Set font ini menentukan font yang akan digunakan pada sijil. Lihat contoh hasil daripada set font di bawah:</p>
-            <ul>
-                <li><a href="{{ asset('storage/fontset/1/1.pdf') }}" target="_blank">Set 1</a></li>
-                <li><a href="{{ asset('storage/fontset/2/2.pdf') }}" target="_blank">Set 2</a></li>
-                <li><a href="{{ asset('storage/fontset/3/3.pdf') }}" target="_blank">Set 3</a></li>
-                <li><a href="{{ asset('storage/fontset/4/4.pdf') }}" target="_blank">Set 4</a></li>
-                <li><a href="{{ asset('storage/fontset/5/5.pdf') }}" target="_blank">Set 5</a></li>
-            </ul>
-        </div>
         <label class="form-label mt-3">Keterlihatan (Diperlukan)</label>
         <div class="form-check">
             <input class="form-check-input" type="radio" name="visibility" id="visibility1" value="public" checked>
@@ -291,14 +270,141 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         @error('background-image')
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
-        <label class="form-label mt-3">Warna Teks (Diperlukan)</label>
-        <x-buk-color-picker name="text-color" class="mb-3" :options="['theme' => 'classic', 'default' => '#000000']" />
-        <div id="text_color_help" class="form-text">
-            Kesemua teks pada sijil akan diubah kepada warna ini kecuali teks pada kod QR.
+        <label class="form-label mt-3">Teks (Diperlukan)</label>
+        <div class="row row-cols-2 row-cols-lg-4">
+            <div class="col">
+                <p>Teks Jenis Sijil</p>
+                <select class="form-select" aria-label="text-font" name="type-text-font">
+                    <option value="architectsdaughter">Architects Daughter</option>
+                    <option value="badscript">Bad Script</option>
+                    <option value="bebasneue">Bebas Neue</option>
+                    <option value="berkshireswash">Berkshire Swash</option>
+                    <option value="carterone">Carter One</option>
+                    <option value="cookie">Cookie</option>
+                    <option value="fredokaone">Fredoka One</option>
+                    <option value="kaushanscript">Kaushan Script</option>
+                    <option value="lobster">Lobster</option>
+                    <option value="oleoscript">Oleo Script</option>
+                    <option value="poppins">Poppins</option>
+                    <option value="rancho">Rancho</option>
+                    <option value="righteous">Righteous</option>
+                    <option value="satisfy">Satisfy</option>
+                </select>
+                <div class="form-floating my-3">
+                    <input type="number" class="form-control" name="type-text-size" placeholder="font size" value="{{ old('type-text-size') }}">
+                    <label for="floatingInput">Saiz Font</label>
+                </div>
+                @error('type-text-size')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
+                <div class="my-1">
+                    <x-buk-color-picker name="type-text-color" class="mb-3" :options="['theme' => 'classic', 'default' => '#FFF']" />
+                </div>
+                @error('type-text-color')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
+            </div>
+            <div class="col">
+                <p>Teks Pertama</p>
+                <select class="form-select" aria-label="text-font" name="first-text-font">
+                    <option value="architectsdaughter">Architects Daughter</option>
+                    <option value="badscript">Bad Script</option>
+                    <option value="bebasneue">Bebas Neue</option>
+                    <option value="berkshireswash">Berkshire Swash</option>
+                    <option value="carterone">Carter One</option>
+                    <option value="cookie">Cookie</option>
+                    <option value="fredokaone">Fredoka One</option>
+                    <option value="kaushanscript">Kaushan Script</option>
+                    <option value="lobster">Lobster</option>
+                    <option value="oleoscript">Oleo Script</option>
+                    <option value="poppins">Poppins</option>
+                    <option value="rancho">Rancho</option>
+                    <option value="righteous">Righteous</option>
+                    <option value="satisfy">Satisfy</option>
+                </select>
+                <div class="form-floating my-3">
+                    <input type="number" class="form-control" name="first-text-size" placeholder="font size" value="{{ old('first-text-size') }}">
+                    <label for="floatingInput">Saiz Font</label>
+                </div>
+                @error('first-text-size')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
+                <div class="my-1">
+                    <x-buk-color-picker name="first-text-color" class="mb-3" :options="['theme' => 'classic', 'default' => '#000000']" />
+                </div>
+                @error('first-text-color')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
+            </div>
+            <div class="col">
+                <p>Teks Kedua</p>
+                <select class="form-select" aria-label="text-font" name="second-text-font">
+                    <option value="architectsdaughter">Architects Daughter</option>
+                    <option value="badscript">Bad Script</option>
+                    <option value="bebasneue">Bebas Neue</option>
+                    <option value="berkshireswash">Berkshire Swash</option>
+                    <option value="carterone">Carter One</option>
+                    <option value="cookie">Cookie</option>
+                    <option value="fredokaone">Fredoka One</option>
+                    <option value="kaushanscript">Kaushan Script</option>
+                    <option value="lobster">Lobster</option>
+                    <option value="oleoscript">Oleo Script</option>
+                    <option value="poppins">Poppins</option>
+                    <option value="rancho">Rancho</option>
+                    <option value="righteous">Righteous</option>
+                    <option value="satisfy">Satisfy</option>
+                </select>
+                <div class="form-floating my-3">
+                    <input type="number" class="form-control" name="second-text-size" placeholder="font size" value="{{ old('second-text-size') }}">
+                    <label for="floatingInput">Saiz Font</label>
+                </div>
+                @error('second-text-size')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
+                <div class="my-1">
+                    <x-buk-color-picker name="second-text-color" class="mb-3" :options="['theme' => 'classic', 'default' => '#000000']" />
+                </div>
+                @error('second-text-color')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
+            </div>
+            <div class="col">
+                <p>Teks Pengesah</p>
+                <select class="form-select" aria-label="text-font" name="verifier-text-font">
+                    <option value="architectsdaughter">Architects Daughter</option>
+                    <option value="badscript">Bad Script</option>
+                    <option value="bebasneue">Bebas Neue</option>
+                    <option value="berkshireswash">Berkshire Swash</option>
+                    <option value="carterone">Carter One</option>
+                    <option value="cookie">Cookie</option>
+                    <option value="fredokaone">Fredoka One</option>
+                    <option value="kaushanscript">Kaushan Script</option>
+                    <option value="lobster">Lobster</option>
+                    <option value="oleoscript">Oleo Script</option>
+                    <option value="poppins">Poppins</option>
+                    <option value="rancho">Rancho</option>
+                    <option value="righteous">Righteous</option>
+                    <option value="satisfy">Satisfy</option>
+                </select>
+                <div class="form-floating my-3">
+                    <input type="number" class="form-control" name="verifier-text-size" placeholder="font size" value="{{ old('verifier-text-size') }}">
+                    <label for="floatingInput">Saiz Font</label>
+                </div>
+                @error('verifier-text-size')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
+                <div class="my-1">
+                    <x-buk-color-picker name="verifier-text-color" class="mb-3" :options="['theme' => 'classic', 'default' => '#000000']" />
+                </div>
+                @error('verifier-text-color')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
+            </div>
         </div>
-        @error('text-color')
-            <div class="alert alert-danger">{{ $message }}</div>
-        @enderror
+        <div id="text_help" class="form-text">
+            Semua teks yang terdapat pada sistem ini boleh didapati di <a href="https://fonts.google.com" target="_blank">Google Fonts</a>. <br>
+            Saiz font pada sijil menggunakan unit em. Nombor perpuluhan dibenarkan.
+        </div>
         <button class="btn btn-outline-light mt-3" type="submit">Tambah Acara</button>
     </form>
     <script src="{{ asset('js/checksEvent.js') }}"></script>

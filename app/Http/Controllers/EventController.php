@@ -20,6 +20,7 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\Event;
+use App\Models\EventFont;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Intervention\Image\Facades\Image;
@@ -99,9 +100,19 @@ class EventController extends MainController
             'signature-second' => ['image', 'mimes:png'],
             'signature-third' => ['image', 'mimes:png'],
             'background-image' => ['image', 'mimes:png'],
-            'text-color' => ['required'],
-            'font-set' => ['required'],
-            'certificate-orientation' => ['required']
+            'certificate-orientation' => ['required'],
+            'type-text-font' => ['required'],
+            'type-text-size' => ['required', 'numeric'],
+            'type-text-color' => ['required'],
+            'first-text-font' => ['required'],
+            'first-text-size' => ['required', 'numeric'],
+            'first-text-color' => ['required'],
+            'second-text-font' => ['required'],
+            'second-text-size' => ['required', 'numeric'],
+            'second-text-color' => ['required'],
+            'verifier-text-font' => ['required'],
+            'verifier-text-size' => ['required', 'numeric'],
+            'verifier-text-color' => ['required'],
         ]);
         $eventName = $request->input('event-name');
         $eventDate = $request->input('event-date');
@@ -112,7 +123,6 @@ class EventController extends MainController
         $signatureFirstName = $request->input('signature-first-name');
         $signatureFirstPosition = $request->input('signature-first-position');
         $visibility = $request->input('visibility');
-        $textColor = $request->input('text-color');
         $certificateOrientation = $request->input('certificate-orientation');
 
         /**
@@ -256,7 +266,7 @@ class EventController extends MainController
             $backgroundImageSavePath = '';
         }
 
-        Event::create([
+        $createdEventID = Event::create([
             'name' => strtolower($eventName),
             'date' => $eventDate,
             'location' => strtolower($eventLocation),
@@ -275,9 +285,23 @@ class EventController extends MainController
             'signature_third' => $signatureThirdSavePath,
             'visibility' => strtolower($visibility),
             'background_image' => $backgroundImageSavePath,
-            'text_color' => $textColor,
-            'font_set' => $request->input('font-set'),
             'orientation' => $certificateOrientation
+        ])->id;
+        
+        EventFont::create([
+            'event_id' => $createdEventID,
+            'certificate_type_text_size' => $request->input('type-text-size'),
+            'certificate_type_text_color' => $request->input('type-text-color'),
+            'certificate_type_text_font' => $request->input('type-text-font'),
+            'first_text_size' => $request->input('first-text-size'),
+            'first_text_color' => $request->input('first-text-color'),
+            'first_text_font' => $request->input('first-text-font'),
+            'second_text_size' => $request->input('second-text-size'),
+            'second_text_color' => $request->input('second-text-color'),
+            'second_text_font' => $request->input('second-text-font'),
+            'verifier_text_size' => $request->input('verifier-text-size'),
+            'verifier_text_color' => $request->input('verifier-text-color'),
+            'verifier_text_font' => $request->input('verifier-text-font')
         ]);
 
         $request->session()->flash('addEventSuccess', 'Acara berjaya ditambah!');
@@ -326,8 +350,6 @@ class EventController extends MainController
             'signature-first-name' => ['required'],
             'signature-first-position' => ['required'],
             'background-image' => ['image', 'mimes:png'],
-            'text-color' => ['required'],
-            'font-set' => ['required'],
             'certificate-orientation' => ['required']
         ]);
         $eventName = $request->input('event-name');
@@ -335,7 +357,6 @@ class EventController extends MainController
         $eventLocation = $request->input('event-location');
         $organiserName = $request->input('organiser-name');
         $visibility = $request->input('visibility');
-        $textColor = $request->input('text-color');
         $certificateOrientation = $request->input('certificate-orientation');
 
         /**
@@ -728,8 +749,6 @@ class EventController extends MainController
                 'signature_third' => $signatureThirdSavePath,
                 'visibility' => strtolower($visibility),
                 'background_image' => $backgroundImageSavePath,
-                'text_color' => $textColor,
-                'font_set' => $request->input('font-set'),
                 'orientation' => $certificateOrientation
             ]
         ], ['id'], [
@@ -751,8 +770,6 @@ class EventController extends MainController
             'signature_third',
             'visibility',
             'background_image',
-            'font_set',
-            'text_color',
             'orientation'
         
         ]);

@@ -16,11 +16,11 @@ class CreateCertificateCollectionHistoriesTable extends Migration
         Schema::create('certificate_collection_histories', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('requested_by');
-            $table->foreign('requested_by')->references('id')->on('users')->nullable()->constrained()->onUpdate('no action')->onDelete('no action'); // The user that requested the collection
+            $table->foreign('requested_by')->references('id')->on('users')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade'); // The user that requested the collection
             $table->dateTime('requested_on');
             $table->dateTime('next_available_download');
-            $table->foreignId('user_id')->nullable()->constrained()->onUpdate('no action')->onDelete('no action'); // If the collection requested is for a user
-            $table->foreignId('event_id')->nullable()->constrained()->onUpdate('no action')->onDelete('no action'); // If the collection requested is for an event
+            $table->foreignId('user_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade'); // If the collection requested is for a user
+            $table->foreignId('event_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade'); // If the collection requested is for an event
             $table->bigInteger('certificates_total');
             $table->timestamps();
         });
