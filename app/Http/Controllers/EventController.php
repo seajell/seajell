@@ -62,7 +62,8 @@ class EventController extends MainController
             // Only admins can update event info
             if(Gate::allows('authAdmin')){
                 $data = Event::where('id', $id)->first();
-                return view('event.update')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting, 'data' => $data]);
+                $eventFontData = EventFont::where('event_id', $id)->first();
+                return view('event.update')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting, 'data' => $data, 'eventFontData' => $eventFontData]);
             }else{
                 abort(403, 'Anda tidak boleh mengakses laman ini.');
             }
@@ -350,7 +351,19 @@ class EventController extends MainController
             'signature-first-name' => ['required'],
             'signature-first-position' => ['required'],
             'background-image' => ['image', 'mimes:png'],
-            'certificate-orientation' => ['required']
+            'certificate-orientation' => ['required'],
+            'type-text-font' => ['required'],
+            'type-text-size' => ['required', 'numeric'],
+            'type-text-color' => ['required'],
+            'first-text-font' => ['required'],
+            'first-text-size' => ['required', 'numeric'],
+            'first-text-color' => ['required'],
+            'second-text-font' => ['required'],
+            'second-text-size' => ['required', 'numeric'],
+            'second-text-color' => ['required'],
+            'verifier-text-font' => ['required'],
+            'verifier-text-size' => ['required', 'numeric'],
+            'verifier-text-color' => ['required'],
         ]);
         $eventName = $request->input('event-name');
         $eventDate = $request->input('event-date');
@@ -773,6 +786,26 @@ class EventController extends MainController
             'orientation'
         
         ]);
+
+        $eventFontID = EventFont::select('id')->where('event_id', $id)->first()->id;
+
+        EventFont::updateOrCreate(
+            ['id' => $eventFontID, 'event_id' => $id],
+            [
+                'certificate_type_text_size' => $request->input('type-text-size'),
+                'certificate_type_text_color' => $request->input('type-text-color'),
+                'certificate_type_text_font' => $request->input('type-text-font'),
+                'first_text_size' => $request->input('first-text-size'),
+                'first_text_color' => $request->input('first-text-color'),
+                'first_text_font' => $request->input('first-text-font'),
+                'second_text_size' => $request->input('second-text-size'),
+                'second_text_color' => $request->input('second-text-color'),
+                'second_text_font' => $request->input('second-text-font'),
+                'verifier_text_size' => $request->input('verifier-text-size'),
+                'verifier_text_color' => $request->input('verifier-text-color'),
+                'verifier_text_font' => $request->input('verifier-text-font')
+            ]
+        );
 
         $request->session()->flash('updateEventSuccess', 'Acara berjaya dikemas kini!');
         return back();

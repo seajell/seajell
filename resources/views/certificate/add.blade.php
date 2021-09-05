@@ -120,7 +120,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         <div id="category_help mb-3" class="form-text">
             Kategori untuk pertandingan yang disertai peserta.
         </div>
-        <button class="btn btn-outline-light mt-3" type="submit">Tambah Sijil</button>
+        <button class="btn btn-outline-light mt-3" type="submit"><i class="bi bi-plus"></i> Tambah Sijil</button>
     </form>
     <form action="{{ route('certificate.add.bulk') }}" method="post" class="mb-3" enctype="multipart/form-data">
         @csrf
@@ -163,7 +163,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                 </div>
             @endif
         @endif
-        <button class="btn btn-outline-light mb-3" type="submit">Tambah Sijil Secara Pukal</button>
+        <button class="btn btn-outline-light mb-3" type="submit"><i class="bi bi-plus"></i> Tambah Sijil Secara Pukal</button>
     </form>
     <script src="{{ asset('js/addCertificateSearch.js') }}"></script>
 @endsection
