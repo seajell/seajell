@@ -25,6 +25,7 @@ use TCPDF_COLORS;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Event;
+use App\Models\EventFont;
 use App\Models\Certificate;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -855,9 +856,11 @@ class CertificateController extends MainController
         $certificateFileName = 'SeaJell_e_Certificate_' . $certificateID . '.pdf';
         $eventID = Certificate::select('event_id')->where('uid', $certificateID)->first()->event_id;
         $eventData = Event::where('id', $eventID)->first();
+        $eventFontData = EventFont::where('event_id', $eventID)->first();
         $certificateData = Certificate::select('certificates.uid', 'users.fullname', 'users.identification_number', 'certificates.position', 'certificates.category', 'certificates.type')->where('uid', $certificateID)->join('users', 'certificates.user_id', '=', 'users.id')->first();
-        $viewData = ['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting, 'eventData' => $eventData, 'certificateData' => $certificateData];
+        $viewData = ['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting, 'eventData' => $eventData, 'eventFontData' => $eventFontData, 'certificateData' => $certificateData];
         // Check whether wanna save or stream the certificate
+        
         switch($mode){
             case 'stream':
                 $pdf = PDF::loadView('certificate.layout', $viewData)->setPaper('a4', 'potrait')->setWarnings(false)->stream($certificateFileName);

@@ -82,17 +82,19 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                 }
             @endphp
             <p>Orientasi: <span>{{ $pageOrientation }}</span></p>
-            <p>Set Font: <span>{{ $eventData->font_set }}</span></p>
             <p>Gambar Latar Belakang: <span>{{ $backgroundImageStatus }}</span></p>
             <p>Kod QR: <span>{{ $qrCodeStatus }}</span></p>
-            <p>Warna Teks: <span>{{ $textColorStatus }}</span></p>
         </div>
         <div class="col-2 d-flex justify-content-center align-items-center">
             <a href="" class="btn btn-outline-light"><i class="bi bi-save"></i> Simpan</a>
         </div>
+        <div class="row">
+            <p class="fst-italic m-0 p-0">Penafian: Akan ada sedikit perbezaan dengan ukuran dan lokasi objek dan juga ukuran font berbanding sijil yang akan dijana.</p>
+        </div>
     </header>
     <main class="min-vh-100 w-100">
         <div class="d-flex justify-content-center align-items-center">
+            {{-- 289mm height is somehow the best height for preview. IDK why but just roll with it. --}}
             <div id="canvas" style="width: 210mm; height: 289mm; position: relative;" class="my-5">
                 @if(!empty($eventData->background_image))
                     @php
@@ -113,146 +115,91 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                     }
                 </style>
                 
-                {{-- Importing fonts --}}
                 @php
-                    /**
-                     * Index 0: Certificate type
-                     * Index 1: Details text first
-                     * Index 2: Details text second
-                     * Index 3: Signature text first
-                     * Index 4: Signature text second
-                     * Index 5: QR Code text
-                     * Font sizes are in em unit.
-                     */
-                    $fontSetOne = ['cookie', 'badscript', 'bebasneue', 'bebasneue', 'Poppins-Regular', 'bebasneue'];
-                    $fontSetSizeOne = [2.3, 1.1, 1.2, 1, 0.8, 1];
-
-                    $fontSetTwo = ['Lobster-Regular', 'PoiretOne-Regular', 'Poppins-Regular', 'bebasneue', 'Poppins-Regular', 'bebasneue'];
-                    $fontSetSizeTwo = [2.3, 1.3, 1, 1, 0.8, 1];
-
-                    $fontSetThree = ['OleoScript-Bold', 'ArchitectsDaughter-Regular', 'Righteous-Regular', 'bebasneue', 'Poppins-Regular', 'bebasneue'];
-                    $fontSetSizeThree = [2.3, 1.3, 1, 1, 0.8, 1];
-
-                    $fontSetFour = ['BerkshireSwash-Regular', 'Satisfy-Regular', 'FredokaOne-Regular', 'bebasneue', 'Poppins-Regular', 'bebasneue'];
-                    $fontSetSizeFour = [2.3, 1.3, 1, 1, 0.8, 1];
-
-                    $fontSetFive = ['KaushanScript-Regular', 'Rancho-Regular', 'CarterOne-Regular', 'bebasneue', 'Poppins-Regular', 'bebasneue'];
-                    $fontSetSizeFive = [2.3, 1.3, 0.9, 1, 0.8, 1];
+                    $typeTextFontPathAsset = asset('fonts/' . $eventFontData->certificate_type_text_font . '.ttf');
+                    $typeTextFontPathStorage = storage_path('app/fonts/third_party_all/' . $eventFontData->certificate_type_text_font . '.ttf');
         
-                    switch ($eventData->font_set) {
-                        case 1:
-                            $fontSetSelected = $fontSetOne;
-                            $fontSetSizeSelected = $fontSetSizeOne;
-                            break;
-                        case 2:
-                            $fontSetSelected = $fontSetTwo;
-                            $fontSetSizeSelected = $fontSetSizeTwo;
-                            break;
-                        case 3:
-                            $fontSetSelected = $fontSetThree;
-                            $fontSetSizeSelected = $fontSetSizeThree;
-                            break;
-                        case 4:
-                            $fontSetSelected = $fontSetFour;
-                            $fontSetSizeSelected = $fontSetSizeFour;
-                            break;
-                        case 5:
-                            $fontSetSelected = $fontSetFive;
-                            $fontSetSizeSelected = $fontSetSizeFive;
-                            break;
-                        default:
-                            $fontSetSelected = $fontSetFive;
-                            $fontSetSizeSelected = $fontSetSizeFive;
-                            break;
-                    }
+                    $firstTextFontPathAsset = asset('fonts/' . $eventFontData->first_text_font . '.ttf');
+                    $firstTextFontPathStorage = storage_path('app/fonts/third_party_all/' . $eventFontData->first_text_font . '.ttf');
+        
+                    $secondTextFontPathAsset = asset('fonts/' . $eventFontData->second_text_font . '.ttf');
+                    $secondTextFontPathStorage = storage_path('app/fonts/third_party_all/' . $eventFontData->second_text_font . '.ttf');
+        
+                    $verifierTextFontPathAsset = asset('fonts/' . $eventFontData->verifier_text_font . '.ttf');
+                    $verifierTextFontPathStorage = storage_path('app/fonts/third_party_all/' . $eventFontData->verifier_text_font . '.ttf');
+        
+                    $qrCodeTextFontPathAsset = asset('fonts/' . 'poppins' . '.ttf');
+                    $qrCodeTextFontPathStorage = storage_path('app/fonts/third_party_all/' . 'poppins' . '.ttf');
                 @endphp
-                @php
-                    $detailsTextTypePathAsset = asset('fonts/' . $fontSetSelected[0] . '.ttf');
-                    $detailsTextTypePathStorage = storage_path('app/fonts/third_party_all/' . $fontSetSelected[0] . '.ttf');
-
-                    $detailsTextFirstPathAsset = asset('fonts/' . $fontSetSelected[1] . '.ttf');
-                    $detailsTextFirstPathStorage = storage_path('app/fonts/third_party_all/' . $fontSetSelected[1] . '.ttf');
-
-                    $detailsTextSecondPathAsset = asset('fonts/' . $fontSetSelected[2] . '.ttf');
-                    $detailsTextSecondPathStorage = storage_path('app/fonts/third_party_all/' . $fontSetSelected[2] . '.ttf');
-
-                    $signatureTextFirstPathAsset = asset('fonts/' . $fontSetSelected[3] . '.ttf');
-                    $signatureTextFirstPathStorage = storage_path('app/fonts/third_party_all/' . $fontSetSelected[3] . '.ttf');
-
-                    $signatureTextSecondPathAsset = asset('fonts/' . $fontSetSelected[4] . '.ttf');
-                    $signatureTextSecondPathStorage = storage_path('app/fonts/third_party_all/' . $fontSetSelected[4] . '.ttf');
-
-                    $qrCodeTextPathAsset = asset('fonts/' . $fontSetSelected[5] . '.ttf');
-                    $qrCodeTextPathStorage = storage_path('app/fonts/third_party_all/' . $fontSetSelected[5] . '.ttf');
-                @endphp
+                
                 <style>
                     @font-face {
                         font-family: 'detailsTextType';
-                        src: url({{ $detailsTextTypePathAsset }}) format("truetype");
-                        font-weight: normal;
+                        src: url({{ $typeTextFontPathAsset }}) format("truetype");
+                        font-weight: bold;
                         font-style: normal;
                     }
         
                     @font-face {
                         font-family: 'detailsTextFirst';
-                        src: url({{ $detailsTextFirstPathAsset }}) format("truetype");
+                        src: url({{ $firstTextFontPathAsset }}) format("truetype");
                         font-weight: normal;
                         font-style: normal;
                     }
         
                     @font-face {
                         font-family: 'detailsTextSecond';
-                        src: url({{ $detailsTextSecondPathAsset }}) format("truetype");
+                        src: url({{ $secondTextFontPathAsset }}) format("truetype");
                         font-weight: bold;
                         font-style: normal;
                     }
         
                     @font-face {
                         font-family: 'signatureTextFirst';
-                        src: url({{ $signatureTextFirstPathAsset }}) format("truetype");
-                        font-weight: normal;
+                        src: url({{ $verifierTextFontPathAsset }}) format("truetype");
+                        font-weight: bold;
                         font-style: normal;
                     }
         
                     @font-face {
                         font-family: 'signatureTextSecond';
-                        src: url({{ $signatureTextSecondPathAsset }}) format("truetype");
+                        src: url({{ $verifierTextFontPathAsset }}) format("truetype");
                         font-weight: normal;
                         font-style: normal;
                     }
         
                     @font-face {
                         font-family: 'qrCodeText';
-                        src: url({{ $qrCodeTextPathAsset }}) format("truetype");
-                        font-weight: bold;
+                        src: url({{ $qrCodeTextFontPathAsset }}) format("truetype");
+                        font-weight: normal;
                         font-style: normal;
                     }
         
                     .details-text-type{
                         margin: 0px;
-                        font-size: <?= $fontSetSizeSelected[0] ?>em; 
-                        font-weight: normal;
+                        font-size: <?= $eventFontData->certificate_type_text_size ?>em; 
+                        font-weight: bold;
                         font-style: normal;
                         font-family: 'detailsTextType';
-                        color: <?= $eventData->text_color ?>;
+                        color: <?= $eventFontData->certificate_type_text_color ?>;
                     }
         
                     .details-text-first{
                         margin: 0px;
-                        font-size: <?= $fontSetSizeSelected[1] ?>em;
+                        font-size: <?= $eventFontData->first_text_size ?>em;
                         font-weight: normal;
                         font-style: normal;
                         font-family: 'detailsTextFirst';
-                        color: <?= $eventData->text_color ?>;
+                        color: <?= $eventFontData->first_text_color ?>;
                     }
         
                     .details-text-second{
                         margin: 0px;
-                        font-size: <?= $fontSetSizeSelected[2] ?>em;
+                        font-size: <?= $eventFontData->second_text_size ?>em;
                         font-weight: bold;
                         font-style: normal;
                         font-family: 'detailsTextSecond';
-                        color: <?= $eventData->text_color ?>;
+                        color: <?= $eventFontData->second_text_color ?>;
                     }
         
                     .signature-line{
@@ -266,25 +213,25 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         
                     .signature-text-first{
                         margin: 0px;
-                        font-size: <?= $fontSetSizeSelected[3] ?>em;
-                        font-weight: normal;
+                        font-size: <?= $eventFontData->verifier_text_size ?>em;
+                        font-weight: bold;
                         font-style: normal;
                         font-family: 'signatureTextFirst';
-                        color: <?= $eventData->text_color ?>;
+                        color: <?= $eventFontData->verifier_text_color ?>;
                     }
         
                     .signature-text-second{
                         margin: 0px;
-                        font-size: <?= $fontSetSizeSelected[4] ?>em;
+                        font-size: <?= $eventFontData->verifier_text_size ?>em;
                         font-weight: normal;
                         font-style: normal;
                         font-family: 'signatureTextSecond';
-                        color: <?= $eventData->text_color ?>;
+                        color: <?= $eventFontData->verifier_text_color ?>;
                     }
         
                     .qr-code-text{
                         margin: 0px;
-                        font-size: <?= $fontSetSizeSelected[5] ?>em;
+                        font-size: 1em;
                         font-weight: bold;
                         font-style: normal;
                         font-family: 'qrCodeText';
@@ -455,7 +402,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                             <p class="signature-line">...............................................................</p>
                         </div>
                         <div id="signature-first-name" style="margin-bottom: 0.3mm;">
-                            <p class="signature-text-first">{{ strtoupper($eventData->signature_first_name) }}</p>
+                            <p class="signature-text-first">({{ strtoupper($eventData->signature_first_name) }})</p>
                         </div>
                         <div id="signature-first-position">
                             <p class="signature-text-second">{{ strtoupper($eventData->signature_first_position) }}</p>
@@ -473,7 +420,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                             <p class="signature-line">...............................................................</p>
                         </div>
                         <div id="signature-second-name" style="margin-bottom: 0.3mm;">
-                            <p class="signature-text-first">{{ strtoupper($eventData->signature_second_name) }}</p>
+                            <p class="signature-text-first">({{ strtoupper($eventData->signature_second_name) }})</p>
                         </div>
                         <div id="signature-second-position">
                             <p class="signature-text-second">{{ strtoupper($eventData->signature_second_position) }}</p>
@@ -491,7 +438,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                             <p class="signature-line">...............................................................</p>
                         </div>
                         <div id="signature-third-name" style="margin-bottom: 0.3mm;">
-                            <p class="signature-text-first">{{ strtoupper($eventData->signature_third_name) }}</p>
+                            <p class="signature-text-first">({{ strtoupper($eventData->signature_third_name) }})</p>
                         </div>
                         <div id="signature-third-position">
                             <p class="signature-text-second">{{ strtoupper($eventData->signature_third_position) }}</p>
@@ -500,21 +447,21 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                 @endif
                 @if(!empty($eventData->visibility))
                     @if($eventData->visibility == 'public')
-                        <div id="qr-code" style="margin-bottom: 10mm; height: 21mm; width: 70mm; position: absolute; top: 95%; left: 79%; transform: translate(-50%, 0); border: 1mm solid black; z-index: 10; background: #fff;">
-                            <div style="margin: 0.5mm; width: 70%; height: 96%;">
+                        <div id="qr-code" style="margin-bottom: 10mm; height: 21mm; width: 80mm; position: absolute; top: 95%; left: 79%; transform: translate(-50%, 0); border: 1mm solid black; z-index: 10; background: #fff;">
+                            <div style="margin: 0.5mm; width: 80%; height: 96%;">
                                 <div style="width: 100%; height: 100%; margin: 0.5mm;">
                                     @php
                                         if(!empty($certificateData->uid)){
                                             $certificateID = $certificateData->uid;
                                         }else{
-                                            $certificateID = 'AAAA0000';
+                                            $certificateID = 'AAAAAAA00000000';
                                         }
                                     @endphp
-                                    <p class="qr-code-text">Imbas Kod QR Ini Untuk Menyemak Ketulenan</p>
-                                    <p style="margin-top: 0.5mm;" class="qr-code-text">ID Sijil: {{ $certificateID }}</p>
+                                    <p class="qr-code-text">Scan This QR Code To Check Authenticity</p>
+                                    <p style="margin-top: 0.5mm;" class="qr-code-text">Certificate ID: {{ $certificateID }}</p>
                                 </div>
                             </div>
-                            <div id="qr-code-image" style="background: #000; background-repeat: no-repeat; background-size: 100%; width: 20mm; height: 20mm; position: absolute; top: 3%; left: 70%;"></div>
+                            <div id="qr-code-image" style="background: #000; background-repeat: no-repeat; background-size: 100%; width: 20mm; height: 20mm; position: absolute; top: 3%; left: 74%;"></div>
                         </div>
                     @endif
                 @endif

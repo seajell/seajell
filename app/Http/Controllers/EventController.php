@@ -77,7 +77,8 @@ class EventController extends MainController
             // Only admins can update event info
             if(Gate::allows('authAdmin')){
                 $eventData = Event::where('id', $id)->first();
-                return view('event.layout')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting, 'eventData' => $eventData]);
+                $eventFontData = EventFont::where('event_id', $id)->first();
+                return view('event.layout')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting, 'eventData' => $eventData, 'eventFontData' => $eventFontData]);
             }else{
                 abort(403, 'Anda tidak boleh mengakses laman ini.');
             }
