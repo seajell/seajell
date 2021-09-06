@@ -89,13 +89,14 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             <a href="" class="btn btn-outline-light"><i class="bi bi-save"></i> Simpan</a>
         </div>
         <div class="row">
-            <p class="fst-italic m-0 p-0">Penafian: Akan ada sedikit perbezaan dengan ukuran dan lokasi objek dan juga ukuran font berbanding sijil yang akan dijana.</p>
+            <p class="fst-italic m-0 p-0">Penafian: Akan ada perbezaan dengan ukuran dan lokasi objek dan juga ukuran font berbanding sijil yang akan dijana.</p>
+            <p class="fst-italic m-0 p-0">Pastikan anda melihat sijil yang dijana dan membuat perubahan berdasarkan ukuran sijil tersebut.</p>
         </div>
     </header>
     <main class="min-vh-100 w-100">
         <div class="d-flex justify-content-center align-items-center">
             {{-- 289mm height is somehow the best height for preview. IDK why but just roll with it. --}}
-            <div id="canvas" style="width: 210mm; height: 289mm; position: relative;" class="my-5">
+            <div id="canvas" style="width: 210mm; height: 289mm; position: relative; background: #fff;" class="my-5">
                 @if(!empty($eventData->background_image))
                     @php
                         $backgroundImagePathAsset = asset('storage' . $eventData->background_image);
@@ -128,10 +129,11 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                     $verifierTextFontPathAsset = asset('fonts/' . $eventFontData->verifier_text_font . '.ttf');
                     $verifierTextFontPathStorage = storage_path('app/fonts/third_party_all/' . $eventFontData->verifier_text_font . '.ttf');
         
-                    $qrCodeTextFontPathAsset = asset('fonts/' . 'poppins' . '.ttf');
-                    $qrCodeTextFontPathStorage = storage_path('app/fonts/third_party_all/' . 'poppins' . '.ttf');
+                    $qrCodeTextFontPathAsset = asset('fonts/' . 'bebasneue' . '.ttf');
+                    $qrCodeTextFontPathStorage = storage_path('app/fonts/third_party_all/' . 'bebasneue' . '.ttf');
                 @endphp
                 
+                {{-- Some fonts doesn't have the bold variation so just have to deal with it --}}
                 <style>
                     @font-face {
                         font-family: 'detailsTextType';
@@ -171,7 +173,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                     @font-face {
                         font-family: 'qrCodeText';
                         src: url({{ $qrCodeTextFontPathAsset }}) format("truetype");
-                        font-weight: normal;
+                        font-weight: bold;
                         font-style: normal;
                     }
         
@@ -231,7 +233,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         
                     .qr-code-text{
                         margin: 0px;
-                        font-size: 1em;
+                        font-size: 1.1em;
                         font-weight: bold;
                         font-style: normal;
                         font-family: 'qrCodeText';
@@ -360,10 +362,18 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                             }
                         @endphp
                         <p class="details-text-first">{{ $certificateCredit }}</p>
-                        <p class="details-text-second">{{ strtoupper($certificatePosition) }}</p>
+                        @if(!empty($certificateData->type))
+                            @if($certificateData->type !== 'participation')
+                                <p class="details-text-second">{{ strtoupper($certificatePosition) }}</p>   
+                            @endif
+                        @endif
                     </div>
                     <div id="details-event-name" style="margin-bottom: 1mm;">
-                        <p class="details-text-first">Dalam</p>
+                        @if(!empty($certificateData->type))
+                            @if($certificateData->type !== 'participation')
+                                <p class="details-text-first">Dalam</p>  
+                            @endif
+                        @endif
                         <p class="details-text-second">{{ strtoupper($eventData->name) }}</p>
                     </div>
                     @if(!empty($certificateData->category))
@@ -447,9 +457,9 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                 @endif
                 @if(!empty($eventData->visibility))
                     @if($eventData->visibility == 'public')
-                        <div id="qr-code" style="margin-bottom: 10mm; height: 21mm; width: 80mm; position: absolute; top: 95%; left: 79%; transform: translate(-50%, 0); border: 1mm solid black; z-index: 10; background: #fff;">
-                            <div style="margin: 0.5mm; width: 80%; height: 96%;">
-                                <div style="width: 100%; height: 100%; margin: 0.5mm;">
+                        <div id="qr-code" style="margin-bottom: 10mm; height: 21mm; width: 75mm; position: absolute; top: 95%; left: 79%; transform: translate(-50%, 0); border: 0.7mm solid black; z-index: 10; background: #fff;">
+                            <div style="margin-left: 0.5mm; width: 70%;">
+                                <div style="width: 100%;">
                                     @php
                                         if(!empty($certificateData->uid)){
                                             $certificateID = $certificateData->uid;
@@ -457,11 +467,13 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                                             $certificateID = 'AAAAAAA00000000';
                                         }
                                     @endphp
-                                    <p class="qr-code-text">Scan This QR Code To Check Authenticity</p>
-                                    <p style="margin-top: 0.5mm;" class="qr-code-text">Certificate ID: {{ $certificateID }}</p>
+                                    <p class="qr-code-text">Imbas Kod QR Ini Untuk Memeriksa Ketulenan</p>
+                                    <p class="qr-code-text">ID Sijil: {{ $certificateID }}</p>
                                 </div>
                             </div>
-                            <div id="qr-code-image" style="background: #000; background-repeat: no-repeat; background-size: 100%; width: 20mm; height: 20mm; position: absolute; top: 3%; left: 74%;"></div>
+                            @if(!empty($qrCodeDataURI))
+                                <img id="qr-code-image" style="background: #000; background-repeat: no-repeat; background-size: 100%; width: 20mm; height: 20mm; position: absolute; top: 3%; left: 72%;" src="{{ $qrCodeDataURI }}"></img>
+                            @endif
                         </div>
                     @endif
                 @endif

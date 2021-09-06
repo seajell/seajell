@@ -39,6 +39,14 @@ use App\Http\Controllers\MainController;
 use App\Models\CertificateCollectionHistory;
 use App\Models\CertificateCollectionDeletionSchedule;
 use PhpOffice\PhpSpreadsheet\Reader\Exception as PHPSpreadsheetReaderException;
+use Endroid\QrCode\Color\Color;
+use Endroid\QrCode\Encoding\Encoding;
+use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelLow;
+use Endroid\QrCode\QrCode;
+use Endroid\QrCode\Label\Label;
+use Endroid\QrCode\Logo\Logo;
+use Endroid\QrCode\RoundBlockSizeMode\RoundBlockSizeModeMargin;
+use Endroid\QrCode\Writer\PngWriter;
 
 class CertificateController extends MainController
 {
@@ -858,7 +866,39 @@ class CertificateController extends MainController
         $eventData = Event::where('id', $eventID)->first();
         $eventFontData = EventFont::where('event_id', $eventID)->first();
         $certificateData = Certificate::select('certificates.uid', 'users.fullname', 'users.identification_number', 'certificates.position', 'certificates.category', 'certificates.type')->where('uid', $certificateID)->join('users', 'certificates.user_id', '=', 'users.id')->first();
-        $viewData = ['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting, 'eventData' => $eventData, 'eventFontData' => $eventFontData, 'certificateData' => $certificateData];
+        /**
+         * QR Code with Endroid QR Code Library
+         */
+        $writer = new PngWriter();
+
+        $qrCodeData = url('certificate/authenticity/' . $certificateID);
+        // Create QR code
+        $qrCode = QrCode::create($qrCodeData)
+            ->setEncoding(new Encoding('UTF-8'))
+            ->setErrorCorrectionLevel(new ErrorCorrectionLevelLow())
+            ->setSize(300)
+            ->setMargin(3)
+            ->setRoundBlockSizeMode(new RoundBlockSizeModeMargin())
+            ->setForegroundColor(new Color(0, 0, 0))
+            ->setBackgroundColor(new Color(255, 255, 255));
+
+        // asset('/storage/logo/SeaJell-Logo.png')
+        // asset('storage/') . 
+        // storage_path('app/public/logo' . $systemSetting->logo)
+        // storage_path('app/public/logo/SeaJell-Logo.png')
+        if(!empty($this->systemSetting->logo)){
+            $qrLogoPath = storage_path('app/public' . $this->systemSetting->logo);
+        }else{
+            $qrLogoPath = storage_path('app/public/logo/SeaJell-Logo.png');
+        }
+
+        $logo = Logo::create($qrLogoPath)
+            ->setResizeToWidth(100);
+
+        $result = $writer->write($qrCode, $logo);
+        $qrCodeDataURI = $result->getDataUri();
+
+        $viewData = ['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting, 'eventData' => $eventData, 'eventFontData' => $eventFontData, 'certificateData' => $certificateData, 'qrCodeDataURI' => $qrCodeDataURI];
         // Check whether wanna save or stream the certificate
         
         switch($mode){
