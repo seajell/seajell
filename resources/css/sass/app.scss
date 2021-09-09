@@ -1,3 +1,4 @@
+@use 'fonts';
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap');
 
 *{
@@ -44,4 +45,17 @@ a{
     filter: drop-shadow(0.03em 0.03em #495057);
     -webkit-filter: drop-shadow(0.03em 0.03em #495057);
     -moz-filter: drop-shadow(0.03em 0.03em #495057);
+}
+
+.form-text{
+    color: #adb5bd;
+}
+
+.form-control:disabled{
+    background-color: #ced4da;
+    opacity: 1;
+}
+
+.filter-option-inner-inner{
+    color: #212529;
 }

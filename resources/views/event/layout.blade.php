@@ -43,6 +43,11 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
 </head>
 <body style="background-color: #495057">
     <header class="bg-dark w-100 row g-0 text-light py-3">
+        <div class="row mb-3">
+            <div class="col-2">
+                <a href="{{ route('event.update', [$eventData->id]) }}" class="btn btn-outline-light"><i class="bi bi-arrow-return-left"></i> Kembali</a>
+            </div>
+        </div>
         <div class="col-10 row row-cols-lg-3 row-cols-1 g-0">
             @php
                 switch($eventData->orientation){
@@ -81,9 +86,9 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                     $textColorStatus = '';
                 }
             @endphp
-            <p>Orientasi: <span>{{ $pageOrientation }}</span></p>
-            <p>Gambar Latar Belakang: <span>{{ $backgroundImageStatus }}</span></p>
-            <p>Kod QR: <span>{{ $qrCodeStatus }}</span></p>
+            <p class="fw-bold">Orientasi: <span>{{ $pageOrientation }}</span></p>
+            <p class="fw-bold">Gambar Latar Belakang: <span>{{ $backgroundImageStatus }}</span></p>
+            <p class="fw-bold">Kod QR: <span>{{ $qrCodeStatus }}</span></p>
         </div>
         <div class="col-2 d-flex justify-content-center align-items-center">
             <a href="" class="btn btn-outline-light"><i class="bi bi-save"></i> Simpan</a>

@@ -30,6 +30,8 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
     @else
         <link rel="shortcut icon" href="{{ asset('/storage/logo/SeaJell-Logo.png') }}" type="image/png">
     @endif
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta2/dist/css/bootstrap-select.min.css">
+    @bukStyles(true)
     <meta name="api-token" content="{{ $apiToken }}">
     <title>
         @if(!empty($systemSetting->name))
@@ -39,7 +41,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         @endif
         {{ '- SeaJell' }}
     </title>
-    @bukStyles(true)
+    
 </head>
 <body style="background-color: #495057">
     <div class="container min-vh-100">
@@ -140,7 +142,9 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             <p>Hak Cipta &copy; <a href="http://hanisirfan.xyz" class="text-light">Muhammad Hanis Irfan bin Mohd Zaid</a> 2021</p>
         </div>
     </footer>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta2/dist/js/bootstrap-select.min.js"></script>
     @bukScripts(true)
 </body>
 </html>
