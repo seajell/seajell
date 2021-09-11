@@ -26,27 +26,28 @@ use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Event;
 use App\Models\EventFont;
+use Endroid\QrCode\QrCode;
 use App\Models\Certificate;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Endroid\QrCode\Logo\Logo;
+use Endroid\QrCode\Color\Color;
+use Endroid\QrCode\Label\Label;
 use Illuminate\Support\Facades\App;
+use Endroid\QrCode\Writer\PngWriter;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Endroid\QrCode\Encoding\Encoding;
+use Intervention\Image\Facades\Image;
 use App\Models\CertificateViewActivity;
 use Illuminate\Support\Facades\Storage;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use App\Http\Controllers\MainController;
 use App\Models\CertificateCollectionHistory;
 use App\Models\CertificateCollectionDeletionSchedule;
-use PhpOffice\PhpSpreadsheet\Reader\Exception as PHPSpreadsheetReaderException;
-use Endroid\QrCode\Color\Color;
-use Endroid\QrCode\Encoding\Encoding;
-use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelLow;
-use Endroid\QrCode\QrCode;
-use Endroid\QrCode\Label\Label;
-use Endroid\QrCode\Logo\Logo;
 use Endroid\QrCode\RoundBlockSizeMode\RoundBlockSizeModeMargin;
-use Endroid\QrCode\Writer\PngWriter;
+use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelLow;
+use PhpOffice\PhpSpreadsheet\Reader\Exception as PHPSpreadsheetReaderException;
 
 class CertificateController extends MainController
 {
@@ -866,6 +867,17 @@ class CertificateController extends MainController
         $eventData = Event::where('id', $eventID)->first();
         $eventFontData = EventFont::where('event_id', $eventID)->first();
         $certificateData = Certificate::select('certificates.uid', 'users.fullname', 'users.identification_number', 'certificates.position', 'certificates.category', 'certificates.type')->where('uid', $certificateID)->join('users', 'certificates.user_id', '=', 'users.id')->first();
+
+        $eventFontImages = [
+            'backgroundImage' => $this->cacheDataURLImage($eventData->background_image, 700, 990),
+            'logoFirst' => $this->cacheDataURLImage($eventData->logo_first, 300, 300),
+            'logoSecond' => $this->cacheDataURLImage($eventData->logo_second, 300, 300),
+            'logoThird' => $this->cacheDataURLImage($eventData->logo_third, 300, 300),
+            'signatureFirst' => $this->cacheDataURLImage($eventData->signature_first, 300, 100),
+            'signatureSecond' => $this->cacheDataURLImage($eventData->signature_second, 300, 100),
+            'signatureThird' => $this->cacheDataURLImage($eventData->signature_third, 300, 100),
+        ];
+
         /**
          * QR Code with Endroid QR Code Library
          */
@@ -881,24 +893,19 @@ class CertificateController extends MainController
             ->setRoundBlockSizeMode(new RoundBlockSizeModeMargin())
             ->setForegroundColor(new Color(0, 0, 0))
             ->setBackgroundColor(new Color(255, 255, 255));
-
-        // asset('/storage/logo/SeaJell-Logo.png')
-        // asset('storage/') . 
-        // storage_path('app/public/logo' . $systemSetting->logo)
-        // storage_path('app/public/logo/SeaJell-Logo.png')
         if(!empty($this->systemSetting->logo)){
             $qrLogoPath = storage_path('app/public' . $this->systemSetting->logo);
         }else{
             $qrLogoPath = storage_path('app/public/logo/SeaJell-Logo.png');
         }
 
-        $logo = Logo::create($qrLogoPath)
+        $qrLogo = Logo::create($qrLogoPath)
             ->setResizeToWidth(100);
 
-        $result = $writer->write($qrCode, $logo);
+        $result = $writer->write($qrCode, $qrLogo);
         $qrCodeDataURI = $result->getDataUri();
 
-        $viewData = ['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting, 'eventData' => $eventData, 'eventFontData' => $eventFontData, 'certificateData' => $certificateData, 'qrCodeDataURI' => $qrCodeDataURI];
+        $viewData = ['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting, 'eventData' => $eventData, 'eventFontData' => $eventFontData, 'certificateData' => $certificateData, 'qrCodeDataURI' => $qrCodeDataURI, 'eventFontImages' => $eventFontImages];
         // Check whether wanna save or stream the certificate
         
         switch($mode){

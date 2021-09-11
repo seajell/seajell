@@ -21,17 +21,14 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <title>SeaJell - Certificate View</title>
 </head>
 <body>
     {{-- Don't forget to remove the height and width of the #canvas element in order to remove overflow --}}
     <div id="canvas" style="position: relative;" class="my-5">
-        @if(!empty($eventData->background_image))
-            @php
-                $backgroundImagePathAsset = asset('storage' . $eventData->background_image);
-                $backgroundImagePathStorage = storage_path('app/public' . $eventData->background_image);
-            @endphp
-            <img src="{{ $backgroundImagePathStorage }}" alt="Background image" style="position: absolute; width: 100%; height: auto;">
+        @if(!empty($eventFontImages['backgroundImage']))
+            <img src="{{ $eventFontImages['backgroundImage'] }}" alt="Background image" style="position: absolute; width: 100%; height: auto;">
         @endif
         <style>
             p{
@@ -66,42 +63,42 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         <style>
             @font-face {
                 font-family: 'detailsTextType';
-                src: url({{ $typeTextFontPathStorage }}) format("truetype");
+                src: url({{ $typeTextFontPathAsset }}) format("truetype");
                 font-weight: bold;
                 font-style: normal;
             }
 
             @font-face {
                 font-family: 'detailsTextFirst';
-                src: url({{ $firstTextFontPathStorage }}) format("truetype");
+                src: url({{ $firstTextFontPathAsset }}) format("truetype");
                 font-weight: normal;
                 font-style: normal;
             }
 
             @font-face {
                 font-family: 'detailsTextSecond';
-                src: url({{ $secondTextFontPathStorage }}) format("truetype");
+                src: url({{ $secondTextFontPathAsset }}) format("truetype");
                 font-weight: bold;
                 font-style: normal;
             }
 
             @font-face {
                 font-family: 'signatureTextFirst';
-                src: url({{ $verifierTextFontPathStorage }}) format("truetype");
+                src: url({{ $verifierTextFontPathAsset }}) format("truetype");
                 font-weight: bold;
                 font-style: normal;
             }
 
             @font-face {
                 font-family: 'signatureTextSecond';
-                src: url({{ $verifierTextFontPathStorage }}) format("truetype");
+                src: url({{ $verifierTextFontPathAsset }}) format("truetype");
                 font-weight: normal;
                 font-style: normal;
             }
 
             @font-face {
                 font-family: 'qrCodeText';
-                src: url({{ $qrCodeTextFontPathStorage }}) format("truetype");
+                src: url({{ $qrCodeTextFontPathAsset }}) format("truetype");
                 font-weight: bold;
                 font-style: normal;
             }
@@ -177,26 +174,14 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             $defaultText = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum blandit eros eu turpis smmper u.'; // 100 chars
             $defaultTextSmall = 'Lorem ipsum dolor sit amet, consectetur adipiscin.'; // 50 chars
         @endphp
-        @if(!empty($eventData->logo_first))
-            @php
-                $logoFirstPathAsset = asset('storage' . $eventData->logo_first);
-                $logoFirstPathStorage = storage_path('app/public' . $eventData->logo_first);
-            @endphp
-            <div id="logo-first" style="background: url({{ $logoFirstPathStorage }}); background-repeat: no-repeat; background-size: 100%; height: 42mm; width: 42mm; transform: translate(-50%, 0);  position: absolute; top: 0.5%; left: 20%; z-index: 10;"></div>
+        @if(!empty($eventFontImages['logoFirst']))
+            <img id="logo-first" src="{{ $eventFontImages['logoFirst'] }}" style="background-repeat: no-repeat; background-size: 100%; height: 42mm; width: 42mm; transform: translate(-50%, 0);  position: absolute; top: 0.5%; left: 20%; z-index: 10;">
         @endif
-        @if(!empty($eventData->logo_second))
-            @php
-                $logoSecondPathAsset = asset('storage' . $eventData->logo_second);
-                $logoSecondPathStorage = storage_path('app/public' . $eventData->logo_second);
-            @endphp
-            <div id="logo-second" style="background: url({{ $logoSecondPathStorage }}); background-repeat: no-repeat; background-size: 100%; height: 42mm; width: 42mm; transform: translate(-50%, 0);  position: absolute; top: 0.5%; left: 50%; z-index: 10;"></div>
+        @if(!empty($eventFontImages['logoSecond']))
+            <img id="logo-second" src="{{ $eventFontImages['logoSecond'] }}" style="background-repeat: no-repeat; background-size: 100%; height: 42mm; width: 42mm; transform: translate(-50%, 0);  position: absolute; top: 0.5%; left: 50%; z-index: 10;">
         @endif
-        @if(!empty($eventData->logo_third))
-            @php
-                $logoThirdPathAsset = asset('storage' . $eventData->logo_third);
-                $logoThirdPathStorage = storage_path('app/public' . $eventData->logo_third);
-            @endphp
-            <div id="logo-third" style="background: url({{ $logoThirdPathStorage }}); background-repeat: no-repeat; background-size: 100%; height: 42mm; width: 42mm; transform: translate(-50%, 0);  position: absolute; top: 0.5%; left: 80%; z-index: 10;"></div>
+        @if(!empty($eventFontImages['logoThird']))
+            <img id="logo-third" src="{{ $eventFontImages['logoThird'] }}" style="background-repeat: no-repeat; background-size: 100%; height: 42mm; width: 42mm; transform: translate(-50%, 0);  position: absolute; top: 0.5%; left: 80%; z-index: 10;">
         @endif
         <div id="details" style="height: 170mm; width: 200mm; transform: translate(-50%, 0); position: absolute; top: 15%; left: 50%; text-align: center; z-index: 10;">
             <div id="details-type" style="margin-bottom: 0.1mm;">
@@ -329,14 +314,9 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                 <p class="details-text-second">{{ strtoupper($eventData->organiser_name) }}</p>
             </div>
         </div>
-        @if(!empty($eventData->signature_first))
-        {{-- url({{ storage_path('app/public' . $eventData->signature_first) }}) --}}
+        @if(!empty($eventFontImages['signatureFirst']))
             <div id="signature-first" style="width: 67mm; top: 76%; left: 18%; transform: translate(-50%, 0);  position: absolute; text-align: center; z-index: 10;">
-                @php
-                    $signatureFirstPathAsset = asset('storage' . $eventData->signature_first);
-                    $signatureFirstPathStorage = storage_path('app/public' . $eventData->signature_first);
-                @endphp
-                <div id="signature-first-image" style="background: url({{ $signatureFirstPathStorage }}); background-repeat: no-repeat; background-size: 100%; width: 13.5em; height: 4.5em; transform: translate(-50%, 0); position: relative; left: 50%;"></div>
+                <img id="signature-first-image" src="{{ $eventFontImages['signatureFirst'] }}" style="width: 13.5em; height: 4.5em">
                 <div>
                     <p class="signature-line">...............................................................</p>
                 </div>
@@ -348,13 +328,9 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                 </div>
             </div>
         @endif
-        @if(!empty($eventData->signature_second))
+        @if(!empty($eventFontImages['signatureSecond']))
             <div id="signature-second" style="width: 67mm; top: 76%; left: 50%; transform: translate(-50%, 0);  position: absolute; text-align: center; z-index: 10;">
-                @php
-                    $signatureSecondPathAsset = asset('storage' . $eventData->signature_second);
-                    $signatureSecondPathStorage = storage_path('app/public' . $eventData->signature_second);
-                @endphp
-                <div id="signature-second-image" style="background: url({{ $signatureSecondPathStorage }}); background-repeat: no-repeat; background-size: 100%; width: 13.5em; height: 4.5em; transform: translate(-50%, 0); position: relative; left: 50%;"></div>
+                <img id="signature-second-image" src="{{ $eventFontImages['signatureSecond'] }}" style="width: 13.5em; height: 4.5em">
                 <div>
                     <p class="signature-line">...............................................................</p>
                 </div>
@@ -366,13 +342,9 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                 </div>
             </div>
         @endif
-        @if(!empty($eventData->signature_third))
+        @if(!empty($eventFontImages['signatureThird']))
             <div id="signature-third" style="width: 67mm; top: 76%; left: 82%; transform: translate(-50%, 0);  position: absolute; text-align: center; z-index: 10;">
-                @php
-                    $signatureThirdPathAsset = asset('storage' . $eventData->signature_third);
-                    $signatureThirdPathStorage = storage_path('app/public' . $eventData->signature_third);
-                @endphp
-                <div id="signature-third-image" style="background: url({{ $signatureThirdPathStorage }}); background-repeat: no-repeat; background-size: 100%; width: 13.5em; height: 4.5em; transform: translate(-50%, 0); position: relative; left: 50%;"></div>
+                <img id="signature-third-image" src="{{ $eventFontImages['signatureThird'] }}" style="width: 13.5em; height: 4.5em">
                 <div>
                     <p class="signature-line">...............................................................</p>
                 </div>
