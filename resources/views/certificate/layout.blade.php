@@ -41,7 +41,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
     @bukStyles(true)
 </head>
 <body>
-    <div id="canvas" style="position: relative; background: #fff;" class="my-5">
+    <div id="canvas" class="my-5">
         @if(!empty($eventFontImages['backgroundImage']))
             <img src="{{ $eventFontImages['backgroundImage'] }}" alt="Background image" style="position: absolute; width: 210mm; height: 297mm;">
         @endif
@@ -83,28 +83,28 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         <style>
             @font-face {
                 font-family: 'detailsTextType';
-                src: url({{ $typeTextFontPathAsset }}) format("truetype");
+                src: url({{ $typeTextFontPathStorage }}) format("truetype");
                 font-weight: bold;
                 font-style: normal;
             }
 
             @font-face {
                 font-family: 'detailsTextFirst';
-                src: url({{ $firstTextFontPathAsset }}) format("truetype");
+                src: url({{ $firstTextFontPathStorage }}) format("truetype");
                 font-weight: normal;
                 font-style: normal;
             }
 
             @font-face {
                 font-family: 'detailsTextSecond';
-                src: url({{ $secondTextFontPathAsset }}) format("truetype");
+                src: url({{ $secondTextFontPathStorage }}) format("truetype");
                 font-weight: bold;
                 font-style: normal;
             }
 
             @font-face {
                 font-family: 'signatureTextFirst';
-                src: url({{ $verifierTextFontPathAsset }}) format("truetype");
+                src: url({{ $verifierTextFontPathStorage }}) format("truetype");
                 font-weight: bold;
                 font-style: normal;
             }

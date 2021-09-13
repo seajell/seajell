@@ -17,6 +17,9 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
 
 @extends('layout.main')
 @section('content')
+    <style type="text/css">
+        @import url({{ asset('css/fonts.css') }});
+    </style>
     <p class="fs-2">Tambah Acara</p>
     <p>Jika tiada sebarang perubahan pada gambar-gambar, maka gambar lama akan digunakan.</p>
     <p>Pastikan anda membuat semakan sebelum menekan butang kemas kini.</p>
@@ -514,9 +517,30 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                     'rancho' => 'Rancho',
                     'righteous' => 'Righteous',
                     'satisfy' => 'Satisfy',
+                    'ptserif' => 'PT Serif',
+                    'bitter' => 'Bitter',
+                    'crimsontext' => 'Crimson Text',
+                    'cormorantgaramond' => 'Cormorant Garamond',
+                    'quicksand' => 'Quicksand',
+                    'ubuntu' => 'Ubuntu',
+                    'mukta' => 'Mukta',
+                    'glory' => 'Glory',
+                    'allison' => 'Allison',
+                    'greatvibes' => 'Great Vibes',
+                    'tangerine' => 'Tangerine',
+                    'nanumpenscript' => 'Nanum Pen Script',
+                    'karantina' => 'Karantina ',
+                    'luckiestguy' => 'Luckiest Guy',
+                    'bungeeshade' => 'Bungee Shade',
+                    'unifrakturmaguntia' => 'Unifraktur Maguntia',
+                    'bangers' => 'Bangers',
+                    'pressstart2p' => 'Press Start 2P',
+                    'monoton' => 'Monoton',
+                    'cinzeldecorative' => 'Cinzel Decorative',
+                    'poiretone' => 'Poiret One'
                 ];
 
-                sort($textFontList);
+                ksort($textFontList);
 
                 function selected($data, $list){
                     $selectedDataResult = [];
