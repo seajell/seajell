@@ -25,7 +25,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         <span><div class="alert alert-success w-100 ml-1">{{ session('updateEventSuccess') }}</div></span>
     @endif
     @php
-        if(!empty(old('event-name'))){ 
+        if(!empty(old('event-name'))){
             $valueEventName = old('event-name');
         }else{
             if(!empty($data)){
@@ -39,7 +39,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             }
         }
 
-        if(!empty(old('event-data'))){ 
+        if(!empty(old('event-data'))){
             $valueEventDate = old('event-date');
         }else{
             if(!empty($data)){
@@ -53,7 +53,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             }
         }
 
-        if(!empty(old('event-location'))){ 
+        if(!empty(old('event-location'))){
             $valueEventLocation = old('event-location');
         }else{
             if(!empty($data)){
@@ -67,7 +67,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             }
         }
 
-        if(!empty(old('organiser-name'))){ 
+        if(!empty(old('organiser-name'))){
             $valueOrganiserName = old('organiser-name');
         }else{
             if(!empty($data)){
@@ -81,7 +81,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             }
         }
 
-        if(!empty(old('signature-first-name'))){ 
+        if(!empty(old('signature-first-name'))){
             $valueSignatureNameFirst = old('signature-first-name');
         }else{
             if(!empty($data)){
@@ -95,7 +95,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             }
         }
 
-        if(!empty(old('signature-first-position'))){ 
+        if(!empty(old('signature-first-position'))){
             $valueSignaturePositionFirst = old('signature-first-position');
         }else{
             if(!empty($data)){
@@ -109,7 +109,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             }
         }
 
-        if(!empty(old('signature-second-name'))){ 
+        if(!empty(old('signature-second-name'))){
             $valueSignatureNameSecond = old('signature-second-name');
         }else{
             if(!empty($data)){
@@ -123,7 +123,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             }
         }
 
-        if(!empty(old('signature-second-position'))){ 
+        if(!empty(old('signature-second-position'))){
             $valueSignaturePositionSecond = old('signature-second-position');
         }else{
             if(!empty($data)){
@@ -137,7 +137,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             }
         }
 
-        if(!empty(old('signature-third-name'))){ 
+        if(!empty(old('signature-third-name'))){
             $valueSignatureNameThird = old('signature-third-name');
         }else{
             if(!empty($data)){
@@ -151,7 +151,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             }
         }
 
-        if(!empty(old('signature-third-position'))){ 
+        if(!empty(old('signature-third-position'))){
             $valueSignaturePositionThird = old('signature-third-position');
         }else{
             if(!empty($data)){
@@ -165,7 +165,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             }
         }
 
-        if(!empty(old('text-color'))){ 
+        if(!empty(old('text-color'))){
             $valueTextColor = old('text-color');
         }else{
             if(!empty($data)){
@@ -379,7 +379,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             Anda boleh menjana gambar tandatangan di laman <a href="{{ route('signature') }}">tandatangan</a>. <br>
             Jika anda memasukkan maklumat pengesah di ruangan ketiga tanpa memasukkan maklumat pengesah diruangan kedua, maka maklumat pengesah tersebut akan dikira sebagai maklumat pengesah yang dimasukkan pada ruangan kedua.
         </div>
-        
+
         <hr>
         <p class="fs-5">Penyesuaian Gaya Sijil </p>
         @php
@@ -493,36 +493,38 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         @enderror
         <label class="form-label mt-3">Teks (Diperlukan)</label>
         {{-- Default option value for text color won't be used until my fix for color picker is fixed by the Blade UI Kit maintainer
-        Refer: https://github.com/blade-ui-kit/blade-ui-kit/pull/109 
+        Refer: https://github.com/blade-ui-kit/blade-ui-kit/pull/109
         :options="['default' => '#000000']"
         --}}
 
         <div class="row row-cols-2 row-cols-lg-4">
             @php
-                $textFontList = [
-                    'architectsdaughter', 
-                    'badscript',
-                    'bebasneue',
-                    'berkshireswash',
-                    'carterone',
-                    'cookie',
-                    'fredokaone',
-                    'kaushanscript',
-                    'lobster',
-                    'oleoscript',
-                    'poppins',
-                    'rancho',
-                    'righteous',
-                    'satisfy'
+               $textFontList = [
+                    'architectsdaughter' => 'Architects Daughter',
+                    'badscript' => 'Bad Script',
+                    'bebasneue' => 'Bebas Neue',
+                    'berkshireswash' => 'Berkshire Swash',
+                    'carterone' => 'Carter One',
+                    'cookie' => 'Cookie',
+                    'fredokaone' => 'Fredoka One',
+                    'kaushanscript' => 'Kaushan Script',
+                    'lobster' => 'Lobster',
+                    'oleoscript' => 'Oleo Script',
+                    'poppins' => 'Poppins',
+                    'rancho' => 'Rancho',
+                    'righteous' => 'Righteous',
+                    'satisfy' => 'Satisfy',
                 ];
+
+                sort($textFontList);
 
                 function selected($data, $list){
                     $selectedDataResult = [];
-                    foreach ($list as $l) {
-                        if($l == $data){
-                            $selectedDataResult[$l] = 'selected';
+                    foreach ($list as $key => $value) {
+                        if($key == $data){
+                            $selectedDataResult[$key] = 'selected';
                         }else{
-                            $selectedDataResult[$l] = '';
+                            $selectedDataResult[$key] = '';
                         }
                     }
                     return $selectedDataResult;
@@ -561,22 +563,11 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                 }
             @endphp
             <div class="col">
-                <p>Teks Jenis Sijil</p>                  
+                <p>Teks Jenis Sijil</p>
                 <select class="selectpicker show-tick w-100" data-live-search="true" title="Sila pilih satu font.." aria-label="text-font" name="type-text-font">
-                    <option value="architectsdaughter" class="sj-fonts-architectsdaughter" @isset($typeTextFontSelected['architectsdaughter']) {{ $typeTextFontSelected['architectsdaughter'] }} @endisset >Architects Daughter</option>
-                    <option value="badscript" class="sj-fonts-badscript" @isset($typeTextFontSelected['badscript']) {{ $typeTextFontSelected['badscript'] }} @endisset >Bad Script</option>
-                    <option value="bebasneue" class="sj-fonts-bebasneue" @isset($typeTextFontSelected['bebasneue']) {{ $typeTextFontSelected['bebasneue'] }} @endisset >Bebas Neue</option>
-                    <option value="berkshireswash" class="sj-fonts-berkshireswash" @isset($typeTextFontSelected['berkshireswash']) {{ $typeTextFontSelected['berkshireswash'] }} @endisset >Berkshire Swash</option>
-                    <option value="carterone" class="sj-fonts-carterone" @isset($typeTextFontSelected['carterone']) {{ $typeTextFontSelected['carterone'] }} @endisset >Carter One</option>
-                    <option value="cookie" class="sj-fonts-cookie" @isset($typeTextFontSelected['cookie']) {{ $typeTextFontSelected['cookie'] }} @endisset >Cookie</option>
-                    <option value="fredokaone" class="sj-fonts-fredokaone" @isset($typeTextFontSelected['fredokaone']) {{ $typeTextFontSelected['fredokaone'] }} @endisset >Fredoka One</option>
-                    <option value="kaushanscript" class="sj-fonts-kaushanscript" @isset($typeTextFontSelected['kaushanscript']) {{ $typeTextFontSelected['kaushanscript'] }} @endisset >Kaushan Script</option>
-                    <option value="lobster" class="sj-fonts-lobster" @isset($typeTextFontSelected['lobster']) {{ $typeTextFontSelected['lobster'] }} @endisset >Lobster</option>
-                    <option value="oleoscript" class="sj-fonts-oleoscript" @isset($typeTextFontSelected['oleoscript']) {{ $typeTextFontSelected['oleoscript'] }} @endisset >Oleo Script</option>
-                    <option value="poppins" class="sj-fonts-poppins" @isset($typeTextFontSelected['poppins']) {{ $typeTextFontSelected['poppins'] }} @endisset >Poppins</option>
-                    <option value="rancho" class="sj-fonts-rancho" @isset($typeTextFontSelected['rancho']) {{ $typeTextFontSelected['rancho'] }} @endisset >Rancho</option>
-                    <option value="righteous" class="sj-fonts-righteous" @isset($typeTextFontSelected['righteous']) {{ $typeTextFontSelected['righteous'] }} @endisset >Righteous</option>
-                    <option value="satisfy" class="sj-fonts-satisfy" @isset($typeTextFontSelected['satisfy']) {{ $typeTextFontSelected['satisfy'] }} @endisset >Satisfy</option>
+                    @foreach($textFontList as $key => $value)
+                        <option value="{{ $key }}" class="sj-fonts-{{ $key }}" @isset($typeTextFontSelected[$key]) {{ $typeTextFontSelected[$key] }} @endisset >{{ $value }}</option>
+                    @endforeach
                 </select>
                 <div class="form-floating my-3">
                     <input type="number" class="form-control" name="type-text-size" placeholder="font size" step="any" value="{{ old('type-text-size', $eventFontData->certificate_type_text_size ?? 1) }}">
@@ -595,20 +586,9 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             <div class="col">
                 <p>Teks Pertama</p>
                 <select class="selectpicker show-tick w-100" data-live-search="true" title="Sila pilih satu font.." aria-label="text-font" name="first-text-font">
-                    <option value="architectsdaughter" class="sj-fonts-architectsdaughter" @isset($firstTextFontSelected['architectsdaughter']) {{ $firstTextFontSelected['architectsdaughter'] }} @endisset >Architects Daughter</option>
-                    <option value="badscript" class="sj-fonts-badscript" @isset($firstTextFontSelected['badscript']) {{ $firstTextFontSelected['badscript'] }} @endisset >Bad Script</option>
-                    <option value="bebasneue" class="sj-fonts-bebasneue" @isset($firstTextFontSelected['bebasneue']) {{ $firstTextFontSelected['bebasneue'] }} @endisset >Bebas Neue</option>
-                    <option value="berkshireswash" class="sj-fonts-berkshireswash" @isset($firstTextFontSelected['berkshireswash']) {{ $firstTextFontSelected['berkshireswash'] }} @endisset >Berkshire Swash</option>
-                    <option value="carterone" class="sj-fonts-carterone" @isset($firstTextFontSelected['carterone']) {{ $firstTextFontSelected['carterone'] }} @endisset >Carter One</option>
-                    <option value="cookie" class="sj-fonts-cookie" @isset($firstTextFontSelected['cookie']) {{ $firstTextFontSelected['cookie'] }} @endisset >Cookie</option>
-                    <option value="fredokaone" class="sj-fonts-fredokaone" @isset($firstTextFontSelected['fredokaone']) {{ $firstTextFontSelected['fredokaone'] }} @endisset >Fredoka One</option>
-                    <option value="kaushanscript" class="sj-fonts-kaushanscript" @isset($firstTextFontSelected['kaushanscript']) {{ $firstTextFontSelected['kaushanscript'] }} @endisset >Kaushan Script</option>
-                    <option value="lobster" class="sj-fonts-lobster" @isset($firstTextFontSelected['lobster']) {{ $firstTextFontSelected['lobster'] }} @endisset >Lobster</option>
-                    <option value="oleoscript" class="sj-fonts-oleoscript" @isset($firstTextFontSelected['oleoscript']) {{ $firstTextFontSelected['oleoscript'] }} @endisset >Oleo Script</option>
-                    <option value="poppins" class="sj-fonts-poppins" @isset($firstTextFontSelected['poppins']) {{ $firstTextFontSelected['poppins'] }} @endisset >Poppins</option>
-                    <option value="rancho" class="sj-fonts-rancho" @isset($firstTextFontSelected['rancho']) {{ $firstTextFontSelected['rancho'] }} @endisset >Rancho</option>
-                    <option value="righteous" class="sj-fonts-righteous" @isset($firstTextFontSelected['righteous']) {{ $firstTextFontSelected['righteous'] }} @endisset >Righteous</option>
-                    <option value="satisfy" class="sj-fonts-satisfy" @isset($firstTextFontSelected['satisfy']) {{ $firstTextFontSelected['satisfy'] }} @endisset >Satisfy</option>
+                    @foreach($textFontList as $key => $value)
+                        <option value="{{ $key }}" class="sj-fonts-{{ $key }}" @isset($firstTextFontSelected[$key]) {{ $firstTextFontSelected[$key] }} @endisset >{{ $value }}</option>
+                    @endforeach
                 </select>
                 <div class="form-floating my-3">
                     <input type="number" class="form-control" name="first-text-size" placeholder="font size" step="any" value="{{ old('first-text-size', $eventFontData->first_text_size ?? 1) }}">
@@ -627,20 +607,9 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             <div class="col">
                 <p>Teks Kedua</p>
                 <select class="selectpicker show-tick w-100" data-live-search="true" title="Sila pilih satu font.." aria-label="text-font" name="second-text-font">
-                    <option value="architectsdaughter" class="sj-fonts-architectsdaughter" @isset($secondTextFontSelected['architectsdaughter']) {{ $secondTextFontSelected['architectsdaughter'] }} @endisset >Architects Daughter</option>
-                    <option value="badscript" class="sj-fonts-badscript" @isset($secondTextFontSelected['badscript']) {{ $secondTextFontSelected['badscript'] }} @endisset >Bad Script</option>
-                    <option value="bebasneue" class="sj-fonts-bebasneue" @isset($secondTextFontSelected['bebasneue']) {{ $secondTextFontSelected['bebasneue'] }} @endisset >Bebas Neue</option>
-                    <option value="berkshireswash" class="sj-fonts-berkshireswash" @isset($secondTextFontSelected['berkshireswash']) {{ $secondTextFontSelected['berkshireswash'] }} @endisset >Berkshire Swash</option>
-                    <option value="carterone" class="sj-fonts-carterone" @isset($secondTextFontSelected['carterone']) {{ $secondTextFontSelected['carterone'] }} @endisset >Carter One</option>
-                    <option value="cookie" class="sj-fonts-cookie" @isset($secondTextFontSelected['cookie']) {{ $secondTextFontSelected['cookie'] }} @endisset >Cookie</option>
-                    <option value="fredokaone" class="sj-fonts-fredokaone" @isset($secondTextFontSelected['fredokaone']) {{ $secondTextFontSelected['fredokaone'] }} @endisset >Fredoka One</option>
-                    <option value="kaushanscript" class="sj-fonts-kaushanscript" @isset($secondTextFontSelected['kaushanscript']) {{ $secondTextFontSelected['kaushanscript'] }} @endisset >Kaushan Script</option>
-                    <option value="lobster" class="sj-fonts-lobster" @isset($secondTextFontSelected['lobster']) {{ $secondTextFontSelected['lobster'] }} @endisset >Lobster</option>
-                    <option value="oleoscript" class="sj-fonts-oleoscript" @isset($secondTextFontSelected['oleoscript']) {{ $secondTextFontSelected['oleoscript'] }} @endisset >Oleo Script</option>
-                    <option value="poppins" class="sj-fonts-poppins" @isset($secondTextFontSelected['poppins']) {{ $secondTextFontSelected['poppins'] }} @endisset >Poppins</option>
-                    <option value="rancho" class="sj-fonts-rancho" @isset($secondTextFontSelected['rancho']) {{ $secondTextFontSelected['rancho'] }} @endisset >Rancho</option>
-                    <option value="righteous" class="sj-fonts-righteous" @isset($secondTextFontSelected['righteous']) {{ $secondTextFontSelected['righteous'] }} @endisset >Righteous</option>
-                    <option value="satisfy" class="sj-fonts-satisfy" @isset($secondTextFontSelected['satisfy']) {{ $secondTextFontSelected['satisfy'] }} @endisset >Satisfy</option>
+                    @foreach($textFontList as $key => $value)
+                        <option value="{{ $key }}" class="sj-fonts-{{ $key }}" @isset($secondTextFontSelected[$key]) {{ $secondTextFontSelected[$key] }} @endisset >{{ $value }}</option>
+                    @endforeach
                 </select>
                 <div class="form-floating my-3">
                     <input type="number" class="form-control" name="second-text-size" placeholder="font size" step="any" value="{{ old('second-text-size', $eventFontData->second_text_size ?? 1) }}">
@@ -659,20 +628,9 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             <div class="col">
                 <p>Teks Pengesah</p>
                 <select class="selectpicker show-tick w-100" data-live-search="true" title="Sila pilih satu font.." aria-label="text-font" name="verifier-text-font">
-                    <option value="architectsdaughter" class="sj-fonts-architectsdaughter" @isset($verifierTextFontSelected['architectsdaughter']) {{ $verifierTextFontSelected['architectsdaughter'] }} @endisset >Architects Daughter</option>
-                    <option value="badscript" class="sj-fonts-badscript" @isset($verifierTextFontSelected['badscript']) {{ $verifierTextFontSelected['badscript'] }} @endisset >Bad Script</option>
-                    <option value="bebasneue" class="sj-fonts-bebasneue" @isset($verifierTextFontSelected['bebasneue']) {{ $verifierTextFontSelected['bebasneue'] }} @endisset >Bebas Neue</option>
-                    <option value="berkshireswash" class="sj-fonts-berkshireswash" @isset($verifierTextFontSelected['berkshireswash']) {{ $verifierTextFontSelected['berkshireswash'] }} @endisset >Berkshire Swash</option>
-                    <option value="carterone" class="sj-fonts-carterone" @isset($verifierTextFontSelected['carterone']) {{ $verifierTextFontSelected['carterone'] }} @endisset >Carter One</option>
-                    <option value="cookie" class="sj-fonts-cookie" @isset($verifierTextFontSelected['cookie']) {{ $verifierTextFontSelected['cookie'] }} @endisset >Cookie</option>
-                    <option value="fredokaone" class="sj-fonts-fredokaone" @isset($verifierTextFontSelected['fredokaone']) {{ $verifierTextFontSelected['fredokaone'] }} @endisset >Fredoka One</option>
-                    <option value="kaushanscript" class="sj-fonts-kaushanscript" @isset($verifierTextFontSelected['kaushanscript']) {{ $verifierTextFontSelected['kaushanscript'] }} @endisset >Kaushan Script</option>
-                    <option value="lobster" class="sj-fonts-lobster" @isset($verifierTextFontSelected['lobster']) {{ $verifierTextFontSelected['lobster'] }} @endisset >Lobster</option>
-                    <option value="oleoscript" class="sj-fonts-oleoscript" @isset($verifierTextFontSelected['oleoscript']) {{ $verifierTextFontSelected['oleoscript'] }} @endisset >Oleo Script</option>
-                    <option value="poppins" class="sj-fonts-poppins" @isset($verifierTextFontSelected['poppins']) {{ $verifierTextFontSelected['poppins'] }} @endisset >Poppins</option>
-                    <option value="rancho" class="sj-fonts-rancho" @isset($verifierTextFontSelected['rancho']) {{ $verifierTextFontSelected['rancho'] }} @endisset >Rancho</option>
-                    <option value="righteous" class="sj-fonts-righteous" @isset($verifierTextFontSelected['righteous']) {{ $verifierTextFontSelected['righteous'] }} @endisset >Righteous</option>
-                    <option value="satisfy" class="sj-fonts-satisfy" @isset($verifierTextFontSelected['satisfy']) {{ $verifierTextFontSelected['satisfy'] }} @endisset >Satisfy</option>
+                    @foreach($textFontList as $key => $value)
+                        <option value="{{ $key }}" class="sj-fonts-{{ $key }}" @isset($verifierTextFontSelected[$key]) {{ $verifierTextFontSelected[$key] }} @endisset >{{ $value }}</option>
+                    @endforeach
                 </select>
                 <div class="form-floating my-3">
                     <input type="number" class="form-control" name="verifier-text-size" placeholder="font size" step="any" value="{{ old('verifier-text-size', $eventFontData->verifier_text_size ?? 1) }}">
