@@ -80,7 +80,7 @@ class EventController extends MainController
                 $eventFontData = EventFont::where('event_id', $id)->first();
 
                 $eventFontImages = [
-                    'backgroundImage' => $this->cacheDataURLImage($eventData->background_image, 700, 990),
+                    'backgroundImage' => $this->cacheDataURLImage($eventData->background_image, 1050, 1485),
                     'logoFirst' => $this->cacheDataURLImage($eventData->logo_first, 300, 300),
                     'logoSecond' => $this->cacheDataURLImage($eventData->logo_second, 300, 300),
                     'logoThird' => $this->cacheDataURLImage($eventData->logo_third, 300, 300),
@@ -189,7 +189,7 @@ class EventController extends MainController
 
         $signatureFirstName = $request->input('signature-first-name');
         $signatureFirstPosition = $request->input('signature-first-position');
-        
+
         $signatureFirstImageName = $signatureFirst->getClientOriginalName();
         $signatureFirstImage = Image::make($signatureFirst)->resize(300, 100)->encode('png');
         $signatureFirstSavePath = '/img/signature/'. Carbon::now()->timestamp . '-' . $signatureFirstImageName;
@@ -300,7 +300,7 @@ class EventController extends MainController
             'background_image' => $backgroundImageSavePath,
             'orientation' => $certificateOrientation
         ])->id;
-        
+
         EventFont::create([
             'event_id' => $createdEventID,
             'certificate_type_text_size' => $request->input('type-text-size'),
@@ -411,7 +411,7 @@ class EventController extends MainController
         // If only one of the second or third logo is added, it will be uploaded as second logo.
         // If both is added, it will occupied their own column
 
-        // Check if the checkbox is checked 
+        // Check if the checkbox is checked
         if(!empty($request->input('logo-second-check')) && !empty($request->input('logo-third-check'))){
             // Check if both files uploaded. If not just use old data.
             if($request->hasFile('logo-second')){
@@ -494,7 +494,7 @@ class EventController extends MainController
                         }
                     }
                     Storage::disk('public')->put($logoSecondSavePath, $logoThirdImage);
-    
+
                 }
             }else{
                 // Insert all third column data if available
@@ -556,7 +556,7 @@ class EventController extends MainController
                 }
             }
         }
-        
+
         // Check if one of the inputs of signature second and third is added, then required the others (name, position, image)
         if($request->filled('signature-second-name') || $request->filled('signature-second-name') || $request->hasFile('signature-second')){
             $validated = $request->validate([
@@ -655,7 +655,7 @@ class EventController extends MainController
                 }
             }
             $signatureThirdSavePath = '';
-            
+
         }elseif(!empty($request->input('signature-third-check'))){
             // Check if only third signature is uploaded (since it's not required)
 
@@ -777,11 +777,11 @@ class EventController extends MainController
                 'orientation' => $certificateOrientation
             ]
         ], ['id'], [
-            'name', 
-            'date', 
-            'location', 
-            'organiser_name', 
-            'logo_first', 
+            'name',
+            'date',
+            'location',
+            'organiser_name',
+            'logo_first',
             'logo_second',
             'logo_third',
             'signature_first_name',
@@ -796,7 +796,7 @@ class EventController extends MainController
             'visibility',
             'background_image',
             'orientation'
-        
+
         ]);
 
         $eventFontID = EventFont::select('id')->where('event_id', $id)->first()->id;
