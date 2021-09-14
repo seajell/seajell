@@ -7,11 +7,12 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="./css/app.css">
+    <link rel="icon" href="./img/SeaJell-Logo.png" type="image/png" sizes="16x16"> 
     <title>SeaJell - A simple e-certificate generator</title>
 </head>
 <body>
     <div class="container-fluid p-0 m-0 w-100 min-vh-100 position-absolute" id="container">
-        <header class="container-fluid p-0 m-0 position-fixed w-100 d-flex justify-content-center align-items-center" style="z-index: 1000;">
+        <header class="container-fluid p-0 m-0 w-100 d-flex justify-content-center align-items-center position-absolute" style="z-index: 1000;">
             <nav class="navbar navbar-expand-lg navbar-light color-brown">
                 <div class="container-fluid">
                     <a class="navbar-brand fw-bold" href="#">
@@ -41,7 +42,7 @@
                         </ul>
                     </div>
                 </div>
-              </nav>
+            </nav>
         </header>
         <div class="w-100 vh-100 d-flex justify-content-center align-items-center position-relative" id="home">
             <div class="w-75 h-100 d-flex flex-column justify-content-center" style="z-index: 1;">
@@ -146,12 +147,12 @@
                 </svg>
             </div>
         </div>
-        <div class="w-100 vh-100" id="statistics">
+        <div class="w-100 vh-100 d-flex flex-column" id="statistics">
             <div class="bg-light shadow d-flex flex-column justify-content-center align-items-center sj-rounded-bottom" style="height: 30vh;">
                 <h1 class="fw-bolder color-brown" style="font-size: 3.5em !important;">29</h1>
                 <h1 class="color-brown" style="font-size: 3.5em !important;">Certificates Added</h1>
             </div>
-            <div class="w-100 row row-cols-1 row-cols-lg-3">
+            <div class="w-100 row row-cols-1 row-cols-lg-3 g-0">
                 <div class="col d-flex justify-content-around align-items-center">
                     <div class="sj-statistics-circle">
                         <p class="sj-statistics-circle-count">16</p>
@@ -168,19 +169,80 @@
                     </div>
                 </div>
             </div>
+            <div class="w-100 row" style="margin-top: auto;">
+                <p class="fw-normal text-center">Based on data gathered from the SeaJell Feedback Survey.</p>
+            </div>
         </div>
-        <div class="w-100 vh-100" id="features">
-            <p>s</p>
+        <div class="w-100 vh-100 d-flex flex-column" id="features">
+            <div class="bg-light shadow text-center" id="features-title">
+                <h1 class="fw-bold color-brown my-3" style="font-size: 3.5em;">Features</h1>
+            </div>
+            <div class="row row-cols-1 row-cols-3 mt-5 w-100">
+                <div class="col">
+                    <div class="row g-0">
+                        <div class="row d-flex justify-content-center align-items-center">
+                            <img src="./img/OSI_Standard_Logo_0.svg" alt="OSI Logo" style="width: 15vw; height: 15vw;">
+                        </div>
+                        <div class="row d-flex flex-column">
+                            <p class="fw-bold fs-3 text-center">Free And Open Source</p>
+                            <p class="fw-normal fs-4 text-center">Don’t worry about licensing fees because there <span class="fw-bold">aren’t</span>.</p>
+                            <p class="fw-normal fs-4 text-center">The openness of this project also ensures that <span class="fw-bold">anyone</span> can participate in making this project better.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="row g-0">
+                        <div class="row d-flex justify-content-center align-items-center">
+                            <img src="./img/paint-brush-5703905.svg" alt="OSI Logo" style="width: 15vw; height: 15vw;">
+                        </div>
+                        <div class="row d-flex flex-column">
+                            <p class="fw-bold fs-3 text-center">Customisable</p>
+                            <p class="fw-normal fs-4 text-center">From background images, fonts, object locations and measurements, you can customize the design of the certificate as you wish*.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="row g-0">
+                        <div class="row d-flex justify-content-center align-items-center">
+                            <img src="./img/website-1778529.svg" alt="OSI Logo" style="width: 15vw; height: 15vw;">
+                        </div>
+                        <div class="row d-flex flex-column">
+                            <p class="fw-bold fs-3 text-center">Web-Based Interface</p>
+                            <p class="fw-normal fs-4 text-center">Don’t worry about licensing fees because there <span class="fw-bold">aren’t</span>.</p>
+                            <p class="fw-normal fs-4 text-center">The openness of this project also ensures that <span class="fw-bold">anyone</span> can participate in making this project better.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="w-100 row" style="margin-top: auto;">
+                <p class="fw-normal text-center">*There is a difference in the actual size of the object on the certificate compared to that on the layout editing page.</p>
+            </div>
         </div>
-        <div class="w-100 vh-100" id="built-for-community">
-            <p>s</p>
+        <div class="w-100 vh-100 d-flex flex-column" id="built-for-community">
+            <div class="bg-light shadow text-center" id="built-for-community-title">
+                <h1 class="fw-bold color-brown my-3" style="font-size: 3.5em;">Built For Community</h1>
+            </div>
+            <div class="bg-light shadow d-flex flex-column justify-content-center align-items-center sj-rounded-top w-100" style="height: 20vh; margin-top: auto;">
+                <h1 class="color-brown text-center mb-1" style="font-size: 1.5em !important;">Copyright &copy; Muhammad Hanis Irfan Bin Mohd Zaid 2021</h1>
+                <p class="fw-normal mb-1">This project is licensed under an <a href="https://opensource.org/licenses" class="color-brown">Open Source Initiative approved license</a>.</p>
+                <ul class="d-flex list-inline mb-1">
+                    <li class="me-5 list-inline-item"><a href="https://github.com/hanisirfan/seajell/blob/main/COPYING" class="color-brown">License</a></li>
+                    <li class="me-5 list-inline-item"><a href="/credits.html" class="color-brown">Credits</a></li>
+                </ul>
+                <ul class="d-flex list-inline mb-1 fs-5">
+                    <li class="me-5 list-inline-item"><a href="https://github.com/hanisirfan/seajell" class="color-brown"><i class="bi bi-github"></i></a></li>
+                    <li class="me-5 list-inline-item"><a href="#" class="color-brown"><i class="bi bi-discord"></i></a></li>
+                    <li class="me-5 list-inline-item"><a href="https://twitter.com/seajelldev" class="color-brown"><i class="bi bi-twitter"></i></a></li>
+                </ul>
+            </div>
         </div>
         <script>
             document.addEventListener(
                 'DOMContentLoaded',
                 () => {
                     const scroller = new SweetScroll({
-                    /* some options */
+                        easing: 'easeInOutQuad', 
+                        updateURL: true, 
                     });
                 },
                 false,

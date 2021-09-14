@@ -1,14 +1,15 @@
-@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital@1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap');
 
 *{
     box-sizing: border-box;
     padding: 0%;
     margin: 0%;
+    font-family: 'Josefin Sans', sans-serif;
+    font-style: normal;
 }
 
 #container{
-    background: rgb(212,117,66);
-    background: linear-gradient(340deg, rgba(212,117,66,1) 0%, rgba(255,255,255,1) 100%);
+    background: linear-gradient(340deg, rgb(255, 146, 87) 0%, rgba(255,255,255,1) 100%);
 }
 
 h1, h2, h3, h4, h5, h6, p{
@@ -25,12 +26,21 @@ h1, h2, h3, h4, h5, h6, p{
 }
 
 .sj-rounded-bottom{
-    -webkit-border-bottom-right-radius: 4em;
-    -webkit-border-bottom-left-radius: 4em;
-    -moz-border-radius-bottomright: 4em;
-    -moz-border-radius-bottomleft: 4em;
-    border-bottom-right-radius: 4em;
-    border-bottom-left-radius: 4em;
+    -webkit-border-bottom-right-radius: 50%;
+    -webkit-border-bottom-left-radius: 50%;
+    -moz-border-radius-bottomr-ight: 50%;
+    -moz-border-radius-bottom-left: 50%;
+    border-bottom-right-radius: 50%;
+    border-bottom-left-radius: 50%;
+}
+
+.sj-rounded-top{
+    -webkit-border-top-right-radius: 50%;
+    -webkit-border-top-left-radius: 50%;
+    -moz-border-radius-top-ight: 50%;
+    -moz-border-radius-top-left: 50%;
+    border-top-right-radius: 50%;
+    border-top-left-radius: 50%;
 }
 
 .sj-statistics-circle{
@@ -40,8 +50,8 @@ h1, h2, h3, h4, h5, h6, p{
     align-items: center;
     background-color: white;
     margin-top: 1em;
-    width: 25vw; 
-    height: 25vw;
+    width: 30vw; 
+    height: 30vw;
     border: 0.5vw solid #D2510C;
     border-radius: 50% !important;
 }
