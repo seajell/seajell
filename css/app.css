@@ -113,14 +113,6 @@ h1, h2, h3, h4, h5, h6, p{
     .sj-statistics-circle-item{
         font-size: 6vw !important;
     }
-
-    .fs-3{
-        font-size: 2vw !important; 
-    }
-
-    .fs-4{
-        font-size: 1vw !important; 
-    }
 }
 
 @media (min-width: 992px) {
