@@ -59,12 +59,10 @@ h1, h2, h3, h4, h5, h6, p{
 
 .sj-statistics-circle-count{
     font-weight: bold;
-    font-size: 5vw;
 }
 
 .sj-statistics-circle-item{
     font-weight: normal;
-    font-size: 3vw;
 }
 
 .sj-certificate-illustration{
@@ -82,17 +80,11 @@ h1, h2, h3, h4, h5, h6, p{
         left: 50% !important;
     }
 
-    .sj-font-title{
-        font-size: 15vw !important;
-    }
-
     .sj-font-description{
-        font-size: 5vw !important;
         width: 75% !important;
     }
 
     .sj-font-documentation-btn{
-        font-size: 2vw !important;
         width: 45% !important;
     }
 
@@ -102,16 +94,8 @@ h1, h2, h3, h4, h5, h6, p{
     }
 
     .sj-features-img{
-        width: 40vw !important; 
-        height: 40vw !important;
-    }
-
-    .sj-statistics-circle-count{
-        font-size: 8vw !important;
-    }
-    
-    .sj-statistics-circle-item{
-        font-size: 6vw !important;
+        width: 18em !important; 
+        height: 18em !important;
     }
 }
 
@@ -120,17 +104,11 @@ h1, h2, h3, h4, h5, h6, p{
         left: 70% !important;
     }
 
-    .sj-font-title{
-        font-size: 10vw !important;
-    }
-
     .sj-font-description{
-        font-size: 3vw !important;
         width: 50% !important;
     }
 
     .sj-font-documentation-btn{
-        font-size: 2vw !important;
         width: 45% !important;
     }
 
@@ -140,15 +118,7 @@ h1, h2, h3, h4, h5, h6, p{
     }
 
     .sj-features-img{
-        width: 15vw !important; 
-        height: 15vw !important;
-    }
-
-    .sj-statistics-circle-count{
-        font-size: 5vw !important;
-    }
-    
-    .sj-statistics-circle-item{
-        font-size: 3vw !important;
+        width: 15em !important; 
+        height: 15em !important;
     }
 }
