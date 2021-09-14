@@ -1,0 +1,57 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital@1&display=swap');
+
+*{
+    box-sizing: border-box;
+    padding: 0%;
+    margin: 0%;
+}
+
+#container{
+    background: rgb(212,117,66);
+    background: linear-gradient(340deg, rgba(212,117,66,1) 0%, rgba(255,255,255,1) 100%);
+}
+
+h1, h2, h3, h4, h5, h6, p{
+    font-family: 'Josefin Sans', sans-serif;
+}
+
+.color-brown{
+    color: #D2510C !important;
+}
+
+.navbar a, p{
+    color: #D2510C !important;
+    font-weight: bold;
+}
+
+.sj-rounded-bottom{
+    -webkit-border-bottom-right-radius: 4em;
+    -webkit-border-bottom-left-radius: 4em;
+    -moz-border-radius-bottomright: 4em;
+    -moz-border-radius-bottomleft: 4em;
+    border-bottom-right-radius: 4em;
+    border-bottom-left-radius: 4em;
+}
+
+.sj-statistics-circle{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    margin-top: 1em;
+    width: 25vw; 
+    height: 25vw;
+    border: 0.5vw solid #D2510C;
+    border-radius: 50% !important;
+}
+
+.sj-statistics-circle-count{
+    font-weight: bold;
+    font-size: 5vw;
+}
+
+.sj-statistics-circle-item{
+    font-weight: normal;
+    font-size: 3vw;
+}
