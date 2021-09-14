@@ -10,6 +10,7 @@
 
 #container{
     background: linear-gradient(340deg, rgb(255, 146, 87) 0%, rgba(255,255,255,1) 100%);
+    overflow-x: hidden;
 }
 
 h1, h2, h3, h4, h5, h6, p{
@@ -64,4 +65,59 @@ h1, h2, h3, h4, h5, h6, p{
 .sj-statistics-circle-item{
     font-weight: normal;
     font-size: 3vw;
+}
+
+.sj-certificate-illustration{
+    position: absolute; 
+    left: 50%;
+}
+
+@media (min-width: 576px) {
+    .sj-certificate-illustration{
+        left: 50% !important;
+    }
+
+    .sj-font-title{
+        font-size: 15vw !important;
+    }
+
+    .sj-font-description{
+        font-size: 5vw !important;
+        width: 75% !important;
+    }
+
+    .sj-font-documentation-btn{
+        font-size: 2vw !important;
+        width: 45% !important;
+    }
+
+    .sj-statistics-circle{
+        width: 60vw !important; 
+        height: 60vw !important;
+    }
+}
+
+@media (min-width: 992px) {
+    .sj-certificate-illustration{
+        left: 70% !important;
+    }
+
+    .sj-font-title{
+        font-size: 10vw !important;
+    }
+
+    .sj-font-description{
+        font-size: 3vw !important;
+        width: 50% !important;
+    }
+
+    .sj-font-documentation-btn{
+        font-size: 2vw !important;
+        width: 45% !important;
+    }
+
+    .sj-statistics-circle{
+        width: 30vw !important; 
+        height: 30vw !important;
+    }
 }
