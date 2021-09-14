@@ -23,8 +23,8 @@
      inkscape:pagecheckerboard="1"
      showgrid="false"
      inkscape:zoom="1.558"
-     inkscape:cx="242.29781"
-     inkscape:cy="224.9679"
+     inkscape:cx="314.18485"
+     inkscape:cy="246.14891"
      inkscape:window-width="1920"
      inkscape:window-height="1051"
      inkscape:window-x="-9"
@@ -47,12 +47,12 @@
        ry="20"
        fill="#f4f4f4"
        id="rect6"
-       style="fill:#ffffff;stroke-width:0.737829;fill-opacity:1" />
+       style="fill:#ffffff;fill-opacity:1;stroke-width:0.737829" />
     <path
        d="m 95.66,113.92 c -11.08,0 -20,8.92 -20,20 v 23.84 h 362.75 v -23.84 c 0,-11.08 -8.92,-20 -20,-20 z"
        fill="#ff4a4a"
        id="path8"
-       style="fill:#d2d2d2;fill-opacity:1;stroke-width:0.737829" />
+       style="fill:#efefef;fill-opacity:1;stroke-width:0.737829" />
     <g
        transform="matrix(1.2412,0,0,1,-21.47,-1.4877)"
        fill="#b1b1b1"
@@ -65,7 +65,7 @@
          height="10.056"
          ry="5.0282001"
          id="rect10"
-         style="fill:#d2d2d2;fill-opacity:1;stroke-width:0.737829" />
+         style="fill:#efefef;fill-opacity:1;stroke-width:0.737829" />
       <rect
          x="88.998001"
          y="212.25999"
@@ -73,7 +73,7 @@
          height="10.056"
          ry="5.0282001"
          id="rect12"
-         style="fill:#d2d2d2;fill-opacity:1;stroke-width:0.737829" />
+         style="fill:#efefef;fill-opacity:1;stroke-width:0.737829" />
       <rect
          x="88.998001"
          y="232.92"
@@ -81,7 +81,7 @@
          height="10.056"
          ry="5.0282001"
          id="rect14"
-         style="fill:#d2d2d2;fill-opacity:1;stroke-width:0.737829" />
+         style="fill:#efefef;fill-opacity:1;stroke-width:0.737829" />
     </g>
     <rect
        x="224.5"
@@ -90,7 +90,7 @@
        height="89.402"
        fill="#d2d2d2"
        id="rect18"
-       style="fill:#c3c3c3;fill-opacity:1;stroke:none;stroke-width:0.737829"
+       style="fill:#efefef;fill-opacity:1;stroke:none;stroke-width:0.737829"
        transform="scale(1,-1)" />
     <rect
        x="228.03999"
@@ -99,7 +99,7 @@
        height="83.038002"
        fill="#b1b1b1"
        id="rect20"
-       style="fill:#d2d2d2;fill-opacity:1;stroke:none;stroke-width:0.737829" />
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.737829" />
     <rect
        x="224.5"
        y="284.14999"
@@ -108,7 +108,7 @@
        ry="2.5281999"
        fill="#b1b1b1"
        id="rect22"
-       style="fill:#d2d2d2;fill-opacity:1;stroke-width:0.737829" />
+       style="fill:#efefef;fill-opacity:1;stroke-width:0.737829" />
     <rect
        x="224.5"
        y="299.64001"
@@ -117,7 +117,7 @@
        ry="2.5281999"
        fill="#b1b1b1"
        id="rect24"
-       style="fill:#d2d2d2;fill-opacity:1;stroke-width:0.737829" />
+       style="fill:#efefef;fill-opacity:1;stroke-width:0.737829" />
     <rect
        x="224.5"
        y="315.13"
@@ -126,7 +126,7 @@
        ry="2.5281999"
        fill="#b1b1b1"
        id="rect26"
-       style="fill:#d2d2d2;fill-opacity:1;stroke-width:0.737829" />
+       style="fill:#efefef;fill-opacity:1;stroke-width:0.737829" />
     <rect
        x="224.5"
        y="330.62"
@@ -135,7 +135,7 @@
        ry="2.5281999"
        fill="#b1b1b1"
        id="rect28"
-       style="fill:#d2d2d2;fill-opacity:1;stroke-width:0.737829" />
+       style="fill:#efefef;fill-opacity:1;stroke-width:0.737829" />
     <rect
        x="224.5"
        y="346.10999"
@@ -144,7 +144,7 @@
        ry="2.5281999"
        fill="#b1b1b1"
        id="rect30"
-       style="fill:#d2d2d2;fill-opacity:1;stroke-width:0.737829" />
+       style="fill:#efefef;fill-opacity:1;stroke-width:0.737829" />
     <rect
        x="224.5"
        y="361.60001"
@@ -153,7 +153,7 @@
        ry="2.5281999"
        fill="#b1b1b1"
        id="rect32"
-       style="fill:#d2d2d2;fill-opacity:1;stroke-width:0.737829" />
+       style="fill:#efefef;fill-opacity:1;stroke-width:0.737829" />
     <rect
        x="224.5"
        y="268.66"
@@ -162,7 +162,7 @@
        ry="2.5281999"
        fill="#b1b1b1"
        id="rect34"
-       style="fill:#d2d2d2;fill-opacity:1;stroke-width:0.737829" />
+       style="fill:#efefef;fill-opacity:1;stroke-width:0.737829" />
     <rect
        x="88.998001"
        y="275.85001"
@@ -171,20 +171,20 @@
        ry="5.0282001"
        fill="#b1b1b1"
        id="rect36"
-       style="fill:#d2d2d2;fill-opacity:1;stroke-width:0.737829" />
+       style="fill:#efefef;fill-opacity:1;stroke-width:0.737829" />
     <circle
        cx="416.48999"
        cy="135.84"
        r="10.509"
        fill="#f4f4f4"
        id="circle38"
-       style="stroke-width:0.62652" />
+       style="stroke-width:0.62652;fill:#e3e3e3;fill-opacity:1" />
     <circle
        cx="384.95999"
        cy="135.84"
        r="10.509"
        fill="#d2d2d2"
        id="circle40"
-       style="stroke-width:0.62652;fill:#7f7f7f;fill-opacity:1" />
+       style="fill:#e3e3e3;fill-opacity:1;stroke-width:0.62652" />
   </g>
 </svg>
