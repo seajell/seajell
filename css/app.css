@@ -82,8 +82,8 @@ h1, h2, h3, h4, h5, h6, p{
     }
 
     .sj-statistics-circle{
-        width: 50vw;
-        height: 50vw;
+        width: 25em;
+        height: 25em;
     }
 }
 
@@ -103,5 +103,10 @@ h1, h2, h3, h4, h5, h6, p{
     .sj-statistics-circle{
         width: 30vw;
         height: 30vw;
+    }
+
+    .sj-statistics-circle{
+        width: 30em;
+        height: 30em;
     }
 }
