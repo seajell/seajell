@@ -51,8 +51,6 @@ h1, h2, h3, h4, h5, h6, p{
     align-items: center;
     background-color: white;
     margin-top: 1em;
-    width: 30vw; 
-    height: 30vw;
     border: 0.5vw solid #D2510C;
     border-radius: 50% !important;
 }
@@ -84,8 +82,8 @@ h1, h2, h3, h4, h5, h6, p{
     }
 
     .sj-statistics-circle{
-        width: 60vw !important; 
-        height: 60vw !important;
+        width: 50vw;
+        height: 50vw;
     }
 }
 
@@ -103,7 +101,7 @@ h1, h2, h3, h4, h5, h6, p{
     }
 
     .sj-statistics-circle{
-        width: 30vw !important; 
-        height: 30vw !important;
+        width: 30vw;
+        height: 30vw;
     }
 }
