@@ -87,7 +87,7 @@ h1, h2, h3, h4, h5, h6, p{
     }
 
     .sj-rounded-top{
-        height: 30vh;
+        height: 45vh;
         margin-top: auto;
     }
 }
@@ -108,5 +108,10 @@ h1, h2, h3, h4, h5, h6, p{
     .sj-statistics-rectangle{
         width: 30vw;
         height: 15vw;
+    }
+
+    .sj-rounded-top{
+        height: 20vh;
+        margin-top: auto;
     }
 }
