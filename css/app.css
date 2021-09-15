@@ -47,7 +47,7 @@ h1, h2, h3, h4, h5, h6, p{
     margin-top: auto;
 }
 
-.sj-statistics-circle{
+.sj-statistics-rectangle{
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -55,14 +55,13 @@ h1, h2, h3, h4, h5, h6, p{
     background-color: white;
     margin-top: 1em;
     border: 0.5vw solid #D2510C;
-    border-radius: 50% !important;
 }
 
-.sj-statistics-circle-count{
+.sj-statistics-rectangle-count{
     font-weight: bold;
 }
 
-.sj-statistics-circle-item{
+.sj-statistics-rectangle-item{
     font-weight: normal;
 }
 
@@ -84,9 +83,9 @@ h1, h2, h3, h4, h5, h6, p{
         width: 45% !important;
     }
 
-    .sj-statistics-circle{
-        width: 65vw;
-        height: 65vw;
+    .sj-statistics-rectangle{
+        width: 30vw;
+        height: 20vw;
     }
 
     .sj-rounded-top{
@@ -108,8 +107,8 @@ h1, h2, h3, h4, h5, h6, p{
         width: 45% !important;
     }
 
-    .sj-statistics-circle{
-        width: 25vw;
-        height: 25vw;
+    .sj-statistics-rectangle{
+        width: 30vw;
+        height: 15vw;
     }
 }
