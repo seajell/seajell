@@ -1,1 +1,150 @@
-Scroll Library: https://github.com/tsuyoshiwada/sweet-scroll
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="./css/app.css">
+    <link rel="icon" href="./img/SeaJell-Logo.png" type="image/png" sizes="16x16"> 
+    <title>SeaJell - A simple e-certificate generator</title>
+</head>
+<body>
+    <div class="container-fluid p-0 m-0 w-100 min-vh-100 position-absolute" id="container">
+        <header class="container-fluid p-0 m-0 w-100 d-flex justify-content-center align-items-center position-absolute" style="z-index: 1000;">
+            <nav class="navbar navbar-expand-lg navbar-light color-brown">
+                <div class="container-fluid">
+                    <a class="navbar-brand fw-bold" href="#">
+                        <img src="./img/SeaJell-Logo.png" alt="SeaJell Logo" width="40" height="40">
+                        SeaJell
+                    </a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-toggler-1" aria-controls="navbar-toggler-1" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbar-toggler-1">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link" href="./index.html#home" data-scroll>Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="./index.html#statistics" data-scroll>Statistics</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="./index.html#features" data-scroll>Features</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="./index.html#built-for-community" data-scroll>Built For Community</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="./wip.html">Documentation</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
+        <div class="w-100 min-vh-100 d-flex flex-column mt-5">
+            <div id="info" class="ms-5">
+                <div class="mt-5">
+                    <h1 class="fw-bold color-brown">Credits</h1>
+                    <p class="fw-normal"><span class="fst-italic">Without the people, libraries and frameworks, I wouldn't be able to finish the project. <br> Thanks a lot for the help!</span> - Hanis Irfan</p>
+                    <h4 class="fw-bold color-brown mt-5">Maintainer</h4>
+                    <div class="row row-cols-1 w-100 mb-5 g-0">
+                        <div class="col-1 text-center">
+                            <img src="./img/profile/hanis.jpg" alt="" class="img-fluid rounded-circle" style="width: 10rem;">
+                            <p class="m-0">Muhammad Hanis Irfan</p>
+                            <p class="m-0 fw-normal fst-italic">Original Author, SeaJell</p>
+                        </div>
+                    </div>
+                    <h4 class="fw-bold color-brown">Beta Testers (For Version 2.0.0)</h4>
+                    <div class="row row-cols-1 w-100 mb-5 g-0">
+                        <p class="fw-normal">To be updated.</p>
+                        <!-- <div class="col-1 text-center">
+                            <img src="./img/profile/hanis.jpg" alt="" class="img-fluid rounded-circle" style="width: 10rem;">
+                            <p class="m-0">Muhammad Hanis Irfan</p>
+                            <p class="m-0 fw-normal fst-italic">Original Author, SeaJell</p>
+                        </div> -->
+                    </div>
+                    <h4 class="fw-bold color-brown">Contributors</h4>
+                    <div class="row row-cols-1 w-100 mb-5 g-0">
+                        <p class="fw-normal">To be updated.</p>
+                        <!-- <div class="col-1 text-center">
+                            <img src="./img/profile/hanis.jpg" alt="" class="img-fluid rounded-circle" style="width: 10rem;">
+                            <p class="m-0">Muhammad Hanis Irfan</p>
+                            <p class="m-0 fw-normal fst-italic">Original Author, SeaJell</p>
+                        </div> -->
+                    </div>
+                    <h4 class="fw-bold color-brown">Libraries and Frameworks</h4>
+                    <ul class="color-brown">
+                        <li>
+                            <h5 class="fw-bold">The SeaJell System</h5>
+                            <ul>
+                                <li>
+                                    <p class="fw-normal">Bootstrap</p>
+                                </li>
+                                <li>
+                                    <p class="fw-normal">Boostrap Icons</p>
+                                </li>
+                                <li>
+                                    <p class="fw-normal">bootstrap-select</p>
+                                </li>
+                                <li>
+                                    <p class="fw-normal">Laravel</p>
+                                </li>
+                                <li>
+                                    <p class="fw-normal">Blade UI Kit</p>
+                                </li>
+                                <li>
+                                    <p class="fw-normal">Intervention</p>
+                                </li>
+                                <li>
+                                    <p class="fw-normal">Signature Pad</p>
+                                </li>
+                                <li>
+                                    <p class="fw-normal">PHPSpreadsheet</p>
+                                </li>
+                                <li>
+                                    <p class="fw-normal">Laravel Dompdf (used on v2.0.0)</p>
+                                </li>
+                                <li>
+                                    <p class="fw-normal">Endroid Qr Code</p>
+                                </li>
+                                <li>
+                                    <p class="fw-normal">interact.js</p>
+                                </li>
+                                <li>
+                                    <p class="fw-normal">Laravel TCPDF (used on v1.0.0)</p>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <h5 class="fw-bold">The SeaJell Website</h5>
+                            <ul>
+                                <li>
+                                    <p class="fw-normal">SweetScroll</p>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="bg-light shadow d-flex flex-column justify-content-center align-items-center sj-rounded-top w-100">
+                <div class="row row-cols-2 mb-1">
+                    <div class="col">
+                        <a href="./license.html" class="color-brown fs-6">License</a>
+                    </div>
+                    <div class="col">
+                        <a href="/credits.html" class="color-brown fs-6">Credits</a>
+                    </div>
+                </div>
+                <p class="fw-normal mb-1 text-center fs-6">This project is licensed under an <a href="https://opensource.org/licenses" class="color-brown">Open Source Initiative approved license</a>.</p>
+                <h1 class="color-brown text-center mb-1 fs-6 fw-bold">Copyright &copy; Muhammad Hanis Irfan Bin Mohd Zaid 2021</h1>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/sweet-scroll/sweet-scroll.min.js"></script>
+</body>
+</html>
