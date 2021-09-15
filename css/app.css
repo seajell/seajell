@@ -70,11 +70,6 @@ h1, h2, h3, h4, h5, h6, p{
     left: 50%;
 }
 
-.sj-features-img{
-    width: 15vw; 
-    height: 15vw;
-}
-
 @media (min-width: 576px) {
     .sj-certificate-illustration{
         left: 50% !important;
@@ -92,16 +87,11 @@ h1, h2, h3, h4, h5, h6, p{
         width: 60vw !important; 
         height: 60vw !important;
     }
-
-    .sj-features-img{
-        width: 18em !important; 
-        height: 18em !important;
-    }
 }
 
 @media (min-width: 992px) {
     .sj-certificate-illustration{
-        left: 70% !important;
+        left: 50% !important;
     }
 
     .sj-font-description{
@@ -115,10 +105,5 @@ h1, h2, h3, h4, h5, h6, p{
     .sj-statistics-circle{
         width: 30vw !important; 
         height: 30vw !important;
-    }
-
-    .sj-features-img{
-        width: 15em !important; 
-        height: 15em !important;
     }
 }
