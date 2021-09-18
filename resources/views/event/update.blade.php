@@ -684,5 +684,39 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             <p>Klik butang ke atas untuk mengubah susun atur sijil.</p>
         </div>
     </div>
+    {{-- Delete All Certificates --}}
+    <div class="row">
+        <p class="mt-3 fs-4">Buang Semua Sijil</p>
+        @if(session()->has('removeAllCertificateSuccess'))
+            <span><div class="alert alert-success w-100 ml-1">{{ session('removeAllCertificateSuccess') }}</div></span>
+        @endif
+        @error('removeAllCertificateEmpty')
+            <span><div class="alert alert-danger">{{ $message }}</div></span>
+        @enderror
+        <span><button type="button" class="btn btn-outline-light w-25" data-bs-toggle="modal" data-bs-target="#delete-all-certificates"><i class="bi bi-trash"></i> Buang Semua Sijil</button></span>
+        <div id="delete_all_certificates_help" class="form-text mt-3">
+            <p>Klik butang ke atas untuk membuang sijil untuk acara ini.</p>
+        </div>
+    </div>
+    <div class="modal fade" id="delete-all-certificates" tabindex="-1" aria-labelledby="delete-all-certificates-label" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-dark">Buang Semua Sijil Acara</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="text-dark">Anda yakin ingin membuang semua sijil acara ini?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                <form action="{{ route('event.remove.certificate', [$data->id]) }}" method="post">
+                    @csrf
+                    <button type="submit" class="btn btn-danger">Ya</button>
+                </form>
+            </div>
+            </div>
+        </div>
+    </div>
     <script src="{{ asset('js/checksEvent.js') }}"></script>
 @endsection

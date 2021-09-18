@@ -21,7 +21,9 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\Event;
 use App\Models\EventFont;
+use App\Models\Certificate;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
@@ -821,5 +823,22 @@ class EventController extends MainController
 
         $request->session()->flash('updateEventSuccess', 'Acara berjaya dikemas kini!');
         return back();
+    }
+
+    public function removeEventCertificate(Request $request, $id){
+        // Make sure user is admin although middleware have cover this up
+        if(Auth::user()->role == 'superadmin' || Auth::user()->role == 'admin'){
+            if(Certificate::where('event_id', $id)->first()){
+                Certificate::where('event_id', $id)->delete();
+                $request->session()->flash('removeAllCertificateSuccess', 'Semua sijil acara berjaya dibuang!');
+                return back();
+            }else{
+                return back()->withErrors([
+                    'removeAllCertificateEmpty' => 'Tiada sijil untuk acara ini!',
+                ]);
+            }
+        }else{
+            abort(403, 'Hanya pentadbir boleh mengakses laman ini!');
+        }
     }
 }
