@@ -465,18 +465,31 @@ class CertificateController extends MainController
         $qrCodeDataURI = $result->getDataUri();
 
         $viewData = ['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting, 'eventData' => $eventData, 'eventFontData' => $eventFontData, 'certificateData' => $certificateData, 'qrCodeDataURI' => $qrCodeDataURI, 'eventFontImages' => $eventFontImages];
+
+        // Only allows self-signed certificate if APP_DEBUG environment variable is set to true
+        if(!empty(env('APP_DEBUG')) && env('APP_DEBUG') == TRUE){
+            $pdf = PDF::getFacadeRoot();
+            $dompdf = $pdf->getDomPDF();
+            $dompdf->setHttpContext(stream_context_create([
+                'ssl' => [
+                    'verify_peer' => FALSE,
+                    'verify_peer_name' => FALSE,
+                    'allow_self_signed'=> TRUE
+                ],
+            ]));
+        }else{
+            $pdf = PDF::getFacadeRoot();
+        }
+
         // Check whether wanna save or stream the certificate
-        // return view('certificate.layout', $viewData);
         switch($mode){
             case 'stream':
-                $pdf = PDF::loadView('certificate.layout', $viewData)->setPaper('a4', 'potrait')->setWarnings(false)->stream($certificateFileName);
-                return $pdf;
+                return $pdf->loadView('certificate.layout', $viewData)->setPaper('a4', 'potrait')->setWarnings(true)->stream($certificateFileName);
             case 'save':
                 $fullPath = $savePath . 'SeaJell_e_Certificate_' . $certificateID . '.pdf';
                 PDF::loadView('certificate.layout', $viewData)->setPaper('a4', 'potrait')->setWarnings(false)->save($fullPath);
             default:
-                $pdf = PDF::loadView('certificate.layout', $viewData)->setPaper('a4', 'potrait')->setWarnings(false)->stream($certificateFileName);
-                return $pdf;
+                return $pdf->loadView('certificate.layout', $viewData)->setPaper('a4', 'potrait')->setWarnings(false)->stream($certificateFileName);
         }
     }
 

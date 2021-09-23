@@ -100,7 +100,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
     </header>
     <main class="min-vh-100 w-100">
         <div class="d-flex justify-content-center align-items-center">
-            <div id="canvas" style="width: 210mm; height: 289mm; position: relative; background: #fff;" class="my-5">
+            <div id="canvas" style="width: 210mm; height: 297mm; position: relative; background: #fff;" class="my-5">
                 @if(!empty($eventFontImages['backgroundImage']))
                     <img src="{{ $eventFontImages['backgroundImage'] }}" alt="Background image" style="position: absolute; width: 210mm; height: 297mm;">
                 @endif

@@ -22,14 +22,11 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="description" content="e-Certificate Powered by SeaJell">
-    {{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous"> --}}
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     @if(!empty($systemSetting->logo))
         <link rel="shortcut icon" href="{{ asset('storage/') . $systemSetting->logo }}" type="image/png">
     @else
         <link rel="shortcut icon" href="{{ asset('/storage/logo/SeaJell-Logo.png') }}" type="image/png">
     @endif
-    <meta name="api-token" content="{{ $apiToken }}">
     <title>
         @if(!empty($systemSetting->name))
             {{ strtoupper($systemSetting->name) }}
@@ -38,12 +35,11 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         @endif
         {{ '- Certificate Viewer' }}
     </title>
-    @bukStyles(true)
 </head>
 <body>
-    <div id="canvas" class="my-5">
+    <div id="canvas">
         @if(!empty($eventFontImages['backgroundImage']))
-            <img src="{{ $eventFontImages['backgroundImage'] }}" alt="Background image" style="position: absolute; width: 210mm; height: 297mm;">
+            <img src="{{ $eventFontImages['backgroundImage'] }}" alt="Background image" style="position: absolute; width: 210mm; height: 297mm;" />
         @endif
         <style>
             p{
@@ -83,28 +79,28 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         <style>
             @font-face {
                 font-family: 'detailsTextType';
-                src: url({{ $typeTextFontPathStorage }}) format("truetype");
+                src: url({{ $typeTextFontPathAsset }}) format("truetype");
                 font-weight: bold;
                 font-style: normal;
             }
 
             @font-face {
                 font-family: 'detailsTextFirst';
-                src: url({{ $firstTextFontPathStorage }}) format("truetype");
+                src: url({{ $firstTextFontPathAsset }}) format("truetype");
                 font-weight: normal;
                 font-style: normal;
             }
 
             @font-face {
                 font-family: 'detailsTextSecond';
-                src: url({{ $secondTextFontPathStorage }}) format("truetype");
+                src: url({{ $secondTextFontPathAsset }}) format("truetype");
                 font-weight: bold;
                 font-style: normal;
             }
 
             @font-face {
                 font-family: 'signatureTextFirst';
-                src: url({{ $verifierTextFontPathStorage }}) format("truetype");
+                src: url({{ $verifierTextFontPathAsset }}) format("truetype");
                 font-weight: bold;
                 font-style: normal;
             }
@@ -195,13 +191,13 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             $defaultTextSmall = 'Lorem ipsum dolor sit amet, consectetur adipiscin.'; // 50 chars
         @endphp
         @if(!empty($eventFontImages['logoFirst']))
-            <img id="logo-first" src="{{ $eventFontImages['logoFirst'] }}" style="background-repeat: no-repeat; background-size: 100%; height: 42mm; width: 42mm; transform: translate(-50%, 0);  position: absolute; top: 0.5%; left: 20%; z-index: 10;">
+            <img id="logo-first" src="{{ $eventFontImages['logoFirst'] }}" style="background-repeat: no-repeat; background-size: 100%; height: 42mm; width: 42mm; transform: translate(-50%, 0);  position: absolute; top: 0.5%; left: 20%; z-index: 10;" />
         @endif
         @if(!empty($eventFontImages['logoSecond']))
-            <img id="logo-second" src="{{ $eventFontImages['logoSecond'] }}" style="background-repeat: no-repeat; background-size: 100%; height: 42mm; width: 42mm; transform: translate(-50%, 0);  position: absolute; top: 0.5%; left: 50%; z-index: 10;">
+            <img id="logo-second" src="{{ $eventFontImages['logoSecond'] }}" style="background-repeat: no-repeat; background-size: 100%; height: 42mm; width: 42mm; transform: translate(-50%, 0);  position: absolute; top: 0.5%; left: 50%; z-index: 10;" />
         @endif
         @if(!empty($eventFontImages['logoThird']))
-            <img id="logo-third" src="{{ $eventFontImages['logoThird'] }}" style="background-repeat: no-repeat; background-size: 100%; height: 42mm; width: 42mm; transform: translate(-50%, 0);  position: absolute; top: 0.5%; left: 80%; z-index: 10;">
+            <img id="logo-third" src="{{ $eventFontImages['logoThird'] }}" style="background-repeat: no-repeat; background-size: 100%; height: 42mm; width: 42mm; transform: translate(-50%, 0);  position: absolute; top: 0.5%; left: 80%; z-index: 10;" />
         @endif
         <div id="details" style="height: 170mm; width: 200mm; transform: translate(-50%, 0); position: absolute; top: 17%; left: 50%; text-align: center; z-index: 10;">
             <div id="details-type" style="margin-bottom: 0.75em;">
@@ -336,7 +332,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         </div>
         @if(!empty($eventFontImages['signatureFirst']))
             <div id="signature-first" style="width: 67mm; top: 76%; left: 18%; transform: translate(-50%, 0);  position: absolute; text-align: center; z-index: 10;">
-                <img id="signature-first-image" src="{{ $eventFontImages['signatureFirst'] }}" style="width: 13.5em; height: 4.5em;">
+                <img id="signature-first-image" src="{{ $eventFontImages['signatureFirst'] }}" style="width: 13.5em; height: 4.5em;" />
                 <div style="line-height: 0;">
                     <p class="signature-line">...............................................................</p>
                 </div>
@@ -350,7 +346,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         @endif
         @if(!empty($eventFontImages['signatureSecond']))
             <div id="signature-second" style="width: 67mm; top: 76%; left: 50%; transform: translate(-50%, 0);  position: absolute; text-align: center; z-index: 10;">
-                <img id="signature-second-image" src="{{ $eventFontImages['signatureSecond'] }}" style="width: 13.5em; height: 4.5em">
+                <img id="signature-second-image" src="{{ $eventFontImages['signatureSecond'] }}" style="width: 13.5em; height: 4.5em" />
                 <div style="line-height: 0;">
                     <p class="signature-line">...............................................................</p>
                 </div>
@@ -364,7 +360,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         @endif
         @if(!empty($eventFontImages['signatureThird']))
             <div id="signature-third" style="width: 67mm; top: 76%; left: 82%; transform: translate(-50%, 0);  position: absolute; text-align: center; z-index: 10;">
-                <img id="signature-third-image" src="{{ $eventFontImages['signatureThird'] }}" style="width: 13.5em; height: 4.5em">
+                <img id="signature-third-image" src="{{ $eventFontImages['signatureThird'] }}" style="width: 13.5em; height: 4.5em" />
                 <div style="line-height: 0;">
                     <p class="signature-line">...............................................................</p>
                 </div>
@@ -393,7 +389,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                         </div>
                     </div>
                     @if(!empty($qrCodeDataURI))
-                        <img id="qr-code-image" style="background: #000; background-repeat: no-repeat; background-size: 100%; width: 20mm; height: 20mm; position: absolute; top: 3%; left: 72%;" src="{{ $qrCodeDataURI }}"></img>
+                        <img id="qr-code-image" style="background: #000; background-repeat: no-repeat; background-size: 100%; width: 20mm; height: 20mm; position: absolute; top: 3%; left: 72%;" src="{{ $qrCodeDataURI }}" />
                     @endif
                 </div>
             @endif
