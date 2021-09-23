@@ -102,7 +102,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         <div class="d-flex justify-content-center align-items-center">
             <div id="canvas" style="width: 210mm; height: 297mm; position: relative; background: #fff;" class="my-5">
                 @if(!empty($eventFontImages['backgroundImage']))
-                    <img src="{{ $eventFontImages['backgroundImage'] }}" alt="Background image" style="position: absolute; width: 210mm; height: 297mm;">
+                    <img src="{{ $eventFontImages['backgroundImage'] }}" alt="Background image" style="position: absolute; width: 210mm; height: 297mm;" />
                 @endif
                 <style>
                     p{
@@ -254,15 +254,15 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                     $defaultTextSmall = 'Lorem ipsum dolor sit amet, consectetur adipiscin.'; // 50 chars
                 @endphp
                 @if(!empty($eventFontImages['logoFirst']))
-                    <img id="logo-first" src="{{ $eventFontImages['logoFirst'] }}" style="background-repeat: no-repeat; background-size: 100%; height: 42mm; width: 42mm; transform: translate(-50%, 0);  position: absolute; top: 0.5%; left: 20%; z-index: 10;">
+                    <img id="logo-first" src="{{ $eventFontImages['logoFirst'] }}" style="background-repeat: no-repeat; background-size: 100%; height: 42mm; width: 42mm; position: absolute; top: 0.5%; left: 10%; z-index: 10;" />
                 @endif
                 @if(!empty($eventFontImages['logoSecond']))
-                    <img id="logo-second" src="{{ $eventFontImages['logoSecond'] }}" style="background-repeat: no-repeat; background-size: 100%; height: 42mm; width: 42mm; transform: translate(-50%, 0);  position: absolute; top: 0.5%; left: 50%; z-index: 10;">
+                    <img id="logo-second" src="{{ $eventFontImages['logoSecond'] }}" style="background-repeat: no-repeat; background-size: 100%; height: 42mm; width: 42mm; position: absolute; top: 0.5%; left: 40%; z-index: 10;" />
                 @endif
                 @if(!empty($eventFontImages['logoThird']))
-                    <img id="logo-third" src="{{ $eventFontImages['logoThird'] }}" style="background-repeat: no-repeat; background-size: 100%; height: 42mm; width: 42mm; transform: translate(-50%, 0);  position: absolute; top: 0.5%; left: 80%; z-index: 10;">
+                    <img id="logo-third" src="{{ $eventFontImages['logoThird'] }}" style="background-repeat: no-repeat; background-size: 100%; height: 42mm; width: 42mm; position: absolute; top: 0.5%; left: 70%; z-index: 10;" />
                 @endif
-                <div id="details" style="height: 170mm; width: 200mm; transform: translate(-50%, 0); position: absolute; top: 17%; left: 50%; text-align: center; z-index: 10;">
+                <div id="details" style="position: absolute; top: 17%; width: 210mm; text-align: center; z-index: 10;">
                     <div id="details-type" style="margin-bottom: 0.75em;">
                         @php
                             if(!empty($certificateData->type)){
@@ -394,8 +394,8 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                     </div>
                 </div>
                 @if(!empty($eventFontImages['signatureFirst']))
-                    <div id="signature-first" style="width: 67mm; top: 76%; left: 18%; transform: translate(-50%, 0);  position: absolute; text-align: center; z-index: 10;">
-                        <img id="signature-first-image" src="{{ $eventFontImages['signatureFirst'] }}" style="width: 13.5em; height: 4.5em;">
+                    <div id="signature-first" style="width: 67mm; top: 76%; left: 5%; position: absolute; text-align: center; z-index: 10;">
+                        <img id="signature-first-image" src="{{ $eventFontImages['signatureFirst'] }}" style="width: 13.5em; height: 4.5em;" />
                         <div style="line-height: 0;">
                             <p class="signature-line">...............................................................</p>
                         </div>
@@ -408,8 +408,8 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                     </div>
                 @endif
                 @if(!empty($eventFontImages['signatureSecond']))
-                    <div id="signature-second" style="width: 67mm; top: 76%; left: 50%; transform: translate(-50%, 0);  position: absolute; text-align: center; z-index: 10;">
-                        <img id="signature-second-image" src="{{ $eventFontImages['signatureSecond'] }}" style="width: 13.5em; height: 4.5em">
+                    <div id="signature-second" style="width: 67mm; top: 76%; left: 35%; position: absolute; text-align: center; z-index: 10;">
+                        <img id="signature-second-image" src="{{ $eventFontImages['signatureSecond'] }}" style="width: 13.5em; height: 4.5em" />
                         <div style="line-height: 0;">
                             <p class="signature-line">...............................................................</p>
                         </div>
@@ -422,8 +422,8 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                     </div>
                 @endif
                 @if(!empty($eventFontImages['signatureThird']))
-                    <div id="signature-third" style="width: 67mm; top: 76%; left: 82%; transform: translate(-50%, 0);  position: absolute; text-align: center; z-index: 10;">
-                        <img id="signature-third-image" src="{{ $eventFontImages['signatureThird'] }}" style="width: 13.5em; height: 4.5em">
+                    <div id="signature-third" style="width: 67mm; top: 76%; left: 65%; position: absolute; text-align: center; z-index: 10;">
+                        <img id="signature-third-image" src="{{ $eventFontImages['signatureThird'] }}" style="width: 13.5em; height: 4.5em" />
                         <div style="line-height: 0;">
                             <p class="signature-line">...............................................................</p>
                         </div>
@@ -437,7 +437,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                 @endif
                 @if(!empty($eventData->visibility))
                     @if($eventData->visibility == 'public')
-                        <div id="qr-code" style="margin-bottom: 10mm; height: 21mm; width: 75mm; position: absolute; top: 95%; left: 81%; transform: translate(-50%, 0); border: 0.7mm solid black; z-index: 10; background: #fff;">
+                        <div id="qr-code" style="margin-bottom: 10mm; height: 21mm; width: 75mm; position: absolute; top: 92%; left: 62%; border: 0.7mm solid black; z-index: 10; background: #fff;">
                             <div style="margin-left: 0.5mm; width: 70%;">
                                 <div style="width: 100%;">
                                     @php
@@ -452,7 +452,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                                 </div>
                             </div>
                             @if(!empty($qrCodeDataURI))
-                                <img id="qr-code-image" style="background: #000; background-repeat: no-repeat; background-size: 100%; width: 20mm; height: 20mm; position: absolute; top: 3%; left: 72%;" src="{{ $qrCodeDataURI }}"></img>
+                                <img id="qr-code-image" style="background: #000; background-repeat: no-repeat; background-size: 100%; width: 20mm; height: 20mm; position: absolute; top: 3%; left: 72%;" src="{{ $qrCodeDataURI }}" />
                             @endif
                         </div>
                     @endif
