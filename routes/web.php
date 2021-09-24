@@ -53,6 +53,7 @@ Route::get('/event/update/{id}', [EventController::class, 'updateEventView'])->n
 Route::post('/event/update/{id}', [EventController::class, 'updateEvent'])->middleware(['auth','UserIsAdmin']);
 // Event certificate layout
 Route::get('/event/layout/{id}', [EventController::class, 'layoutView'])->name('event.layout')->middleware(['auth','UserIsAdmin']);
+Route::post('/event/layout/{id}', [EventController::class, 'layoutSave'])->name('event.layout')->middleware(['auth','UserIsAdmin']);
 //Remove all event certificates
 Route::post('/event/update/remove-certificate/{id}', [EventController::class, 'removeEventCertificate'])->name('event.remove.certificate')->middleware(['auth','UserIsAdmin']);
 

@@ -91,7 +91,9 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             <p class="fw-bold">Kod QR: <span>{{ $qrCodeStatus }}</span></p>
         </div>
         <div class="col-2 d-flex justify-content-center align-items-center">
-            <a href="" class="btn btn-outline-light"><i class="bi bi-save"></i> Simpan</a>
+            <button id="save-btn" type="button" class="btn btn-outline-light" data-bs-toggle="modal" data-bs-target="#saveModal">
+                <i class="bi bi-save"></i> Simpan
+            </button>
         </div>
         <div class="row">
             <p class="fst-italic m-0 p-0">Penafian: Akan ada perbezaan dengan ukuran dan lokasi objek dan juga ukuran font berbanding sijil yang akan dijana.</p>
@@ -459,6 +461,61 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                 @endif
             </div>
         </div>
+        {{-- Modal for saving confirmation --}}
+        <div class="modal fade" id="saveModal" tabindex="-1" aria-labelledby="saveModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="saveModalLabel">Simpan Susun Atur</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Anda yakin ingin menyimpan susun atur ini?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <form action="" method="post">
+                            @csrf
+                            {{-- Logos --}}
+                            <input type="hidden" name="logo-first-input-width" id="logo-first-input-width" value="">
+                            <input type="hidden" name="logo-first-input-height" id="logo-first-input-height" value="">
+                            <input type="hidden" name="logo-first-input-translate" id="logo-first-input-translate" value="">
+
+                            <input type="hidden" name="logo-second-input-width" id="logo-second-input-width" value="">
+                            <input type="hidden" name="logo-second-input-height" id="logo-second-input-height" value="">
+                            <input type="hidden" name="logo-second-input-translate" id="logo-second-input-translate" value="">
+
+                            <input type="hidden" name="logo-third-input-width" id="logo-third-input-width" value="">
+                            <input type="hidden" name="logo-third-input-height" id="logo-third-input-height" value="">
+                            <input type="hidden" name="logo-third-input-translate" id="logo-third-input-translate" value="">
+
+                            {{-- Details --}}
+                            <input type="hidden" name="details-input-width" id="details-input-width" value="">
+                            <input type="hidden" name="details-input-height" id="details-input-height" value="">
+                            <input type="hidden" name="details-input-translate" id="details-input-translate" value="">
+
+                            {{-- Signatures --}}
+                            <input type="hidden" name="signature-first-input-width" id="signature-first-input-width" value="">
+                            <input type="hidden" name="signature-first-input-height" id="signature-first-input-height" value="">
+                            <input type="hidden" name="signature-first-input-translate" id="signature-first-input-translate" value="">
+
+                            <input type="hidden" name="signature-second-input-width" id="signature-second-input-width" value="">
+                            <input type="hidden" name="signature-second-input-height" id="signature-second-input-height" value="">
+                            <input type="hidden" name="signature-second-input-translate" id="signature-second-input-translate" value="">
+
+                            <input type="hidden" name="signature-third-input-width" id="signature-third-input-width" value="">
+                            <input type="hidden" name="signature-third-input-height" id="signature-third-input-height" value="">
+                            <input type="hidden" name="signature-third-input-translate" id="signature-third-input-translate" value="">
+
+                            {{-- QR Code --}}
+                            <input type="hidden" name="qr-code-input-translate" id="qr-code-input-translate" value="">
+
+                            <button type="submit" class="btn btn-success"><i class="bi bi-save"></i> Simpan</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
     <footer class="bg-dark text-center text-light pb-4">
         <div class="d-flex flex-column justify-content-center align-items-center">
@@ -468,5 +525,6 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
     </footer>
     <script src="/js/interact.min.js"></script>
     <script src="/js/certificateLayout.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
 </html>

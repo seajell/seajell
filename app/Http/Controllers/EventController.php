@@ -100,6 +100,19 @@ class EventController extends MainController
         }
     }
 
+    public function layoutSave(Request $request, $id){
+        if(Event::where('id', $id)->first()){
+            // Only admins can update event certificate layout
+            if(Gate::allows('authAdmin')){
+                dd($request);
+            }else{
+                abort(403, 'Anda tidak boleh mengakses laman ini.');
+            }
+        }else{
+            abort(404, 'Acara tidak dijumpai.');
+        }
+    }
+
     public function addEvent(Request $request){
         $validated = $request->validate([
             'event-name' => ['required'],
