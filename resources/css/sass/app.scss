@@ -58,3 +58,9 @@ a{
 .filter-option-inner-inner{
     color: #212529;
 }
+
+.draggable-resizable-square, .draggable-resizable-rectangle, .draggable-rectangle{
+    -ms-touch-action: none;
+    touch-action: none;
+    user-select: none;
+}

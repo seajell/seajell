@@ -20,6 +20,7 @@
     },
     "dependencies": {
         "bootstrap-icons": "^1.5.0",
+        "interactjs": "^1.10.11",
         "signature_pad": "^3.0.0-beta.4"
     }
 }

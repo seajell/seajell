@@ -254,15 +254,15 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                     $defaultTextSmall = 'Lorem ipsum dolor sit amet, consectetur adipiscin.'; // 50 chars
                 @endphp
                 @if(!empty($eventFontImages['logoFirst']))
-                    <img id="logo-first" src="{{ $eventFontImages['logoFirst'] }}" style="background-repeat: no-repeat; background-size: 100%; height: 42mm; width: 42mm; position: absolute; top: 0.5%; left: 10%; z-index: 10;" />
+                    <img id="logo-first" class="draggable-resizable-square" src="{{ $eventFontImages['logoFirst'] }}" style="background-repeat: no-repeat; background-size: 100%; height: 42mm; width: 42mm; position: absolute; top: 0.5%; left: 10%; z-index: 10;" />
                 @endif
                 @if(!empty($eventFontImages['logoSecond']))
-                    <img id="logo-second" src="{{ $eventFontImages['logoSecond'] }}" style="background-repeat: no-repeat; background-size: 100%; height: 42mm; width: 42mm; position: absolute; top: 0.5%; left: 40%; z-index: 10;" />
+                    <img id="logo-second" class="draggable-resizable-square" src="{{ $eventFontImages['logoSecond'] }}" style="background-repeat: no-repeat; background-size: 100%; height: 42mm; width: 42mm; position: absolute; top: 0.5%; left: 40%; z-index: 10;" />
                 @endif
                 @if(!empty($eventFontImages['logoThird']))
-                    <img id="logo-third" src="{{ $eventFontImages['logoThird'] }}" style="background-repeat: no-repeat; background-size: 100%; height: 42mm; width: 42mm; position: absolute; top: 0.5%; left: 70%; z-index: 10;" />
+                    <img id="logo-third" class="draggable-resizable-square" src="{{ $eventFontImages['logoThird'] }}" style="background-repeat: no-repeat; background-size: 100%; height: 42mm; width: 42mm; position: absolute; top: 0.5%; left: 70%; z-index: 10;" />
                 @endif
-                <div id="details" style="position: absolute; top: 17%; width: 210mm; text-align: center; z-index: 10;">
+                <div id="details" class="draggable-resizable-square" style="position: absolute; top: 17%; width: 210mm; text-align: center; z-index: 10;">
                     <div id="details-type" style="margin-bottom: 0.75em;">
                         @php
                             if(!empty($certificateData->type)){
@@ -394,7 +394,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                     </div>
                 </div>
                 @if(!empty($eventFontImages['signatureFirst']))
-                    <div id="signature-first" style="width: 67mm; top: 76%; left: 5%; position: absolute; text-align: center; z-index: 10;">
+                    <div id="signature-first" class="draggable-resizable-rectangle" style="width: 67mm; top: 76%; left: 5%; position: absolute; text-align: center; z-index: 10;">
                         <img id="signature-first-image" src="{{ $eventFontImages['signatureFirst'] }}" style="width: 13.5em; height: 4.5em;" />
                         <div style="line-height: 0;">
                             <p class="signature-line">...............................................................</p>
@@ -408,7 +408,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                     </div>
                 @endif
                 @if(!empty($eventFontImages['signatureSecond']))
-                    <div id="signature-second" style="width: 67mm; top: 76%; left: 35%; position: absolute; text-align: center; z-index: 10;">
+                    <div id="signature-second" class="draggable-resizable-rectangle" style="width: 67mm; top: 76%; left: 35%; position: absolute; text-align: center; z-index: 10;">
                         <img id="signature-second-image" src="{{ $eventFontImages['signatureSecond'] }}" style="width: 13.5em; height: 4.5em" />
                         <div style="line-height: 0;">
                             <p class="signature-line">...............................................................</p>
@@ -422,7 +422,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                     </div>
                 @endif
                 @if(!empty($eventFontImages['signatureThird']))
-                    <div id="signature-third" style="width: 67mm; top: 76%; left: 65%; position: absolute; text-align: center; z-index: 10;">
+                    <div id="signature-third" class="draggable-resizable-rectangle" style="width: 67mm; top: 76%; left: 65%; position: absolute; text-align: center; z-index: 10;">
                         <img id="signature-third-image" src="{{ $eventFontImages['signatureThird'] }}" style="width: 13.5em; height: 4.5em" />
                         <div style="line-height: 0;">
                             <p class="signature-line">...............................................................</p>
@@ -437,7 +437,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                 @endif
                 @if(!empty($eventData->visibility))
                     @if($eventData->visibility == 'public')
-                        <div id="qr-code" style="margin-bottom: 10mm; height: 21mm; width: 75mm; position: absolute; top: 92%; left: 62%; border: 0.7mm solid black; z-index: 10; background: #fff;">
+                        <div id="qr-code" class="draggable-rectangle" style="margin-bottom: 10mm; height: 21mm; width: 75mm; position: absolute; top: 92%; left: 62%; border: 0.7mm solid black; z-index: 10; background: #fff;">
                             <div style="margin-left: 0.5mm; width: 70%;">
                                 <div style="width: 100%;">
                                     @php
@@ -466,5 +466,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             <p>Hak Cipta &copy; <a href="http://hanisirfan.xyz" class="text-light">Muhammad Hanis Irfan bin Mohd Zaid</a> 2021</p>
         </div>
     </footer>
+    <script src="/js/interact.min.js"></script>
+    <script src="/js/certificateLayout.js"></script>
 </body>
 </html>

@@ -1,4 +1,5 @@
 {
+    "/js/certificateLayout.js": "/js/certificateLayout.js",
     "/js/addCertificateSearch.js": "/js/addCertificateSearch.js",
     "/js/checksEvent.js": "/js/checksEvent.js",
     "/js/signature.js": "/js/signature.js",
@@ -8,5 +9,6 @@
     "/bootstraps-icons/bootstrap-icons.svg": "/bootstraps-icons/bootstrap-icons.svg",
     "/bootstraps-icons/LICENSE.md": "/bootstraps-icons/LICENSE.md",
     "/bootstraps-icons/package.json": "/bootstraps-icons/package.json",
-    "/bootstraps-icons/README.md": "/bootstraps-icons/README.md"
+    "/bootstraps-icons/README.md": "/bootstraps-icons/README.md",
+    "/js/interact.min.js": "/js/interact.min.js"
 }
