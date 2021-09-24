@@ -262,7 +262,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                 @if(!empty($eventFontImages['logoThird']))
                     <img id="logo-third" class="draggable-resizable-square" src="{{ $eventFontImages['logoThird'] }}" style="background-repeat: no-repeat; background-size: 100%; height: 42mm; width: 42mm; position: absolute; top: 0.5%; left: 70%; z-index: 10;" />
                 @endif
-                <div id="details" class="draggable-resizable-square" style="position: absolute; top: 17%; width: 210mm; text-align: center; z-index: 10;">
+                <div id="details" class="draggable-resizable-square" style="position: absolute; top: 17%; height: auto; width: 210mm; text-align: center; z-index: 10;">
                     <div id="details-type" style="margin-bottom: 0.75em;">
                         @php
                             if(!empty($certificateData->type)){
