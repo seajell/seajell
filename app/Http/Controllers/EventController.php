@@ -81,6 +81,7 @@ class EventController extends MainController
             if(Gate::allows('authAdmin')){
                 $eventData = Event::where('id', $id)->first();
                 $eventFontData = EventFont::where('event_id', $id)->first();
+                $eventLayoutData = EventLayout::where('event_id', $id)->first();
 
                 $eventFontImages = [
                     'backgroundImage' => $this->cacheDataURLImage($eventData->background_image, 1050, 1485),
@@ -92,7 +93,7 @@ class EventController extends MainController
                     'signatureThird' => $this->cacheDataURLImage($eventData->signature_third, 300, 100),
                 ];
 
-                return view('event.layout')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting, 'eventData' => $eventData, 'eventFontData' => $eventFontData, 'eventFontImages' => $eventFontImages]);
+                return view('event.layout')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting, 'eventData' => $eventData, 'eventFontData' => $eventFontData, 'eventLayoutData' => $eventLayoutData, 'eventFontImages' => $eventFontImages,]);
             }else{
                 abort(403, 'Anda tidak boleh mengakses laman ini.');
             }

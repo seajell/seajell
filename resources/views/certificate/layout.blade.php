@@ -191,15 +191,91 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             $defaultTextSmall = 'Lorem ipsum dolor sit amet, consectetur adipiscin.'; // 50 chars
         @endphp
         @if(!empty($eventFontImages['logoFirst']))
-            <img id="logo-first" src="{{ $eventFontImages['logoFirst'] }}" style="background-repeat: no-repeat; background-size: 100%; height: 42mm; width: 42mm; position: absolute; top: 0.5%; left: 10%; z-index: 10;" />
+            @php
+                if(!empty($eventLayoutData->logo_first_input_width)){
+                    $logoFirstWidth = $eventLayoutData->logo_first_input_width;
+                }else{
+                    $logoFirstWidth = '42mm';
+                }
+
+                if(!empty($eventLayoutData->logo_first_input_height)){
+                    $logoFirstHeight = $eventLayoutData->logo_first_input_height;
+                }else{
+                    $logoFirstHeight = '42mm';
+                }
+
+                if(!empty($eventLayoutData->logo_first_input_translate)){
+                    $logoFirstTranslate = 'transform: ' . $eventLayoutData->logo_first_input_translate . ';';
+                }else{
+                    $logoFirstTranslate = '';
+                }
+            @endphp
+            <img id="logo-first" class="draggable-resizable-square" src="{{ $eventFontImages['logoFirst'] }}" style="{{ $logoFirstTranslate }} background-repeat: no-repeat; background-size: 100%; height: {{ $logoFirstWidth }}; width: {{ $logoFirstHeight }}; position: absolute; top: 0.5%; left: 10%; z-index: 20;" />
         @endif
         @if(!empty($eventFontImages['logoSecond']))
-            <img id="logo-second" src="{{ $eventFontImages['logoSecond'] }}" style="background-repeat: no-repeat; background-size: 100%; height: 42mm; width: 42mm; position: absolute; top: 0.5%; left: 40%; z-index: 10;" />
+            @php
+                if(!empty($eventLayoutData->logo_second_input_width)){
+                    $logoSecondWidth = $eventLayoutData->logo_second_input_width;
+                }else{
+                    $logoSecondWidth = '42mm';
+                }
+
+                if(!empty($eventLayoutData->logo_second_input_height)){
+                    $logoSecondHeight = $eventLayoutData->logo_second_input_height;
+                }else{
+                    $logoSecondHeight = '42mm';
+                }
+
+                if(!empty($eventLayoutData->logo_second_input_translate)){
+                    $logoSecondTranslate = 'transform: ' . $eventLayoutData->logo_second_input_translate . ';';
+                }else{
+                    $logoSecondTranslate = '';
+                }
+            @endphp
+            <img id="logo-second" class="draggable-resizable-square" src="{{ $eventFontImages['logoSecond'] }}" style="{{ $logoSecondTranslate }} background-repeat: no-repeat; background-size: 100%; height: {{ $logoSecondWidth }}; width: {{ $logoSecondHeight }}; position: absolute; top: 0.5%; left: 40%; z-index: 20;" />
         @endif
         @if(!empty($eventFontImages['logoThird']))
-            <img id="logo-third" src="{{ $eventFontImages['logoThird'] }}" style="background-repeat: no-repeat; background-size: 100%; height: 42mm; width: 42mm; position: absolute; top: 0.5%; left: 70%; z-index: 10;" />
+            @php
+                if(!empty($eventLayoutData->logo_third_input_width)){
+                    $logoThirdWidth = $eventLayoutData->logo_third_input_width;
+                }else{
+                    $logoThirdWidth = '42mm';
+                }
+
+                if(!empty($eventLayoutData->logo_third_input_height)){
+                    $logoThirdHeight = $eventLayoutData->logo_third_input_height;
+                }else{
+                    $logoThirdHeight = '42mm';
+                }
+
+                if(!empty($eventLayoutData->logo_third_input_translate)){
+                    $logoThirdTranslate = 'transform: ' . $eventLayoutData->logo_third_input_translate . ';';
+                }else{
+                    $logoThirdTranslate = '';
+                }
+            @endphp
+            <img id="logo-third" class="draggable-resizable-square" src="{{ $eventFontImages['logoThird'] }}" style="{{ $logoThirdTranslate }} background-repeat: no-repeat; background-size: 100%; height: {{ $logoThirdWidth }}; width: {{ $logoThirdHeight }}; position: absolute; top: 0.5%; left: 70%; z-index: 20;" />
         @endif
-        <div id="details" style="position: absolute; top: 17%; width: 210mm; text-align: center; z-index: 10;">
+        @php
+            if(!empty($eventLayoutData->details_input_width)){
+                $detailsWidth = $eventLayoutData->details_input_width;
+            }else{
+                $detailsWidth = '210mm';
+            }
+
+            if(!empty($eventLayoutData->details_input_height)){
+                $detailsHeight = $eventLayoutData->details_input_height;
+            }else{
+                $detailsHeight = 'auto';
+            }
+
+            if(!empty($eventLayoutData->details_input_translate)){
+                $detailsTranslate = 'transform: ' . $eventLayoutData->details_input_translate . ';';
+            }else{
+                $detailsTranslate = '';
+            }
+        @endphp
+        <div id="details" class="draggable-resizable-square" style="{{ $detailsTranslate }} position: absolute; top: 17%; height: {{ $detailsHeight }}; width: {{ $detailsWidth }}; text-align: center; z-index: 10;">
             <div id="details-type" style="margin-bottom: 0.75em;">
                 @php
                     if(!empty($certificateData->type)){
@@ -331,7 +407,26 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             </div>
         </div>
         @if(!empty($eventFontImages['signatureFirst']))
-            <div id="signature-first" style="width: 67mm; top: 76%; left: 5%; position: absolute; text-align: center; z-index: 10;">
+            @php
+                if(!empty($eventLayoutData->signature_first_input_width)){
+                    $signatureFirstWidth = $eventLayoutData->signature_first_input_width;
+                }else{
+                    $signatureFirstWidth = '67mm';
+                }
+
+                if(!empty($eventLayoutData->signature_first_input_height)){
+                    $signatureFirstHeight = $eventLayoutData->signature_first_input_height;
+                }else{
+                    $signatureFirstHeight = 'auto';
+                }
+
+                if(!empty($eventLayoutData->signature_first_input_translate)){
+                    $signatureFirstTranslate = 'transform: ' . $eventLayoutData->signature_first_input_translate . ';';
+                }else{
+                    $signatureFirstTranslate = '';
+                }
+            @endphp
+            <div id="signature-first" class="draggable-resizable-rectangle" style="{{ $signatureFirstTranslate }} width: {{ $signatureFirstWidth }}; height: {{ $signatureFirstHeight }}; top: 76%; left: 5%; position: absolute; text-align: center; z-index: 10;">
                 <img id="signature-first-image" src="{{ $eventFontImages['signatureFirst'] }}" style="width: 13.5em; height: 4.5em;" />
                 <div style="line-height: 0;">
                     <p class="signature-line">...............................................................</p>
@@ -345,7 +440,26 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             </div>
         @endif
         @if(!empty($eventFontImages['signatureSecond']))
-            <div id="signature-second" style="width: 67mm; top: 76%; left: 35%; position: absolute; text-align: center; z-index: 10;">
+            @php
+                if(!empty($eventLayoutData->signature_second_input_width)){
+                    $signatureSecondWidth = $eventLayoutData->signature_second_input_width;
+                }else{
+                    $signatureSecondWidth = '67mm';
+                }
+
+                if(!empty($eventLayoutData->signature_second_input_height)){
+                    $signatureSecondHeight = $eventLayoutData->signature_second_input_height;
+                }else{
+                    $signatureSecondHeight = 'auto';
+                }
+
+                if(!empty($eventLayoutData->signature_second_input_translate)){
+                    $signatureSecondTranslate = 'transform: ' . $eventLayoutData->signature_second_input_translate . ';';
+                }else{
+                    $signatureSecondTranslate = '';
+                }
+            @endphp
+            <div id="signature-second" class="draggable-resizable-rectangle" style="{{ $signatureSecondTranslate }} width: {{ $signatureSecondWidth }}; height: {{ $signatureSecondHeight }}; top: 76%; left: 35%; position: absolute; text-align: center; z-index: 10;">
                 <img id="signature-second-image" src="{{ $eventFontImages['signatureSecond'] }}" style="width: 13.5em; height: 4.5em" />
                 <div style="line-height: 0;">
                     <p class="signature-line">...............................................................</p>
@@ -359,7 +473,26 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             </div>
         @endif
         @if(!empty($eventFontImages['signatureThird']))
-            <div id="signature-third" style="width: 67mm; top: 76%; left: 65%; position: absolute; text-align: center; z-index: 10;">
+            @php
+                if(!empty($eventLayoutData->signature_third_input_width)){
+                    $signatureThirdWidth = $eventLayoutData->signature_third_input_width;
+                }else{
+                    $signatureThirdWidth = '67mm';
+                }
+
+                if(!empty($eventLayoutData->signature_third_input_height)){
+                    $signatureThirdHeight = $eventLayoutData->signature_third_input_height;
+                }else{
+                    $signatureThirdHeight = 'auto';
+                }
+
+                if(!empty($eventLayoutData->signature_third_input_translate)){
+                    $signatureThirdTranslate = 'transform: ' . $eventLayoutData->signature_third_input_translate . ';';
+                }else{
+                    $signatureThirdTranslate = '';
+                }
+            @endphp
+            <div id="signature-third" class="draggable-resizable-rectangle" style="{{ $signatureThirdTranslate }} width: {{ $signatureThirdWidth }}; height: {{ $signatureThirdHeight }}; top: 76%; left: 65%; position: absolute; text-align: center; z-index: 10;">
                 <img id="signature-third-image" src="{{ $eventFontImages['signatureThird'] }}" style="width: 13.5em; height: 4.5em" />
                 <div style="line-height: 0;">
                     <p class="signature-line">...............................................................</p>
@@ -374,7 +507,14 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         @endif
         @if(!empty($eventData->visibility))
             @if($eventData->visibility == 'public')
-                <div id="qr-code" style="margin-bottom: 10mm; height: 21mm; width: 75mm; position: absolute; top: 92%; left: 62%; border: 0.7mm solid black; z-index: 10; background: #fff;">
+                @php
+                    if(!empty($eventLayoutData->qr_code_input_translate)){
+                        $qrCodeTranslate = 'transform: ' . $eventLayoutData->qr_code_input_translate . ';';
+                    }else{
+                        $qrCodeTranslate = '';
+                    }
+                @endphp
+                <div id="qr-code" class="draggable-rectangle" style="{{ $qrCodeTranslate }} margin-bottom: 10mm; height: 21mm; width: 75mm; position: absolute; top: 92%; left: 62%; border: 0.7mm solid black; z-index: 10; background: #fff;">
                     <div style="margin-left: 0.5mm; width: 70%;">
                         <div style="width: 100%;">
                             @php

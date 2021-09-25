@@ -28,6 +28,7 @@ use App\Models\Event;
 use App\Models\EventFont;
 use Endroid\QrCode\QrCode;
 use App\Models\Certificate;
+use App\Models\EventLayout;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Endroid\QrCode\Logo\Logo;
@@ -425,6 +426,7 @@ class CertificateController extends MainController
         $eventID = Certificate::select('event_id')->where('uid', $certificateID)->first()->event_id;
         $eventData = Event::where('id', $eventID)->first();
         $eventFontData = EventFont::where('event_id', $eventID)->first();
+        $eventLayoutData = EventLayout::where('event_id', $eventID)->first();
         $certificateData = Certificate::select('certificates.uid', 'users.fullname', 'users.identification_number', 'certificates.position', 'certificates.category', 'certificates.type')->where('uid', $certificateID)->join('users', 'certificates.user_id', '=', 'users.id')->first();
 
         $eventFontImages = [
@@ -459,12 +461,12 @@ class CertificateController extends MainController
         }
 
         $qrLogo = Logo::create($qrLogoPath)
-            ->setResizeToWidth(100);
+            ->setResizeToWidth(50);
 
         $result = $writer->write($qrCode, $qrLogo);
         $qrCodeDataURI = $result->getDataUri();
 
-        $viewData = ['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting, 'eventData' => $eventData, 'eventFontData' => $eventFontData, 'certificateData' => $certificateData, 'qrCodeDataURI' => $qrCodeDataURI, 'eventFontImages' => $eventFontImages];
+        $viewData = ['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting, 'eventData' => $eventData, 'eventFontData' => $eventFontData, 'eventLayoutData' => $eventLayoutData, 'certificateData' => $certificateData, 'qrCodeDataURI' => $qrCodeDataURI, 'eventFontImages' => $eventFontImages];
 
         // Only allows self-signed certificate if APP_DEBUG environment variable is set to true
         if(!empty(env('APP_DEBUG')) && env('APP_DEBUG') == TRUE){
