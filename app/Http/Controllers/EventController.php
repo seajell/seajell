@@ -22,6 +22,7 @@ use Carbon\Carbon;
 use App\Models\Event;
 use App\Models\EventFont;
 use App\Models\Certificate;
+use App\Models\EventLayout;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -104,7 +105,60 @@ class EventController extends MainController
         if(Event::where('id', $id)->first()){
             // Only admins can update event certificate layout
             if(Gate::allows('authAdmin')){
-                dd($request);
+                EventLayout::upsert([
+                    [
+                        'event_id' => $id,
+                        'logo_first_input_width' => $request->input('logo-first-input-width'),
+                        'logo_first_input_height' => $request->input('logo-first-input-height'),
+                        'logo_first_input_translate' => $request->input('logo-first-input-translate'),
+                        'logo_second_input_width' => $request->input('logo-second-input-width'),
+                        'logo_second_input_height' => $request->input('logo-second-input-height'),
+                        'logo_second_input_translate' => $request->input('logo-second-input-translate'),
+                        'logo_third_input_width' => $request->input('logo-third-input-width'),
+                        'logo_third_input_height' => $request->input('logo-third-input-height'),
+                        'logo_third_input_translate' => $request->input('logo-third-input-translate'),
+                        'details_input_width' => $request->input('details-input-width'),
+                        'details_input_height' => $request->input('details-input-height'),
+                        'details_input_translate' => $request->input('details-input-translate'),
+                        'signature_first_input_width' => $request->input('signature-first-input-width'),
+                        'signature_first_input_height' => $request->input('signature-first-input-height'),
+                        'signature_first_input_translate' => $request->input('signature-first-input-translate'),
+                        'signature_second_input_width' => $request->input('signature-second-input-width'),
+                        'signature_second_input_height' => $request->input('signature-second-input-height'),
+                        'signature_second_input_translate' => $request->input('signature-second-input-translate'),
+                        'signature_third_input_width' => $request->input('signature-third-input-width'),
+                        'signature_third_input_height' => $request->input('signature-third-input-height'),
+                        'signature_third_input_translate' => $request->input('signature-third-input-translate'),
+                        'qr_code_input_translate' => $request->input('qr-code-input-translate'),
+                    ]
+                ], ['event_id'],
+                [
+                        'logo_first_input_width',
+                        'logo_first_input_height',
+                        'logo_first_input_translate',
+                        'logo_second_input_width',
+                        'logo_second_input_height',
+                        'logo_second_input_translate',
+                        'logo_third_input_width',
+                        'logo_third_input_height',
+                        'logo_third_input_translate',
+                        'details_input_width',
+                        'details_input_height',
+                        'details_input_translate',
+                        'signature_first_input_width',
+                        'signature_first_input_height',
+                        'signature_first_input_translate',
+                        'signature_second_input_width',
+                        'signature_second_input_height',
+                        'signature_second_input_translate',
+                        'signature_third_input_width',
+                        'signature_third_input_height',
+                        'signature_third_input_translate',
+                        'qr_code_input_translate',
+                ]);
+
+                $request->session()->flash('updateEventLayoutSuccess', 'Susun atur sijil berjaya dikemas kini!');
+                return back();
             }else{
                 abort(403, 'Anda tidak boleh mengakses laman ini.');
             }
