@@ -10,8 +10,8 @@
 # SeaJell
 A simple e-Certificate Generator.
 
- # Guides
- You can read all the guide to use the system from the [website](https://github.hanisirfan.xyz/seajell).
+# Guides
+You can read all the guides in using the system from the [documentation](https://docs.seajell.xyz).
 
 ## License
 Copyright (c) Muhammad Hanis Irfan bin Mohd Zaid
