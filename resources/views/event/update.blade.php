@@ -17,6 +17,9 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
 
 @extends('layout.main')
 @section('content')
+    <style type="text/css">
+        @import url({{ asset('css/fonts.css') }});
+    </style>
     <p class="fs-2">Tambah Acara</p>
     <p>Jika tiada sebarang perubahan pada gambar-gambar, maka gambar lama akan digunakan.</p>
     <p>Pastikan anda membuat semakan sebelum menekan butang kemas kini.</p>
@@ -25,7 +28,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         <span><div class="alert alert-success w-100 ml-1">{{ session('updateEventSuccess') }}</div></span>
     @endif
     @php
-        if(!empty(old('event-name'))){ 
+        if(!empty(old('event-name'))){
             $valueEventName = old('event-name');
         }else{
             if(!empty($data)){
@@ -39,7 +42,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             }
         }
 
-        if(!empty(old('event-data'))){ 
+        if(!empty(old('event-data'))){
             $valueEventDate = old('event-date');
         }else{
             if(!empty($data)){
@@ -53,7 +56,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             }
         }
 
-        if(!empty(old('event-location'))){ 
+        if(!empty(old('event-location'))){
             $valueEventLocation = old('event-location');
         }else{
             if(!empty($data)){
@@ -67,7 +70,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             }
         }
 
-        if(!empty(old('organiser-name'))){ 
+        if(!empty(old('organiser-name'))){
             $valueOrganiserName = old('organiser-name');
         }else{
             if(!empty($data)){
@@ -81,7 +84,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             }
         }
 
-        if(!empty(old('signature-first-name'))){ 
+        if(!empty(old('signature-first-name'))){
             $valueSignatureNameFirst = old('signature-first-name');
         }else{
             if(!empty($data)){
@@ -95,7 +98,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             }
         }
 
-        if(!empty(old('signature-first-position'))){ 
+        if(!empty(old('signature-first-position'))){
             $valueSignaturePositionFirst = old('signature-first-position');
         }else{
             if(!empty($data)){
@@ -109,7 +112,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             }
         }
 
-        if(!empty(old('signature-second-name'))){ 
+        if(!empty(old('signature-second-name'))){
             $valueSignatureNameSecond = old('signature-second-name');
         }else{
             if(!empty($data)){
@@ -123,7 +126,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             }
         }
 
-        if(!empty(old('signature-second-position'))){ 
+        if(!empty(old('signature-second-position'))){
             $valueSignaturePositionSecond = old('signature-second-position');
         }else{
             if(!empty($data)){
@@ -137,7 +140,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             }
         }
 
-        if(!empty(old('signature-third-name'))){ 
+        if(!empty(old('signature-third-name'))){
             $valueSignatureNameThird = old('signature-third-name');
         }else{
             if(!empty($data)){
@@ -151,7 +154,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             }
         }
 
-        if(!empty(old('signature-third-position'))){ 
+        if(!empty(old('signature-third-position'))){
             $valueSignaturePositionThird = old('signature-third-position');
         }else{
             if(!empty($data)){
@@ -165,7 +168,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             }
         }
 
-        if(!empty(old('text-color'))){ 
+        if(!empty(old('text-color'))){
             $valueTextColor = old('text-color');
         }else{
             if(!empty($data)){
@@ -178,75 +181,6 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                 $valueTextColor = "";
             }
         }
-
-        if(!empty(old('border-color'))){ 
-            $valueBorderColor = old('border-color');
-        }else{
-            if(!empty($data)){
-                if(!empty($data->border_color)){
-                    $valueBorderColor = strtoupper($data->border_color);
-                }else{
-                    $valueBorderColor = "";
-                }
-            }else{
-                $valueBorderColor = "";
-            }
-        }
-
-
-        if(!empty($data->font_set)){ 
-            switch ($data->font_set) {
-                case 1:
-                    $fontSetSelected1 = "selected";
-                    $fontSetSelected2 = "";
-                    $fontSetSelected3 = "";
-                    $fontSetSelected4 = "";
-                    $fontSetSelected5 = "";
-                    break;
-                case 2:
-                    $fontSetSelected1 = "";
-                    $fontSetSelected2 = "selected";
-                    $fontSetSelected3 = "";
-                    $fontSetSelected4 = "";
-                    $fontSetSelected5 = "";
-                    break;
-                case 3:
-                    $fontSetSelected1 = "";
-                    $fontSetSelected2 = "";
-                    $fontSetSelected3 = "selected";
-                    $fontSetSelected4 = "";
-                    $fontSetSelected5 = "";
-                    break;
-                case 4:
-                    $fontSetSelected1 = "";
-                    $fontSetSelected2 = "";
-                    $fontSetSelected3 = "";
-                    $fontSetSelected4 = "selected";
-                    $fontSetSelected5 = "";
-                    break;
-                case 5:
-                    $fontSetSelected1 = "";
-                    $fontSetSelected2 = "";
-                    $fontSetSelected3 = "";
-                    $fontSetSelected4 = "";
-                    $fontSetSelected5 = "selected";
-                    break;
-                default:
-                    $fontSetSelected1 = "";
-                    $fontSetSelected2 = "";
-                    $fontSetSelected3 = "";
-                    $fontSetSelected4 = "";
-                    $fontSetSelected5 = "";
-                    break;
-            }
-        }else{
-            $fontSetSelected1 = "";
-            $fontSetSelected2 = "";
-            $fontSetSelected3 = "";
-            $fontSetSelected4 = "";
-            $fontSetSelected5 = "";
-        }
-
 
     @endphp
     <form action="" method="post" class="mb-3" enctype="multipart/form-data">
@@ -448,7 +382,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             Anda boleh menjana gambar tandatangan di laman <a href="{{ route('signature') }}">tandatangan</a>. <br>
             Jika anda memasukkan maklumat pengesah di ruangan ketiga tanpa memasukkan maklumat pengesah diruangan kedua, maka maklumat pengesah tersebut akan dikira sebagai maklumat pengesah yang dimasukkan pada ruangan kedua.
         </div>
-        
+
         <hr>
         <p class="fs-5">Penyesuaian Gaya Sijil </p>
         @php
@@ -457,14 +391,20 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                     case 'L':
                         $orientationSelectedPotrait = '';
                         $orientationSelectedLandscape = 'selected';
+                        $backgroundImageWidth = '9.9em';
+                        $backgroundImageHeight = '7em';
                         break;
                     case 'P':
                         $orientationSelectedPotrait = 'selected';
                         $orientationSelectedLandscape = '';
+                        $backgroundImageWidth = '7em';
+                        $backgroundImageHeight = '9.9em';
                         break;
                     default:
                         $orientationSelectedPotrait = 'selected';
                         $orientationSelectedLandscape = '';
+                        $backgroundImageWidth = '7em';
+                        $backgroundImageHeight = '9.9em';
                         break;
                 }
             }elseif(!empty($data->orientation)){
@@ -472,19 +412,27 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                     case 'L':
                         $orientationSelectedPotrait = '';
                         $orientationSelectedLandscape = 'selected';
+                        $backgroundImageWidth = '9.9em';
+                        $backgroundImageHeight = '7em';
                         break;
                     case 'P':
                         $orientationSelectedPotrait = 'selected';
                         $orientationSelectedLandscape = '';
+                        $backgroundImageWidth = '7em';
+                        $backgroundImageHeight = '9.9em';
                         break;
                     default:
                         $orientationSelectedPotrait = 'selected';
                         $orientationSelectedLandscape = '';
+                        $backgroundImageWidth = '7em';
+                        $backgroundImageHeight = '9.9em';
                         break;
                 }
             }else{
                 $orientationSelectedPotrait = 'selected';
                 $orientationSelectedLandscape = '';
+                $backgroundImageWidth = '7em';
+                $backgroundImageHeight = '9.9em';
             }
         @endphp
         <label for="certificate-orientation" class="form-label">Orientasi (Diperlukan)</label>
@@ -495,27 +443,6 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         @error('certificate-orientation')
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
-        <label for="role" class="form-label">Set Font (Diperlukan)</label>
-        <select class="form-select mb-3" name="font-set" id="font-set" aria-label="font-set">
-            <option value="1" {{ $fontSetSelected1 }}>Set 1</option>
-            <option value="2" {{ $fontSetSelected2 }}>Set 2</option>
-            <option value="3" {{ $fontSetSelected3 }}>Set 3</option>
-            <option value="4" {{ $fontSetSelected4 }}>Set 4</option>
-            <option value="5" {{ $fontSetSelected5 }}>Set 5</option>
-        </select>
-        @error('font-set')
-            <div class="alert alert-danger">{{ $message }}</div>
-        @enderror
-        <div id="form_set_help" class="form-text">
-            <p>Set font ini menentukan font yang akan digunakan pada sijil. Lihat contoh hasil daripada set font di bawah:</p>
-            <ul>
-                <li><a href="{{ asset('storage/fontset/1/1.pdf') }}" target="_blank">Set 1</a></li>
-                <li><a href="{{ asset('storage/fontset/2/2.pdf') }}" target="_blank">Set 2</a></li>
-                <li><a href="{{ asset('storage/fontset/3/3.pdf') }}" target="_blank">Set 3</a></li>
-                <li><a href="{{ asset('storage/fontset/4/4.pdf') }}" target="_blank">Set 4</a></li>
-                <li><a href="{{ asset('storage/fontset/5/5.pdf') }}" target="_blank">Set 5</a></li>
-            </ul>
-        </div>
         <label class="form-label mt-3">Keterlihatan (Diperlukan)</label>
         @switch($data->visibility)
             @case('public')
@@ -557,7 +484,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
         @if(Storage::disk('public')->exists($data->background_image))
-            <img class="img-thumbnail" style="width: 7em; height: 9.9em;" src="{{ asset('storage' . $data->background_image) }}" alt="Background Image">
+            <img class="img-thumbnail" style="width: {{ $backgroundImageWidth }}; height: {{ $backgroundImageHeight }};" src="{{ asset('storage' . $data->background_image) }}" alt="Background Image">
         @endif
         <div class="my-3 row">
             <label for="background-image" class="form-label">Gambar Latar Belakang (Pilihan)</label>
@@ -581,63 +508,229 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         @error('background-image')
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
-        <label class="form-label mt-3">Warna Teks (Diperlukan)</label>
-        <x-buk-color-picker name="text-color" class="mb-3" :options='["theme" => "classic", "default" => "${valueTextColor}"]' />
-        <div id="text_color_help" class="form-text">
-            Kesemua teks pada sijil akan diubah kepada warna ini kecuali teks pada kod QR.
-        </div>
-        @error('text-color')
-            <div class="alert alert-danger">{{ $message }}</div>
-        @enderror
+        <label class="form-label mt-3">Teks (Diperlukan)</label>
+        {{-- Default option value for text color won't be used until my fix for color picker is fixed by the Blade UI Kit maintainer
+        Refer: https://github.com/blade-ui-kit/blade-ui-kit/pull/109
+        :options="['default' => '#000000']"
+        --}}
 
-        <label class="form-label mt-3"><span class="fst-italic">Border</span> (Diperlukan)</label>
-        @switch($data->border)
-            @case('available')
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="border" id="border1" value="available" checked>
-                    <label class="form-check-label" for="border">
-                    Ada
-                    </label>
+        <div class="row row-cols-2 row-cols-lg-4">
+            @php
+               $textFontList = [
+                    'architectsdaughter' => 'Architects Daughter',
+                    'badscript' => 'Bad Script',
+                    'bebasneue' => 'Bebas Neue',
+                    'berkshireswash' => 'Berkshire Swash',
+                    'carterone' => 'Carter One',
+                    'cookie' => 'Cookie',
+                    'fredokaone' => 'Fredoka One',
+                    'kaushanscript' => 'Kaushan Script',
+                    'lobster' => 'Lobster',
+                    'oleoscript' => 'Oleo Script',
+                    'poppins' => 'Poppins',
+                    'rancho' => 'Rancho',
+                    'righteous' => 'Righteous',
+                    'satisfy' => 'Satisfy',
+                    'ptserif' => 'PT Serif',
+                    'bitter' => 'Bitter',
+                    'crimsontext' => 'Crimson Text',
+                    'cormorantgaramond' => 'Cormorant Garamond',
+                    'quicksand' => 'Quicksand',
+                    'ubuntu' => 'Ubuntu',
+                    'mukta' => 'Mukta',
+                    'glory' => 'Glory',
+                    'allison' => 'Allison',
+                    'greatvibes' => 'Great Vibes',
+                    'tangerine' => 'Tangerine',
+                    'nanumpenscript' => 'Nanum Pen Script',
+                    'karantina' => 'Karantina ',
+                    'luckiestguy' => 'Luckiest Guy',
+                    'bungeeshade' => 'Bungee Shade',
+                    'unifrakturmaguntia' => 'Unifraktur Maguntia',
+                    'bangers' => 'Bangers',
+                    'pressstart2p' => 'Press Start 2P',
+                    'monoton' => 'Monoton',
+                    'cinzeldecorative' => 'Cinzel Decorative',
+                    'poiretone' => 'Poiret One'
+                ];
+
+                ksort($textFontList);
+
+                function selected($data, $list){
+                    $selectedDataResult = [];
+                    foreach ($list as $key => $value) {
+                        if($key == $data){
+                            $selectedDataResult[$key] = 'selected';
+                        }else{
+                            $selectedDataResult[$key] = '';
+                        }
+                    }
+                    return $selectedDataResult;
+                }
+
+                if(!empty(old('type-text-font'))){
+                    $typeTextFontSelected = selected(old('type-text-font'), $textFontList);
+                }elseif(!empty($eventFontData->certificate_type_text_font)){
+                    $typeTextFontSelected = selected($eventFontData->certificate_type_text_font, $textFontList);
+                }else{
+                    $typeTextFontSelected = '';
+                }
+
+                if(!empty(old('first-text-font'))){
+                    $firstTextFontSelected = selected(old('first-text-font'), $textFontList);
+                }elseif(!empty($eventFontData->first_text_font)){
+                    $firstTextFontSelected = selected($eventFontData->first_text_font, $textFontList);
+                }else{
+                    $firstTextFontSelected = '';
+                }
+
+                if(!empty(old('second-text-font'))){
+                    $secondTextFontSelected = selected(old('second-text-font'), $textFontList);
+                }elseif(!empty($eventFontData->second_text_font)){
+                    $secondTextFontSelected = selected($eventFontData->second_text_font, $textFontList);
+                }else{
+                    $secondTextFontSelected = '';
+                }
+
+                if(!empty(old('verifier-text-font'))){
+                    $verifierTextFontSelected = selected(old('verifier-text-font'), $textFontList);
+                }elseif(!empty($eventFontData->verifier_text_font)){
+                    $verifierTextFontSelected = selected($eventFontData->verifier_text_font, $textFontList);
+                }else{
+                    $verifierTextFontSelected = '';
+                }
+            @endphp
+            <div class="col">
+                <p>Teks Jenis Sijil</p>
+                <select class="selectpicker show-tick w-100" data-live-search="true" title="Sila pilih satu font.." aria-label="text-font" name="type-text-font">
+                    @foreach($textFontList as $key => $value)
+                        <option value="{{ $key }}" class="sj-fonts-{{ $key }}" @isset($typeTextFontSelected[$key]) {{ $typeTextFontSelected[$key] }} @endisset >{{ $value }}</option>
+                    @endforeach
+                </select>
+                <div class="form-floating my-3">
+                    <input type="number" class="form-control" name="type-text-size" placeholder="font size" step="any" value="{{ old('type-text-size', $eventFontData->certificate_type_text_size ?? 1) }}">
+                    <label for="floatingInput">Saiz Font</label>
                 </div>
-                <div class="form-check mb-3">
-                    <input class="form-check-input" type="radio" name="border" value="unavailable" id="border2">
-                    <label class="form-check-label" for="border">
-                    Tiada
-                    </label>
+                @error('type-text-size')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
+                <div class="my-1">
+                    <x-buk-color-picker name="type-text-color" class="mb-3" />
                 </div>
-                @break
-            @case('unavailable')
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="border" id="border1" value="available">
-                    <label class="form-check-label" for="border">
-                    Ada
-                    </label>
+                @error('type-text-color')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
+            </div>
+            <div class="col">
+                <p>Teks Pertama</p>
+                <select class="selectpicker show-tick w-100" data-live-search="true" title="Sila pilih satu font.." aria-label="text-font" name="first-text-font">
+                    @foreach($textFontList as $key => $value)
+                        <option value="{{ $key }}" class="sj-fonts-{{ $key }}" @isset($firstTextFontSelected[$key]) {{ $firstTextFontSelected[$key] }} @endisset >{{ $value }}</option>
+                    @endforeach
+                </select>
+                <div class="form-floating my-3">
+                    <input type="number" class="form-control" name="first-text-size" placeholder="font size" step="any" value="{{ old('first-text-size', $eventFontData->first_text_size ?? 1) }}">
+                    <label for="floatingInput">Saiz Font</label>
                 </div>
-                <div class="form-check mb-3">
-                    <input class="form-check-input" type="radio" name="border" value="unavailable" id="border2" checked>
-                    <label class="form-check-label" for="border">
-                    Tiada
-                    </label>
+                @error('first-text-size')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
+                <div class="my-1">
+                    <x-buk-color-picker name="first-text-color" class="mb-3" />
                 </div>
-                @break
-            @default
-                @break    
-        @endswitch
-        <div id="border_help" class="form-text">
-            <span class="fst-italic">Border</span> akan dilukis pada sijil yang dijana.
+                @error('first-text-color')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
+            </div>
+            <div class="col">
+                <p>Teks Kedua</p>
+                <select class="selectpicker show-tick w-100" data-live-search="true" title="Sila pilih satu font.." aria-label="text-font" name="second-text-font">
+                    @foreach($textFontList as $key => $value)
+                        <option value="{{ $key }}" class="sj-fonts-{{ $key }}" @isset($secondTextFontSelected[$key]) {{ $secondTextFontSelected[$key] }} @endisset >{{ $value }}</option>
+                    @endforeach
+                </select>
+                <div class="form-floating my-3">
+                    <input type="number" class="form-control" name="second-text-size" placeholder="font size" step="any" value="{{ old('second-text-size', $eventFontData->second_text_size ?? 1) }}">
+                    <label for="floatingInput">Saiz Font</label>
+                </div>
+                @error('second-text-size')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
+                <div class="my-1">
+                    <x-buk-color-picker name="second-text-color" class="mb-3" />
+                </div>
+                @error('second-text-color')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
+            </div>
+            <div class="col">
+                <p>Teks Pengesah</p>
+                <select class="selectpicker show-tick w-100" data-live-search="true" title="Sila pilih satu font.." aria-label="text-font" name="verifier-text-font">
+                    @foreach($textFontList as $key => $value)
+                        <option value="{{ $key }}" class="sj-fonts-{{ $key }}" @isset($verifierTextFontSelected[$key]) {{ $verifierTextFontSelected[$key] }} @endisset >{{ $value }}</option>
+                    @endforeach
+                </select>
+                <div class="form-floating my-3">
+                    <input type="number" class="form-control" name="verifier-text-size" placeholder="font size" step="any" value="{{ old('verifier-text-size', $eventFontData->verifier_text_size ?? 1) }}">
+                    <label for="floatingInput">Saiz Font</label>
+                </div>
+                @error('verifier-text-size')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
+                <div class="my-1">
+                    <x-buk-color-picker name="verifier-text-color" class="mb-3" />
+                </div>
+                @error('verifier-text-color')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
+            </div>
         </div>
-        @error('border')
-            <div class="alert alert-danger">{{ $message }}</div>
-        @enderror
-        <label class="form-label mt-3">Warna <span class="fst-italic">Border (Pilihan)</span></label>
-        <x-buk-color-picker name="border-color" class="mb-3" :options='["theme" => "classic", "default" => "${valueBorderColor}"]' />
-        <div id="border_color_help" class="form-text">
-            Hanya pilih jika <span class="fst-italic">Border</span> ditetapkan kepada <span class="fst-italic">Ada</span>.
+        <div id="text_help" class="form-text">
+            Semua teks yang terdapat pada sistem ini boleh didapati di <a href="https://fonts.google.com" target="_blank">Google Fonts</a>. <br>
+            Saiz font pada sijil menggunakan unit em. Nombor perpuluhan dibenarkan.
         </div>
-        @error('border-color')
-            <div class="alert alert-danger">{{ $message }}</div>
-        @enderror
-        <button class="btn btn-outline-light mt-3" type="submit">Kemas Kini</button>
+        <button class="btn btn-outline-light mt-3" type="submit"><i class="bi bi-pen"></i> Kemas Kini</button>
     </form>
+    <div class="row">
+        <p class="mt-3 fs-4">Susun Atur Sijil</p>
+        <span><a href="{{ route('event.layout', $data->id) }}" class="btn btn-outline-light w-25"><i class="bi bi-columns"></i> Susun Atur Sijil</a></span>
+        <div id="border_color_help" class="form-text mt-3">
+            <p>Klik butang ke atas untuk mengubah susun atur sijil.</p>
+        </div>
+    </div>
+    {{-- Delete All Certificates --}}
+    <div class="row">
+        <p class="mt-3 fs-4">Buang Semua Sijil</p>
+        @if(session()->has('removeAllCertificateSuccess'))
+            <span><div class="alert alert-success w-100 ml-1">{{ session('removeAllCertificateSuccess') }}</div></span>
+        @endif
+        @error('removeAllCertificateEmpty')
+            <span><div class="alert alert-danger">{{ $message }}</div></span>
+        @enderror
+        <span><button type="button" class="btn btn-outline-light w-25" data-bs-toggle="modal" data-bs-target="#delete-all-certificates"><i class="bi bi-trash"></i> Buang Semua Sijil</button></span>
+        <div id="delete_all_certificates_help" class="form-text mt-3">
+            <p>Klik butang ke atas untuk membuang sijil untuk acara ini.</p>
+        </div>
+    </div>
+    <div class="modal fade" id="delete-all-certificates" tabindex="-1" aria-labelledby="delete-all-certificates-label" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-dark">Buang Semua Sijil Acara</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="text-dark">Anda yakin ingin membuang semua sijil acara ini?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                <form action="{{ route('event.remove.certificate', [$data->id]) }}" method="post">
+                    @csrf
+                    <button type="submit" class="btn btn-danger">Ya</button>
+                </form>
+            </div>
+            </div>
+        </div>
+    </div>
     <script src="{{ asset('js/checksEvent.js') }}"></script>
 @endsection

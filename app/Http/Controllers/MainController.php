@@ -21,6 +21,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\SystemSetting;
+use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Schema;
 
 class MainController extends Controller
@@ -53,5 +54,27 @@ class MainController extends Controller
                 return redirect()->route('install.view');
             }
         });
+    }
+
+    /**
+     * Returns an image data URL that's cached.
+     *
+     * @param  string  $imagePath
+     * @param  int  $width
+     * @param  int  $height
+     * @return mixed
+     */
+    protected function cacheDataURLImage($imagePath, $width = 300, $height = 300){
+        // Check whether a path string is given and not empty
+        if(!empty($imagePath)){
+            $imageStoragePath = storage_path('app/public' . $imagePath);
+            $dataURLImageCached = Image::cache(function($image) use ($imageStoragePath, $width, $height){
+                $image->make($imageStoragePath)->resize($width, $height)->encode('data-url');
+            }, 10);
+        }else{
+            $dataURLImageCached = '';
+        }
+
+        return $dataURLImageCached;
     }
 }

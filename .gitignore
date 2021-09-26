@@ -4,10 +4,15 @@
 /public/js
 /public/storage
 /public/certificate
+/public/fonts
 /public/bootstraps-icons
 /storage/*.key
+!/storage/fonts/.gitignore
+!/storage/app/fonts
+!/storage/app/fonts/.gitignore
+!/storage/app/fonts/*
+!/storage/app/fonts/**
 /vendor
-!/vendor/tecnickcom/tcpdf/fonts
 .env
 .env.backup
 .phpunit.result.cache

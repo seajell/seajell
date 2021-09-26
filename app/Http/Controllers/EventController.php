@@ -20,7 +20,11 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\Event;
+use App\Models\EventFont;
+use App\Models\Certificate;
+use App\Models\EventLayout;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
@@ -61,7 +65,101 @@ class EventController extends MainController
             // Only admins can update event info
             if(Gate::allows('authAdmin')){
                 $data = Event::where('id', $id)->first();
-                return view('event.update')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting, 'data' => $data]);
+                $eventFontData = EventFont::where('event_id', $id)->first();
+                return view('event.update')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting, 'data' => $data, 'eventFontData' => $eventFontData]);
+            }else{
+                abort(403, 'Anda tidak boleh mengakses laman ini.');
+            }
+        }else{
+            abort(404, 'Acara tidak dijumpai.');
+        }
+    }
+
+    public function layoutView(Request $request, $id){
+        if(Event::where('id', $id)->first()){
+            // Only admins can update event info
+            if(Gate::allows('authAdmin')){
+                $eventData = Event::where('id', $id)->first();
+                $eventFontData = EventFont::where('event_id', $id)->first();
+                $eventLayoutData = EventLayout::where('event_id', $id)->first();
+
+                $eventFontImages = [
+                    'backgroundImage' => $this->cacheDataURLImage($eventData->background_image, 1050, 1485),
+                    'logoFirst' => $this->cacheDataURLImage($eventData->logo_first, 300, 300),
+                    'logoSecond' => $this->cacheDataURLImage($eventData->logo_second, 300, 300),
+                    'logoThird' => $this->cacheDataURLImage($eventData->logo_third, 300, 300),
+                    'signatureFirst' => $this->cacheDataURLImage($eventData->signature_first, 300, 100),
+                    'signatureSecond' => $this->cacheDataURLImage($eventData->signature_second, 300, 100),
+                    'signatureThird' => $this->cacheDataURLImage($eventData->signature_third, 300, 100),
+                ];
+
+                return view('event.layout')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting, 'eventData' => $eventData, 'eventFontData' => $eventFontData, 'eventLayoutData' => $eventLayoutData, 'eventFontImages' => $eventFontImages,]);
+            }else{
+                abort(403, 'Anda tidak boleh mengakses laman ini.');
+            }
+        }else{
+            abort(404, 'Acara tidak dijumpai.');
+        }
+    }
+
+    public function layoutSave(Request $request, $id){
+        if(Event::where('id', $id)->first()){
+            // Only admins can update event certificate layout
+            if(Gate::allows('authAdmin')){
+                EventLayout::upsert([
+                    [
+                        'event_id' => $id,
+                        'logo_first_input_width' => $request->input('logo-first-input-width'),
+                        'logo_first_input_height' => $request->input('logo-first-input-height'),
+                        'logo_first_input_translate' => $request->input('logo-first-input-translate'),
+                        'logo_second_input_width' => $request->input('logo-second-input-width'),
+                        'logo_second_input_height' => $request->input('logo-second-input-height'),
+                        'logo_second_input_translate' => $request->input('logo-second-input-translate'),
+                        'logo_third_input_width' => $request->input('logo-third-input-width'),
+                        'logo_third_input_height' => $request->input('logo-third-input-height'),
+                        'logo_third_input_translate' => $request->input('logo-third-input-translate'),
+                        'details_input_width' => $request->input('details-input-width'),
+                        'details_input_height' => $request->input('details-input-height'),
+                        'details_input_translate' => $request->input('details-input-translate'),
+                        'signature_first_input_width' => $request->input('signature-first-input-width'),
+                        'signature_first_input_height' => $request->input('signature-first-input-height'),
+                        'signature_first_input_translate' => $request->input('signature-first-input-translate'),
+                        'signature_second_input_width' => $request->input('signature-second-input-width'),
+                        'signature_second_input_height' => $request->input('signature-second-input-height'),
+                        'signature_second_input_translate' => $request->input('signature-second-input-translate'),
+                        'signature_third_input_width' => $request->input('signature-third-input-width'),
+                        'signature_third_input_height' => $request->input('signature-third-input-height'),
+                        'signature_third_input_translate' => $request->input('signature-third-input-translate'),
+                        'qr_code_input_translate' => $request->input('qr-code-input-translate'),
+                    ]
+                ], ['event_id'],
+                [
+                        'logo_first_input_width',
+                        'logo_first_input_height',
+                        'logo_first_input_translate',
+                        'logo_second_input_width',
+                        'logo_second_input_height',
+                        'logo_second_input_translate',
+                        'logo_third_input_width',
+                        'logo_third_input_height',
+                        'logo_third_input_translate',
+                        'details_input_width',
+                        'details_input_height',
+                        'details_input_translate',
+                        'signature_first_input_width',
+                        'signature_first_input_height',
+                        'signature_first_input_translate',
+                        'signature_second_input_width',
+                        'signature_second_input_height',
+                        'signature_second_input_translate',
+                        'signature_third_input_width',
+                        'signature_third_input_height',
+                        'signature_third_input_translate',
+                        'qr_code_input_translate',
+                ]);
+
+                $request->session()->flash('updateEventLayoutSuccess', 'Susun atur sijil berjaya dikemas kini!');
+                return back();
             }else{
                 abort(403, 'Anda tidak boleh mengakses laman ini.');
             }
@@ -85,10 +183,19 @@ class EventController extends MainController
             'signature-second' => ['image', 'mimes:png'],
             'signature-third' => ['image', 'mimes:png'],
             'background-image' => ['image', 'mimes:png'],
-            'text-color' => ['required'],
-            'font-set' => ['required'],
-            'border' => ['required'],
-            'certificate-orientation' => ['required']
+            'certificate-orientation' => ['required'],
+            'type-text-font' => ['required'],
+            'type-text-size' => ['required', 'numeric'],
+            'type-text-color' => ['required'],
+            'first-text-font' => ['required'],
+            'first-text-size' => ['required', 'numeric'],
+            'first-text-color' => ['required'],
+            'second-text-font' => ['required'],
+            'second-text-size' => ['required', 'numeric'],
+            'second-text-color' => ['required'],
+            'verifier-text-font' => ['required'],
+            'verifier-text-size' => ['required', 'numeric'],
+            'verifier-text-color' => ['required'],
         ]);
         $eventName = $request->input('event-name');
         $eventDate = $request->input('event-date');
@@ -99,26 +206,7 @@ class EventController extends MainController
         $signatureFirstName = $request->input('signature-first-name');
         $signatureFirstPosition = $request->input('signature-first-position');
         $visibility = $request->input('visibility');
-        $borderStatus = $request->input('border');
-        $borderColor = $request->input('border-color');
-        $textColor = $request->input('text-color');
         $certificateOrientation = $request->input('certificate-orientation');
-        // Check if border is needed
-        switch ($borderStatus) {
-            case 'available':
-                // Check if border color have been set
-                if($borderColor != '' && $borderColor != NULL){
-                    $borderColor = $borderColor;
-                }else{
-                    $borderColor = '';
-                }
-                break;
-            case 'unavailable':
-                $borderColor = '';
-                break;
-            default:
-                break;
-        }
 
         /**
          * Logos
@@ -171,7 +259,7 @@ class EventController extends MainController
 
         $signatureFirstName = $request->input('signature-first-name');
         $signatureFirstPosition = $request->input('signature-first-position');
-        
+
         $signatureFirstImageName = $signatureFirst->getClientOriginalName();
         $signatureFirstImage = Image::make($signatureFirst)->resize(300, 100)->encode('png');
         $signatureFirstSavePath = '/img/signature/'. Carbon::now()->timestamp . '-' . $signatureFirstImageName;
@@ -261,7 +349,7 @@ class EventController extends MainController
             $backgroundImageSavePath = '';
         }
 
-        Event::create([
+        $createdEventID = Event::create([
             'name' => strtolower($eventName),
             'date' => $eventDate,
             'location' => strtolower($eventLocation),
@@ -280,11 +368,23 @@ class EventController extends MainController
             'signature_third' => $signatureThirdSavePath,
             'visibility' => strtolower($visibility),
             'background_image' => $backgroundImageSavePath,
-            'text_color' => $textColor,
-            'font_set' => $request->input('font-set'),
-            'border' => $borderStatus,
-            'border_color' => $borderColor,
             'orientation' => $certificateOrientation
+        ])->id;
+
+        EventFont::create([
+            'event_id' => $createdEventID,
+            'certificate_type_text_size' => $request->input('type-text-size'),
+            'certificate_type_text_color' => $request->input('type-text-color'),
+            'certificate_type_text_font' => $request->input('type-text-font'),
+            'first_text_size' => $request->input('first-text-size'),
+            'first_text_color' => $request->input('first-text-color'),
+            'first_text_font' => $request->input('first-text-font'),
+            'second_text_size' => $request->input('second-text-size'),
+            'second_text_color' => $request->input('second-text-color'),
+            'second_text_font' => $request->input('second-text-font'),
+            'verifier_text_size' => $request->input('verifier-text-size'),
+            'verifier_text_color' => $request->input('verifier-text-color'),
+            'verifier_text_font' => $request->input('verifier-text-font')
         ]);
 
         $request->session()->flash('addEventSuccess', 'Acara berjaya ditambah!');
@@ -333,36 +433,26 @@ class EventController extends MainController
             'signature-first-name' => ['required'],
             'signature-first-position' => ['required'],
             'background-image' => ['image', 'mimes:png'],
-            'text-color' => ['required'],
-            'font-set' => ['required'],
-            'border' => ['required'],
-            'certificate-orientation' => ['required']
+            'certificate-orientation' => ['required'],
+            'type-text-font' => ['required'],
+            'type-text-size' => ['required', 'numeric'],
+            'type-text-color' => ['required'],
+            'first-text-font' => ['required'],
+            'first-text-size' => ['required', 'numeric'],
+            'first-text-color' => ['required'],
+            'second-text-font' => ['required'],
+            'second-text-size' => ['required', 'numeric'],
+            'second-text-color' => ['required'],
+            'verifier-text-font' => ['required'],
+            'verifier-text-size' => ['required', 'numeric'],
+            'verifier-text-color' => ['required'],
         ]);
         $eventName = $request->input('event-name');
         $eventDate = $request->input('event-date');
         $eventLocation = $request->input('event-location');
         $organiserName = $request->input('organiser-name');
         $visibility = $request->input('visibility');
-        $borderStatus = $request->input('border');
-        $borderColor = $request->input('border-color');
-        $textColor = $request->input('text-color');
         $certificateOrientation = $request->input('certificate-orientation');
-        // Check if border is needed
-        switch ($borderStatus) {
-            case 'available':
-                // Check if border color have been set
-                if($borderColor != '' && $borderColor != NULL){
-                    $borderColor = $borderColor;
-                }else{
-                    $borderColor = '';
-                }
-                break;
-            case 'unavailable':
-                $borderColor = '';
-                break;
-            default:
-                break;
-        }
 
         /**
          * Logos
@@ -391,7 +481,7 @@ class EventController extends MainController
         // If only one of the second or third logo is added, it will be uploaded as second logo.
         // If both is added, it will occupied their own column
 
-        // Check if the checkbox is checked 
+        // Check if the checkbox is checked
         if(!empty($request->input('logo-second-check')) && !empty($request->input('logo-third-check'))){
             // Check if both files uploaded. If not just use old data.
             if($request->hasFile('logo-second')){
@@ -474,7 +564,7 @@ class EventController extends MainController
                         }
                     }
                     Storage::disk('public')->put($logoSecondSavePath, $logoThirdImage);
-    
+
                 }
             }else{
                 // Insert all third column data if available
@@ -536,7 +626,7 @@ class EventController extends MainController
                 }
             }
         }
-        
+
         // Check if one of the inputs of signature second and third is added, then required the others (name, position, image)
         if($request->filled('signature-second-name') || $request->filled('signature-second-name') || $request->hasFile('signature-second')){
             $validated = $request->validate([
@@ -635,7 +725,7 @@ class EventController extends MainController
                 }
             }
             $signatureThirdSavePath = '';
-            
+
         }elseif(!empty($request->input('signature-third-check'))){
             // Check if only third signature is uploaded (since it's not required)
 
@@ -754,18 +844,14 @@ class EventController extends MainController
                 'signature_third' => $signatureThirdSavePath,
                 'visibility' => strtolower($visibility),
                 'background_image' => $backgroundImageSavePath,
-                'text_color' => $textColor,
-                'font_set' => $request->input('font-set'),
-                'border' => $borderStatus,
-                'border_color' => $borderColor,
                 'orientation' => $certificateOrientation
             ]
         ], ['id'], [
-            'name', 
-            'date', 
-            'location', 
-            'organiser_name', 
-            'logo_first', 
+            'name',
+            'date',
+            'location',
+            'organiser_name',
+            'logo_first',
             'logo_second',
             'logo_third',
             'signature_first_name',
@@ -779,15 +865,48 @@ class EventController extends MainController
             'signature_third',
             'visibility',
             'background_image',
-            'font_set',
-            'text_color',
-            'border',
-            'border_color',
             'orientation'
-        
+
         ]);
+
+        $eventFontID = EventFont::select('id')->where('event_id', $id)->first()->id;
+
+        EventFont::updateOrCreate(
+            ['id' => $eventFontID, 'event_id' => $id],
+            [
+                'certificate_type_text_size' => $request->input('type-text-size'),
+                'certificate_type_text_color' => $request->input('type-text-color'),
+                'certificate_type_text_font' => $request->input('type-text-font'),
+                'first_text_size' => $request->input('first-text-size'),
+                'first_text_color' => $request->input('first-text-color'),
+                'first_text_font' => $request->input('first-text-font'),
+                'second_text_size' => $request->input('second-text-size'),
+                'second_text_color' => $request->input('second-text-color'),
+                'second_text_font' => $request->input('second-text-font'),
+                'verifier_text_size' => $request->input('verifier-text-size'),
+                'verifier_text_color' => $request->input('verifier-text-color'),
+                'verifier_text_font' => $request->input('verifier-text-font')
+            ]
+        );
 
         $request->session()->flash('updateEventSuccess', 'Acara berjaya dikemas kini!');
         return back();
+    }
+
+    public function removeEventCertificate(Request $request, $id){
+        // Make sure user is admin although middleware have cover this up
+        if(Auth::user()->role == 'superadmin' || Auth::user()->role == 'admin'){
+            if(Certificate::where('event_id', $id)->first()){
+                Certificate::where('event_id', $id)->delete();
+                $request->session()->flash('removeAllCertificateSuccess', 'Semua sijil acara berjaya dibuang!');
+                return back();
+            }else{
+                return back()->withErrors([
+                    'removeAllCertificateEmpty' => 'Tiada sijil untuk acara ini!',
+                ]);
+            }
+        }else{
+            abort(403, 'Hanya pentadbir boleh mengakses laman ini!');
+        }
     }
 }

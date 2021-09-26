@@ -17,6 +17,9 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
 
 @extends('layout.main')
 @section('content')
+    <style type="text/css">
+        @import url({{ asset('css/fonts.css') }});
+    </style>
     <p class="fs-2">Tambah Acara</p>
     @if(session()->has('addEventSuccess'))
         <span><div class="alert alert-success w-100 ml-1">{{ session('addEventSuccess') }}</div></span>
@@ -197,7 +200,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             Anda boleh menjana gambar tandatangan di laman <a href="{{ route('signature') }}">tandatangan</a>. <br>
             Jika anda memasukkan maklumat pengesah di ruangan ketiga tanpa memasukkan maklumat pengesah diruangan kedua, maka maklumat pengesah tersebut akan dikira sebagai maklumat pengesah yang dimasukkan pada ruangan kedua.
         </div>
-        
+
         <hr>
         <p class="fs-5">Penyesuaian Gaya Sijil </p>
         @php
@@ -229,27 +232,6 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         @error('certificate-orientation')
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
-        <label for="role" class="form-label">Set Font (Diperlukan)</label>
-        <select class="form-select mb-3" name="font-set" id="font-set" aria-label="font-set">
-            <option value="1">Set 1</option>
-            <option value="2">Set 2</option>
-            <option value="3">Set 3</option>
-            <option value="4">Set 4</option>
-            <option value="5">Set 5</option>
-        </select>
-        @error('font-set')
-            <div class="alert alert-danger">{{ $message }}</div>
-        @enderror
-        <div id="form_set_help" class="form-text">
-            <p>Set font ini menentukan font yang akan digunakan pada sijil. Lihat contoh hasil daripada set font di bawah:</p>
-            <ul>
-                <li><a href="{{ asset('storage/fontset/1/1.pdf') }}" target="_blank">Set 1</a></li>
-                <li><a href="{{ asset('storage/fontset/2/2.pdf') }}" target="_blank">Set 2</a></li>
-                <li><a href="{{ asset('storage/fontset/3/3.pdf') }}" target="_blank">Set 3</a></li>
-                <li><a href="{{ asset('storage/fontset/4/4.pdf') }}" target="_blank">Set 4</a></li>
-                <li><a href="{{ asset('storage/fontset/5/5.pdf') }}" target="_blank">Set 5</a></li>
-            </ul>
-        </div>
         <label class="form-label mt-3">Keterlihatan (Diperlukan)</label>
         <div class="form-check">
             <input class="form-check-input" type="radio" name="visibility" id="visibility1" value="public" checked>
@@ -291,42 +273,188 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         @error('background-image')
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
-        <label class="form-label mt-3">Warna Teks (Diperlukan)</label>
-        <x-buk-color-picker name="text-color" class="mb-3" :options="['theme' => 'classic', 'default' => '#000000']" />
-        <div id="text_color_help" class="form-text">
-            Kesemua teks pada sijil akan diubah kepada warna ini kecuali teks pada kod QR.
+        <label class="form-label mt-3">Teks (Diperlukan)</label>
+        {{-- Default option value for text color won't be used until my fix for color picker is fixed by the Blade UI Kit maintainer
+        Refer: https://github.com/blade-ui-kit/blade-ui-kit/pull/109
+        :options="['default' => '#000000']"
+        --}}
+
+        <div class="row row-cols-2 row-cols-lg-4">
+            @php
+                $textFontList = [
+                    'architectsdaughter' => 'Architects Daughter',
+                    'badscript' => 'Bad Script',
+                    'bebasneue' => 'Bebas Neue',
+                    'berkshireswash' => 'Berkshire Swash',
+                    'carterone' => 'Carter One',
+                    'cookie' => 'Cookie',
+                    'fredokaone' => 'Fredoka One',
+                    'kaushanscript' => 'Kaushan Script',
+                    'lobster' => 'Lobster',
+                    'oleoscript' => 'Oleo Script',
+                    'poppins' => 'Poppins',
+                    'rancho' => 'Rancho',
+                    'righteous' => 'Righteous',
+                    'satisfy' => 'Satisfy',
+                    'ptserif' => 'PT Serif',
+                    'bitter' => 'Bitter',
+                    'crimsontext' => 'Crimson Text',
+                    'cormorantgaramond' => 'Cormorant Garamond',
+                    'quicksand' => 'Quicksand',
+                    'ubuntu' => 'Ubuntu',
+                    'mukta' => 'Mukta',
+                    'glory' => 'Glory',
+                    'allison' => 'Allison',
+                    'greatvibes' => 'Great Vibes',
+                    'tangerine' => 'Tangerine',
+                    'nanumpenscript' => 'Nanum Pen Script',
+                    'karantina' => 'Karantina ',
+                    'luckiestguy' => 'Luckiest Guy',
+                    'bungeeshade' => 'Bungee Shade',
+                    'unifrakturmaguntia' => 'Unifraktur Maguntia',
+                    'bangers' => 'Bangers',
+                    'pressstart2p' => 'Press Start 2P',
+                    'monoton' => 'Monoton',
+                    'cinzeldecorative' => 'Cinzel Decorative',
+                    'poiretone' => 'Poiret One'
+                ];
+
+                ksort($textFontList);
+
+                function selected($data, $list){
+                    $selectedDataResult = [];
+                    foreach ($list as $key => $value) {
+                        if($key == $data){
+                            $selectedDataResult[$key] = 'selected';
+                        }else{
+                            $selectedDataResult[$key] = '';
+                        }
+                    }
+                    return $selectedDataResult;
+                }
+
+                if(!empty(old('type-text-font'))){
+                    $typeTextFontSelected = selected(old('type-text-font'), $textFontList);
+                }elseif(!empty($eventFontData->certificate_type_text_font)){
+                    $typeTextFontSelected = selected($eventFontData->certificate_type_text_font, $textFontList);
+                }else{
+                    $typeTextFontSelected = '';
+                }
+
+                if(!empty(old('first-text-font'))){
+                    $firstTextFontSelected = selected(old('first-text-font'), $textFontList);
+                }elseif(!empty($eventFontData->first_text_font)){
+                    $firstTextFontSelected = selected($eventFontData->first_text_font, $textFontList);
+                }else{
+                    $firstTextFontSelected = '';
+                }
+
+                if(!empty(old('second-text-font'))){
+                    $secondTextFontSelected = selected(old('second-text-font'), $textFontList);
+                }elseif(!empty($eventFontData->second_text_font)){
+                    $secondTextFontSelected = selected($eventFontData->second_text_font, $textFontList);
+                }else{
+                    $secondTextFontSelected = '';
+                }
+
+                if(!empty(old('verifier-text-font'))){
+                    $verifierTextFontSelected = selected(old('verifier-text-font'), $textFontList);
+                }elseif(!empty($eventFontData->verifier_text_font)){
+                    $verifierTextFontSelected = selected($eventFontData->verifier_text_font, $textFontList);
+                }else{
+                    $verifierTextFontSelected = '';
+                }
+            @endphp
+            <div class="col">
+                <p>Teks Jenis Sijil</p>
+                <select class="selectpicker show-tick w-100" data-live-search="true" title="Sila pilih satu font.." aria-label="text-font" name="type-text-font">
+                    @foreach($textFontList as $key => $value)
+                        <option value="{{ $key }}" class="sj-fonts-{{ $key }}" @isset($typeTextFontSelected[$key]) {{ $typeTextFontSelected[$key] }} @endisset >{{ $value }}</option>
+                    @endforeach
+                </select>
+                <div class="form-floating my-3">
+                    <input type="number" class="form-control" name="type-text-size" placeholder="font size" step="any" value="{{ old('type-text-size', $eventFontData->certificate_type_text_size ?? 3) }}">
+                    <label for="floatingInput">Saiz Font</label>
+                </div>
+                @error('type-text-size')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
+                <div class="my-1">
+                    <x-buk-color-picker name="type-text-color" class="mb-3" />
+                </div>
+                @error('type-text-color')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
+            </div>
+            <div class="col">
+                <p>Teks Pertama</p>
+                <select class="selectpicker show-tick w-100" data-live-search="true" title="Sila pilih satu font.." aria-label="text-font" name="first-text-font">
+                    @foreach($textFontList as $key => $value)
+                        <option value="{{ $key }}" class="sj-fonts-{{ $key }}" @isset($firstTextFontSelected[$key]) {{ $firstTextFontSelected[$key] }} @endisset >{{ $value }}</option>
+                    @endforeach
+                </select>
+                <div class="form-floating my-3">
+                    <input type="number" class="form-control" name="first-text-size" placeholder="font size" step="any" value="{{ old('first-text-size', $eventFontData->first_text_size ?? 1) }}">
+                    <label for="floatingInput">Saiz Font</label>
+                </div>
+                @error('first-text-size')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
+                <div class="my-1">
+                    <x-buk-color-picker name="first-text-color" class="mb-3" />
+                </div>
+                @error('first-text-color')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
+            </div>
+            <div class="col">
+                <p>Teks Kedua</p>
+                <select class="selectpicker show-tick w-100" data-live-search="true" title="Sila pilih satu font.." aria-label="text-font" name="second-text-font">
+                    @foreach($textFontList as $key => $value)
+                        <option value="{{ $key }}" class="sj-fonts-{{ $key }}" @isset($secondTextFontSelected[$key]) {{ $secondTextFontSelected[$key] }} @endisset >{{ $value }}</option>
+                    @endforeach
+                </select>
+                <div class="form-floating my-3">
+                    <input type="number" class="form-control" name="second-text-size" placeholder="font size" step="any" value="{{ old('second-text-size', $eventFontData->second_text_size ?? 1) }}">
+                    <label for="floatingInput">Saiz Font</label>
+                </div>
+                @error('second-text-size')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
+                <div class="my-1">
+                    <x-buk-color-picker name="second-text-color" class="mb-3" />
+                </div>
+                @error('second-text-color')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
+            </div>
+            <div class="col">
+                <p>Teks Pengesah</p>
+                <select class="selectpicker show-tick w-100" data-live-search="true" title="Sila pilih satu font.." aria-label="text-font" name="verifier-text-font">
+                    @foreach($textFontList as $key => $value)
+                        <option value="{{ $key }}" class="sj-fonts-{{ $key }}" @isset($verifierTextFontSelected[$key]) {{ $verifierTextFontSelected[$key] }} @endisset >{{ $value }}</option>
+                    @endforeach
+                </select>
+                <div class="form-floating my-3">
+                    <input type="number" class="form-control" name="verifier-text-size" placeholder="font size" step="any" value="{{ old('verifier-text-size', $eventFontData->verifier_text_size ?? 1) }}">
+                    <label for="floatingInput">Saiz Font</label>
+                </div>
+                @error('verifier-text-size')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
+                <div class="my-1">
+                    <x-buk-color-picker name="verifier-text-color" class="mb-3" />
+                </div>
+                @error('verifier-text-color')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
+            </div>
         </div>
-        @error('text-color')
-            <div class="alert alert-danger">{{ $message }}</div>
-        @enderror
-        <label class="form-label mt-3"><span class="fst-italic">Border</span> (Diperlukan)</label>
-        <div class="form-check">
-            <input class="form-check-input" type="radio" name="border" id="border1" value="available">
-            <label class="form-check-label" for="border">
-              Ada
-            </label>
+        <div id="text_help" class="form-text">
+            Semua teks yang terdapat pada sistem ini boleh didapati di <a href="https://fonts.google.com" target="_blank">Google Fonts</a>. <br>
+            Saiz font pada sijil menggunakan unit em. Nombor perpuluhan dibenarkan.
         </div>
-        <div class="form-check mb-3">
-            <input class="form-check-input" type="radio" name="border" value="unavailable" id="border2" checked>
-            <label class="form-check-label" for="border">
-              Tiada
-            </label>
-        </div>
-        <div id="border_help" class="form-text">
-            <span class="fst-italic">Border</span> akan dilukis pada sijil yang dijana.
-        </div>
-        @error('border')
-            <div class="alert alert-danger">{{ $message }}</div>
-        @enderror
-        <label class="form-label mt-3">Warna <span class="fst-italic">Border (Pilihan)</span></label>
-        <x-buk-color-picker name="border-color" class="mb-3" :options="['theme' => 'classic']" />
-        <div id="border_color_help" class="form-text">
-            Hanya pilih jika <span class="fst-italic">Border</span> ditetapkan kepada <span class="fst-italic">Ada</span>.
-        </div>
-        @error('border-color')
-            <div class="alert alert-danger">{{ $message }}</div>
-        @enderror
-        <button class="btn btn-outline-light mt-3" type="submit">Tambah Acara</button>
+        <button class="btn btn-outline-light mt-3" type="submit"><i class="bi bi-plus"></i> Tambah Acara</button>
     </form>
     <script src="{{ asset('js/checksEvent.js') }}"></script>
 @endsection

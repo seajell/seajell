@@ -1,3 +1,6 @@
 *
 !public/
 !.gitignore
+!fonts/.gitignore
+!fonts/**
+!fonts/**/*

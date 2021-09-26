@@ -80,7 +80,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         @error('role')
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
-        <button class="btn btn-outline-light" type="submit">Cipta Akaun Pengguna</button>
+        <button class="btn btn-outline-light" type="submit"><i class="bi bi-person-plus"></i> Cipta Akaun Pengguna</button>
     </form>
     <form action="{{ route('user.add.bulk') }}" method="post" class="mb-3" enctype="multipart/form-data">
         @csrf
@@ -117,6 +117,6 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                 </div>
             @endif
         @endif
-        <button class="btn btn-outline-light mb-3" type="submit">Cipta Akaun Pengguna Secara Pukal</button>
+        <button class="btn btn-outline-light mb-3" type="submit"><i class="bi bi-person-plus"></i> Cipta Akaun Pengguna Secara Pukal</button>
     </form>
 @endsection
