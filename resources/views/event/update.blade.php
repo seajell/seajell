@@ -391,14 +391,20 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                     case 'L':
                         $orientationSelectedPotrait = '';
                         $orientationSelectedLandscape = 'selected';
+                        $backgroundImageWidth = '9.9em';
+                        $backgroundImageHeight = '7em';
                         break;
                     case 'P':
                         $orientationSelectedPotrait = 'selected';
                         $orientationSelectedLandscape = '';
+                        $backgroundImageWidth = '7em';
+                        $backgroundImageHeight = '9.9em';
                         break;
                     default:
                         $orientationSelectedPotrait = 'selected';
                         $orientationSelectedLandscape = '';
+                        $backgroundImageWidth = '7em';
+                        $backgroundImageHeight = '9.9em';
                         break;
                 }
             }elseif(!empty($data->orientation)){
@@ -406,19 +412,27 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                     case 'L':
                         $orientationSelectedPotrait = '';
                         $orientationSelectedLandscape = 'selected';
+                        $backgroundImageWidth = '9.9em';
+                        $backgroundImageHeight = '7em';
                         break;
                     case 'P':
                         $orientationSelectedPotrait = 'selected';
                         $orientationSelectedLandscape = '';
+                        $backgroundImageWidth = '7em';
+                        $backgroundImageHeight = '9.9em';
                         break;
                     default:
                         $orientationSelectedPotrait = 'selected';
                         $orientationSelectedLandscape = '';
+                        $backgroundImageWidth = '7em';
+                        $backgroundImageHeight = '9.9em';
                         break;
                 }
             }else{
                 $orientationSelectedPotrait = 'selected';
                 $orientationSelectedLandscape = '';
+                $backgroundImageWidth = '7em';
+                $backgroundImageHeight = '9.9em';
             }
         @endphp
         <label for="certificate-orientation" class="form-label">Orientasi (Diperlukan)</label>
@@ -470,7 +484,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
         @if(Storage::disk('public')->exists($data->background_image))
-            <img class="img-thumbnail" style="width: 7em; height: 9.9em;" src="{{ asset('storage' . $data->background_image) }}" alt="Background Image">
+            <img class="img-thumbnail" style="width: {{ $backgroundImageWidth }}; height: {{ $backgroundImageHeight }};" src="{{ asset('storage' . $data->background_image) }}" alt="Background Image">
         @endif
         <div class="my-3 row">
             <label for="background-image" class="form-label">Gambar Latar Belakang (Pilihan)</label>

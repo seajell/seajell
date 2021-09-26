@@ -483,15 +483,27 @@ class CertificateController extends MainController
             $pdf = PDF::getFacadeRoot();
         }
 
+        switch ($eventData->orientation) {
+            case 'P':
+                $paperOrientation = 'potrait';
+                break;
+            case 'L':
+                $paperOrientation = 'landscape';
+                break;
+            default:
+                $paperOrientation = 'potrait';
+                break;
+        }
+
         // Check whether wanna save or stream the certificate
         switch($mode){
             case 'stream':
-                return $pdf->loadView('certificate.layout', $viewData)->setPaper('a4', 'potrait')->setWarnings(true)->stream($certificateFileName);
+                return $pdf->loadView('certificate.layout', $viewData)->setPaper('a4', $paperOrientation)->setWarnings(true)->stream($certificateFileName);
             case 'save':
                 $fullPath = $savePath . 'SeaJell_e_Certificate_' . $certificateID . '.pdf';
-                PDF::loadView('certificate.layout', $viewData)->setPaper('a4', 'potrait')->setWarnings(false)->save($fullPath);
+                PDF::loadView('certificate.layout', $viewData)->setPaper('a4', $paperOrientation)->setWarnings(false)->save($fullPath);
             default:
-                return $pdf->loadView('certificate.layout', $viewData)->setPaper('a4', 'potrait')->setWarnings(false)->stream($certificateFileName);
+                return $pdf->loadView('certificate.layout', $viewData)->setPaper('a4', $paperOrientation)->setWarnings(false)->stream($certificateFileName);
         }
     }
 

@@ -105,9 +105,26 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             @if(session()->has('updateEventLayoutSuccess'))
                 <span><div class="alert alert-success w-100 mt-3">{{ session('updateEventLayoutSuccess') }}</div></span>
             @endif
-            <div id="canvas" style="width: 210mm; height: 297mm; position: relative; background: #fff;" class="mt-3 mb-5">
+            {{-- Page Orientation --}}
+            @php
+                switch($eventData->orientation){
+                    case 'P':
+                        $backgroundImageWidth = '210mm';
+                        $backgroundImageHeight = '297mm';
+                        break;
+                    case 'L':
+                        $backgroundImageWidth = '297mm';
+                        $backgroundImageHeight = '210mm';
+                        break;
+                    default:
+                        $backgroundImageWidth = '210mm';
+                        $backgroundImageHeight = '297mm';
+                        break;
+                }
+            @endphp
+            <div id="canvas" style="width: {{ $backgroundImageWidth }}; height: {{ $backgroundImageHeight }}; position: relative; background: #fff;" class="mt-3 mb-5">
                 @if(!empty($eventFontImages['backgroundImage']))
-                    <img src="{{ $eventFontImages['backgroundImage'] }}" alt="Background image" style="position: absolute; width: 210mm; height: 297mm;" />
+                    <img src="{{ $eventFontImages['backgroundImage'] }}" alt="Background image" style="position: absolute; width: {{ $backgroundImageWidth }}; height: {{ $backgroundImageHeight }};" />
                 @endif
                 <style>
                     p{
@@ -343,8 +360,8 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                         $detailsTranslate = '';
                     }
                 @endphp
-                <div id="details" class="draggable-resizable-square" style="{{ $detailsTranslate }} position: absolute; top: 17%; height: {{ $detailsHeight }}; width: {{ $detailsWidth }}; text-align: center; z-index: 10;">
-                    <div id="details-type" style="margin-bottom: 0.75em;">
+                <div id="details" class="draggable-resizable" style="{{ $detailsTranslate }} position: absolute; top: 17%; height: {{ $detailsHeight }}; width: {{ $detailsWidth }}; text-align: center; z-index: 10;">
+                    <div id="details-type" style="margin-bottom: 0.8mm;">
                         @php
                             if(!empty($certificateData->type)){
                                 switch ($certificateData->type) {
@@ -367,7 +384,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                         @endphp
                         <p class="details-text-type">{{ strtoupper($certificateTitle) }}</p>
                     </div>
-                    <div id="details-intro" style="margin-bottom: 0.3em;">
+                    <div id="details-intro" style="margin-bottom: 0.8mm;">
                         @php
                             if(!empty($certificateData->type)){
                                 switch ($certificateData->type) {
@@ -390,7 +407,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                         @endphp
                         <p class="details-text-first">{{ $certificateIntro }}</p>
                     </div>
-                    <div id="details-participant-details" style="margin-bottom: 0.3em;">
+                    <div id="details-participant-details" style="margin-bottom: 0.8mm;">
                         @php
                             if(!empty($certificateData->fullname)){
                                 $certificateFullname = $certificateData->fullname;
@@ -407,7 +424,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                         <p class="details-text-second">{{ strtoupper($certificateFullname) }}</p>
                         <p class="details-text-second">({{ $certificateIdentificationNumber }})</p>
                     </div>
-                    <div id="details-position" style="margin-bottom: 0.3em;">
+                    <div id="details-position" style="margin-bottom: 0.8mm;">
                         @php
                             if(!empty($certificateData->type)){
                                 switch ($certificateData->type) {
@@ -442,7 +459,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                             @endif
                         @endif
                     </div>
-                    <div id="details-event-name" style="margin-bottom: 0.3em;">
+                    <div id="details-event-name" style="margin-bottom: 0.8mm;">
                         @if(!empty($certificateData->type))
                             @if($certificateData->type !== 'participation')
                                 <p class="details-text-first">Dalam</p>
@@ -451,25 +468,25 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                         <p class="details-text-second">{{ strtoupper($eventData->name) }}</p>
                     </div>
                     @if(!empty($certificateData->category))
-                        <div id="details-category" style="margin-bottom: 0.3em;">
+                        <div id="details-category" style="margin-bottom: 0.8mm;">
                             <p class="details-text-first">Kategori</p>
                             <p class="details-text-second">{{ strtoupper($certificateData->category) }}</p>
                         </div>
                     @else
-                        <div id="details-category" style="margin-bottom: 0.3em;">
+                        <div id="details-category" style="margin-bottom: 0.8mm;">
                             <p class="details-text-first">Kategori</p>
                             <p class="details-text-second">{{ strtoupper($defaultText) }}</p>
                         </div>
                     @endif
-                    <div id="details-date" style="margin-bottom: 0.3em;">
+                    <div id="details-date" style="margin-bottom: 0.8mm;">
                         <p class="details-text-first">Pada</p>
                         <p class="details-text-second">{{ Carbon\Carbon::parse($eventData->date)->format('d/m/Y') }}</p>
                     </div>
-                    <div id="details-event-location" style="margin-bottom: 0.3em;">
+                    <div id="details-event-location" style="margin-bottom: 0.8mm;">
                         <p class="details-text-first">Bertempat di</p>
                         <p class="details-text-second">{{ strtoupper($eventData->location) }}</p>
                     </div>
-                    <div id="details-event-organiser" style="margin-bottom: 0.3em;">
+                    <div id="details-event-organiser" style="margin-bottom: 0.8mm;">
                         <p class="details-text-first">Anjuran</p>
                         <p class="details-text-second">{{ strtoupper($eventData->organiser_name) }}</p>
                     </div>
