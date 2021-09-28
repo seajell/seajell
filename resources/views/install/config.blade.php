@@ -17,27 +17,27 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
 
 @php
 
-    if(!empty(old('system-language'))){
-        switch (old('system-language')) {
-            case 'en':
-                $systemLanguageSelectedEn = 'selected';
-                $systemLanguageSelectedMs = '';
-                break;
-            case 'ms-MY':
-                $systemLanguageSelectedEn = '';
-                $systemLanguageSelectedMs = 'selected';
-                break;
-            default:
-                $systemLanguageSelectedEn = 'selected';
-                $systemLanguageSelectedMs = '';
-                break;
-        }
-        $systemLanguageSelectedEn = '';
-        $systemLanguageSelectedMs = '';
-    }else{
-        $systemLanguageSelectedEn = '';
-        $systemLanguageSelectedMs = '';
-    }
+if(!empty(old('system-language'))){
+switch (old('system-language')) {
+case 'en':
+$systemLanguageSelectedEn = 'selected';
+$systemLanguageSelectedMs = '';
+break;
+case 'ms-MY':
+$systemLanguageSelectedEn = '';
+$systemLanguageSelectedMs = 'selected';
+break;
+default:
+$systemLanguageSelectedEn = 'selected';
+$systemLanguageSelectedMs = '';
+break;
+}
+$systemLanguageSelectedEn = '';
+$systemLanguageSelectedMs = '';
+}else{
+$systemLanguageSelectedEn = '';
+$systemLanguageSelectedMs = '';
+}
 @endphp
 
 @extends('install.layout')
@@ -56,37 +56,42 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             @csrf
             <h3 class="mt-2">Akaun Admin</h3>
             <div class="form-floating mb-3 mt-3">
-                <input type="text" class="form-control" name="adminFullName" id="adminFullname" placeholder="" value="{{ old('adminFullName') }}">
+                <input type="text" class="form-control" name="adminFullName" id="adminFullname" placeholder=""
+                    value="{{ old('adminFullName') }}">
                 <label class="text-dark" for="adminFullName">Nama Penuh</label>
             </div>
             @error('adminFullName')
-                <div class="alert alert-danger">{{ $message }}</div>
+            <div class="alert alert-danger">{{ $message }}</div>
             @enderror
             <div class="form-floating mb-3">
-                <input type="email" class="form-control" name="adminEmailAddress" id="adminEmailAddress" placeholder="" value="{{ old('adminEmailAddress') }}">
+                <input type="email" class="form-control" name="adminEmailAddress" id="adminEmailAddress" placeholder=""
+                    value="{{ old('adminEmailAddress') }}">
                 <label class="text-dark" for="adminEmailAddress">Alamat Emel</label>
             </div>
             @error('adminEmailAddress')
-                <div class="alert alert-danger">{{ $message }}</div>
+            <div class="alert alert-danger">{{ $message }}</div>
             @enderror
             <div class="form-floating mb-3">
-                <input type="password" class="form-control" name="password" id="password" placeholder="" value="{{ old('password') }}">
+                <input type="password" class="form-control" name="password" id="password" placeholder=""
+                    value="{{ old('password') }}">
                 <label class="text-dark" for="password">Kata Laluan</label>
             </div>
             @error('password')
-                <div class="alert alert-danger">{{ $message }}</div>
+            <div class="alert alert-danger">{{ $message }}</div>
             @enderror
             <div class="form-floating mb-3">
-                <input type="password" class="form-control" name="password_confirmation" id="password_confirmation" placeholder="">
+                <input type="password" class="form-control" name="password_confirmation" id="password_confirmation"
+                    placeholder="">
                 <label class="text-dark" for="password_confirmation">Sahkan Kata Laluan</label>
             </div>
-            <h3 class="mt-2">Tetapan Sistem</h3>
+            <h3 class="mt-2">Nama Sistem Anda?</h3>
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="system-name" name="system-name" placeholder="System name" value="{{ old('system-name') }}">
+                <input type="text" class="form-control" id="system-name" name="system-name" placeholder="System name"
+                    value="{{ old('system-name') }}">
                 <label for="system-name">Nama</label>
             </div>
             @error('system-name')
-                <div class="alert alert-danger">{{ $message }}</div>
+            <div class="alert alert-danger">{{ $message }}</div>
             @enderror
             <label for="system-language" class="form-label">Bahasa</label>
             <select class="form-select mb-3" aria-label="System language" name="system-language" id="system-language">
@@ -94,17 +99,19 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                 <option value="ms-MY" {{ $systemLanguageSelectedMs }}>Malay</option>
             </select>
             @error('system-language')
-                <div class="alert alert-danger">{{ $message }}</div>
+            <div class="alert alert-danger">{{ $message }}</div>
             @enderror
             <div class="mb-3">
                 <label for="system-logo" class="form-label">Logo</label>
                 <input class="form-control" type="file" id="system-logo" name="system-logo">
-                <div id="systemLogoHelp" class="form-text">Logo ini akan digunakan pada bar navigasi dan favicon.</div>
+                <div id="systemLogoHelp" class="form-text">Logo ini akan digunakan pada bar navigasi dan favicon. Hanya
+                    gambar dengan format PNG sahaja diterima</div>
             </div>
             @error('system-logo')
-                <div class="alert alert-danger">{{ $message }}</div>
+            <div class="alert alert-danger">{{ $message }}</div>
             @enderror
-            <button type="submit" class="btn w-50 my-5 hvr-shrink btn-outline-light fs-4">Pasang <i class="bi bi-gear"></i></button>
+            <button type="submit" class="btn w-50 my-5 hvr-shrink btn-outline-light fs-4">Pasang <i
+                    class="bi bi-gear"></i></button>
         </form>
     </div>
 </div>
