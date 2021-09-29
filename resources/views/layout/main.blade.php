@@ -156,10 +156,10 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
     </div>
     <footer class="bg-dark text-center text-light pb-4">
         <div class="d-flex flex-column justify-content-center align-items-center">
-            <p class="mt-5"><a class="text-decoration-underline text-light"
-                    href="https://projects.hanisirfan.xyz/seajell" target="_blank">SeaJell</a> {{ $appVersion }}</p>
+            <p class="mt-5"><a class="text-decoration-underline text-light" href="https://www.seajell.xyz/"
+                    target="_blank">SeaJell</a> {{ $appVersion }}</p>
             <p>Hak Cipta &copy; <a href="http://hanisirfan.xyz" class="text-light">Muhammad Hanis Irfan bin Mohd
-                    Zaid</a> 2021</p>
+                    Zaid</a> {{ date('Y') }}</p>
         </div>
     </footer>
 

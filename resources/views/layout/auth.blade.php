@@ -31,9 +31,9 @@
 
     {{-- Footer --}}
     <div class="text-center text-light mt-5">
-        <p><a class="text-decoration-underline text-light" href="https://projects.hanisirfan.xyz/seajell"
-                target="_blank">SeaJell</a> {{ $appVersion }}</p>
-        <p>Hak Cipta &copy; <a href="http://hanisirfan.xyz">Muhammad Hanis Irfan bin Mohd Zaid</a> 2021</p>
+        <p><a class="text-decoration-underline text-light" href="https://www.seajell.xyz/" target="_blank">SeaJell</a>
+            {{ $appVersion }}</p>
+        <p>Hak Cipta &copy; <a href="http://hanisirfan.xyz">Muhammad Hanis Irfan bin Mohd Zaid</a> {{ date('Y') }}</p>
     </div>
 
     @include('layout.footer')
