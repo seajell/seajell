@@ -49,7 +49,7 @@ $systemLanguageSelectedMs = '';
     <hr class="border-light w-100 border-4">
     <div class="form-list w-50 mb-5 d-flex flex-column justify-content-around">
         <form action="{{ route('install.config') }}" method="POST" enctype="multipart/form-data">
-            {{-- Admin account 
+            {{-- Admin account
             Username: admin (Default: User cannot choose the username)
             Password: (User could choose)
             --}}
@@ -84,7 +84,8 @@ $systemLanguageSelectedMs = '';
                     placeholder="">
                 <label class="text-dark" for="password_confirmation">Sahkan Kata Laluan</label>
             </div>
-            <h3 class="mt-2">Nama Sistem Anda?</h3>
+            <h3 class="mt-2">Tetapan Sistem</h3>
+            <p>Nama Organisasi</p>
             <div class="form-floating mb-3">
                 <input type="text" class="form-control" id="system-name" name="system-name" placeholder="System name"
                     value="{{ old('system-name') }}">

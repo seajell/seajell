@@ -19,7 +19,22 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
 
 @section('content')
 <div class="container mt-5">
-    <p class="fs-3 text-center text-white fw-bold mb-5">{{ strtoupper($systemSetting->name) }}</p>
+    <div class="d-flex justify-content-center align-items-center">
+        @if(Storage::disk('public')->exists($systemSetting->logo))
+            <img class="row system-logo" src="{{ asset('storage/') . $systemSetting->logo }}" alt="SeaJell Logo" style="height: 10em; width: 10em;">
+        @else
+            <img class="row system-logo" src="{{ asset('/storage/logo/SeaJell-Logo.png') }}" alt="SeaJell Logo" style="height: 10em; width: 10em;">
+        @endif
+    </div>
+    <p class="fw-bold fs-1 text-center mb-1 text-light">
+        @if(!empty($systemSetting->name))
+            {{ strtoupper($systemSetting->name) }}
+        @else
+            {{ 'SeaJell' }}
+        @endif
+    </p>
+
+    <p class="text-center mb-5 text-light">Log Masuk</p>
 
     <div class="col-4 mx-auto bg-light p-4 rounded">
         <form action="" method="post">
