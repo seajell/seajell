@@ -162,6 +162,8 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                     Zaid</a> 2021</p>
         </div>
     </footer>
+
+    @include('layout.footer')
 </body>
 
 </html>
