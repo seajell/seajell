@@ -11,7 +11,7 @@
         "endroid/qr-code": "^4.3",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
-        "guzzlehttp/guzzle": "^7.0.1",
+        "guzzlehttp/guzzle": "^7.3",
         "intervention/image": "^2.6",
         "intervention/imagecache": "^2.5",
         "laravel/framework": "^8.40",

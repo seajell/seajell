@@ -63,10 +63,11 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
     @if(session()->has('systemSettingSuccess'))
         <span><div class="alert alert-success w-100 ml-1">{{ session('systemSettingSuccess') }}</div></span>
     @endif
+    <p class="fs-4">Maklumat Organisasi</p>
     <form action="" method="post" class="mb-3" enctype="multipart/form-data">
         @csrf
         <div class="mb-3">
-            <label for="system-name" class="form-label">Nama</label>
+            <label for="system-name" class="form-label">Nama Organisasi</label>
             <input type="text" class="form-control" id="system-name" name="system-name" aria-describedby="systemNameHelp" value="{{ $systemNameValue }}">
             <div id="systemNameHelp" class="form-text">Nama ini akan digunakan pada bar navigasi dan tajuk laman.</div>
         </div>
@@ -90,6 +91,46 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         @error('system-logo')
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
-        <button class="btn btn-outline-light" type="submit">Kemas Kini</button>
+        <button class="btn btn-outline-light" type="submit" name="organisation-information"><i class="bi bi-building"></i> Kemas Kini</button>
+    </form>
+
+    <hr>
+
+    <p class="fs-4">Maklumat Servis E-Mel</p>
+    <form action="" method="post" class="mb-3">
+        @csrf
+        <p class="fst-italic">Servis e-mel pada sistem ini hanya mempunyai sokongan untuk SMTP.</p>
+        <div class="form-check form-switch mb-3">
+            <input class="form-check-input" type="checkbox" id="email-service-switch">
+            <label class="form-check-label" for="email-service-switch">Aktifkan Servis</label>
+        </div>
+        <div class="mb-3">
+            <label for="email-service-host" class="form-label">Host SMTP (Diperlukan)</label>
+            <input type="text" class="form-control" id="email-service-host" name="email-service-host" aria-describedby="emailServiceHostHelp" value="">
+            <div id="emailServiceHostHelp" class="form-text">Digunakan untuk sambungan kepada pelayan e-mel. <br> Contoh: mail.seajell.xyz</div>
+        </div>
+        <div class="mb-3">
+            <label for="email-service-port" class="form-label">Port SMTP (Diperlukan)</label>
+            <input type="number" class="form-control" id="email-service-port" name="email-service-port" aria-describedby="emailServicePortHelp" value="">
+            <div id="emailServicePortHelp" class="form-text">Digunakan untuk sambungan kepada pelayan e-mel.
+                <br> Contoh: 587</div>
+        </div>
+        <div class="mb-3">
+            <label for="email-service-username" class="form-label">Username Pengguna E-mel (Diperlukan)</label>
+            <input type="text" class="form-control" id="email-service-username" name="email-service-username" aria-describedby="emailServiceUsernameHelp" value="">
+            <div id="emailServiceUsernameHelp" class="form-text">Alamat e-mel adalah alamat yang akan digunakan untuk menghantar e-mel menggunakan sistem ini.</div>
+        </div>
+        <div class="mb-3">
+            <label for="email-service-password" class="form-label">Kata Laluan Pengguna E-mel (Diperlukan)</label>
+            <input type="password" class="form-control" id="email-service-password" name="email-service-password" aria-describedby="emailServicePasswordHelp" value="">
+            <div id="emailServicePasswordHelp" class="form-text">Kata laluan untuk proses pengesahan alamat e-mel di atas.</div>
+        </div>
+        <div class="mb-3">
+            <label for="system-name" class="form-label">Alamat E-mel Untuk Sokongan (Pilihan)</label>
+            <input type="text" class="form-control" id="system-name" name="system-name" aria-describedby="systemNameHelp" value="">
+            <div id="systemNameHelp" class="form-text">Alamat e-mel ini akan ditambahkan ke isi e-mel untuk memberitahu pengguna alamat e-mel apa yang harus dihubungi untuk mendapatkan sokongan.
+                <br> Alamat e-mel ini boleh sama seperti alamat yang digunakan untuk menghantar e-mel.</div>
+        </div>
+        <button class="btn btn-outline-light" type="submit" name="email-information"><i class="bi bi-envelope"></i> Kemas Kini</button>
     </form>
 @endsection

@@ -33,41 +33,47 @@ class SystemController extends MainController
     }
 
     public function systemUpdate(Request $request){
-        $validated = $request->validate([
-            'system-name' => ['required'],
-            'system-language' => ['required'],
-            'system-logo' => ['image', 'mimes:png']
-        ]);
-        $systemName = $request->input('system-name');
-        $systemLanguage = $request->input('system-language');
-        $systemLogo = $request->file('system-logo');
+        if($request->has('organisation-information')){
+            $validated = $request->validate([
+                'system-name' => ['required'],
+                'system-language' => ['required'],
+                'system-logo' => ['image', 'mimes:png']
+            ]);
+            $systemName = $request->input('system-name');
+            $systemLanguage = $request->input('system-language');
+            $systemLogo = $request->file('system-logo');
 
-        if($request->hasFile('system-logo')){
-            // Deletes old
-            if(!empty($systemSetting = SystemSetting::where('id', 1)->first()->logo)){
-                $oldImage = $systemSetting = SystemSetting::where('id', 1)->first()->logo;
-                if(Storage::disk('public')->exists($oldImage)){
-                    Storage::disk('public')->delete($oldImage);
+            if($request->hasFile('system-logo')){
+                // Deletes old
+                if(!empty($systemSetting = SystemSetting::where('id', 1)->first()->logo)){
+                    $oldImage = $systemSetting = SystemSetting::where('id', 1)->first()->logo;
+                    if(Storage::disk('public')->exists($oldImage)){
+                        Storage::disk('public')->delete($oldImage);
+                    }
                 }
+                $systemLogoName = $request->file('system-logo')->getClientOriginalName();
+                $systemLogoImage = Image::make($request->file('system-logo'))->resize(300, 300)->encode('png');
+                $systemLogoSavePath = '/img/system/logo/'. Carbon::now()->timestamp . '-' . $systemLogoName;
+                Storage::disk('public')->put($systemLogoSavePath, $systemLogoImage);
+            }else{
+                $systemLogoSavePath = $systemSetting = SystemSetting::where('id', 1)->first()->logo;
             }
-            $systemLogoName = $request->file('system-logo')->getClientOriginalName();
-            $systemLogoImage = Image::make($request->file('system-logo'))->resize(300, 300)->encode('png');
-            $systemLogoSavePath = '/img/system/logo/'. Carbon::now()->timestamp . '-' . $systemLogoName;
-            Storage::disk('public')->put($systemLogoSavePath, $systemLogoImage);
+
+            SystemSetting::upsert([
+                [
+                    'id' => 1,
+                    'name' => strtolower($systemName),
+                    'logo' => $systemLogoSavePath,
+                    'language' => $systemLanguage
+                ]
+            ], ['id'], ['name', 'logo', 'language']);
+
+            $request->session()->flash('systemSettingSuccess', 'Tetapan sistem berjaya dikemas kini!');
+            return back();
+        }elseif($request->has('email-information')){
+            dd('test');
         }else{
-            $systemLogoSavePath = $systemSetting = SystemSetting::where('id', 1)->first()->logo;
+            return route('home');
         }
-
-        SystemSetting::upsert([
-            [
-                'id' => 1,
-                'name' => strtolower($systemName),
-                'logo' => $systemLogoSavePath,
-                'language' => $systemLanguage
-            ]
-        ], ['id'], ['name', 'logo', 'language']);
-
-        $request->session()->flash('systemSettingSuccess', 'Tetapan sistem berjaya dikemas kini!');
-        return back();
     }
 }

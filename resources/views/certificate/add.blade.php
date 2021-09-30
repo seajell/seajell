@@ -25,7 +25,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         @csrf
         <div class="mb-3">
             <div class="row">
-                <label for="username" class="form-label">Username Pengguna</label>   
+                <label for="username" class="form-label">Username Pengguna</label>
             </div>
             <div class="row">
                 <div class="col-11">
@@ -49,7 +49,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         </div>
         <div class="mb-3">
             <div class="row">
-                <label for="event-id" class="form-label">ID Acara</label>   
+                <label for="event-id" class="form-label">ID Acara</label>
             </div>
             <div class="row">
                 <div class="col-11">
@@ -122,6 +122,9 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         </div>
         <button class="btn btn-outline-light mt-3" type="submit"><i class="bi bi-plus"></i> Tambah Sijil</button>
     </form>
+
+    <hr>
+
     <form action="{{ route('certificate.add.bulk') }}" method="post" class="mb-3" enctype="multipart/form-data">
         @csrf
         <p class="fs-4">Tambah Sijil Secara Pukal</p>

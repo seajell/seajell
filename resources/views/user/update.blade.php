@@ -107,6 +107,9 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             @endcan
         <button class="btn btn-outline-light" type="submit" name="info">Kemas Kini Maklumat</button>
     </form>
+
+    <hr>
+
     {{-- Only admin can change their own password. Othe admins can't. Superadmin is an exception. --}}
     <p class="fs-2">Kemas Kini Kata Laluan</p>
     @if(session()->has('updateUserPasswordSuccess'))

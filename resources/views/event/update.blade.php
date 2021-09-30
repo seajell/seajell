@@ -384,6 +384,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         </div>
 
         <hr>
+
         <p class="fs-5">Penyesuaian Gaya Sijil </p>
         @php
             if(!empty(old('certificate-orientation'))){
