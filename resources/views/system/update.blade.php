@@ -96,41 +96,133 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
 
     <hr>
 
+    @php
+        if(!empty(old('email-service-switch'))){
+            dd(old('email-service-switch'));
+            switch (old('email-service-switch')) {
+                case 'on':
+                    $emailServiceStatus = 'checked';
+                    break;
+                case 'off':
+                    $emailServiceStatus = '';
+                    break;
+                default:
+                    $emailServiceStatus = '';
+                    break;
+            }
+        }elseif(!empty($emailServiceSetting->service_status)){
+            switch ($emailServiceSetting->service_status) {
+                case 'on':
+                    $emailServiceStatus = 'checked';
+                    break;
+                case 'off':
+                    $emailServiceStatus = '';
+                    break;
+                default:
+                    $emailServiceStatus = '';
+                    break;
+            }
+        }else{
+            $emailServiceHost = '';
+        }
+
+        if(!empty(old('email-service-host'))){
+            $emailServiceHost = strtoupper(old('email-service-host'));
+        }elseif(!empty($emailServiceSetting->service_host)){
+            $emailServiceHost = strtoupper($emailServiceSetting->service_host);
+        }else{
+            $emailServiceHost = '';
+        }
+
+        if(!empty(old('email-service-port'))){
+            $emailServicePort = strtoupper(old('email-service-port'));
+        }elseif(!empty($emailServiceSetting->service_port)){
+            $emailServicePort = strtoupper($emailServiceSetting->service_port);
+        }else{
+            $emailServicePort = '';
+        }
+
+        if(!empty(old('email-service-username'))){
+            $emailServiceUsername = strtoupper(old('email-service-username'));
+        }elseif(!empty($emailServiceSetting->account_username)){
+            $emailServiceUsername = strtoupper($emailServiceSetting->account_username);
+        }else{
+            $emailServiceUsername = '';
+        }
+
+        if(!empty(old('email-service-password'))){
+            $emailServicePassword = strtoupper(old('email-service-password'));
+        }elseif(!empty($emailServiceSetting->account_password)){
+            $emailServicePassword = strtoupper($emailServiceSetting->account_password);
+        }else{
+            $emailServicePassword = '';
+        }
+
+        if(!empty(old('email-service-support-email'))){
+            $emailServiceSupportEmail = strtoupper(old('email-service-support-email'));
+        }elseif(!empty($emailServiceSetting->support_email)){
+            $emailServiceSupportEmail = strtoupper($emailServiceSetting->support_email);
+        }else{
+            $emailServiceSupportEmail = '';
+        }
+
+    @endphp
+    @if(session()->has('updateEmailServiceSuccess'))
+        <span><div class="alert alert-success w-100 ml-1">{{ session('updateEmailServiceSuccess') }}</div></span>
+    @endif
     <p class="fs-4">Maklumat Servis E-Mel</p>
     <form action="" method="post" class="mb-3">
         @csrf
         <p class="fst-italic">Servis e-mel pada sistem ini hanya mempunyai sokongan untuk SMTP.</p>
         <div class="form-check form-switch mb-3">
-            <input class="form-check-input" type="checkbox" id="email-service-switch">
+            <input class="form-check-input" type="checkbox" id="email-service-switch" name="email-service-switch" {{ $emailServiceStatus }}>
             <label class="form-check-label" for="email-service-switch">Aktifkan Servis</label>
         </div>
+        @error('email-service-switch')
+            <div class="alert alert-danger">{{ $message }}</div>
+        @enderror
         <div class="mb-3">
             <label for="email-service-host" class="form-label">Host SMTP (Diperlukan)</label>
-            <input type="text" class="form-control" id="email-service-host" name="email-service-host" aria-describedby="emailServiceHostHelp" value="">
+            <input type="text" class="form-control" id="email-service-host" name="email-service-host" aria-describedby="emailServiceHostHelp" value="{{ $emailServiceHost }}">
             <div id="emailServiceHostHelp" class="form-text">Digunakan untuk sambungan kepada pelayan e-mel. <br> Contoh: mail.seajell.xyz</div>
         </div>
+        @error('email-service-host')
+            <div class="alert alert-danger">{{ $message }}</div>
+        @enderror
         <div class="mb-3">
             <label for="email-service-port" class="form-label">Port SMTP (Diperlukan)</label>
-            <input type="number" class="form-control" id="email-service-port" name="email-service-port" aria-describedby="emailServicePortHelp" value="">
+            <input type="number" class="form-control" id="email-service-port" name="email-service-port" aria-describedby="emailServicePortHelp" value="{{ $emailServicePort }}">
             <div id="emailServicePortHelp" class="form-text">Digunakan untuk sambungan kepada pelayan e-mel.
                 <br> Contoh: 587</div>
         </div>
+        @error('email-service-port')
+            <div class="alert alert-danger">{{ $message }}</div>
+        @enderror
         <div class="mb-3">
             <label for="email-service-username" class="form-label">Username Pengguna E-mel (Diperlukan)</label>
-            <input type="text" class="form-control" id="email-service-username" name="email-service-username" aria-describedby="emailServiceUsernameHelp" value="">
-            <div id="emailServiceUsernameHelp" class="form-text">Alamat e-mel adalah alamat yang akan digunakan untuk menghantar e-mel menggunakan sistem ini.</div>
+            <input type="text" class="form-control" id="email-service-username" name="email-service-username" aria-describedby="emailServiceUsernameHelp" value="{{ $emailServiceUsername }}">
+            <div id="emailServiceUsernameHelp" class="form-text">Username pengguna e-mel.</div>
         </div>
+        @error('email-service-username')
+            <div class="alert alert-danger">{{ $message }}</div>
+        @enderror
         <div class="mb-3">
             <label for="email-service-password" class="form-label">Kata Laluan Pengguna E-mel (Diperlukan)</label>
-            <input type="password" class="form-control" id="email-service-password" name="email-service-password" aria-describedby="emailServicePasswordHelp" value="">
-            <div id="emailServicePasswordHelp" class="form-text">Kata laluan untuk proses pengesahan alamat e-mel di atas.</div>
+            <input type="password" class="form-control" id="email-service-password" name="email-service-password" aria-describedby="emailServicePasswordHelp" value="{{ $emailServicePassword }}">
+            <div id="emailServicePasswordHelp" class="form-text">Kata laluan untuk proses pengesahan username di atas.</div>
         </div>
+        @error('email-service-password')
+            <div class="alert alert-danger">{{ $message }}</div>
+        @enderror
         <div class="mb-3">
             <label for="system-name" class="form-label">Alamat E-mel Untuk Sokongan (Pilihan)</label>
-            <input type="text" class="form-control" id="system-name" name="system-name" aria-describedby="systemNameHelp" value="">
-            <div id="systemNameHelp" class="form-text">Alamat e-mel ini akan ditambahkan ke isi e-mel untuk memberitahu pengguna alamat e-mel apa yang harus dihubungi untuk mendapatkan sokongan.
+            <input type="text" class="form-control" id="email-service-support-email" name="email-service-support-email" aria-describedby="emailServiceSupportEmailHelp" value="{{ $emailServiceSupportEmail }}">
+            <div id="emailServiceSupportEmailHelp" class="form-text">Alamat e-mel ini akan ditambahkan ke isi e-mel untuk memberitahu pengguna alamat e-mel apa yang harus dihubungi untuk mendapatkan sokongan.
                 <br> Alamat e-mel ini boleh sama seperti alamat yang digunakan untuk menghantar e-mel.</div>
         </div>
+        @error('email-service-support-email')
+            <div class="alert alert-danger">{{ $message }}</div>
+        @enderror
         <button class="btn btn-outline-light" type="submit" name="email-information"><i class="bi bi-envelope"></i> Kemas Kini</button>
     </form>
 @endsection

@@ -21,6 +21,7 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\SystemSetting;
+use App\Models\EmailServiceSettings;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\MainController;
@@ -29,7 +30,12 @@ class SystemController extends MainController
 {
     public function systemView(Request $request){
         $systemSetting = SystemSetting::where('id', 1)->first();
-        return view('system.update')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting]);
+        if(!empty($this->emailServiceSetting)){
+            $emailServiceSetting = $this->emailServiceSetting;
+        }else{
+            $emailServiceSetting = '';
+        }
+        return view('system.update')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting, 'emailServiceSetting' => $emailServiceSetting]);
     }
 
     public function systemUpdate(Request $request){
@@ -71,7 +77,39 @@ class SystemController extends MainController
             $request->session()->flash('systemSettingSuccess', 'Tetapan sistem berjaya dikemas kini!');
             return back();
         }elseif($request->has('email-information')){
-            dd('test');
+            $validated = $request->validate([
+                'email-service-host' => ['required'],
+                'email-service-port' => ['required'],
+                'email-service-username' => ['required'],
+                'email-service-password' => ['required']
+            ]);
+
+            if(!empty($request->input('email-service-switch'))){
+                $emailServiceStatus = 'on';
+            }else{
+                $emailServiceStatus = 'off';
+            }
+
+            if(!empty($request->input('email-service-support-email'))){
+                $emailServiceSupportEmail = $request->input('email-service-support-email');
+            }else{
+                $emailServiceSupportEmail = '';
+            }
+
+            EmailServiceSettings::updateOrCreate(
+                ['id' => 1],
+                [
+                    'service_status' => $emailServiceStatus,
+                    'service_host' => $request->input('email-service-host'),
+                    'service_port' => $request->input('email-service-port'),
+                    'account_username' => $request->input('email-service-username'),
+                    'account_password' => $request->input('email-service-password'),
+                    'support_email' => $emailServiceSupportEmail
+                ]
+            );
+
+            $request->session()->flash('updateEmailServiceSuccess', 'Tetapan servis e-mel berjaya dikemas kini!');
+            return back();
         }else{
             return route('home');
         }
