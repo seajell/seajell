@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class EventLayout extends Model
 {
@@ -32,13 +32,14 @@ class EventLayout extends Model
         'signature_third_input_width',
         'signature_third_input_height',
         'signature_third_input_translate',
-        'qr_code_input_translate'
+        'qr_code_input_translate',
     ];
 
     /**
-     * Relationships
+     * Relationships.
      */
-    public function event(){
+    public function event()
+    {
         return $this->belongsTo(Event::class);
     }
 }

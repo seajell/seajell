@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Authentication Language Lines
@@ -16,5 +15,4 @@ return [
     'failed' => 'Maklumat yang diberikan tidak bertepatan dengan rekod kami.',
     'password' => 'Kata laluan yang dimasukkan salah.',
     'throttle' => 'Terlampau banyak cubaan log masuk. Sila cuba lagi dalam :seconds saat.',
-
 ];
