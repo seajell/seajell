@@ -61,17 +61,16 @@ class UserController extends MainController
     }
     public function updateUserView(Request $request, $username){
         if(User::where('username', $username)->first()){
-            // Only admins or the user that logged in themselves can update their info
-            if(Gate::allows('authAdmin') || strtolower($username) == Auth::user()->username){
-                $data = User::where('username', $username)->first();
+            $data = User::where('username', $username)->first();
+            // Only superadmin can edit their own profile
+            if($username == 'admin' && Auth::user()->username == 'admin'){
                 return view('user.update')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting, 'data' => $data]);
-                // Only the user 'admin' can update their info. Other admins can't update the 'admin' user.
-                if($username == 'admin' && Auth::user()->username == 'admin'){
-                    $data = User::where('username', $username)->first();
-                    return view('user.update')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting, 'data' => $data]);
-                }else{
-                    abort(403, 'Anda tidak boleh mengakses laman ini.');
-                }
+            // Only superadmin or an admin themselves can edit their own profile
+            }elseif($data->role == 'admin' && Auth::user()->username == $username || Auth::user()->role == 'superadmin'){
+                return view('user.update')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting, 'data' => $data]);
+            // Admins and the user themselves can edit their own profile
+            }elseif($data->role == 'participant' && Gate::allows('authAdmin') || Auth::user()->username == $username){
+                return view('user.update')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting, 'data' => $data]);
             }else{
                 abort(403, 'Anda tidak boleh mengakses laman ini.');
             }
@@ -89,7 +88,7 @@ class UserController extends MainController
                 'username' => ['required'],
                 'password' => ['required'],
             ]);
-    
+
             if (Auth::attempt($credentials)) {
                 $request->session()->regenerate();
                 $userID = User::select('id')->where('username', '=', $username)->first()->id;
@@ -104,7 +103,7 @@ class UserController extends MainController
                 ]);
                 return redirect()->intended();
             }
-    
+
             return back()->withInput()->withErrors([
                 'password' => 'Kata laluan salah.',
             ]);
@@ -217,7 +216,7 @@ class UserController extends MainController
                     }else{
                         $fullnameValid = $fullname;
                     }
-    
+
                     if(empty($email)){
                         $error = '[D' . $currentRow . '] ' . 'Ruangan alamat e-mel kosong!';
                         array_push($spreadsheetErr, $error);
@@ -230,21 +229,21 @@ class UserController extends MainController
                             $emailValid = $email;
                         }
                     }
-    
+
                     if(empty($password)){
                         $error = '[E' . $currentRow . '] ' . 'Ruangan kata laluan kosong!';
                         array_push($spreadsheetErr, $error);
                     }else{
                         $passwordValid = $password;
                     }
-    
+
                     if(empty($identificationNo)){
                         $error = '[F' . $currentRow . '] ' . 'Ruangan nombor pengenalan kosong!';
                         array_push($spreadsheetErr, $error);
                     }else{
                         $identificationNoValid = $identificationNo;
                     }
-    
+
                     if(empty($role)){
                         $error = '[G' . $currentRow . '] ' . 'Ruangan peranan kosong!';
                         array_push($spreadsheetErr, $error);
@@ -350,6 +349,6 @@ class UserController extends MainController
         }else{
             return back();
         }
-        
+
     }
 }
