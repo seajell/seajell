@@ -116,18 +116,20 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         <span><div class="alert alert-danger w-100 ml-1">{{ $message }}</div></span>
     @enderror
     <form action="" method="post" class="mb-3">
+        @csrf
         {{-- Admin won't need to know participant password to change it --}}
         {{-- Admin must enter their old password to change it --}}
-        {{ $data->username }}
-        {{ Auth::user()->role }}
-        @csrf
-        @if(Gate::denies('authAdmin'))
-            @if(Auth::user()->role != 'superadmin')
-                <div class="mb-3">
-                    <label for="old_password" class="form-label">Kata Laluan Lama</label>
-                    <input type="password" class="form-control" id="old_password" name="old_password" placeholder="Masukkan kata laluan lama pengguna.">
-                </div>
-            @endif
+        @if($data->username == Auth::user()->username)
+            <div class="mb-3">
+                <label for="old_password" class="form-label">Kata Laluan Lama</label>
+                <input type="password" class="form-control" id="old_password" name="old_password" placeholder="Masukkan kata laluan lama pengguna.">
+            </div>
+            @error('old_password')
+                <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
+            @error('oldPasswordWrong')
+                <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
         @endif
         <div class="mb-3">
             <label for="password" class="form-label">Kata Laluan</label>
