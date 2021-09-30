@@ -331,10 +331,31 @@ class UserController extends MainController
                 ]);
             }
         }elseif($request->has('password-update')){
-            $validated = $request->validate([
-                'password' => ['required', 'confirmed']
-            ]);
-            if(User::select('username')->where('username', $request->username)->first()){
+            // Only logged in user that need to change their own password need to enter old password
+            // Admins changing participant password won't need to know the participant password
+            if($username == Auth::user()->username){
+                $validated = $request->validate([
+                    'password' => ['required', 'confirmed'],
+                    'old_password' => ['required']
+                ]);
+            }else{
+                $validated = $request->validate([
+                    'password' => ['required', 'confirmed']
+                ]);
+            }
+            if(User::select('username')->where('username', $username)->first()){
+                $oldPassword = User::select('password')->where('username', $username)->first()->password;
+                // If old password not empty, it means user is updating their own password
+                if(!empty($request->input('old_password'))){
+                    // If old password input != old password from DB
+                    $oldPasswordInput = $request->input('old_password');
+                    if(!Hash::check($oldPasswordInput, $oldPassword)){
+                        return back()->withErrors([
+                            'oldPasswordWrong' => 'Kata laluan lama salah!',
+                        ]);
+                    }
+                }
+                // Password is case sensitive
                 User::updateOrCreate(
                     ['username' => strtolower($request->username)],
                     ['password' => Hash::make($request->password)]
