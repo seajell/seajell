@@ -25,12 +25,12 @@
     </title>
 </head>
 
-<body class="" style="background-color: #495057">
+<body class="vh-100 overflow-hidden" style="background-color: #495057;">
 
     @yield('content')
 
     {{-- Footer --}}
-    <div class="text-center text-light mt-5">
+    <div class="text-center text-light mt-3">
         <p><a class="text-decoration-underline text-light" href="https://www.seajell.xyz/" target="_blank">SeaJell</a>
             {{ $appVersion }}</p>
         <p>Hak Cipta &copy; The SeaJell Contributors 2021</p>

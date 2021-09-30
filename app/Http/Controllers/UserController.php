@@ -96,6 +96,15 @@ class UserController extends MainController
                 $token = $user->createToken('apitoken');
                 // Add Bearer API Token to session
                 $request->session()->put('bearerAPIToken', $token->plainTextToken);
+
+                // Check if this is user first time login
+                $firstTimeLoginStatus = User::select('first_time_login')->where('username', $username)->first()->first_time_login;
+                if($firstTimeLoginStatus == 'yes'){
+                    $request->session()->flash('firstTimeLogin', 'yes');
+                    User::where('id', $userID)
+                        ->update(['first_time_login' => 'no']);
+                }
+
                 LoginActivity::create([
                     'user_id' => $userID,
                     'ip_address' => $request->ip(),

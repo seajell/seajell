@@ -18,7 +18,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
 @extends('layout.auth')
 
 @section('content')
-<div class="container mt-5">
+<div class="container">
     <div class="d-flex justify-content-center align-items-center">
         @if(Storage::disk('public')->exists($systemSetting->logo))
             <img class="row system-logo" src="{{ asset('storage/') . $systemSetting->logo }}" alt="SeaJell Logo" style="height: 10em; width: 10em;">
@@ -34,7 +34,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         @endif
     </p>
 
-    <p class="text-center mb-5 text-light">Log Masuk</p>
+    <p class="text-center mb-5 text-light fs-3">Log Masuk</p>
 
     <div class="col-4 mx-auto bg-light p-4 rounded">
         <form action="" method="post">
