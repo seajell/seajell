@@ -66,23 +66,18 @@ class UserController extends MainController
         return view('user.add')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting]);
     }
 
-    public function updateUserView(Request $request, $username)
-    {
-        if (User::where('username', $username)->first()) {
-            // Only admins or the user that logged in themselves can update their info
-            if (Gate::allows('authAdmin') || strtolower($username) == Auth::user()->username) {
-                $data = User::where('username', $username)->first();
-
+    public function updateUserView(Request $request, $username){
+        if($data = User::where('username', $username)->first()){
+            // Only superadmin can edit their own profile
+            if($username == 'admin' && Auth::user()->username == 'admin'){
                 return view('user.update')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting, 'data' => $data]);
-                // Only the user 'admin' can update their info. Other admins can't update the 'admin' user.
-                if ('admin' == $username && 'admin' == Auth::user()->username) {
-                    $data = User::where('username', $username)->first();
-
-                    return view('user.update')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting, 'data' => $data]);
-                } else {
-                    abort(403, 'Anda tidak boleh mengakses laman ini.');
-                }
-            } else {
+            // Only superadmin or an admin themselves can edit their own profile
+            }elseif($data->role == 'admin' && Auth::user()->username == $username || Auth::user()->role == 'superadmin'){
+                return view('user.update')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting, 'data' => $data]);
+            // Admins and the user themselves can edit their own profile
+            }elseif($data->role == 'participant' && Gate::allows('authAdmin') || Auth::user()->username == $username){
+                return view('user.update')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting, 'data' => $data]);
+            }else{
                 abort(403, 'Anda tidak boleh mengakses laman ini.');
             }
         } else {
@@ -109,6 +104,15 @@ class UserController extends MainController
                 $token = $user->createToken('apitoken');
                 // Add Bearer API Token to session
                 $request->session()->put('bearerAPIToken', $token->plainTextToken);
+
+                // Check if this is user first time login
+                $firstTimeLoginStatus = User::select('first_time_login')->where('username', $username)->first()->first_time_login;
+                if($firstTimeLoginStatus == 'yes'){
+                    $request->session()->flash('firstTimeLogin', 'yes');
+                    User::where('id', $userID)
+                        ->update(['first_time_login' => 'no']);
+                }
+
                 LoginActivity::create([
                     'user_id' => $userID,
                     'ip_address' => $request->ip(),
@@ -236,6 +240,7 @@ class UserController extends MainController
                         $fullnameValid = $fullname;
                     }
 
+
                     if (empty($email)) {
                         $error = '[D' . $currentRow . '] ' . 'Ruangan alamat e-mel kosong!';
                         array_push($spreadsheetErr, $error);
@@ -355,10 +360,31 @@ class UserController extends MainController
                 ]);
             }
         } elseif ($request->has('password-update')) {
-            $validated = $request->validate([
-                'password' => ['required', 'confirmed'],
-            ]);
-            if (User::select('username')->where('username', $request->username)->first()) {
+            // Only logged in user that need to change their own password need to enter old password
+            // Admins changing participant password won't need to know the participant password
+            if($username == Auth::user()->username){
+                $validated = $request->validate([
+                    'password' => ['required', 'confirmed'],
+                    'old_password' => ['required']
+                ]);
+            }else{
+                $validated = $request->validate([
+                    'password' => ['required', 'confirmed']
+                ]);
+            }
+            if(User::select('username')->where('username', $username)->first()){
+                $oldPassword = User::select('password')->where('username', $username)->first()->password;
+                // If old password not empty, it means user is updating their own password
+                if(!empty($request->input('old_password'))){
+                    // If old password input != old password from DB
+                    $oldPasswordInput = $request->input('old_password');
+                    if(!Hash::check($oldPasswordInput, $oldPassword)){
+                        return back()->withErrors([
+                            'oldPasswordWrong' => 'Kata laluan lama salah!',
+                        ]);
+                    }
+                }
+                // Password is case sensitive
                 User::updateOrCreate(
                     ['username' => strtolower($request->username)],
                     ['password' => Hash::make($request->password)]

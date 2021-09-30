@@ -15,75 +15,50 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
-    <link rel="stylesheet" href="{{ asset('bootstraps-icons/font/bootstrap-icons.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-    <link rel="shortcut icon" href="{{ asset('/storage/logo/SeaJell-Logo.png') }}" type="image/png">
-    @if(!empty($systemSetting->logo))
-        <link rel="shortcut icon" href="{{ asset('storage/') . $systemSetting->logo }}" type="image/png">
-    @else
-        <link rel="shortcut icon" href="{{ asset('/storage/logo/SeaJell-Logo.png') }}" type="image/png">
-    @endif
-    <title>
+@extends('layout.auth')
+
+@section('content')
+<div class="container">
+    <div class="d-flex justify-content-center align-items-center">
+        @if(Storage::disk('public')->exists($systemSetting->logo))
+            <img class="row system-logo" src="{{ asset('storage/') . $systemSetting->logo }}" alt="SeaJell Logo" style="height: 10em; width: 10em;">
+        @else
+            <img class="row system-logo" src="{{ asset('/storage/logo/SeaJell-Logo.png') }}" alt="SeaJell Logo" style="height: 10em; width: 10em;">
+        @endif
+    </div>
+    <p class="fw-bold fs-1 text-center mb-1 text-light">
         @if(!empty($systemSetting->name))
             {{ strtoupper($systemSetting->name) }}
         @else
             {{ 'SeaJell' }}
         @endif
-        {{ '- SeaJell' }}
-    </title>
-</head>
-<body class="min-vh-100" style="background-color: #495057">
-    <div class="container-fluid d-flex flex-column justify-content-center align-items-center vh-100">
-        @if(Storage::disk('public')->exists($systemSetting->logo))
-            <img class="row mb-3 system-logo" src="{{ asset('storage/') . $systemSetting->logo }}" alt="SeaJell Logo" style="height: 10em; width: 10em;">
-        @else
-            <img class="row mb-3 system-logo" src="{{ asset('/storage/logo/SeaJell-Logo.png') }}" alt="SeaJell Logo" style="height: 10em; width: 10em;">
-        @endif
-       
-        <div class="row w-100 mb-3">
-            <div class="col-4 rounded-start d-flex flex-column align-items-center justify-content-center bg-dark text-light border border-dark border-2">
-                <p class="fw-bold fs-2 text-center">
-                    @if(!empty($systemSetting->name))
-                        {{ strtoupper($systemSetting->name) }}
-                    @else
-                        {{ 'SeaJell' }}
-                    @endif
-                </p>
-                <p class="fw-normal fs-4">Log Masuk</p>
+    </p>
+
+    <p class="text-center mb-5 text-light fs-3">Log Masuk</p>
+
+    <div class="col-4 mx-auto bg-light p-4 rounded">
+        <form action="" method="post">
+            @csrf
+            <div class="my-3">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" class="form-control mb-3" id="username" name="username" placeholder="">
             </div>
-            <div class="col-8 rounded-end bg-light text-dark border border-dark border-2">
-                <form action="" method="post">
-                    @csrf
-                    <div class="my-3">
-                        <label for="username" class="form-label">Username</label>
-                        <input type="text" class="form-control" id="username" name="username" placeholder="">
-                    </div>
-                    @error('username')
-                        <div class="alert alert-danger">{{ $message }}</div>
-                    @enderror
-                    <div class="my-3">
-                        <label for="password" class="form-label">Kata Laluan</label>
-                        <input type="password" class="form-control" id="password" name="password" placeholder="">
-                    </div>
-                    @error('password')
-                        <div class="alert alert-danger">{{ $message }}</div>
-                    @enderror
-                    <button class="btn btn-outline-dark mb-3" type="submit"><i class="bi bi-door-open"></i> Log Masuk</button>
-                </form>
+            @error('username')
+            <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
+
+            <div class="mb-4">
+                <label for="password" class="form-label">Kata Laluan</label>
+                <input type="password" class="form-control" id="password" name="password" placeholder="">
             </div>
-        </div>
-        <div class="row text-center text-light">
-            <p><a class="text-decoration-underline text-light" href="https://projects.hanisirfan.xyz/seajell" target="_blank">SeaJell</a> {{ $appVersion }}</p>
-            <p>Hak Cipta &copy; <a href="http://hanisirfan.xyz">Muhammad Hanis Irfan bin Mohd Zaid</a> 2021</p>
-        </div>
+            @error('password')
+            <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
+
+            <button class="btn btn-outline-dark mb-3" type="submit"><i class="bi bi-door-open"></i> Log
+                Masuk</button>
+        </form>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
-</body>
-</html>
+</div>
+</div>
+@endsection

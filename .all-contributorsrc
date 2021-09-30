@@ -1,0 +1,38 @@
+{
+  "files": [
+    "CONTRIBUTORS.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "hanisirfan",
+      "name": "Muhammad Hanis Irfan Mohd Zaid",
+      "avatar_url": "https://avatars.githubusercontent.com/u/66242389?v=4",
+      "profile": "https://www.hanisirfan.xyz",
+      "contributions": [
+        "maintenance",
+        "code",
+        "doc",
+        "design",
+        "ideas",
+        "test"
+      ]
+    },
+    {
+      "login": "msulaimanmisri",
+      "name": "Muhamad Sulaiman",
+      "avatar_url": "https://avatars.githubusercontent.com/u/47172118?v=4",
+      "profile": "https://sulaimanmisri.com/portfolio",
+      "contributions": [
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "seajell",
+  "projectOwner": "seajell",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}

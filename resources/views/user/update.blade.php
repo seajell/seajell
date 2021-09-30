@@ -20,7 +20,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
     <p class="fs-2">Kemas Kini Pengguna</p>
     @php
     //  Check if there's old value, if not insert data from database if available
-        
+
         if(old('fullname') != NULL){ // fullname
             $valueFullname = old('fullname');
         }else{
@@ -101,12 +101,13 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                         </select>
                         @error('role')
                             <div class="alert alert-danger">{{ $message }}</div>
-                        @enderror   
+                        @enderror
                     @endif
                 @endif
             @endcan
         <button class="btn btn-outline-light" type="submit" name="info">Kemas Kini Maklumat</button>
     </form>
+    {{-- Only admin can change their own password. Othe admins can't. Superadmin is an exception. --}}
     <p class="fs-2">Kemas Kini Kata Laluan</p>
     @if(session()->has('updateUserPasswordSuccess'))
         <span><div class="alert alert-success w-100 ml-1">{{ session('updateUserPasswordSuccess') }}</div></span>
@@ -116,6 +117,20 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
     @enderror
     <form action="" method="post" class="mb-3">
         @csrf
+        {{-- Admin won't need to know participant password to change it --}}
+        {{-- Admin must enter their old password to change it --}}
+        @if($data->username == Auth::user()->username)
+            <div class="mb-3">
+                <label for="old_password" class="form-label">Kata Laluan Lama</label>
+                <input type="password" class="form-control" id="old_password" name="old_password" placeholder="Masukkan kata laluan lama pengguna.">
+            </div>
+            @error('old_password')
+                <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
+            @error('oldPasswordWrong')
+                <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
+        @endif
         <div class="mb-3">
             <label for="password" class="form-label">Kata Laluan</label>
             <input type="password" class="form-control" id="password" name="password" placeholder="Masukkan kata laluan pengguna.">
