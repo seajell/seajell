@@ -86,60 +86,60 @@ Route::get('/system', [SystemController::class, 'systemView'])->name('system')->
 Route::post('/system', [SystemController::class, 'systemUpdate'])->middleware(['auth','UserIsAdmin']);
 
 // Mails View Test
-Route::get('/email/newaccount', function () {
-    $supportEmail = 'test@test.com';
-    $systemName = SystemSetting::select('name')->where('id', 1)->first()->name;
-    if(!empty(SystemSetting::select('logo')->where('id', 1)->first()->logo)){
-        $systemLogo = SystemSetting::select('logo')->where('id', 1)->first()->logo;
-    }else{
-        $systemLogo = '';
-    }
-    $username = 'Test Username';
-    $password = 'Test Password';
-    $data = [
-        'supportEmail' => $supportEmail,
-        'systemLogo' => $systemLogo,
-        'systemName' => $systemName,
-        'username' => $username,
-        'password' => $password
-    ];
-    return new NewAccountMail(['data' => $data]);
-});
+// Route::get('/email/newaccount', function () {
+//     $supportEmail = 'test@test.com';
+//     $systemName = SystemSetting::select('name')->where('id', 1)->first()->name;
+//     if(!empty(SystemSetting::select('logo')->where('id', 1)->first()->logo)){
+//         $systemLogo = SystemSetting::select('logo')->where('id', 1)->first()->logo;
+//     }else{
+//         $systemLogo = '';
+//     }
+//     $username = 'Test Username';
+//     $password = 'Test Password';
+//     $data = [
+//         'supportEmail' => $supportEmail,
+//         'systemLogo' => $systemLogo,
+//         'systemName' => $systemName,
+//         'username' => $username,
+//         'password' => $password
+//     ];
+//     return new NewAccountMail(['data' => $data]);
+// });
 
-Route::get('/email/certificateadd', function () {
-    $supportEmail = 'test@test.com';
-    $systemName = SystemSetting::select('name')->where('id', 1)->first()->name;
-    if(!empty(SystemSetting::select('logo')->where('id', 1)->first()->logo)){
-        $systemLogo = SystemSetting::select('logo')->where('id', 1)->first()->logo;
-    }else{
-        $systemLogo = '';
-    }
-    $data = [
-        'supportEmail' => $supportEmail,
-        'systemLogo' => $systemLogo,
-        'systemName' => $systemName,
-        'eventName' => 'Test Event',
-        'certificateID' => 'Test Certificate ID',
-    ];
-    return new CertificateAddMail(['data' => $data]);
-});
+// Route::get('/email/certificateadd', function () {
+//     $supportEmail = 'test@test.com';
+//     $systemName = SystemSetting::select('name')->where('id', 1)->first()->name;
+//     if(!empty(SystemSetting::select('logo')->where('id', 1)->first()->logo)){
+//         $systemLogo = SystemSetting::select('logo')->where('id', 1)->first()->logo;
+//     }else{
+//         $systemLogo = '';
+//     }
+//     $data = [
+//         'supportEmail' => $supportEmail,
+//         'systemLogo' => $systemLogo,
+//         'systemName' => $systemName,
+//         'eventName' => 'Test Event',
+//         'certificateID' => 'Test Certificate ID',
+//     ];
+//     return new CertificateAddMail(['data' => $data]);
+// });
 
-Route::get('/email/forgetpassword', function () {
-    $supportEmail = 'test@test.com';
-    $systemName = SystemSetting::select('name')->where('id', 1)->first()->name;
-    if(!empty(SystemSetting::select('logo')->where('id', 1)->first()->logo)){
-        $systemLogo = SystemSetting::select('logo')->where('id', 1)->first()->logo;
-    }else{
-        $systemLogo = '';
-    }
-    $username = 'Test Username';
-    $password = 'Test Password';
-    $data = [
-        'supportEmail' => $supportEmail,
-        'systemLogo' => $systemLogo,
-        'systemName' => $systemName,
-        'username' => $username,
-        'password' => $password
-    ];
-    return new ForgetPasswordMail(['data' => $data]);
-});
+// Route::get('/email/forgetpassword', function () {
+//     $supportEmail = 'test@test.com';
+//     $systemName = SystemSetting::select('name')->where('id', 1)->first()->name;
+//     if(!empty(SystemSetting::select('logo')->where('id', 1)->first()->logo)){
+//         $systemLogo = SystemSetting::select('logo')->where('id', 1)->first()->logo;
+//     }else{
+//         $systemLogo = '';
+//     }
+//     $username = 'Test Username';
+//     $password = 'Test Password';
+//     $data = [
+//         'supportEmail' => $supportEmail,
+//         'systemLogo' => $systemLogo,
+//         'systemName' => $systemName,
+//         'username' => $username,
+//         'password' => $password
+//     ];
+//     return new ForgetPasswordMail(['data' => $data]);
+// });

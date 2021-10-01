@@ -143,17 +143,17 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         }
 
         if(!empty(old('email-service-username'))){
-            $emailServiceUsername = strtoupper(old('email-service-username'));
+            $emailServiceUsername = old('email-service-username');
         }elseif(!empty($emailServiceSetting->account_username)){
-            $emailServiceUsername = strtoupper($emailServiceSetting->account_username);
+            $emailServiceUsername = $emailServiceSetting->account_username;
         }else{
             $emailServiceUsername = '';
         }
 
         if(!empty(old('email-service-password'))){
-            $emailServicePassword = strtoupper(old('email-service-password'));
+            $emailServicePassword = old('email-service-password');
         }elseif(!empty($emailServiceSetting->account_password)){
-            $emailServicePassword = strtoupper($emailServiceSetting->account_password);
+            $emailServicePassword = $emailServiceSetting->account_password;
         }else{
             $emailServicePassword = '';
         }

@@ -23,5 +23,7 @@ Daripada, <br>
     {{ '**SeaJell**' }}
 @endif
 
+@if(!empty($data['data']['supportEmail']))
 _Jika anda menghadapi sebarang masalah atau mempunyai pertanyaan, sila hubungi melalui e-mel <a href="mailto:{{ $data['data']['supportEmail'] }}">{{ $data['data']['supportEmail'] }}</a> untuk mendapatkan bantuan._
+@endif
 @endcomponent

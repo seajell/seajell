@@ -19,11 +19,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Mail\NewAccountMail;
 use Illuminate\Http\Request;
 use App\Models\LoginActivity;
+use App\Models\SystemSetting;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Config;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use App\Http\Controllers\MainController;
 use PhpOffice\PhpSpreadsheet\Reader\Exception as PHPSpreadsheetReaderException;
@@ -151,6 +155,54 @@ class UserController extends MainController
                 ['username' => strtolower($request->username)],
                 ['fullname' => strtolower($request->fullname), 'email' => strtolower($request->email), 'password' => Hash::make($request->password), 'identification_number' => $request->identification_number, 'role' => strtolower($request->role)]
             );
+
+            // Sending Email
+            if(!empty($this->emailServiceSetting)){
+                if($this->emailServiceSetting->service_status == 'on'){
+                    if(!empty($this->emailServiceSetting->support_email)){
+                        $emailSupportEmail = $this->emailServiceSetting->support_email;
+                    }else{
+                        $emailSupportEmail = '';
+                    }
+
+                    if(!empty($this->systemSetting->logo)){
+                        $emailSystemLogo = $this->systemSetting->logo;
+                    }else{
+                        $emailSystemLogo = '';
+                    }
+
+                    if(!empty($this->systemSetting->name)){
+                        $emailSystemName = $this->systemSetting->name;
+                    }else{
+                        $emailSystemName = '';
+                    }
+                    $emailData = [
+                        'supportEmail' => $emailSupportEmail,
+                        'systemLogo' => $emailSystemLogo,
+                        'systemName' => $emailSystemName,
+                        'username' => strtolower($request->username),
+                        'password' => $request->password
+                    ];
+
+                    $smtpHost = $this->emailServiceSetting->service_host;
+                    $smtpPort = $this->emailServiceSetting->service_port;
+                    $smtpUsername = $this->emailServiceSetting->account_username;
+                    $smtpPassword = $this->emailServiceSetting->account_password;
+                    $smtpConfig = [
+                            'transport' => 'smtp',
+                            'host' => $smtpHost,
+                            'port' => $smtpPort,
+                            'encryption' => env('MAIL_ENCRYPTION', 'tls'),
+                            'username' => $smtpUsername,
+                            'password' => $smtpPassword,
+                            'timeout' => null,
+                            'auth_mode' => null,
+                    ];
+                    config(['mail.mailers.smtp' => $smtpConfig]);
+                    Mail::to(strtolower($request->email))->send(new NewAccountMail(['data' => $emailData]));
+                }
+            }
+
             $request->session()->flash('addUserSuccess', 'Pengguna berjaya ditambah!');
             return back();
         }else{
