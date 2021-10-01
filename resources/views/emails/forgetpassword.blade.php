@@ -5,14 +5,15 @@
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 </head>
 @component('mail::message', ['data' => $basicEmailDetails])
-# Permintaan penetapan semula kata laluan
+# Akaun anda berjaya dicipta!
 
-Terdapat sebuah permintaan untuk menetapkan semula kata laluan anda.
+Anda boleh mengakses akaun anda di <a href="{{ $basicEmailDetails['systemURL'] . '/login' }}" target="_blank">{{ $basicEmailDetails['systemURL'] . '/login' }}</a> dengan maklumat berikut:
 
-Jika anda tidak membuat permintaan ini, sila abaikan.
+- **Username:** {{ $emailDetails['username'] }}
+- **Kata Laluan:** {{ $emailDetails['password'] }}
 
-@component('mail::button', ['url' => url('/')])
-    <i class="bi bi-arrow-right-square"></i> Tetapkan Semula Kata Laluan
+@component('mail::button', ['url' => $basicEmailDetails['systemURL'] . '/login'])
+<i class="bi bi-arrow-right-square"></i> Log Masuk
 @endcomponent
 
 Daripada, <br>

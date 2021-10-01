@@ -7,12 +7,13 @@
 @component('mail::message', ['data' => $basicEmailDetails])
 # Akaun anda berjaya dicipta!
 
-Anda boleh mengakses akaun anda di <a href="{{ url('/login') }}" target="_blank">{{ url('/login') }}</a> dengan maklumat berikut
-- **Username:** {{ strtolower($emailDetails['username']) }}
+Anda boleh mengakses akaun anda di <a href="{{ $basicEmailDetails['systemURL'] . '/login' }}" target="_blank">{{ $basicEmailDetails['systemURL'] . '/login' }}</a> dengan maklumat berikut:
+
+- **Username:** {{ $emailDetails['username'] }}
 - **Kata Laluan:** {{ $emailDetails['password'] }}
 
-@component('mail::button', ['url' => url('/login')])
-    <i class="bi bi-arrow-right-square"></i> Log Masuk
+@component('mail::button', ['url' => $basicEmailDetails['systemURL'] . '/login'])
+<i class="bi bi-arrow-right-square"></i> Log Masuk
 @endcomponent
 
 Daripada, <br>

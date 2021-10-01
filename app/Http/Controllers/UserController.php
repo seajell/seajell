@@ -20,9 +20,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Jobs\AlertMailJob;
 use App\Mail\NewAccountMail;
 use Illuminate\Http\Request;
 use App\Models\LoginActivity;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
@@ -33,7 +35,11 @@ class UserController extends MainController
 {
     public function loginView(Request $request)
     {
-        return view('login')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting]);
+        if (Auth::check()) {
+            return redirect('/');
+        } else {
+            return view('login')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting]);
+        }
     }
 
     public function userListView(Request $request)
@@ -187,20 +193,21 @@ class UserController extends MainController
                         $emailSystemName = '';
                     }
 
+                    $systemURL = URL::to('/');
+
                     $basicEmailDetails = [
                         'supportEmail' => strtolower($emailSupportEmail),
                         'systemLogo' => $emailSystemLogo,
                         'systemName' => $emailSystemName,
+                        'systemURL' => $systemURL,
                     ];
-
-                    $mailer = app()->makeWith('user.mailer');
 
                     $emailDetails = [
                         'username' => strtolower($request->username),
                         'password' => $request->password,
                     ];
 
-                    $mailer->to(strtolower($request->email))->send(new NewAccountMail($basicEmailDetails, $emailDetails));
+                    AlertMailJob::dispatch(strtolower($request->email), new NewAccountMail($basicEmailDetails, $emailDetails));
                 }
             }
 
@@ -338,7 +345,7 @@ class UserController extends MainController
                             'username' => $usernameValid,
                             'fullname' => $fullnameValid,
                             'email' => $emailValid,
-                            'password' => Hash::make($passwordValid),
+                            'password' => $passwordValid,
                             'identification_number' => $identificationNoValid,
                             'role' => $roleValid,
                         ];
@@ -353,7 +360,57 @@ class UserController extends MainController
 
             return back();
         } else {
-            User::upsert($validUserList, ['username'], ['fullname', 'email', 'password', 'identification_number', 'role']);
+            foreach ($validUserList as $validUser) {
+                User::updateOrCreate(
+                    ['username' => $validUser['username']],
+                    [
+                        'fullname' => $validUser['fullname'],
+                        'email' => $validUser['email'],
+                        'password' => Hash::make($validUser['password']),
+                        'identification_number' => $validUser['identification_number'],
+                        'role' => $validUser['role'],
+                    ]
+                );
+                // Sending Email
+                if (!empty($this->emailServiceSetting)) {
+                    if ('on' == $this->emailServiceSetting->service_status) {
+                        if (!empty($this->emailServiceSetting->support_email)) {
+                            $emailSupportEmail = $this->emailServiceSetting->support_email;
+                        } else {
+                            $emailSupportEmail = '';
+                        }
+
+                        if (!empty($this->systemSetting->logo)) {
+                            $emailSystemLogo = $this->systemSetting->logo;
+                        } else {
+                            $emailSystemLogo = '';
+                        }
+
+                        if (!empty($this->systemSetting->name)) {
+                            $emailSystemName = $this->systemSetting->name;
+                        } else {
+                            $emailSystemName = '';
+                        }
+
+                        $systemURL = URL::to('/');
+
+                        $basicEmailDetails = [
+                            'supportEmail' => strtolower($emailSupportEmail),
+                            'systemLogo' => $emailSystemLogo,
+                            'systemName' => $emailSystemName,
+                            'systemURL' => $systemURL,
+                        ];
+
+                        $emailDetails = [
+                            'username' => strtolower($validUser['username']),
+                            'password' => $validUser['password'],
+                        ];
+
+                        AlertMailJob::dispatch(strtolower($validUser['email']), new NewAccountMail($basicEmailDetails, $emailDetails));
+                    }
+                }
+            }
+            // User::upsert($validUserList, ['username'], ['fullname', 'email', 'password', 'identification_number', 'role']);
             $request->session()->flash('spreadsheetSuccess', count($validUserList) . ' pengguna berjaya ditambah secara pukal!');
 
             return back();

@@ -46,6 +46,7 @@ class AppServiceProvider extends ServiceProvider
 
             $swift_mailer = new \Swift_Mailer($transport);
             $mailer = new Mailer('smtp', $app->get('view'), $swift_mailer, $app->get('events'));
+            $mailer->setQueue($app['queue']);
             $mailer->alwaysFrom($from_email, $from_name);
             $mailer->alwaysReplyTo($from_email, $from_name);
 
