@@ -1,4 +1,5 @@
 <?php
+
 // Copyright (c) 2021 Muhammad Hanis Irfan bin Mohd Zaid
 
 // This file is part of SeaJell.
@@ -19,19 +20,21 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\MainController;
 
 class HomeController extends MainController
 {
-    public function view(Request $request){
+    public function view(Request $request)
+    {
         return view('home')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting]);
     }
 
-    public function signatureView(Request $request){
-        return view('signature')->with(['appVersion' => $this->appVersion,'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting]);
+    public function signatureView(Request $request)
+    {
+        return view('signature')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting]);
     }
 
-    public function statisticView(Request $request){
-        return view('statistic')->with(['appVersion' => $this->appVersion,'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting]);
+    public function statisticView(Request $request)
+    {
+        return view('statistic')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting]);
     }
 }

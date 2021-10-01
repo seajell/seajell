@@ -1,4 +1,5 @@
 <?php
+
 // Copyright (c) 2021 Muhammad Hanis Irfan bin Mohd Zaid
 
 // This file is part of SeaJell.
@@ -18,8 +19,6 @@
 
 namespace App\Models;
 
-use App\Models\User;
-use App\Models\Event;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -27,7 +26,7 @@ class Certificate extends Model
 {
     use HasFactory;
 
-     /**
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
@@ -38,17 +37,19 @@ class Certificate extends Model
         'event_id',
         'type',
         'position',
-        'category'
+        'category',
     ];
 
     /**
-     * Relationships
+     * Relationships.
      */
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 
-    public function event(){
+    public function event()
+    {
         return $this->belongsTo(Event::class);
     }
 }

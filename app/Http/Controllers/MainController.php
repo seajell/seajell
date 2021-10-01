@@ -1,4 +1,5 @@
 <?php
+
 // Copyright (c) 2021 Muhammad Hanis Irfan bin Mohd Zaid
 
 // This file is part of SeaJell.
@@ -19,7 +20,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Illuminate\Http\Request;
 use App\Models\SystemSetting;
 use App\Models\EmailServiceSettings;
 use Intervention\Image\Facades\Image;
@@ -31,34 +31,28 @@ class MainController extends Controller
     protected $appName;
     protected $appVersion;
     protected $systemSetting;
-    protected $emailServiceSetting;
 
     public function __construct()
     {
         // Check if system is properly installed. If not redirect to /install route.
         $this->middleware(function ($request, $next) {
             // Check if users table exist
-            if(Schema::hasTable('users')){
+            if (Schema::hasTable('users')) {
                 // Check if admin user not exist
-                if(!User::where('username', 'admin')->first()){
+                if (!User::where('username', 'admin')->first()) {
                     return redirect()->route('install.view');
-                }else{
-                    if($request->session()->has('bearerAPIToken')){
+                } else {
+                    if ($request->session()->has('bearerAPIToken')) {
                         $this->apiToken = $request->session()->get('bearerAPIToken');
-                    }else{
-                        $this->apiToken = NULL;
+                    } else {
+                        $this->apiToken = null;
                     }
                     $this->appName = env('APP_NAME', 'SeaJell');
                     $this->appVersion = env('APP_VERSION', 'v2.0.0');
                     $this->systemSetting = SystemSetting::select('id', 'name', 'logo', 'language')->where('id', 1)->first();
-                    if(EmailServiceSettings::where('id', 1)->first()){
-                        $this->emailServiceSetting = EmailServiceSettings::where('id', 1)->first();
-                    }else{
-                        $this->emailServiceSetting = '';
-                    }
                     return $next($request);
                 }
-            }else{
+            } else {
                 return redirect()->route('install.view');
             }
         });
@@ -67,19 +61,21 @@ class MainController extends Controller
     /**
      * Returns an image data URL that's cached.
      *
-     * @param  string  $imagePath
-     * @param  int  $width
-     * @param  int  $height
+     * @param string $imagePath
+     * @param int $width
+     * @param int $height
+     *
      * @return mixed
      */
-    protected function cacheDataURLImage($imagePath, $width = 300, $height = 300){
+    protected function cacheDataURLImage($imagePath, $width = 300, $height = 300)
+    {
         // Check whether a path string is given and not empty
-        if(!empty($imagePath)){
+        if (!empty($imagePath)) {
             $imageStoragePath = storage_path('app/public' . $imagePath);
-            $dataURLImageCached = Image::cache(function($image) use ($imageStoragePath, $width, $height){
+            $dataURLImageCached = Image::cache(function ($image) use ($imageStoragePath, $width, $height) {
                 $image->make($imageStoragePath)->resize($width, $height)->encode('data-url');
             }, 10);
-        }else{
+        } else {
             $dataURLImageCached = '';
         }
 

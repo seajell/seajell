@@ -1,4 +1,5 @@
 <?php
+
 // Copyright (c) 2021 Muhammad Hanis Irfan bin Mohd Zaid
 
 // This file is part of SeaJell.
@@ -18,7 +19,6 @@
 
 namespace App\Models;
 
-use App\Models\Certificate;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -54,13 +54,14 @@ class Event extends Model
         'border_color',
         'text_color',
         'font_set',
-        'orientation'
+        'orientation',
     ];
 
     /**
-     * Relationships
+     * Relationships.
      */
-    public function certificate(){
+    public function certificate()
+    {
         return $this->hasMany(Certificate::class);
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 // Copyright (c) 2021 Muhammad Hanis Irfan bin Mohd Zaid
 
 // This file is part of SeaJell.
@@ -24,21 +25,22 @@ use App\Http\Controllers\Controller;
 
 class UserController extends Controller
 {
-    public function getUserByUsername(Request $request, $username){
-        if($username == 'empty-value'){
+    public function getUserByUsername(Request $request, $username)
+    {
+        if ('empty-value' == $username) {
             return response()->json([
-                'Empty_Err' => 'Empty username given!'
+                'Empty_Err' => 'Empty username given!',
             ]);
-        }else{
+        } else {
             $user = User::select('fullname', 'identification_number')->where('username', $username)->first();
-            if($user){
+            if ($user) {
                 return response()->json([
                     'fullname' => $user->fullname,
-                    'identification_number' => $user->identification_number
+                    'identification_number' => $user->identification_number,
                 ]);
-            }else{
+            } else {
                 return response()->json([
-                    'NotFound_Err' => 'User not found!'
+                    'NotFound_Err' => 'User not found!',
                 ]);
             }
         }

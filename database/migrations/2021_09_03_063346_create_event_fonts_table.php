@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 class CreateEventFontsTable extends Migration
 {
@@ -21,7 +21,7 @@ class CreateEventFontsTable extends Migration
             $table->string('certificate_type_text_font', 30);
             $table->float('first_text_size', 8, 2);
             $table->string('first_text_color', 15)->default('#000000');
-            $table->string('first_text_font', 30); 
+            $table->string('first_text_font', 30);
             $table->float('second_text_size', 8, 2);
             $table->string('second_text_color', 15)->default('#000000');
             $table->string('second_text_font', 30);

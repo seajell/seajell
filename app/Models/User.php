@@ -1,4 +1,5 @@
 <?php
+
 // Copyright (c) 2021 Muhammad Hanis Irfan bin Mohd Zaid
 
 // This file is part of SeaJell.
@@ -18,16 +19,16 @@
 
 namespace App\Models;
 
-use App\Models\Certificate;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens;
+    use HasFactory;
+    use Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -40,7 +41,7 @@ class User extends Authenticatable
         'email',
         'password',
         'identification_number',
-        'role'
+        'role',
     ];
 
     /**
@@ -63,9 +64,10 @@ class User extends Authenticatable
     ];
 
     /**
-     * Relationships
+     * Relationships.
      */
-    public function certificate(){
+    public function certificate()
+    {
         return $this->hasMany(Certificate::class);
     }
 }
