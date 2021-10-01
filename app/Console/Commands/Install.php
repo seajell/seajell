@@ -1,4 +1,5 @@
 <?php
+
 // Copyright (c) 2021 Muhammad Hanis Irfan bin Mohd Zaid
 
 // This file is part of SeaJell.
@@ -20,8 +21,8 @@ namespace App\Console\Commands;
 
 use App\Models\User;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Artisan;
 
 class Install extends Command
 {
@@ -59,7 +60,7 @@ class Install extends Command
         Artisan::call('migrate'); // Migrate the database
         $this->info('Database migrated!');
         User::upsert([
-            ['username' => 'admin', 'fullname' => $this->argument('fullname'), 'fullname' => $this->argument('fullname'), 'email' => $this->argument('email'), 'password' => Hash::make($this->argument('password')), 'role' => 'superadmin']
+            ['username' => 'admin', 'fullname' => $this->argument('fullname'), 'fullname' => $this->argument('fullname'), 'email' => $this->argument('email'), 'password' => Hash::make($this->argument('password')), 'role' => 'superadmin'],
         ], ['username'], ['fullname', 'email', 'password', 'role']);
         Artisan::call('storage:link'); // Create symbolic links
         $this->info('A user with the admin user was successfully created or updated!');

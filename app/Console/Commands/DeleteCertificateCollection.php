@@ -43,7 +43,7 @@ class DeleteCertificateCollection extends Command
         $allDeletionScheduled = CertificateCollectionDeletionSchedule::get();
         foreach ($allDeletionScheduled as $deletion) {
             // If current data time passed the delete after data, delete the folder and the schedule from database
-            if(Carbon::now()->toDateTimeString() > $deletion->delete_after){
+            if (Carbon::now()->toDateTimeString() > $deletion->delete_after) {
                 $folderName = $deletion->folder_name;
                 Storage::disk('local')->deleteDirectory('/certificate/' . $folderName);
                 CertificateCollectionDeletionSchedule::where('id', $deletion->id)->delete();

@@ -1,4 +1,5 @@
 <?php
+
 // Copyright (c) 2021 Muhammad Hanis Irfan bin Mohd Zaid
 
 // This file is part of SeaJell.
@@ -22,7 +23,6 @@ use Carbon\Carbon;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\SystemSetting;
-use App\Models\InstituteSetting;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Artisan;
@@ -30,51 +30,58 @@ use Illuminate\Support\Facades\Storage;
 
 class InstallationController extends Controller
 {
-    public function installView(Request $request){
+    public function installView(Request $request)
+    {
         // If user table exist, redirect to success page.
-        if(Schema::hasTable('users')){
+        if (Schema::hasTable('users')) {
             return redirect()->route('install.success');
-        }else{
+        } else {
             // If admin user not exist, render install main page.
-            if(Schema::hasTable('users')){
-                if(!User::where('username', 'admin')->first()){
+            if (Schema::hasTable('users')) {
+                if (!User::where('username', 'admin')->first()) {
                     return view('install.main');
-                }else{
+                } else {
                     return redirect()->route('install.success');
                 }
-            }else{
+            } else {
                 return view('install.main');
             }
         }
     }
-    public function installConfigView(Request $request){
+
+    public function installConfigView(Request $request)
+    {
         // If user table exist, redirect to success page.
-        if(Schema::hasTable('users')){
+        if (Schema::hasTable('users')) {
             return redirect()->route('install.success');
-        }else{
+        } else {
             // If admin user not exist, render install main page.
-            if(Schema::hasTable('users')){
-                if(!User::where('username', 'admin')->first()){
+            if (Schema::hasTable('users')) {
+                if (!User::where('username', 'admin')->first()) {
                     return view('install.config');
-                }else{
+                } else {
                     return redirect()->route('install.success');
                 }
-            }else{
+            } else {
                 return view('install.config');
             }
         }
     }
-    public function installSuccessView(Request $request){
+
+    public function installSuccessView(Request $request)
+    {
         return view('install.success');
     }
-    public function install(Request $request){
+
+    public function install(Request $request)
+    {
         $validated = $request->validate([
             'adminFullName' => 'required',
             'adminEmailAddress' => 'required|email',
             'password' => 'required|confirmed',
             'system-name' => ['required'],
             'system-language' => ['required'],
-            'system-logo' => ['required', 'image', 'mimes:png']
+            'system-logo' => ['required', 'image', 'mimes:png'],
         ]);
         $adminFullname = $request->adminFullName;
         $adminEmailAddress = $request->adminEmailAddress;
@@ -83,18 +90,18 @@ class InstallationController extends Controller
         $systemLanguage = $request->input('system-language');
         $systemLogo = $request->file('system-logo');
 
-        if($request->hasFile('system-logo')){
+        if ($request->hasFile('system-logo')) {
             $systemLogoName = $request->file('system-logo')->getClientOriginalName();
             $systemLogoImage = Image::make($request->file('system-logo'))->resize(300, 300)->encode('png');
-            $systemLogoSavePath = '/img/system/logo/'. Carbon::now()->timestamp . '-' . $systemLogoName;
+            $systemLogoSavePath = '/img/system/logo/' . Carbon::now()->timestamp . '-' . $systemLogoName;
             Storage::disk('public')->put($systemLogoSavePath, $systemLogoImage);
-        }else{
+        } else {
             $systemLogoSavePath = $systemSetting = SystemSetting::where('id', 1)->first()->logo;
         }
 
         // Create admin user and migrate the database.
         Artisan::call('install', [
-            'password' => $password, 'fullname' => $adminFullname, 'email' => $adminEmailAddress
+            'password' => $password, 'fullname' => $adminFullname, 'email' => $adminEmailAddress,
         ]);
 
         SystemSetting::upsert([
@@ -102,10 +109,9 @@ class InstallationController extends Controller
                 'id' => 1,
                 'name' => strtolower($systemName),
                 'logo' => $systemLogoSavePath,
-                'language' => $systemLanguage
-            ]
+                'language' => $systemLanguage,
+            ],
         ], ['id'], ['name', 'logo', 'language']);
-
 
         // Return to installation success page.
         return redirect()->route('install.success');

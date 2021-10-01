@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\EventController;
@@ -17,7 +16,7 @@ use App\Http\Controllers\API\StatisticController;
 |
 */
 
-Route::group(['middleware' => ['auth:sanctum']], function (){
+Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/user/{username}', [UserController::class, 'getUserByUsername']);
     Route::get('/event/{id}', [EventController::class, 'getEventByID']);
     Route::get('/statistic/today', [StatisticController::class, 'getStatisticToday']);

@@ -11,15 +11,13 @@ class UserIsAdmin
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
      * @return mixed
      */
     public function handle(Request $request, Closure $next)
     {
-        if(Auth::user()->role == 'superadmin' || Auth::user()->role == 'admin'){
+        if ('superadmin' == Auth::user()->role || 'admin' == Auth::user()->role) {
             return $next($request);
-        }else{
+        } else {
             return redirect('/');
         }
     }

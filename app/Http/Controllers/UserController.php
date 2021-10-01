@@ -1,4 +1,5 @@
 <?php
+
 // Copyright (c) 2021 Muhammad Hanis Irfan bin Mohd Zaid
 
 // This file is part of SeaJell.
@@ -25,43 +26,48 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 use PhpOffice\PhpSpreadsheet\IOFactory;
-use App\Http\Controllers\MainController;
 use PhpOffice\PhpSpreadsheet\Reader\Exception as PHPSpreadsheetReaderException;
 
 class UserController extends MainController
 {
-    public function loginView(Request $request){
+    public function loginView(Request $request)
+    {
         return view('login')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting]);
     }
-    public function userListView(Request $request){
+
+    public function userListView(Request $request)
+    {
         $pagination = 15;
         $users = User::paginate($pagination)->withQueryString();
-            // Check for filters and search
-        if($request->filled('sort_by') AND $request->filled('sort_order') AND $request->has('search')){
+        // Check for filters and search
+        if ($request->filled('sort_by') and $request->filled('sort_order') and $request->has('search')) {
             $sortBy = $request->sort_by;
             $sortOrder = $request->sort_order;
             $search = $request->search;
-            if(!empty($search)){
+            if (!empty($search)) {
                 $users = User::where('id', 'LIKE', "%{$search}%")->orWhere('username', 'LIKE', "%{$search}%")->orWhere('fullname', 'LIKE', "%{$search}%")->orWhere('email', 'LIKE', "%{$search}%")->orWhere('role', 'LIKE', "%{$search}%")->orderBy($sortBy, $sortOrder)->paginate($pagination)->withQueryString();
-            }else{
+            } else {
                 $users = User::orderBy($sortBy, $sortOrder)->paginate($pagination)->withQueryString();
             }
             $sortAndSearch = [
                 'sortBy' => $sortBy,
                 'sortOrder' => $sortOrder,
-                'search' => $search
+                'search' => $search,
             ];
-            return view('user.list')->with(['sortAndSearch' => $sortAndSearch,'users' => $users, 'appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting]);
-        }else{
+
+            return view('user.list')->with(['sortAndSearch' => $sortAndSearch, 'users' => $users, 'appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting]);
+        } else {
             return view('user.list')->with(['users' => $users, 'appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting]);
         }
     }
-    public function addUserView(Request $request){
+
+    public function addUserView(Request $request)
+    {
         return view('user.add')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting]);
     }
+
     public function updateUserView(Request $request, $username){
-        if(User::where('username', $username)->first()){
-            $data = User::where('username', $username)->first();
+        if($data = User::where('username', $username)->first()){
             // Only superadmin can edit their own profile
             if($username == 'admin' && Auth::user()->username == 'admin'){
                 return view('user.update')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting, 'data' => $data]);
@@ -74,16 +80,18 @@ class UserController extends MainController
             }else{
                 abort(403, 'Anda tidak boleh mengakses laman ini.');
             }
-        }else{
+        } else {
             abort(404, 'Pengguna tidak dijumpai.');
         }
     }
+
     /**
-     * Login and Logout
+     * Login and Logout.
      */
-    public function login(Request $request){
+    public function login(Request $request)
+    {
         $username = strtolower($request->username);
-        if(User::where('username', '=', $request->username)->first()){
+        if (User::where('username', '=', $request->username)->first()) {
             $credentials = $request->validate([
                 'username' => ['required'],
                 'password' => ['required'],
@@ -108,23 +116,25 @@ class UserController extends MainController
                 LoginActivity::create([
                     'user_id' => $userID,
                     'ip_address' => $request->ip(),
-                    'http_user_agent' => $request->server('HTTP_USER_AGENT')
+                    'http_user_agent' => $request->server('HTTP_USER_AGENT'),
                 ]);
+
                 return redirect()->intended();
             }
 
             return back()->withInput()->withErrors([
                 'password' => 'Kata laluan salah.',
             ]);
-        }else{
+        } else {
             return back()->withInput()->withErrors([
-                'username' => 'Pengguna tidak wujud.'
+                'username' => 'Pengguna tidak wujud.',
             ]);
         }
     }
 
-    public function logout(Request $request){
-        if(auth()->user()->tokens() != NULL){
+    public function logout(Request $request)
+    {
+        if (null != auth()->user()->tokens()) {
             auth()->user()->tokens()->delete();
         }
         // Remove Bearer API Token from session
@@ -134,35 +144,39 @@ class UserController extends MainController
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+
         return redirect()->route('login');
     }
 
-    public function addUser(Request $request){
+    public function addUser(Request $request)
+    {
         $validated = $request->validate([
             'username' => ['required'],
             'fullname' => ['required'],
             'email' => ['required', 'email:rfc'],
             'password' => ['required', 'confirmed'],
             'identification_number' => ['required', 'numeric'],
-            'role' => ['required']
+            'role' => ['required'],
         ]);
-        if(!User::select('username')->where('username', $request->username)->first()){
+        if (!User::select('username')->where('username', $request->username)->first()) {
             User::updateOrCreate(
                 ['username' => strtolower($request->username)],
                 ['fullname' => strtolower($request->fullname), 'email' => strtolower($request->email), 'password' => Hash::make($request->password), 'identification_number' => $request->identification_number, 'role' => strtolower($request->role)]
             );
             $request->session()->flash('addUserSuccess', 'Pengguna berjaya ditambah!');
+
             return back();
-        }else{
+        } else {
             return back()->withErrors([
                 'userExisted' => 'Pengguna telah wujud!',
             ]);
         }
     }
 
-    public function addUserBulk(Request $request){
+    public function addUserBulk(Request $request)
+    {
         $validated = $request->validate([
-            'user_list' => ['required', 'mimes:xlsx']
+            'user_list' => ['required', 'mimes:xlsx'],
         ]);
         $inputFile = $request->file('user_list');
         $reader = IOFactory::createReader('Xlsx');
@@ -170,12 +184,12 @@ class UserController extends MainController
         $reader->setLoadSheetsOnly('1'); // Only read from worksheet named 1
         try {
             $spreadsheet = $reader->load($inputFile);
-        } catch(PHPSpreadsheetReaderException $e) {
-            die('Error loading file: '.$e->getMessage());
+        } catch (PHPSpreadsheetReaderException $e) {
+            exit('Error loading file: ' . $e->getMessage());
         }
         // Get all available rows. If a row is empty (in the username field), the rest of the row will be ignored. Warn the admin.
-        $rows = $spreadsheet->getActiveSheet()->rangeToArray('B8:B507', NULL, FALSE, FALSE, TRUE);
-        if(empty($rows[8]['B'])){
+        $rows = $spreadsheet->getActiveSheet()->rangeToArray('B8:B507', null, false, false, true);
+        if (empty($rows[8]['B'])) {
             return back()->withErrors([
                 'sheetAtleastOne' => 'Sekurang-kurangnya satu data pengguna diperlukan!',
             ]);
@@ -183,9 +197,9 @@ class UserController extends MainController
 
         $availableRows = [];
         foreach ($rows as $row => $value) {
-            if(!empty($value['B'])){
+            if (!empty($value['B'])) {
                 array_push($availableRows, $row);
-            }else{
+            } else {
                 // If one row is empty in the username field, all the following rows will be ignored.
                 break;
             }
@@ -193,13 +207,13 @@ class UserController extends MainController
 
         $userData = [];
         foreach ($availableRows as $row) {
-            $data = $spreadsheet->getActiveSheet()->rangeToArray('B' . $row . ':G' . $row, NULL, FALSE, FALSE, TRUE);
+            $data = $spreadsheet->getActiveSheet()->rangeToArray('B' . $row . ':G' . $row, null, false, false, true);
             array_push($userData, $data);
         }
         $spreadsheetErr = [];
         $validUserList = [];
-        foreach($userData as $dataIndex){
-            foreach($dataIndex as $data){
+        foreach ($userData as $dataIndex) {
+            foreach ($dataIndex as $data) {
                 $username = strtolower($data['B']);
                 $fullname = strtolower($data['C']);
                 $email = strtolower($data['D']);
@@ -209,59 +223,60 @@ class UserController extends MainController
                 $currentRow = key($dataIndex);
 
                 // Check if user already existed with the username
-                if($username == 'admin'){
+                if ('admin' == $username) {
                     // Check if adding user named 'admin'
                     $error = '[B' . $currentRow . '] ' . 'Anda tidak boleh menambah pengguna yang mempunyai username: admin!';
                     array_push($spreadsheetErr, $error);
-                }elseif(User::where('username', strtolower($username))->first()){
+                } elseif (User::where('username', strtolower($username))->first()) {
                     $error = '[B' . $currentRow . '] ' . 'Pengguna dengan username tersebut telah wujud!';
                     array_push($spreadsheetErr, $error);
-                }else{
+                } else {
                     $usernameValid = $username;
 
-                    if(empty($fullname)){
+                    if (empty($fullname)) {
                         $error = '[C' . $currentRow . '] ' . 'Ruangan nama penuh kosong!';
                         array_push($spreadsheetErr, $error);
-                    }else{
+                    } else {
                         $fullnameValid = $fullname;
                     }
 
-                    if(empty($email)){
+
+                    if (empty($email)) {
                         $error = '[D' . $currentRow . '] ' . 'Ruangan alamat e-mel kosong!';
                         array_push($spreadsheetErr, $error);
-                    }else{
+                    } else {
                         // Check if email valid
-                        if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
                             $error = '[D' . $currentRow . '] ' . 'Alamat e-mel mestilah merupakan alamat e-mel yang sah!';
                             array_push($spreadsheetErr, $error);
-                        }else{
+                        } else {
                             $emailValid = $email;
                         }
                     }
 
-                    if(empty($password)){
+                    if (empty($password)) {
                         $error = '[E' . $currentRow . '] ' . 'Ruangan kata laluan kosong!';
                         array_push($spreadsheetErr, $error);
-                    }else{
+                    } else {
                         $passwordValid = $password;
                     }
 
-                    if(empty($identificationNo)){
+                    if (empty($identificationNo)) {
                         $error = '[F' . $currentRow . '] ' . 'Ruangan nombor pengenalan kosong!';
                         array_push($spreadsheetErr, $error);
-                    }else{
+                    } else {
                         $identificationNoValid = $identificationNo;
                     }
 
-                    if(empty($role)){
+                    if (empty($role)) {
                         $error = '[G' . $currentRow . '] ' . 'Ruangan peranan kosong!';
                         array_push($spreadsheetErr, $error);
-                    }else{
+                    } else {
                         // Check if role valid
                         // Only 1 and 2 can be inserted for role
                         // 1 = participant
                         // 2 = admin
-                        if($role == 1 || $role == 2){
+                        if (1 == $role || 2 == $role) {
                             switch ($role) {
                                 case 1:
                                     $roleValid = 'participant';
@@ -272,20 +287,20 @@ class UserController extends MainController
                                 default:
                                     break;
                             }
-                        }else{
+                        } else {
                             $error = '[G' . $currentRow . '] ' . 'Hanya masukkan nombor yang diperlukan di ruangan peranan!';
                             array_push($spreadsheetErr, $error);
                         }
                     }
                     // Check if all valid data have been set
-                    if(!empty($usernameValid) && !empty($fullnameValid) && !empty($emailValid) && !empty($passwordValid) && !empty($identificationNoValid) && !empty($roleValid)){
+                    if (!empty($usernameValid) && !empty($fullnameValid) && !empty($emailValid) && !empty($passwordValid) && !empty($identificationNoValid) && !empty($roleValid)) {
                         $validUser = [
                             'username' => $usernameValid,
                             'fullname' => $fullnameValid,
                             'email' => $emailValid,
                             'password' => Hash::make($passwordValid),
                             'identification_number' => $identificationNoValid,
-                            'role' => $roleValid
+                            'role' => $roleValid,
                         ];
                         array_push($validUserList, $validUser);
                     }
@@ -293,53 +308,58 @@ class UserController extends MainController
             }
         }
         // If if there's no problem with the spreadsheet, if doesn't, proceed to add the users.
-        if(count($spreadsheetErr) > 0){
+        if (count($spreadsheetErr) > 0) {
             $request->session()->flash('spreadsheetErr', $spreadsheetErr);
+
             return back();
-        }else{
+        } else {
             User::upsert($validUserList, ['username'], ['fullname', 'email', 'password', 'identification_number', 'role']);
             $request->session()->flash('spreadsheetSuccess', count($validUserList) . ' pengguna berjaya ditambah secara pukal!');
+
             return back();
         }
-
     }
 
-    public function removeUser(Request $request){
+    public function removeUser(Request $request)
+    {
         $username = $request->username;
-        if($username == 'admin'){
+        if ('admin' == $username) {
             return back()->withErrors([
                 'removeUserError' => 'Pengguna tersebut tidak boleh dibuang!',
             ]);
-        }else{
+        } else {
             $user = User::where('username', $username);
             $user->delete();
             $request->session()->flash('removeUserSuccess', 'Pengguna berjaya dibuang!');
+
             return back();
         }
     }
 
-    public function updateUser(Request $request, $username){
+    public function updateUser(Request $request, $username)
+    {
         // Check whether update info or password
-        if($request->has('info')){
+        if ($request->has('info')) {
             $validated = $request->validate([
                 'fullname' => ['required'],
                 'email' => ['required', 'email:rfc'],
                 'identification_number' => ['required', 'numeric'],
-                'role' => ['required']
+                'role' => ['required'],
             ]);
-            if(User::select('username')->where('username', $request->username)->first()){
+            if (User::select('username')->where('username', $request->username)->first()) {
                 User::updateOrCreate(
                     ['username' => strtolower($request->username)],
                     ['fullname' => strtolower($request->fullname), 'email' => strtolower($request->email), 'identification_number' => $request->identification_number, 'role' => strtolower($request->role)]
                 );
                 $request->session()->flash('updateUserSuccess', 'Pengguna berjaya dikemas kini!');
+
                 return back();
-            }else{
+            } else {
                 return back()->withErrors([
                     'userNotExisted' => 'Pengguna tidak dijumpai!',
                 ]);
             }
-        }elseif($request->has('password-update')){
+        } elseif ($request->has('password-update')) {
             // Only logged in user that need to change their own password need to enter old password
             // Admins changing participant password won't need to know the participant password
             if($username == Auth::user()->username){
@@ -370,15 +390,15 @@ class UserController extends MainController
                     ['password' => Hash::make($request->password)]
                 );
                 $request->session()->flash('updateUserPasswordSuccess', 'Kata laluan pengguna berjaya dikemas kini!');
+
                 return back();
-            }else{
+            } else {
                 return back()->withErrors([
                     'userNotExisted' => 'Pengguna tidak dijumpai!',
                 ]);
             }
-        }else{
+        } else {
             return back();
         }
-
     }
 }

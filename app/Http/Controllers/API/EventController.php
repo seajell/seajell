@@ -1,4 +1,5 @@
 <?php
+
 // Copyright (c) 2021 Muhammad Hanis Irfan bin Mohd Zaid
 
 // This file is part of SeaJell.
@@ -24,24 +25,25 @@ use App\Http\Controllers\Controller;
 
 class EventController extends Controller
 {
-    public function getEventByID(Request $request, $id){
-        if($id == 'empty-value'){
+    public function getEventByID(Request $request, $id)
+    {
+        if ('empty-value' == $id) {
             return response()->json([
-                'Empty_Err' => 'Empty id given!'
+                'Empty_Err' => 'Empty id given!',
             ]);
-        }else{
+        } else {
             $event = Event::select('name', 'date', 'location', 'organiser_name', 'visibility')->where('id', $id)->first();
-            if($event){
+            if ($event) {
                 return response()->json([
                     'name' => $event->name,
                     'date' => $event->date,
                     'location' => $event->location,
                     'organiser_name' => $event->organiser_name,
-                    'visibility' => $event->visibility
+                    'visibility' => $event->visibility,
                 ]);
-            }else{
+            } else {
                 return response()->json([
-                    'NotFound_Err' => 'Event not found!'
+                    'NotFound_Err' => 'Event not found!',
                 ]);
             }
         }

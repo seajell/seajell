@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class EventFont extends Model
 {
@@ -22,12 +22,14 @@ class EventFont extends Model
         'second_text_font',
         'verifier_text_size',
         'verifier_text_color',
-        'verifier_text_font'
+        'verifier_text_font',
     ];
+
     /**
-     * Relationships
+     * Relationships.
      */
-    public function event(){
+    public function event()
+    {
         return $this->belongsTo(Event::class);
     }
 }

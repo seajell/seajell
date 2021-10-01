@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Certificate;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -12,13 +11,14 @@ class CertificateViewActivity extends Model
     protected $fillable = [
         'certificate_id',
         'ip_address',
-        'http_user_agent'
+        'http_user_agent',
     ];
 
     /**
-     * Relationships
+     * Relationships.
      */
-    public function certificate(){
+    public function certificate()
+    {
         return $this->belongsTo(Certificate::class);
     }
 }
