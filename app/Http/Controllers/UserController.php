@@ -187,10 +187,14 @@ class UserController extends MainController
                     } else {
                         $emailSystemName = '';
                     }
-                    $emailData = [
-                        'supportEmail' => $emailSupportEmail,
+
+                    $basicEmailDetails = [
+                        'supportEmail' => strtolower($emailSupportEmail),
                         'systemLogo' => $emailSystemLogo,
                         'systemName' => $emailSystemName,
+                    ];
+
+                    $emailDetails = [
                         'username' => strtolower($request->username),
                         'password' => $request->password,
                     ];
@@ -210,7 +214,7 @@ class UserController extends MainController
                         'auth_mode' => null,
                     ];
                     config(['mail.mailers.smtp' => $smtpConfig]);
-                    Mail::to(strtolower($request->email))->send(new NewAccountMail(['data' => $emailData]));
+                    Mail::to(strtolower($request->email))->send(new NewAccountMail($basicEmailDetails, $emailDetails));
                 }
             }
 

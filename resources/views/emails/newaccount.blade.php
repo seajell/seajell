@@ -4,25 +4,25 @@
     <link rel="stylesheet" href="{{ asset('bootstraps-icons/font/bootstrap-icons.css') }}">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 </head>
-@component('mail::message', ['data' => $data])
+@component('mail::message', ['data' => $basicEmailDetails])
 # Akaun anda berjaya dicipta!
 
 Anda boleh mengakses akaun anda di <a href="{{ url('/login') }}" target="_blank">{{ url('/login') }}</a> dengan maklumat berikut
-- **Username:** {{ strtolower($data['data']['username']) }}
-- **Kata Laluan:** {{ $data['data']['password'] }}
+- **Username:** {{ strtolower($emailDetails['username']) }}
+- **Kata Laluan:** {{ $emailDetails['password'] }}
 
 @component('mail::button', ['url' => url('/login')])
     <i class="bi bi-arrow-right-square"></i> Log Masuk
 @endcomponent
 
 Daripada, <br>
-@if(!empty($data['data']['systemName']))
-    {{ '**' . strtoupper($data['data']['systemName']) . '**' }}
+@if(!empty($basicEmailDetails['systemName']))
+    {{ '**' . strtoupper($basicEmailDetails['systemName']) . '**' }}
 @else
     {{ '**SeaJell**' }}
 @endif
 
-@if(!empty($data['data']['supportEmail']))
-_Jika anda menghadapi sebarang masalah atau mempunyai pertanyaan, sila hubungi melalui e-mel <a href="mailto:{{ $data['data']['supportEmail'] }}">{{ $data['data']['supportEmail'] }}</a> untuk mendapatkan bantuan._
+@if(!empty($basicEmailDetails['supportEmail']))
+_Jika anda menghadapi sebarang masalah atau mempunyai pertanyaan, sila hubungi melalui e-mel <a href="mailto:{{ $basicEmailDetails['supportEmail'] }}">{{ $basicEmailDetails['supportEmail'] }}</a> untuk mendapatkan bantuan._
 @endif
 @endcomponent

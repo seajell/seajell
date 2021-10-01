@@ -4,7 +4,7 @@
     <link rel="stylesheet" href="{{ asset('bootstraps-icons/font/bootstrap-icons.css') }}">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 </head>
-@component('mail::message', ['data' => $data])
+@component('mail::message', ['data' => $basicEmailDetails])
 # Permintaan penetapan semula kata laluan
 
 Terdapat sebuah permintaan untuk menetapkan semula kata laluan anda.
@@ -16,13 +16,13 @@ Jika anda tidak membuat permintaan ini, sila abaikan.
 @endcomponent
 
 Daripada, <br>
-@if(!empty($data['data']['systemName']))
-    {{ '**' . strtoupper($data['data']['systemName']) . '**' }}
+@if(!empty($basicEmailDetails['systemName']))
+    {{ '**' . strtoupper($basicEmailDetails['systemName']) . '**' }}
 @else
     {{ '**SeaJell**' }}
 @endif
 
-@if(!empty($data['data']['supportEmail']))
-_Jika anda menghadapi sebarang masalah atau mempunyai pertanyaan, sila hubungi melalui e-mel <a href="mailto:{{ $data['data']['supportEmail'] }}">{{ $data['data']['supportEmail'] }}</a> untuk mendapatkan bantuan._
+@if(!empty($basicEmailDetails['supportEmail']))
+_Jika anda menghadapi sebarang masalah atau mempunyai pertanyaan, sila hubungi melalui e-mel <a href="mailto:{{ $basicEmailDetails['supportEmail'] }}">{{ $basicEmailDetails['supportEmail'] }}</a> untuk mendapatkan bantuan._
 @endif
 @endcomponent

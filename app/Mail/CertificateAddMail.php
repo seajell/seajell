@@ -16,9 +16,10 @@ class CertificateAddMail extends Mailable
      *
      * @return void
      */
-    public function __construct($data)
+    public function __construct($basicEmailDetails, $emailDetails)
     {
-        $this->data = $data;
+        $this->basicEmailDetails = $basicEmailDetails;
+        $this->emailDetails = $emailDetails;
     }
 
     /**
@@ -28,6 +29,6 @@ class CertificateAddMail extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.certificateadd')->with('data', $this->data);
+        return $this->markdown('emails.certificateadd')->with(['basicEmailDetails' => $this->basicEmailDetails, 'emailDetails' => $this->emailDetails]);
     }
 }
