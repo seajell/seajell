@@ -15,6 +15,7 @@ class EmailServiceSettings extends Model
         'service_port',
         'account_username',
         'account_password',
+        'from_email',
         'support_email',
     ];
 }

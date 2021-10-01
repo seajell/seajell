@@ -5,8 +5,9 @@ namespace App\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
-class CertificateAddMail extends Mailable
+class CertificateAddMail extends Mailable implements ShouldQueue
 {
     use Queueable;
     use SerializesModels;
@@ -16,6 +17,9 @@ class CertificateAddMail extends Mailable
      *
      * @return void
      */
+    public $basicEmailDetails;
+    public $emailDetails;
+
     public function __construct($basicEmailDetails, $emailDetails)
     {
         $this->basicEmailDetails = $basicEmailDetails;
@@ -29,6 +33,6 @@ class CertificateAddMail extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.certificateadd')->with(['basicEmailDetails' => $this->basicEmailDetails, 'emailDetails' => $this->emailDetails]);
+        return $this->subject('E-sijil Baru Dikeluarkan')->markdown('emails.certificateadd')->with(['basicEmailDetails' => $this->basicEmailDetails, 'emailDetails' => $this->emailDetails]);
     }
 }

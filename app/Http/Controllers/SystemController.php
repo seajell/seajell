@@ -92,18 +92,14 @@ class SystemController extends MainController
                 'email-service-port' => ['required'],
                 'email-service-username' => ['required'],
                 'email-service-password' => ['required'],
+                'email-service-from-email' => ['required'],
+                'email-service-support-email' => ['required'],
             ]);
 
             if (!empty($request->input('email-service-switch'))) {
                 $emailServiceStatus = 'on';
             } else {
                 $emailServiceStatus = 'off';
-            }
-
-            if (!empty($request->input('email-service-support-email'))) {
-                $emailServiceSupportEmail = $request->input('email-service-support-email');
-            } else {
-                $emailServiceSupportEmail = '';
             }
 
             EmailServiceSettings::updateOrCreate(
@@ -114,7 +110,8 @@ class SystemController extends MainController
                     'service_port' => $request->input('email-service-port'),
                     'account_username' => $request->input('email-service-username'),
                     'account_password' => $request->input('email-service-password'),
-                    'support_email' => $emailServiceSupportEmail,
+                    'from_email' => $request->input('email-service-from-email'),
+                    'support_email' => $request->input('email-service-support-email'),
                 ]
             );
 

@@ -157,6 +157,14 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             $emailServicePassword = '';
         }
 
+        if(!empty(old('email-service-from-email'))){
+            $emailServiceFromEmail = old('email-service-from-email');
+        }elseif(!empty($emailServiceSetting->from_email)){
+            $emailServiceFromEmail = $emailServiceSetting->from_email;
+        }else{
+            $emailServiceFromEmail = '';
+        }
+
         if(!empty(old('email-service-support-email'))){
             $emailServiceSupportEmail = old('email-service-support-email');
         }elseif(!empty($emailServiceSetting->support_email)){
@@ -181,7 +189,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
         <div class="mb-3">
-            <label for="email-service-host" class="form-label">Host SMTP (Diperlukan)</label>
+            <label for="email-service-host" class="form-label">Host SMTP</label>
             <input type="text" class="form-control" id="email-service-host" name="email-service-host" aria-describedby="emailServiceHostHelp" value="{{ $emailServiceHost }}">
             <div id="emailServiceHostHelp" class="form-text">Digunakan untuk sambungan kepada pelayan e-mel. <br> Contoh: mail.seajell.xyz</div>
         </div>
@@ -189,7 +197,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
         <div class="mb-3">
-            <label for="email-service-port" class="form-label">Port SMTP (Diperlukan)</label>
+            <label for="email-service-port" class="form-label">Port SMTP</label>
             <input type="number" class="form-control" id="email-service-port" name="email-service-port" aria-describedby="emailServicePortHelp" value="{{ $emailServicePort }}">
             <div id="emailServicePortHelp" class="form-text">Digunakan untuk sambungan kepada pelayan e-mel.
                 <br> Contoh: 587</div>
@@ -198,7 +206,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
         <div class="mb-3">
-            <label for="email-service-username" class="form-label">Username Pengguna E-mel (Diperlukan)</label>
+            <label for="email-service-username" class="form-label">Username Pengguna E-mel</label>
             <input type="text" class="form-control" id="email-service-username" name="email-service-username" aria-describedby="emailServiceUsernameHelp" value="{{ $emailServiceUsername }}">
             <div id="emailServiceUsernameHelp" class="form-text">Username pengguna e-mel.</div>
         </div>
@@ -206,7 +214,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
         <div class="mb-3">
-            <label for="email-service-password" class="form-label">Kata Laluan Pengguna E-mel (Diperlukan)</label>
+            <label for="email-service-password" class="form-label">Kata Laluan Pengguna E-mel</label>
             <input type="password" class="form-control" id="email-service-password" name="email-service-password" aria-describedby="emailServicePasswordHelp" value="{{ $emailServicePassword }}">
             <div id="emailServicePasswordHelp" class="form-text">Kata laluan untuk proses pengesahan username di atas.</div>
         </div>
@@ -214,7 +222,15 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
         <div class="mb-3">
-            <label for="system-name" class="form-label">Alamat E-mel Untuk Sokongan (Pilihan)</label>
+            <label for="email-service-from-email" class="form-label">Alamat E-mel Penghantaran</label>
+            <input type="email" class="form-control" id="email-service-from-email" name="email-service-from-email" aria-describedby="emailServiceFromEmailHelp" value="{{ $emailServiceFromEmail }}">
+            <div id="emailServiceFromEmailHelp" class="form-text">Alamat e-mel ini akan digunakan untuk penghantaran e-mel.</div>
+        </div>
+        @error('email-service-from-email')
+            <div class="alert alert-danger">{{ $message }}</div>
+        @enderror
+        <div class="mb-3">
+            <label for="email-service-support-email" class="form-label">Alamat E-mel Untuk Sokongan</label>
             <input type="email" class="form-control" id="email-service-support-email" name="email-service-support-email" aria-describedby="emailServiceSupportEmailHelp" value="{{ $emailServiceSupportEmail }}">
             <div id="emailServiceSupportEmailHelp" class="form-text">Alamat e-mel ini akan ditambahkan ke isi e-mel untuk memberitahu pengguna alamat e-mel apa yang harus dihubungi untuk mendapatkan sokongan.
                 <br> Alamat e-mel ini boleh sama seperti alamat yang digunakan untuk menghantar e-mel.</div>

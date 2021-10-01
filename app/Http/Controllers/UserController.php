@@ -26,7 +26,6 @@ use App\Models\LoginActivity;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Reader\Exception as PHPSpreadsheetReaderException;
 
@@ -194,27 +193,14 @@ class UserController extends MainController
                         'systemName' => $emailSystemName,
                     ];
 
+                    $mailer = app()->makeWith('user.mailer');
+
                     $emailDetails = [
                         'username' => strtolower($request->username),
                         'password' => $request->password,
                     ];
 
-                    $smtpHost = $this->emailServiceSetting->service_host;
-                    $smtpPort = $this->emailServiceSetting->service_port;
-                    $smtpUsername = $this->emailServiceSetting->account_username;
-                    $smtpPassword = $this->emailServiceSetting->account_password;
-                    $smtpConfig = [
-                        'transport' => 'smtp',
-                        'host' => $smtpHost,
-                        'port' => $smtpPort,
-                        'encryption' => env('MAIL_ENCRYPTION', 'tls'),
-                        'username' => $smtpUsername,
-                        'password' => $smtpPassword,
-                        'timeout' => null,
-                        'auth_mode' => null,
-                    ];
-                    config(['mail.mailers.smtp' => $smtpConfig]);
-                    Mail::to(strtolower($request->email))->send(new NewAccountMail($basicEmailDetails, $emailDetails));
+                    $mailer->to(strtolower($request->email))->send(new NewAccountMail($basicEmailDetails, $emailDetails));
                 }
             }
 
