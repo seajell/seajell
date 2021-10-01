@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddFirstTimeLoginColumnToUsersTable extends Migration
+class AddFromEmailColumnToEmailServiceSettingsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddFirstTimeLoginColumnToUsersTable extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('first_time_login', 5)->after('remember_token')->default('yes')->nullable();
+        Schema::table('email_service_settings', function (Blueprint $table) {
+            $table->string('from_email')->nullable()->after('account_password');
         });
     }
 
@@ -25,7 +25,7 @@ class AddFirstTimeLoginColumnToUsersTable extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('email_service_settings', function (Blueprint $table) {
         });
     }
 }

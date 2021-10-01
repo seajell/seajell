@@ -56,6 +56,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         @enderror
 
         <hr>
+
         <p class="fs-5">Logo</p>
         <div class="mb-3">
             <label for="logo-first" class="form-label">Logo Pertama (Diperlukan)</label>
@@ -106,6 +107,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         </div>
 
         <hr>
+
         <p class="fs-5">Pengesahan</p>
         {{-- First Signature --}}
         <div class="my-3">
@@ -202,6 +204,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         </div>
 
         <hr>
+
         <p class="fs-5">Penyesuaian Gaya Sijil </p>
         @php
             if(!empty(old('certificate-orientation'))){

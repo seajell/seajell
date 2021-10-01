@@ -20,8 +20,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Jobs\AlertMailJob;
+use App\Mail\NewAccountMail;
 use Illuminate\Http\Request;
 use App\Models\LoginActivity;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
@@ -32,7 +35,11 @@ class UserController extends MainController
 {
     public function loginView(Request $request)
     {
-        return view('login')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting]);
+        if (Auth::check()) {
+            return redirect('/');
+        } else {
+            return view('login')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting]);
+        }
     }
 
     public function userListView(Request $request)
@@ -66,18 +73,19 @@ class UserController extends MainController
         return view('user.add')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting]);
     }
 
-    public function updateUserView(Request $request, $username){
-        if($data = User::where('username', $username)->first()){
+    public function updateUserView(Request $request, $username)
+    {
+        if ($data = User::where('username', $username)->first()) {
             // Only superadmin can edit their own profile
-            if($username == 'admin' && Auth::user()->username == 'admin'){
+            if ('admin' == $username && 'admin' == Auth::user()->username) {
                 return view('user.update')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting, 'data' => $data]);
             // Only superadmin or an admin themselves can edit their own profile
-            }elseif($data->role == 'admin' && Auth::user()->username == $username || Auth::user()->role == 'superadmin'){
+            } elseif ('admin' == $data->role && Auth::user()->username == $username || 'superadmin' == Auth::user()->role) {
                 return view('user.update')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting, 'data' => $data]);
             // Admins and the user themselves can edit their own profile
-            }elseif($data->role == 'participant' && Gate::allows('authAdmin') || Auth::user()->username == $username){
+            } elseif ('participant' == $data->role && Gate::allows('authAdmin') || Auth::user()->username == $username) {
                 return view('user.update')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting, 'data' => $data]);
-            }else{
+            } else {
                 abort(403, 'Anda tidak boleh mengakses laman ini.');
             }
         } else {
@@ -107,7 +115,7 @@ class UserController extends MainController
 
                 // Check if this is user first time login
                 $firstTimeLoginStatus = User::select('first_time_login')->where('username', $username)->first()->first_time_login;
-                if($firstTimeLoginStatus == 'yes'){
+                if ('yes' == $firstTimeLoginStatus) {
                     $request->session()->flash('firstTimeLogin', 'yes');
                     User::where('id', $userID)
                         ->update(['first_time_login' => 'no']);
@@ -163,6 +171,46 @@ class UserController extends MainController
                 ['username' => strtolower($request->username)],
                 ['fullname' => strtolower($request->fullname), 'email' => strtolower($request->email), 'password' => Hash::make($request->password), 'identification_number' => $request->identification_number, 'role' => strtolower($request->role)]
             );
+
+            // Sending Email
+            if (!empty($this->emailServiceSetting)) {
+                if ('on' == $this->emailServiceSetting->service_status) {
+                    if (!empty($this->emailServiceSetting->support_email)) {
+                        $emailSupportEmail = $this->emailServiceSetting->support_email;
+                    } else {
+                        $emailSupportEmail = '';
+                    }
+
+                    if (!empty($this->systemSetting->logo)) {
+                        $emailSystemLogo = $this->systemSetting->logo;
+                    } else {
+                        $emailSystemLogo = '';
+                    }
+
+                    if (!empty($this->systemSetting->name)) {
+                        $emailSystemName = $this->systemSetting->name;
+                    } else {
+                        $emailSystemName = '';
+                    }
+
+                    $systemURL = URL::to('/');
+
+                    $basicEmailDetails = [
+                        'supportEmail' => strtolower($emailSupportEmail),
+                        'systemLogo' => $emailSystemLogo,
+                        'systemName' => $emailSystemName,
+                        'systemURL' => $systemURL,
+                    ];
+
+                    $emailDetails = [
+                        'username' => strtolower($request->username),
+                        'password' => $request->password,
+                    ];
+
+                    AlertMailJob::dispatch(strtolower($request->email), new NewAccountMail($basicEmailDetails, $emailDetails));
+                }
+            }
+
             $request->session()->flash('addUserSuccess', 'Pengguna berjaya ditambah!');
 
             return back();
@@ -240,7 +288,6 @@ class UserController extends MainController
                         $fullnameValid = $fullname;
                     }
 
-
                     if (empty($email)) {
                         $error = '[D' . $currentRow . '] ' . 'Ruangan alamat e-mel kosong!';
                         array_push($spreadsheetErr, $error);
@@ -298,7 +345,7 @@ class UserController extends MainController
                             'username' => $usernameValid,
                             'fullname' => $fullnameValid,
                             'email' => $emailValid,
-                            'password' => Hash::make($passwordValid),
+                            'password' => $passwordValid,
                             'identification_number' => $identificationNoValid,
                             'role' => $roleValid,
                         ];
@@ -313,7 +360,57 @@ class UserController extends MainController
 
             return back();
         } else {
-            User::upsert($validUserList, ['username'], ['fullname', 'email', 'password', 'identification_number', 'role']);
+            foreach ($validUserList as $validUser) {
+                User::updateOrCreate(
+                    ['username' => $validUser['username']],
+                    [
+                        'fullname' => $validUser['fullname'],
+                        'email' => $validUser['email'],
+                        'password' => Hash::make($validUser['password']),
+                        'identification_number' => $validUser['identification_number'],
+                        'role' => $validUser['role'],
+                    ]
+                );
+                // Sending Email
+                if (!empty($this->emailServiceSetting)) {
+                    if ('on' == $this->emailServiceSetting->service_status) {
+                        if (!empty($this->emailServiceSetting->support_email)) {
+                            $emailSupportEmail = $this->emailServiceSetting->support_email;
+                        } else {
+                            $emailSupportEmail = '';
+                        }
+
+                        if (!empty($this->systemSetting->logo)) {
+                            $emailSystemLogo = $this->systemSetting->logo;
+                        } else {
+                            $emailSystemLogo = '';
+                        }
+
+                        if (!empty($this->systemSetting->name)) {
+                            $emailSystemName = $this->systemSetting->name;
+                        } else {
+                            $emailSystemName = '';
+                        }
+
+                        $systemURL = URL::to('/');
+
+                        $basicEmailDetails = [
+                            'supportEmail' => strtolower($emailSupportEmail),
+                            'systemLogo' => $emailSystemLogo,
+                            'systemName' => $emailSystemName,
+                            'systemURL' => $systemURL,
+                        ];
+
+                        $emailDetails = [
+                            'username' => strtolower($validUser['username']),
+                            'password' => $validUser['password'],
+                        ];
+
+                        AlertMailJob::dispatch(strtolower($validUser['email']), new NewAccountMail($basicEmailDetails, $emailDetails));
+                    }
+                }
+            }
+            // User::upsert($validUserList, ['username'], ['fullname', 'email', 'password', 'identification_number', 'role']);
             $request->session()->flash('spreadsheetSuccess', count($validUserList) . ' pengguna berjaya ditambah secara pukal!');
 
             return back();
@@ -362,23 +459,23 @@ class UserController extends MainController
         } elseif ($request->has('password-update')) {
             // Only logged in user that need to change their own password need to enter old password
             // Admins changing participant password won't need to know the participant password
-            if($username == Auth::user()->username){
+            if ($username == Auth::user()->username) {
                 $validated = $request->validate([
                     'password' => ['required', 'confirmed'],
-                    'old_password' => ['required']
+                    'old_password' => ['required'],
                 ]);
-            }else{
+            } else {
                 $validated = $request->validate([
-                    'password' => ['required', 'confirmed']
+                    'password' => ['required', 'confirmed'],
                 ]);
             }
-            if(User::select('username')->where('username', $username)->first()){
+            if (User::select('username')->where('username', $username)->first()) {
                 $oldPassword = User::select('password')->where('username', $username)->first()->password;
                 // If old password not empty, it means user is updating their own password
-                if(!empty($request->input('old_password'))){
+                if (!empty($request->input('old_password'))) {
                     // If old password input != old password from DB
                     $oldPasswordInput = $request->input('old_password');
-                    if(!Hash::check($oldPasswordInput, $oldPassword)){
+                    if (!Hash::check($oldPasswordInput, $oldPassword)) {
                         return back()->withErrors([
                             'oldPasswordWrong' => 'Kata laluan lama salah!',
                         ]);

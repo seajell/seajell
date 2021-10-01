@@ -82,6 +82,9 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         @enderror
         <button class="btn btn-outline-light" type="submit"><i class="bi bi-person-plus"></i> Cipta Akaun Pengguna</button>
     </form>
+
+    <hr>
+
     <form action="{{ route('user.add.bulk') }}" method="post" class="mb-3" enctype="multipart/form-data">
         @csrf
         <p class="fs-4">Tambah Pengguna Secara Pukal</p>
