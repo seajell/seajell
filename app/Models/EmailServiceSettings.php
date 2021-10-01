@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class EmailServiceSettings extends Model
 {
@@ -15,6 +15,6 @@ class EmailServiceSettings extends Model
         'service_port',
         'account_username',
         'account_password',
-        'support_email'
+        'support_email',
     ];
 }

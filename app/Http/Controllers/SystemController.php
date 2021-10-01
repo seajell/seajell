@@ -22,7 +22,6 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\SystemSetting;
-use App\Models\EmailServiceSettings;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 
@@ -31,6 +30,7 @@ class SystemController extends MainController
     public function systemView(Request $request)
     {
         $systemSetting = SystemSetting::where('id', 1)->first();
+
         return view('system.update')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting]);
     }
 
@@ -54,9 +54,9 @@ class SystemController extends MainController
                 }
                 $systemLogoName = $request->file('system-logo')->getClientOriginalName();
                 $systemLogoImage = Image::make($request->file('system-logo'))->resize(300, 300)->encode('png');
-                $systemLogoSavePath = '/img/system/logo/'. Carbon::now()->timestamp . '-' . $systemLogoName;
+                $systemLogoSavePath = '/img/system/logo/' . Carbon::now()->timestamp . '-' . $systemLogoName;
                 Storage::disk('public')->put($systemLogoSavePath, $systemLogoImage);
-            }else{
+            } else {
                 $systemLogoSavePath = $systemSetting = SystemSetting::where('id', 1)->first()->logo;
             }
             $systemLogoName = $request->file('system-logo')->getClientOriginalName();

@@ -23,12 +23,10 @@ use App\Models\User;
 use App\Mail\NewAccountMail;
 use Illuminate\Http\Request;
 use App\Models\LoginActivity;
-use App\Models\SystemSetting;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Config;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Reader\Exception as PHPSpreadsheetReaderException;
 
@@ -70,18 +68,19 @@ class UserController extends MainController
         return view('user.add')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting]);
     }
 
-    public function updateUserView(Request $request, $username){
-        if($data = User::where('username', $username)->first()){
+    public function updateUserView(Request $request, $username)
+    {
+        if ($data = User::where('username', $username)->first()) {
             // Only superadmin can edit their own profile
-            if($username == 'admin' && Auth::user()->username == 'admin'){
+            if ('admin' == $username && 'admin' == Auth::user()->username) {
                 return view('user.update')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting, 'data' => $data]);
             // Only superadmin or an admin themselves can edit their own profile
-            }elseif($data->role == 'admin' && Auth::user()->username == $username || Auth::user()->role == 'superadmin'){
+            } elseif ('admin' == $data->role && Auth::user()->username == $username || 'superadmin' == Auth::user()->role) {
                 return view('user.update')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting, 'data' => $data]);
             // Admins and the user themselves can edit their own profile
-            }elseif($data->role == 'participant' && Gate::allows('authAdmin') || Auth::user()->username == $username){
+            } elseif ('participant' == $data->role && Gate::allows('authAdmin') || Auth::user()->username == $username) {
                 return view('user.update')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting, 'data' => $data]);
-            }else{
+            } else {
                 abort(403, 'Anda tidak boleh mengakses laman ini.');
             }
         } else {
@@ -111,7 +110,7 @@ class UserController extends MainController
 
                 // Check if this is user first time login
                 $firstTimeLoginStatus = User::select('first_time_login')->where('username', $username)->first()->first_time_login;
-                if($firstTimeLoginStatus == 'yes'){
+                if ('yes' == $firstTimeLoginStatus) {
                     $request->session()->flash('firstTimeLogin', 'yes');
                     User::where('id', $userID)
                         ->update(['first_time_login' => 'no']);
@@ -169,23 +168,23 @@ class UserController extends MainController
             );
 
             // Sending Email
-            if(!empty($this->emailServiceSetting)){
-                if($this->emailServiceSetting->service_status == 'on'){
-                    if(!empty($this->emailServiceSetting->support_email)){
+            if (!empty($this->emailServiceSetting)) {
+                if ('on' == $this->emailServiceSetting->service_status) {
+                    if (!empty($this->emailServiceSetting->support_email)) {
                         $emailSupportEmail = $this->emailServiceSetting->support_email;
-                    }else{
+                    } else {
                         $emailSupportEmail = '';
                     }
 
-                    if(!empty($this->systemSetting->logo)){
+                    if (!empty($this->systemSetting->logo)) {
                         $emailSystemLogo = $this->systemSetting->logo;
-                    }else{
+                    } else {
                         $emailSystemLogo = '';
                     }
 
-                    if(!empty($this->systemSetting->name)){
+                    if (!empty($this->systemSetting->name)) {
                         $emailSystemName = $this->systemSetting->name;
-                    }else{
+                    } else {
                         $emailSystemName = '';
                     }
                     $emailData = [
@@ -193,7 +192,7 @@ class UserController extends MainController
                         'systemLogo' => $emailSystemLogo,
                         'systemName' => $emailSystemName,
                         'username' => strtolower($request->username),
-                        'password' => $request->password
+                        'password' => $request->password,
                     ];
 
                     $smtpHost = $this->emailServiceSetting->service_host;
@@ -201,14 +200,14 @@ class UserController extends MainController
                     $smtpUsername = $this->emailServiceSetting->account_username;
                     $smtpPassword = $this->emailServiceSetting->account_password;
                     $smtpConfig = [
-                            'transport' => 'smtp',
-                            'host' => $smtpHost,
-                            'port' => $smtpPort,
-                            'encryption' => env('MAIL_ENCRYPTION', 'tls'),
-                            'username' => $smtpUsername,
-                            'password' => $smtpPassword,
-                            'timeout' => null,
-                            'auth_mode' => null,
+                        'transport' => 'smtp',
+                        'host' => $smtpHost,
+                        'port' => $smtpPort,
+                        'encryption' => env('MAIL_ENCRYPTION', 'tls'),
+                        'username' => $smtpUsername,
+                        'password' => $smtpPassword,
+                        'timeout' => null,
+                        'auth_mode' => null,
                     ];
                     config(['mail.mailers.smtp' => $smtpConfig]);
                     Mail::to(strtolower($request->email))->send(new NewAccountMail(['data' => $emailData]));
@@ -291,7 +290,6 @@ class UserController extends MainController
                     } else {
                         $fullnameValid = $fullname;
                     }
-
 
                     if (empty($email)) {
                         $error = '[D' . $currentRow . '] ' . 'Ruangan alamat e-mel kosong!';
@@ -414,23 +412,23 @@ class UserController extends MainController
         } elseif ($request->has('password-update')) {
             // Only logged in user that need to change their own password need to enter old password
             // Admins changing participant password won't need to know the participant password
-            if($username == Auth::user()->username){
+            if ($username == Auth::user()->username) {
                 $validated = $request->validate([
                     'password' => ['required', 'confirmed'],
-                    'old_password' => ['required']
+                    'old_password' => ['required'],
                 ]);
-            }else{
+            } else {
                 $validated = $request->validate([
-                    'password' => ['required', 'confirmed']
+                    'password' => ['required', 'confirmed'],
                 ]);
             }
-            if(User::select('username')->where('username', $username)->first()){
+            if (User::select('username')->where('username', $username)->first()) {
                 $oldPassword = User::select('password')->where('username', $username)->first()->password;
                 // If old password not empty, it means user is updating their own password
-                if(!empty($request->input('old_password'))){
+                if (!empty($request->input('old_password'))) {
                     // If old password input != old password from DB
                     $oldPasswordInput = $request->input('old_password');
-                    if(!Hash::check($oldPasswordInput, $oldPassword)){
+                    if (!Hash::check($oldPasswordInput, $oldPassword)) {
                         return back()->withErrors([
                             'oldPasswordWrong' => 'Kata laluan lama salah!',
                         ]);

@@ -31,6 +31,7 @@ class MainController extends Controller
     protected $appName;
     protected $appVersion;
     protected $systemSetting;
+    protected $emailServiceSetting;
 
     public function __construct()
     {
@@ -50,6 +51,12 @@ class MainController extends Controller
                     $this->appName = env('APP_NAME', 'SeaJell');
                     $this->appVersion = env('APP_VERSION', 'v2.0.0');
                     $this->systemSetting = SystemSetting::select('id', 'name', 'logo', 'language')->where('id', 1)->first();
+                    if (EmailServiceSettings::where('id', 1)->first()) {
+                        $this->emailServiceSetting = EmailServiceSettings::where('id', 1)->first();
+                    } else {
+                        $this->emailServiceSetting = '';
+                    }
+
                     return $next($request);
                 }
             } else {

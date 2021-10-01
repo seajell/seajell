@@ -15,6 +15,7 @@ You can read all the guides in using the system from the [documentation](https:/
 
 ### License 📃
 Copyright (c) 2021 Muhammad Hanis Irfan bin Mohd Zaid
+
 Copyright (c) 2021 The SeaJell Contributors
 
 This system/project is licensed under [GNU GPLv3](COPYING). Each contributions to this system will
