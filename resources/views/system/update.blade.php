@@ -98,7 +98,6 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
 
     @php
         if(!empty(old('email-service-switch'))){
-            dd(old('email-service-switch'));
             switch (old('email-service-switch')) {
                 case 'on':
                     $emailServiceStatus = 'checked';
@@ -123,21 +122,21 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                     break;
             }
         }else{
-            $emailServiceHost = '';
+            $emailServiceStatus = '';
         }
 
         if(!empty(old('email-service-host'))){
-            $emailServiceHost = strtoupper(old('email-service-host'));
+            $emailServiceHost = old('email-service-host');
         }elseif(!empty($emailServiceSetting->service_host)){
-            $emailServiceHost = strtoupper($emailServiceSetting->service_host);
+            $emailServiceHost = $emailServiceSetting->service_host;
         }else{
             $emailServiceHost = '';
         }
 
         if(!empty(old('email-service-port'))){
-            $emailServicePort = strtoupper(old('email-service-port'));
+            $emailServicePort = old('email-service-port');
         }elseif(!empty($emailServiceSetting->service_port)){
-            $emailServicePort = strtoupper($emailServiceSetting->service_port);
+            $emailServicePort = $emailServiceSetting->service_port;
         }else{
             $emailServicePort = '';
         }
@@ -159,9 +158,9 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         }
 
         if(!empty(old('email-service-support-email'))){
-            $emailServiceSupportEmail = strtoupper(old('email-service-support-email'));
+            $emailServiceSupportEmail = old('email-service-support-email');
         }elseif(!empty($emailServiceSetting->support_email)){
-            $emailServiceSupportEmail = strtoupper($emailServiceSetting->support_email);
+            $emailServiceSupportEmail = $emailServiceSetting->support_email;
         }else{
             $emailServiceSupportEmail = '';
         }
@@ -216,7 +215,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         @enderror
         <div class="mb-3">
             <label for="system-name" class="form-label">Alamat E-mel Untuk Sokongan (Pilihan)</label>
-            <input type="text" class="form-control" id="email-service-support-email" name="email-service-support-email" aria-describedby="emailServiceSupportEmailHelp" value="{{ $emailServiceSupportEmail }}">
+            <input type="email" class="form-control" id="email-service-support-email" name="email-service-support-email" aria-describedby="emailServiceSupportEmailHelp" value="{{ $emailServiceSupportEmail }}">
             <div id="emailServiceSupportEmailHelp" class="form-text">Alamat e-mel ini akan ditambahkan ke isi e-mel untuk memberitahu pengguna alamat e-mel apa yang harus dihubungi untuk mendapatkan sokongan.
                 <br> Alamat e-mel ini boleh sama seperti alamat yang digunakan untuk menghantar e-mel.</div>
         </div>
