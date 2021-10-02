@@ -122,6 +122,11 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                         break;
                 }
             @endphp
+            {{-- Start Layout From Here --}}
+            @php
+                // Options: certificate, editor
+                $layoutFor = 'editor';
+            @endphp
             <div id="canvas" style="width: {{ $backgroundImageWidth }}; height: {{ $backgroundImageHeight }}; position: relative; background: #fff;" class="mt-3 mb-5">
                 @if(!empty($eventFontImages['backgroundImage']))
                     <img src="{{ $eventFontImages['backgroundImage'] }}" alt="Background image" style="position: absolute; width: {{ $backgroundImageWidth }}; height: {{ $backgroundImageHeight }};" />
@@ -379,7 +384,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                                         break;
                                 }
                             }else{
-                                $certificateTitle = 'Sijil Penyertaan';
+                                $certificateTitle = 'Sijil Pencapaian';
                             }
                         @endphp
                         <p class="details-text-type">{{ strtoupper($certificateTitle) }}</p>
@@ -402,7 +407,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                                         break;
                                 }
                             }else{
-                                $certificateIntro = 'Adalah dengan ini diakui bahawa';
+                                $certificateIntro = 'Setinggi-tinggi tahniah diucapkan kepada';
                             }
                         @endphp
                         <p class="details-text-first">{{ $certificateIntro }}</p>
@@ -442,7 +447,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                                         break;
                                 }
                             }else{
-                                $certificateCredit = 'Telah menyertai';
+                                $certificateCredit = 'Di atas pencapaian';
                             }
                         @endphp
                         @php
@@ -457,6 +462,8 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                             @if($certificateData->type !== 'participation')
                                 <p class="details-text-second">{{ strtoupper($certificatePosition) }}</p>
                             @endif
+                        @else
+                            <p class="details-text-second">{{ strtoupper($certificatePosition) }}</p>
                         @endif
                     </div>
                     <div id="details-event-name" style="margin-bottom: 0.8mm;">
@@ -464,6 +471,8 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                             @if($certificateData->type !== 'participation')
                                 <p class="details-text-first">Dalam</p>
                             @endif
+                        @else
+                            <p class="details-text-first">Dalam</p>
                         @endif
                         <p class="details-text-second">{{ strtoupper($eventData->name) }}</p>
                     </div>
@@ -473,10 +482,12 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                             <p class="details-text-second">{{ strtoupper($certificateData->category) }}</p>
                         </div>
                     @else
-                        <div id="details-category" style="margin-bottom: 0.8mm;">
-                            <p class="details-text-first">Kategori</p>
-                            <p class="details-text-second">{{ strtoupper($defaultText) }}</p>
-                        </div>
+                        @if($layoutFor == 'editor')
+                            <div id="details-category" style="margin-bottom: 0.8mm;">
+                                <p class="details-text-first">Kategori</p>
+                                <p class="details-text-second">{{ strtoupper($defaultText) }}</p>
+                            </div>
+                        @endif
                     @endif
                     <div id="details-date" style="margin-bottom: 0.8mm;">
                         <p class="details-text-first">Pada</p>
