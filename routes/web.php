@@ -3,10 +3,12 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Password;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\SystemController;
 use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\InstallationController;
+use App\Http\Controllers\PasswordResetController;
 
 /*
 |--------------------------------------------------------------------------
@@ -86,3 +88,9 @@ Route::prefix('system')->group(function () {
     Route::get('/', [SystemController::class, 'systemView'])->name('system')->middleware(['auth', 'UserIsAdmin']);
     Route::post('/', [SystemController::class, 'systemUpdate'])->middleware(['auth', 'UserIsAdmin']);
 });
+
+// Password Reset Route
+Route::get('/forgot-password', [PasswordResetController::class, 'passwordResetRequestView'])->middleware('guest')->name('password.reset.request');
+Route::post('/forgot-password', [PasswordResetController::class, 'passwordResetRequest'])->middleware('guest');
+Route::get('/reset-password/{token}', [PasswordResetController::class, 'passwordResetView'])->middleware('guest')->name('password.reset.reset');
+Route::post('/reset-password/{token}', [PasswordResetController::class, 'passwordReset'])->middleware('guest');
