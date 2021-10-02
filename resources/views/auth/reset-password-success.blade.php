@@ -34,33 +34,11 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         @endif
     </p>
 
-    <p class="text-center mb-5 text-light fs-3">Log Masuk</p>
+    <p class="text-center mb-5 text-light fs-3">Tetapkan Semula Kata Laluan</p>
 
     <div class="col-4 mx-auto bg-light p-4 rounded">
-        <form action="" method="post">
-            @csrf
-            <div class="my-3">
-                <label for="username" class="form-label">Username</label>
-                <input type="text" class="form-control mb-3" id="username" name="username" placeholder="">
-            </div>
-            @error('username')
-            <div class="alert alert-danger">{{ $message }}</div>
-            @enderror
-
-            <div class="mb-4">
-                <label for="password" class="form-label">Kata Laluan</label>
-                <input type="password" class="form-control" id="password" name="password" placeholder="">
-            </div>
-            @error('password')
-            <div class="alert alert-danger">{{ $message }}</div>
-            @enderror
-
-            <button class="btn btn-outline-dark mb-3" type="submit"><i class="bi bi-door-open"></i> Log
-                Masuk</button>
-
-            <br>
-            <a href="{{ route('password.reset.request') }}" class="text-dark">Lupa Kata Laluan?</a>
-        </form>
+        <div class="alert alert-success">Kata laluan berjaya ditetapkan semula!</div>
+        <a href="{{ route('login') }}" class="btn btn-dark"><i class="bi bi-arrow-return-left"></i> Kembali Ke Laman Log Masuk</a>
     </div>
 </div>
 </div>

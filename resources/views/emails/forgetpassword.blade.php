@@ -5,16 +5,17 @@
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 </head>
 @component('mail::message', ['data' => $basicEmailDetails])
-# Akaun anda berjaya dicipta!
+# Permintaan Penetapan Semula Kata Laluan
 
-Anda boleh mengakses akaun anda di <a href="{{ $basicEmailDetails['systemURL'] . '/login' }}" target="_blank">{{ $basicEmailDetails['systemURL'] . '/login' }}</a> dengan maklumat berikut:
+Terdapat permintaan untuk menetapkan semula kata laluan akaun anda.
 
-- **Username:** {{ $emailDetails['username'] }}
-- **Kata Laluan:** {{ $emailDetails['password'] }}
+Jika permintaan tersebut datangnya daripada anda, klik butang di bawah untuk meneruskan permintaan anda:
 
-@component('mail::button', ['url' => $basicEmailDetails['systemURL'] . '/login'])
-<i class="bi bi-arrow-right-square"></i> Log Masuk
+@component('mail::button', ['url' => $basicEmailDetails['systemURL'] . '/reset-password/' . $emailDetails['token']])
+<i class="bi bi-arrow-right-square"></i> Tetapkan Semula Kata Laluan
 @endcomponent
+
+jika tidak, anda boleh mengabaikan e-mel ini.
 
 Daripada, <br>
 @if(!empty($basicEmailDetails['systemName']))
