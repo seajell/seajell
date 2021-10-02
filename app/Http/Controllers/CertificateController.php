@@ -25,6 +25,7 @@ use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Event;
 use App\Models\EventFont;
+use App\Jobs\AlertMailJob;
 use Endroid\QrCode\QrCode;
 use App\Models\Certificate;
 use App\Models\EventLayout;
@@ -32,7 +33,9 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Endroid\QrCode\Logo\Logo;
 use Endroid\QrCode\Color\Color;
+use App\Mail\CertificateAddMail;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\URL;
 use Endroid\QrCode\Writer\PngWriter;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -156,15 +159,58 @@ class CertificateController extends MainController
         // Recheck if username and event id is existed in case user doesn't input one that actually existed although with the JS help lel
         if (User::where('username', $username)->first()) {
             if (Event::where('id', $eventID)->first()) {
-                $userID = User::select('id')->where('username', $username)->first()->id;
+                $user = User::select('id', 'email')->where('username', $username)->first();
                 Certificate::create([
                     'uid' => $uid,
-                    'user_id' => $userID,
+                    'user_id' => $user->id,
                     'event_id' => $eventID,
                     'type' => $certificateType,
                     'position' => $position,
                     'category' => $category,
                 ]);
+
+                // Sending Email
+                if (!empty($this->emailServiceSetting)) {
+                    if ('on' == $this->emailServiceSetting->service_status) {
+                        if (!empty($this->emailServiceSetting->support_email)) {
+                            $emailSupportEmail = $this->emailServiceSetting->support_email;
+                        } else {
+                            $emailSupportEmail = '';
+                        }
+
+                        if (!empty($this->systemSetting->logo)) {
+                            $emailSystemLogo = $this->systemSetting->logo;
+                        } else {
+                            $emailSystemLogo = '';
+                        }
+
+                        if (!empty($this->systemSetting->name)) {
+                            $emailSystemName = $this->systemSetting->name;
+                        } else {
+                            $emailSystemName = '';
+                        }
+
+                        $eventName = Event::select('name')->where('id', $eventID)->first()->name;
+                        $userEmail = $user->email;
+
+                        $systemURL = URL::to('/');
+
+                        $basicEmailDetails = [
+                            'supportEmail' => strtolower($emailSupportEmail),
+                            'systemLogo' => $emailSystemLogo,
+                            'systemName' => $emailSystemName,
+                            'systemURL' => $systemURL,
+                        ];
+
+                        $emailDetails = [
+                            'eventName' => $eventName,
+                            'certificateID' => $uid,
+                        ];
+
+                        AlertMailJob::dispatch($userEmail, new CertificateAddMail($basicEmailDetails, $emailDetails));
+                    }
+                }
+
                 $request->session()->flash('addCertificateSuccess', 'Sijil berjaya ditambah!');
 
                 return back();
@@ -296,7 +342,7 @@ class CertificateController extends MainController
                     }
 
                     // Check if all valid data have been set
-                    if (!empty($userIDValid) && !empty($eventID) && !empty($typeValid) && !empty($positionValid) && !empty($categoryValid)) {
+                    if (!empty($userIDValid) && !empty($eventID) && !empty($typeValid) && !empty($positionValid)) {
                         $uidArray = Certificate::select('uid')->get();
                         $uid = $this->generateUID(15, $uidArray);
                         $validCertificate = [
@@ -318,7 +364,61 @@ class CertificateController extends MainController
 
             return back();
         } else {
-            Certificate::upsert($validCertificateList, ['uid'], ['uid', 'user_id', 'event_id', 'type', 'position', 'category']);
+            foreach ($validCertificateList as $validCertificate) {
+                Certificate::updateOrCreate(
+                    ['uid' => $validCertificate['uid']],
+                    [
+                        'user_id' => $validCertificate['user_id'],
+                        'event_id' => $validCertificate['event_id'],
+                        'type' => $validCertificate['type'],
+                        'position' => $validCertificate['position'],
+                        'category' => $validCertificate['category'],
+                    ]
+                );
+
+                // Sending Email
+                if (!empty($this->emailServiceSetting)) {
+                    if ('on' == $this->emailServiceSetting->service_status) {
+                        if (!empty($this->emailServiceSetting->support_email)) {
+                            $emailSupportEmail = $this->emailServiceSetting->support_email;
+                        } else {
+                            $emailSupportEmail = '';
+                        }
+
+                        if (!empty($this->systemSetting->logo)) {
+                            $emailSystemLogo = $this->systemSetting->logo;
+                        } else {
+                            $emailSystemLogo = '';
+                        }
+
+                        if (!empty($this->systemSetting->name)) {
+                            $emailSystemName = $this->systemSetting->name;
+                        } else {
+                            $emailSystemName = '';
+                        }
+
+                        $eventName = Event::select('name')->where('id', $eventID)->first()->name;
+                        $userEmail = User::select('email')->where('id', $validCertificate['user_id'])->first()->email;
+
+                        $systemURL = URL::to('/');
+
+                        $basicEmailDetails = [
+                            'supportEmail' => strtolower($emailSupportEmail),
+                            'systemLogo' => $emailSystemLogo,
+                            'systemName' => $emailSystemName,
+                            'systemURL' => $systemURL,
+                        ];
+
+                        $emailDetails = [
+                            'eventName' => $eventName,
+                            'certificateID' => $validCertificate['uid'],
+                        ];
+
+                        AlertMailJob::dispatch($userEmail, new CertificateAddMail($basicEmailDetails, $emailDetails));
+                    }
+                }
+            }
+            // Certificate::upsert($validCertificateList, ['uid'], ['uid', 'user_id', 'event_id', 'type', 'position', 'category']);
             $request->session()->flash('spreadsheetSuccess', count($validCertificateList) . ' sijil berjaya ditambah secara pukal!');
 
             return back();

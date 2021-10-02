@@ -5,15 +5,15 @@
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 </head>
 @component('mail::message', ['data' => $basicEmailDetails])
-# Akaun anda berjaya dicipta!
+# E-sijil baru telah dikeluarkan kepada anda!
 
-Anda boleh mengakses akaun anda di <a href="{{ $basicEmailDetails['systemURL'] . '/login' }}" target="_blank">{{ $basicEmailDetails['systemURL'] . '/login' }}</a> dengan maklumat berikut:
+Berikut merupakan maklumat sijil anda:
 
-- **Username:** {{ $emailDetails['username'] }}
-- **Kata Laluan:** {{ $emailDetails['password'] }}
+- **Nama Acara:** {{ strtoupper($emailDetails['eventName']) }}
+- **ID Sijil:** {{ $emailDetails['certificateID'] }}
 
-@component('mail::button', ['url' => $basicEmailDetails['systemURL'] . '/login'])
-<i class="bi bi-arrow-right-square"></i> Log Masuk
+@component('mail::button', ['url' => $basicEmailDetails['systemURL'] . '/certificate/view/' . $emailDetails['certificateID']])
+<i class="bi bi-arrow-right-square"></i> Lihat Sijil
 @endcomponent
 
 Daripada, <br>
