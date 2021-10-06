@@ -34,7 +34,7 @@ Start reading our code and you'll get the hang of it. We optimize for readabilit
   * As long as the code is readable and understandable, we can accept it. Comments can be included to futher explain your code.
   * Always store public facing images in the `storage/app/public/img` folder. The public images could be access through `/storage/img` path.
   * This is open source software. Consider the people who will read your code, and make it look nice for them. It's sort of like driving a car: Perhaps you love doing donuts when you're alone, but with passengers the goal is to make the ride as smooth as possible.
-  * You can use `./vendor/bin/php-cs-fixer fix` to reformat your codes to follow our standards. Dry run command: `vendor/bin/php-cs-fixer fix --dry-run --diff`. 
+  * You can use `composer format` command to reformat your codes to follow our standards. Dry run command: `composer format --dry-run --diff`. 
 
 Thanks,
 Muhammad Hanis Irfan bin Mohd Zaid, Original Author of SeaJell.

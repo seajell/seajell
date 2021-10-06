@@ -52,10 +52,10 @@
             "@php artisan key:generate --ansi"
         ],
         "format": [
-            "vendor/bin/php-cs-fixer fix"
+            "vendor\\bin\\php-cs-fixer fix"
         ],
         "format-dry-run": [
-            "vendor/bin/php-cs-fixer fix --dry-run --diff"
+            "vendor\\bin\\php-cs-fixer fix --dry-run --diff"
         ]
     },
     "extra": {

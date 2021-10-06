@@ -47,9 +47,6 @@ class PasswordResetController extends MainController
                 }
             }
         }
-        $this->emailSupportEmail;
-        $this->emailSystemLogo;
-        $this->emailSystemName;
     }
 
     public function passwordResetRequestView(Request $request)
@@ -59,11 +56,16 @@ class PasswordResetController extends MainController
          * Request -> email -> reset
          * Tokens will only be valid for 24 hours / 1 day.
          */
+
+        $this->checkEmailServiceStatus();
+
         return view('auth.forgot-password')->with(['appVersion' => $this->appVersion, 'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting]);
     }
 
     public function passwordResetRequest(Request $request)
     {
+        $this->checkEmailServiceStatus();
+
         $request->validate(['email' => 'required|email']);
 
         // Check if user existed with the email given
@@ -130,6 +132,8 @@ class PasswordResetController extends MainController
 
     public function passwordResetView($token)
     {
+        $this->checkEmailServiceStatus();
+
         // Checks if token existed and still valid (current time is lesser than expired on time)
         $currentTime = Carbon::now()->toDateTimeString();
 
@@ -148,6 +152,8 @@ class PasswordResetController extends MainController
 
     public function passwordReset($token, Request $request)
     {
+        $this->checkEmailServiceStatus();
+
         $request->validate(['password' => 'required|confirmed']);
         $request->validate(['reset_token' => 'required']);
         $request->validate(['email' => 'required']);
@@ -174,6 +180,21 @@ class PasswordResetController extends MainController
             } else {
                 // Just return to home route
                 return route('/');
+            }
+        }
+    }
+
+    /**
+     * Abort the request if email service if off.
+     */
+    protected function checkEmailServiceStatus()
+    {
+        // Only return the pages if email service is on.
+        if (empty($this->emailServiceSetting->service_status)) {
+            abort(500, 'Servis e-mel tidak diaktifkan atau dikonfigurasikan. Sila hubungi pentadbir untuk bantuan.');
+        } else {
+            if ('on' != $this->emailServiceSetting->service_status) {
+                abort(500, 'Servis e-mel tidak diaktifkan atau dikonfigurasikan. Sila hubungi pentadbir untuk bantuan.');
             }
         }
     }
