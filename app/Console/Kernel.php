@@ -25,6 +25,12 @@ class Kernel extends ConsoleKernel
     {
         // Task to delete certificate collection folder every 3 hours.
         $schedule->command('deleteCertificateCollection')->everyThreeHours();
+
+        // Only run this when set to true the env variable SHARED_HOSTING_ENABLED=true, default: false.
+        if (config('seajell.shared_hosting.enabled')) {
+            $schedule->command('queue:restart')->everyFiveMinutes();
+            $schedule->command('queue:work --daemon')->everyMinute()->withoutOverlapping();
+        }
     }
 
     /**

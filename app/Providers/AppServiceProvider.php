@@ -6,6 +6,7 @@ use Illuminate\Mail\Mailer;
 use App\Models\SystemSetting;
 use App\Models\EmailServiceSettings;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -17,17 +18,18 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        Schema::defaultStringLength(191);
+
         $this->app->bind('user.mailer', function ($app) {
-            if (EmailServiceSettings::where('id', 1)->first()) {
-                $emailServiceSetting = EmailServiceSettings::where('id', 1)->first();
-            } else {
-                $emailServiceSetting = '';
+            $emailServiceSetting = '';
+            $fromName = 'SeaJell';
+
+            if ($serviceSetting = EmailServiceSettings::where('id', 1)->first()) {
+                $emailServiceSetting = $serviceSetting;
             }
 
-            if (SystemSetting::where('id', 1)->first()) {
-                $fromName = SystemSetting::select('name')->where('id', 1)->first()->name;
-            } else {
-                $fromName = 'SeaJell';
+            if ($systemSetting = SystemSetting::where('id', 1)->first()) {
+                $fromName = $systemSetting->name;
             }
 
             $smtp_host = $emailServiceSetting->service_host;
