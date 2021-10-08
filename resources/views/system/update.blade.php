@@ -59,7 +59,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
 
 @extends('layout.main')
 @section('content')
-    <p class="fs-2">Tetapan Sistem</p>
+    <p class="fs-2">@lang('common.system_setting')</p>
     @if(session()->has('systemSettingSuccess'))
         <span><div class="alert alert-success w-100 ml-1">{{ session('systemSettingSuccess') }}</div></span>
     @endif
