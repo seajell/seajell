@@ -20,6 +20,7 @@
         "phpoffice/phpspreadsheet": "^1.18"
     },
     "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.6",
         "facade/ignition": "^2.5",
         "fakerphp/faker": "^1.9.1",
         "friendsofphp/php-cs-fixer": "^3.1",
@@ -33,7 +34,10 @@
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
-        }
+        },
+        "files": [
+            "app/Helper/Helper.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {

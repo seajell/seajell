@@ -83,9 +83,9 @@ class SystemController extends MainController
                 ],
             ], ['id'], ['name', 'logo', 'language']);
 
-            $request->session()->flash('systemSettingSuccess', 'Tetapan sistem berjaya dikemas kini!');
+            set_locale($systemLanguage);
 
-            return back();
+            return back()->with('systemSettingSuccess', 'Tetapan sistem berjaya dikemas kini!');
         } elseif ($request->has('email-information')) {
             $validated = $request->validate([
                 'email-service-host' => ['required'],
