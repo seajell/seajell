@@ -26,8 +26,12 @@ if (!function_exists('get_locale')) {
         }
 
         // Fallback to user setting if does exist
-        if ($systemSetting = SystemSetting::query()->find(1)) {
-            return $systemSetting->language;
+        if (Schema::hasTable('system_settings')) {
+            if (SystemSetting::where('id', 1)->first()) {
+                $systemSetting = SystemSetting::query()->find(1);
+
+                return $systemSetting->language;
+            }
         }
 
         // Fallback to default application locale
