@@ -66,7 +66,7 @@ class PasswordResetController extends MainController
         $request->validate(['email' => 'required|email']);
 
         // Check if user existed with the email given
-        if (User::where('email', $request->input('email'))->first()) {
+        if (User::where('email', strtolower($request->input('email')))->first()) {
             // Insert password reset info into the database
             $uidArray = PasswordReset::select('token')->get();
             $token = $this->generateUID(50, $uidArray);
@@ -74,27 +74,27 @@ class PasswordResetController extends MainController
             $next24HourFromNow = $currentTime->addDay()->toDateTimeString();
 
             PasswordReset::create([
-                'email' => $request->input('email'),
+                'email' => strtolower($request->input('email')),
                 'token' => $token,
                 'expired_on' => $next24HourFromNow,
                 'created_at' => $currentTime->toDateTimeString(),
             ]);
+
+            // Sending Emails
+            $emailDetailsArr = [
+                'token' => $token,
+            ];
+
+            seajell_send_mail(strtolower($request->email), $emailDetailsArr, 'ForgetPasswordMail');
+
+            $request->session()->flash('passwordResetRequestSuccess', 'Permohonan berjaya. Sila lihat inbox e-mel anda!');
+
+            return back();
         } else {
             return back()->withErrors([
                 'email' => 'Pengguna dengan e-mel yang diberikan tidak wujud!',
             ]);
         }
-
-        // Sending Emails
-        $emailDetailsArr = [
-            'token' => $token,
-        ];
-
-        seajell_send_mail(strtolower($request->email), $emailDetailsArr, 'ForgetPasswordMail');
-
-        $request->session()->flash('passwordResetRequestSuccess', 'Permohonan berjaya. Sila lihat inbox e-mel anda!');
-
-        return back();
     }
 
     public function passwordResetView($token)
@@ -119,7 +119,7 @@ class PasswordResetController extends MainController
 
     public function passwordReset($token, Request $request)
     {
-        //$this->checkEmailServiceStatus();
+        $this->checkEmailServiceStatus();
 
         $request->validate(['password' => 'required|confirmed']);
         $request->validate(['reset_token' => 'required']);
@@ -145,11 +145,9 @@ class PasswordResetController extends MainController
                 return view('auth.reset-password-success', ['token' => $token])->with(['appVersion' => $this->appVersion,
                     'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting, ]);
             } else {
-                // Just return to home route
                 return redirect()->route('home');
             }
         } else {
-            // Just return to home route
             return redirect()->route('home');
         }
     }
