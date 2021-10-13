@@ -20,11 +20,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Jobs\AlertMailJob;
-use App\Mail\NewAccountMail;
 use Illuminate\Http\Request;
 use App\Models\LoginActivity;
-use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
@@ -172,44 +169,13 @@ class UserController extends MainController
                 ['fullname' => strtolower($request->fullname), 'email' => strtolower($request->email), 'password' => Hash::make($request->password), 'identification_number' => $request->identification_number, 'role' => strtolower($request->role)]
             );
 
-            // Sending Email
-            if (!empty($this->emailServiceSetting)) {
-                if ('on' == $this->emailServiceSetting->service_status) {
-                    if (!empty($this->emailServiceSetting->support_email)) {
-                        $emailSupportEmail = $this->emailServiceSetting->support_email;
-                    } else {
-                        $emailSupportEmail = '';
-                    }
+            // Sending Emails
+            $emailDetailsArr = [
+                'username' => strtolower($request->username),
+                'password' => $request->password,
+            ];
 
-                    if (!empty($this->systemSetting->logo)) {
-                        $emailSystemLogo = $this->systemSetting->logo;
-                    } else {
-                        $emailSystemLogo = '';
-                    }
-
-                    if (!empty($this->systemSetting->name)) {
-                        $emailSystemName = $this->systemSetting->name;
-                    } else {
-                        $emailSystemName = '';
-                    }
-
-                    $systemURL = URL::to('/');
-
-                    $basicEmailDetails = [
-                        'supportEmail' => strtolower($emailSupportEmail),
-                        'systemLogo' => $emailSystemLogo,
-                        'systemName' => $emailSystemName,
-                        'systemURL' => $systemURL,
-                    ];
-
-                    $emailDetails = [
-                        'username' => strtolower($request->username),
-                        'password' => $request->password,
-                    ];
-
-                    AlertMailJob::dispatch(strtolower($request->email), new NewAccountMail($basicEmailDetails, $emailDetails));
-                }
-            }
+            seajell_send_mail($request->email, $emailDetailsArr, 'NewAccountMail');
 
             $request->session()->flash('addUserSuccess', 'Pengguna berjaya ditambah!');
 
@@ -371,44 +337,14 @@ class UserController extends MainController
                         'role' => $validUser['role'],
                     ]
                 );
-                // Sending Email
-                if (!empty($this->emailServiceSetting)) {
-                    if ('on' == $this->emailServiceSetting->service_status) {
-                        if (!empty($this->emailServiceSetting->support_email)) {
-                            $emailSupportEmail = $this->emailServiceSetting->support_email;
-                        } else {
-                            $emailSupportEmail = '';
-                        }
 
-                        if (!empty($this->systemSetting->logo)) {
-                            $emailSystemLogo = $this->systemSetting->logo;
-                        } else {
-                            $emailSystemLogo = '';
-                        }
+                // Sending Emails
+                $emailDetailsArr = [
+                    'username' => strtolower($validUser['username']),
+                    'password' => $validUser['password'],
+                ];
 
-                        if (!empty($this->systemSetting->name)) {
-                            $emailSystemName = $this->systemSetting->name;
-                        } else {
-                            $emailSystemName = '';
-                        }
-
-                        $systemURL = URL::to('/');
-
-                        $basicEmailDetails = [
-                            'supportEmail' => strtolower($emailSupportEmail),
-                            'systemLogo' => $emailSystemLogo,
-                            'systemName' => $emailSystemName,
-                            'systemURL' => $systemURL,
-                        ];
-
-                        $emailDetails = [
-                            'username' => strtolower($validUser['username']),
-                            'password' => $validUser['password'],
-                        ];
-
-                        AlertMailJob::dispatch(strtolower($validUser['email']), new NewAccountMail($basicEmailDetails, $emailDetails));
-                    }
-                }
+                seajell_send_mail($validUser['email'], $emailDetailsArr, 'NewAccountMail');
             }
             // User::upsert($validUserList, ['username'], ['fullname', 'email', 'password', 'identification_number', 'role']);
             $request->session()->flash('spreadsheetSuccess', count($validUserList) . ' pengguna berjaya ditambah secara pukal!');

@@ -4,13 +4,10 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\User;
-use App\Jobs\AlertMailJob;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\PasswordReset;
 use App\Models\SystemSetting;
-use App\Mail\ForgetPasswordMail;
-use Illuminate\Support\Facades\URL;
 use App\Models\EmailServiceSettings;
 use Illuminate\Support\Facades\Hash;
 
@@ -88,43 +85,13 @@ class PasswordResetController extends MainController
             ]);
         }
 
-        // Sending Email
-        if (!empty($this->emailServiceSetting)) {
-            if ('on' == $this->emailServiceSetting->service_status) {
-                if (!empty($this->emailServiceSetting->support_email)) {
-                    $emailSupportEmail = $this->emailServiceSetting->support_email;
-                } else {
-                    $emailSupportEmail = '';
-                }
+        // Sending Emails
+        $emailDetailsArr = [
+            'token' => $token,
+        ];
 
-                if (!empty($this->systemSetting->logo)) {
-                    $emailSystemLogo = $this->systemSetting->logo;
-                } else {
-                    $emailSystemLogo = '';
-                }
+        seajell_send_mail(strtolower($request->email), $emailDetailsArr, 'ForgetPasswordMail');
 
-                if (!empty($this->systemSetting->name)) {
-                    $emailSystemName = $this->systemSetting->name;
-                } else {
-                    $emailSystemName = '';
-                }
-
-                $systemURL = URL::to('/');
-
-                $basicEmailDetails = [
-                    'supportEmail' => strtolower($emailSupportEmail),
-                    'systemLogo' => $emailSystemLogo,
-                    'systemName' => $emailSystemName,
-                    'systemURL' => $systemURL,
-                ];
-
-                $emailDetails = [
-                    'token' => $token,
-                ];
-
-                AlertMailJob::dispatch(strtolower($request->email), new ForgetPasswordMail($basicEmailDetails, $emailDetails));
-            }
-        }
         $request->session()->flash('passwordResetRequestSuccess', 'Permohonan berjaya. Sila lihat inbox e-mel anda!');
 
         return back();
@@ -152,7 +119,7 @@ class PasswordResetController extends MainController
 
     public function passwordReset($token, Request $request)
     {
-        $this->checkEmailServiceStatus();
+        //$this->checkEmailServiceStatus();
 
         $request->validate(['password' => 'required|confirmed']);
         $request->validate(['reset_token' => 'required']);
@@ -179,8 +146,11 @@ class PasswordResetController extends MainController
                     'apiToken' => $this->apiToken, 'appName' => $this->appName, 'systemSetting' => $this->systemSetting, ]);
             } else {
                 // Just return to home route
-                return route('/');
+                return redirect()->route('home');
             }
+        } else {
+            // Just return to home route
+            return redirect()->route('home');
         }
     }
 
