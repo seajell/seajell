@@ -18,7 +18,7 @@ return [
     'remove' => 'Discard',
     'visibility_public' => 'Public',
     'visibility_hidden' => 'Hidden',
-    'remove_modal_title' => 'Remove Event',
+    'remove_modal_title' => 'Discard Event',
     'remove_modal_message_one' => 'Are you sure you want to discard this event',
     'remove_modal_message_two' => 'Any certificates added based on this event will be discarded together',
     'remove_modal_yes' => 'Yes',

@@ -17,92 +17,92 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
 
 @extends('layout.main')
 @section('content')
-    <p class="fs-2">Senarai Sijil</p>
+    <p class="fs-2">{{ trans('certificate/list.certificate_list') }}</p>
     <form action="" method="get" class="row my-3">
         <div class="row row-cols-1 row-cols-md-2">
             <div class="col mb-2">
                 <div class="form-floating">
                     <select class="form-select" id="sort_by" name="sort_by" aria-label="sortby">
-                        <option value="uid">ID Unik</option>
-                        <option value="user_id">Nama Pengguna</option>
-                        <option value="event_id">Nama Acara</option>
-                        <option value="type">Jenis Sijil</option>
-                        <option value="position">Kategori</option>
-                        <option value="category">Kedudukan</option>
+                        <option value="uid">{{ trans('certificate/list.unique_id') }}</option>
+                        <option value="user_id">{{ trans('certificate/list.user_name') }}</option>
+                        <option value="event_id">{{ trans('certificate/list.event_name') }}</option>
+                        <option value="type">{{ trans('certificate/list.certificate_type') }}</option>
+                        <option value="category">{{ trans('certificate/list.certificate_category') }}</option>
+                        <option value="position">{{ trans('certificate/list.certificate_position') }}</option>
                     </select>
-                    <label for="sort_by">Susun Mengikut:</label>
+                    <label for="sort_by">{{ trans('certificate/list.sort_by') }}:</label>
                 </div>
             </div>
             <div class="col">
                 <div class="form-floating">
                     <select class="form-select" id="sort_order" name="sort_order" aria-label="sortorder">
-                        <option value="asc">Meningkat</option>
-                        <option value="desc">Menurun</option>
+                        <option value="asc">{{ trans('certificate/list.order_ascending') }}</option>
+                        <option value="desc">{{ trans('certificate/list.order_descending') }}</option>
                     </select>
-                    <label for="sort_order">Susun Secara:</label>
+                    <label for="sort_order">{{ trans('certificate/list.order_by') }}:</label>
                 </div>
             </div>
         </div>
         <div class="row mt-3">
             <div class="col-7 col-md-10">
-                <input type="text" class="form-control" name="search" placeholder="Carian">
+                <input type="text" class="form-control" name="search" placeholder="{{ trans('certificate/list.search') }}">
             </div>
             <div class="col-5 col-md-2">
-                <button type="submit" class="btn btn-outline-light hvr-shrink w-100"><i class="bi bi-search"></i> Cari</button>
+                <button type="submit" class="btn btn-outline-light hvr-shrink w-100"><i class="bi bi-search"></i> {{ trans('certificate/list.search') }}</button>
             </div>
             @if(!empty($sortAndSearch))
                 <div class="col-12 row gy-3">
                     @switch($sortAndSearch['sortBy'])
                         @case('uid')
-                            <p class="col-6">DISUSUN MENGIKUT: <span class="fst-italic">ID Unik</span></p>
+                            <p class="col-6">{{ trans('certificate/list.sort_by') }}: <span class="fst-italic">{{ trans('certificate/list.unique_id') }}</span></p>
                             @break
                         @case('user_id')
-                            <p class="col-6">DISUSUN MENGIKUT: <span class="fst-italic">Nama Pengguna</span></p>
+                            <p class="col-6">{{ trans('certificate/list.sort_by') }}: <span class="fst-italic">{{ trans('certificate/list.user_name') }}</span></p>
                             @break
                         @case('event_id')
-                            <p class="col-6">DISUSUN MENGIKUT: <span class="fst-italic">Nama Acara</span></p>
+                            <p class="col-6">{{ trans('certificate/list.sort_by') }}: <span class="fst-italic">{{ trans('certificate/list.event_name') }}</span></p>
                             @break
                         @case('type')
-                            <p class="col-6">DISUSUN MENGIKUT: <span class="fst-italic">Jenis Sijil</span></p>
+                            <p class="col-6">{{ trans('certificate/list.sort_by') }}: <span class="fst-italic">{{ trans('certificate/list.certificate_type') }}</span></p>
                             @break
                         @case('position')
-                            <p class="col-6">DISUSUN MENGIKUT: <span class="fst-italic">Kategori</span></p>
+                            <p class="col-6">{{ trans('certificate/list.sort_by') }}: <span class="fst-italic">{{ trans('certificate/list.certificate_category') }}</span></p>
                             @break
                         @case('category')
-                            <p class="col-6">DISUSUN MENGIKUT: <span class="fst-italic">Kedudukan</span></p>
+                            <p class="col-6">{{ trans('certificate/list.sort_by') }}: <span class="fst-italic">{{ trans('certificate/list.certificate_position') }}</span></p>
                             @break
                         @default
-                            <p class="col-6">DISUSUN MENGIKUT: <span class="fst-italic"></span></p>
+                            <p class="col-6">{{ trans('certificate/list.sort_by') }}: <span class="fst-italic"></span></p>
                             @break
                     @endswitch
                     @switch($sortAndSearch['sortOrder'])
                         @case('asc')
-                            <p class="col-6">DISUSUN SECARA: <span class="fst-italic">MENINGKAT</span></p>
+                            <p class="col-6">{{ trans('certificate/list.order_by') }}: <span class="fst-italic">{{ trans('certificate/list.order_ascending') }}</span></p>
                             @break
                         @case('desc')
-                            <p class="col-6">DISUSUN SECARA: <span class="fst-italic">MENURUN</span></p>
+                            <p class="col-6">{{ trans('certificate/list.order_by') }}: <span class="fst-italic">{{ trans('certificate/list.order_descending') }}</span></p>
                             @break
                         @default
-                            <p class="col-6">DISUSUN SECARA:</p>     
+                            <p class="col-6">{{ trans('certificate/list.order_by') }}:</p>
                     @endswitch
                     @if(!empty($sortAndSearch['search']))
                         @switch($sortAndSearch['search'])
                             @case('participation')
-                                <p class="col-12">CARIAN: <span class="fst-italic">PENYERTAAN</span></p>
+                                <p class="col-12">{{ trans('certificate/list.search') }}: <span class="fst-italic">{{ trans('certificate/type.participation') }}</span></p>
                                 @break
                             @case('achievement')
-                                <p class="col-12">CARIAN: <span class="fst-italic">PENCAPAIAN</span></p>
+                                <p class="col-12">{{ trans('certificate/list.search') }}: <span class="fst-italic">{{ trans('certificate/type.achievement') }}</span></p>
                                 @break
                             @case('appreciation')
-                                <p class="col-12">CARIAN: <span class="fst-italic">PENGHARGAAN</span></p>
+                                <p class="col-12">{{ trans('certificate/list.search') }}: <span class="fst-italic">{{ trans('certificate/type.appreciation') }}</span></p>
                                 @break
                             @default
-                                <p class="col-12">CARIAN: <span class="fst-italic">{{ strtoupper($sortAndSearch['search']) }}</span></p>
+                                <p class="col-12">{{ trans('certificate/list.search') }}: <span class="fst-italic">{{ strtoupper($sortAndSearch['search']) }}</span></p>
                                 @break
                         @endswitch
                     @endif
                     <div class="col-12">
-                        <a href="{{ route('certificate.list') }}" class="btn btn-outline-light"><i class="bi bi-file-minus"></i> Kosongkan Carian Dan Susunan</a>
+                        <a href="{{ route('certificate.list') }}" class="btn btn-outline-light"><i class="bi bi-file-minus"></i> {{ trans('certificate/list.clear_search_and_order') }}</a>
                     </div>
                 </div>
             @endif
@@ -114,7 +114,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
     <div class="row">
         <div class="row my-3">
             <div class="col-4">
-                <button type="button" class="btn btn-outline-light" data-bs-toggle="modal" data-bs-target="#certificateCollectionDownloadModal"><i class="bi bi-download"></i> Muat Turun Koleksi Sijil</button>
+                <button type="button" class="btn btn-outline-light" data-bs-toggle="modal" data-bs-target="#certificateCollectionDownloadModal"><i class="bi bi-download"></i> {{ trans('certificate/list.download_certificate_collection') }}</button>
             </div>
             <div class="col-8">
                 @error('id_username')
@@ -125,23 +125,23 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                 @enderror
                 @error('collectionEventNotFound')
                     <div class="alert alert-danger">{{ $message }}</div>
-                @enderror 
+                @enderror
                 @error('collectionNoCertificate')
                     <div class="alert alert-danger">{{ $message }}</div>
-                @enderror 
+                @enderror
                 @error('collectionLimit')
                     <div class="alert alert-danger">
-                        <p>Muat turun telah dihadkan!</p>
-                        <p>Muat turun seterusnya boleh dilakukan selepas <span class="fw-bold">{{ $message }}</span></p>
+                        <p>{{ trans('certificate/list.certificate_collection_limit') }}!</p>
+                        <p>{{ trans('certificate/list.certificate_collection_limit_after') }} <span class="fw-bold">{{ $message }}</span></p>
                     </div>
                 @enderror
                 @if(session()->has('collectionDownloadSuccessPath'))
                     <div class="alert alert-success">
                         <div class="row">
-                            <span>Klik pautan ini untuk muat turun koleksi: <a href="{{ session('collectionDownloadSuccessPath') }}" class="fw-bold">MUAT TURUN</a></span>
+                            <span>{{ trans('certificate/list.certificate_collection_download_url') }}: <a href="{{ session('collectionDownloadSuccessPath') }}" class="fw-bold text-success">{{ trans('certificate/list.download') }}</a></span>
                         </div>
                     </div>
-                @endif  
+                @endif
             </div>
             {{-- Modal for certificate collection download --}}
             <div class="modal fade text-dark" id="certificateCollectionDownloadModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -149,33 +149,33 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                     <form action="{{ route('certificate.collection') }}" method="get">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="certificateCollectionDownloadModalLabel">Muat Turun Koleksi Sijil</h5>
+                                <h5 class="modal-title" id="certificateCollectionDownloadModalLabel">{{ trans('certificate/list.certificate_collection_modal_title') }}</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 @can('authAdmin')
-                                    <p>Muat turun koleksi sijil bagi peserta dan acara dihadkan kepada 24 jam untuk setiap muat turun.</p>
-                                    <p class="text-danger">Perhatian: Muat turun bagi koleksi yang mempunyai banyak sijil akan mengurangkan prestasi server sewaktu proses muat turun!</p>
+                                    <p>{{ trans('certificate/list.certificate_collection_modal_message_one') }}.</p>
+                                    <p class="text-danger">{{ trans('certificate/list.certificate_collection_modal_message_two') }}!</p>
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="collection_download_options" id="collectionDownloadOptions1" value="participant" checked>
-                                        <label class="form-check-label" for="collectionDownloadOptions1">Peserta</label>
+                                        <label class="form-check-label" for="collectionDownloadOptions1">{{ trans('certificate/list.certificate_collection_modal_participant') }}</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="collection_download_options" id="collectionDownloadOptions2" value="event">
-                                        <label class="form-check-label" for="collectionDownloadOptions2">Acara</label>
+                                        <label class="form-check-label" for="collectionDownloadOptions2">{{ trans('certificate/list.certificate_collection_modal_event') }}</label>
                                     </div>
                                     <div class="form-floating mt-3">
                                         <input type="text" class="form-control" id="id_username" name="id_username" placeholder="id_username">
-                                        <label for="id_username">ID Acara / Username</label>
+                                        <label for="id_username">{{ trans('certificate/list.certificate_collection_modal_id_username') }}</label>
                                     </div>
                                 @endcan
                                 @cannot('authAdmin')
-                                    <p>Muat turun koleksi sijil bagi peserta dan acara dihadkan kepada 24 jam untuk setiap muat turun.</p>
+                                    <p>{{ trans('certificate/list.certificate_collection_modal_message_one') }}.</p>
                                 @endcannot
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                                <button type="submit" class="btn btn-outline-dark"><i class="bi bi-download"></i> Muat Turun</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ trans('certificate/list.certificate_collection_modal_close') }}</button>
+                                <button type="submit" class="btn btn-outline-dark"><i class="bi bi-download"></i> {{ trans('certificate/list.certificate_collection_modal_download') }}</button>
                             </div>
                         </div>
                     </form>
@@ -187,16 +187,16 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                 @if ($certificates->count() > 0)
                     <thead>
                         <tr>
-                            <th class="col-1 text-center">ID Unik</th>
-                            <th class="col text-center">Nama Pengguna</th>
-                            <th class="col text-center">Nama Acara</th>
-                            <th class="col text-center">Jenis Sijil</th>
-                            <th class="col text-center">Kategori</th>
-                            <th class="col text-center">Kedudukan</th>
-                            <th class="col-1 text-center">Lihat</th>
+                            <th class="col-1 text-center">{{ trans('certificate/list.unique_id') }}</th>
+                            <th class="col text-center">{{ trans('certificate/list.user_name') }}</th>
+                            <th class="col text-center">{{ trans('certificate/list.event_name') }}</th>
+                            <th class="col text-center">{{ trans('certificate/list.certificate_type') }}</th>
+                            <th class="col text-center">{{ trans('certificate/list.certificate_category') }}</th>
+                            <th class="col text-center">{{ trans('certificate/list.certificate_position') }}</th>
+                            <th class="col-1 text-center">{{ trans('certificate/list.view') }}</th>
                             @can('authAdmin')
-                                <th class="col-1 text-center">Kemas Kini</th>
-                                <th class="col-1 text-center">Buang</th>
+                                <th class="col-1 text-center">{{ trans('certificate/list.update') }}</th>
+                                <th class="col-1 text-center">{{ trans('certificate/list.remove') }}</th>
                             @endcan
                         </tr>
                     </thead>
@@ -209,20 +209,20 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                                 <td>
                                     @switch($certificate->type)
                                         @case('participation')
-                                            PENYERTAAN
+                                            {{ strtoupper(trans('certificate/type.participation')) }}
                                             @break
                                         @case('achievement')
-                                            PENCAPAIAN
+                                            {{ strtoupper(trans('certificate/type.achievement')) }}
                                             @break
                                         @case('appreciation')
-                                            PENGHARGAAN
+                                            {{ strtoupper(trans('certificate/type.appreciation')) }}
                                             @break
                                         @default
                                     @endswitch
                                 </td>
                                 <td>
                                     @if($certificate->category !== NULL && $certificate->category !== '')
-                                        {{ strtoupper($certificate->category) }} 
+                                        {{ strtoupper($certificate->category) }}
                                     @else
                                         {{ "TIADA" }}
                                     @endif
@@ -232,10 +232,10 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                                 @can('authAdmin')
                                     <td class="fs-3 text-center"><a class="text-light" href="{{ route('certificate.update', [$certificate->uid]) }}"><i class="bi bi-pencil-square"></i></a></td>
                                     <td class="fs-3 text-center"><a class="text-light" href="" data-bs-toggle="modal" data-bs-target="#{{ 'delete-certificate-modal-' . $certificate->uid}}"><i class="bi bi-trash"></a></i></td>
-                                @endcan   
+                                @endcan
                             </tr>
-                                {{-- 
-                                Modal for delete confirmation 
+                                {{--
+                                Modal for delete confirmation
                                 --}}
                                 <div class="modal text-dark fade" id="{{ 'delete-certificate-modal-' . $certificate->uid}}" tabindex="-1" aria-labelledby="{{ 'delete-certificate-modal-' . $certificate->uid}}" aria-hidden="true">
                                     <div class="modal-dialog">
@@ -243,24 +243,24 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                                             <form action="{{ route('certificate.remove') }}" method="post">
                                                 @csrf
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="{{ 'delete-certificate-modal-' . $certificate->uid . '-label'}}">Buang Sijil</h5>
+                                                    <h5 class="modal-title" id="{{ 'delete-certificate-modal-' . $certificate->uid . '-label'}}">{{ trans('certificate/list.remove_modal_title') }}</h5>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <p>Anda yakin ingin membuang sijil ini?</p>
-                                                    <p class="fw-bold">ID Unik Sijil: <span class="fw-normal">{{ $certificate->uid }}</span></p>
-                                                    <p class="fw-bold">Nama Pengguna: <span class="fw-normal">{{ strtoupper($certificate->fullname) }}</span></p>
-                                                    <p class="fw-bold">Nama Acara: <span class="fw-normal">{{ strtoupper($certificate->name) }}</span></p>
-                                                    <p class="fw-bold">Jenis Sijil: <span class="fw-normal">
+                                                    <p>{{ trans('certificate/list.remove_modal_message_one') }}?</p>
+                                                    <p class="fw-bold">{{ trans('certificate/list.unique_id') }}: <span class="fw-normal">{{ $certificate->uid }}</span></p>
+                                                    <p class="fw-bold">{{ trans('certificate/list.user_name') }}: <span class="fw-normal">{{ strtoupper($certificate->fullname) }}</span></p>
+                                                    <p class="fw-bold">{{ trans('certificate/list.event_name') }}: <span class="fw-normal">{{ strtoupper($certificate->name) }}</span></p>
+                                                    <p class="fw-bold">{{ trans('certificate/list.certificate_type') }}: <span class="fw-normal">
                                                         @switch($certificate->type)
                                                             @case('participation')
-                                                                PENYERTAAN
+                                                                {{ strtoupper(trans('certificate/type.participation')) }}
                                                                 @break
                                                             @case('achievement')
-                                                                PENCAPAIAN
+                                                                {{ strtoupper(trans('certificate/type.achievement')) }}
                                                                 @break
                                                             @case('appreciation')
-                                                                PENGHARGAAN
+                                                                {{ strtoupper(trans('certificate/type.appreciation')) }}
                                                                 @break
                                                             @default
                                                         @endswitch
@@ -268,8 +268,8 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                                                     <input type="text" name="certificate-id" id="certificate-id" value="{{ $certificate->uid }}" hidden>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tidak</button>
-                                                    <button type="submit" class="btn btn-danger">Ya</button>
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ trans('certificate/list.remove_modal_no') }}</button>
+                                                    <button type="submit" class="btn btn-danger">{{ trans('certificate/list.remove_modal_yes') }}</button>
                                                 </div>
                                             </form>
                                         </div>
@@ -278,10 +278,10 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                         @endforeach
                     </tbody>
                 @else
-                    <p class="text-center fw-bold mt-3">Tiada rekod dijumpai.</p>
+                    <p class="text-center fw-bold mt-3">{{ trans('certificate/list.no_record_found') }}.</p>
                 @endif
             </table>
             {{ $certificates->links() }}
-        </div>   
+        </div>
     </div>
 @endsection
