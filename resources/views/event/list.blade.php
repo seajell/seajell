@@ -17,57 +17,79 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
 
 @extends('layout.main')
 @section('content')
-    <p class="fs-2">Senarai Acara</p>
+    <p class="fs-2">{{ trans('event/list.event_list') }}</p>
     <form action="" method="get" class="row my-3">
         <div class="row row-cols-1 row-cols-md-2">
             <div class="col mb-2">
                 <div class="form-floating">
                     <select class="form-select" id="sort_by" name="sort_by" aria-label="sortby">
                         <option value="id">ID</option>
-                        <option value="date">Tarikh</option>
-                        <option value="location">Lokasi</option>
-                        <option value="name">Nama Acara</option>
-                        <option value="organiser_name">Nama Penganjur</option>
-                        <option value="visibility">Keterlihatan</option>
+                        <option value="date">{{ trans('event/list.date') }}</option>
+                        <option value="location">{{ trans('event/list.event_location') }}</option>
+                        <option value="name">{{ trans('event/list.event_name') }}</option>
+                        <option value="organiser_name">{{ trans('event/list.organiser_name') }}</option>
+                        <option value="visibility">{{ trans('event/list.visibility') }}</option>
                     </select>
-                    <label for="sort_by">Susun Mengikut:</label>
+                    <label for="sort_by">{{ trans('event/list.sort_by') }}:</label>
                 </div>
             </div>
             <div class="col">
                 <div class="form-floating">
                     <select class="form-select" id="sort_order" name="sort_order" aria-label="sortorder">
-                        <option value="asc">Meningkat</option>
-                        <option value="desc">Menurun</option>
+                        <option value="asc">{{ trans('event/list.order_ascending') }}</option>
+                        <option value="desc">{{ trans('event/list.order_descending') }}</option>
                     </select>
-                    <label for="sort_order">Susun Secara:</label>
+                    <label for="sort_order">{{ trans('event/list.order_by') }}:</label>
                 </div>
             </div>
         </div>
         <div class="row mt-3">
             <div class="col-7 col-md-10">
-                <input type="text" class="form-control" name="search" placeholder="Carian">
+                <input type="text" class="form-control" name="search" placeholder="{{ trans('event/list.search') }}">
             </div>
             <div class="col-5 col-md-2">
-                <button type="submit" class="btn btn-outline-light hvr-shrink w-100"><i class="bi bi-search"></i> Cari</button>
+                <button type="submit" class="btn btn-outline-light hvr-shrink w-100"><i class="bi bi-search"></i> {{ trans('event/list.search') }}</button>
             </div>
             @if(!empty($sortAndSearch))
                 <div class="col-12 row gy-3">
-                    <p class="col-6">DISUSUN MENGIKUT: <span class="fst-italic">{{ strtoupper($sortAndSearch['sortBy']) }}</span></p>
-                    @switch($sortAndSearch['sortOrder'])
-                        @case('asc')
-                            <p class="col-6">DISUSUN SECARA: <span class="fst-italic">MENINGKAT</span></p>
+                    @switch($sortAndSearch['sortBy'])
+                        @case('id')
+                            <p class="col-6">{{ trans('event/list.sort_by') }}: <span class="fst-italic">ID</span></p>
                             @break
-                        @case('desc')
-                            <p class="col-6">DISUSUN SECARA: <span class="fst-italic">MENURUN</span></p>
+                        @case('date')
+                            <p class="col-6">{{ trans('event/list.sort_by') }}: <span class="fst-italic">{{ trans('event/list.date') }}</span></p>
+                            @break
+                        @case('location')
+                            <p class="col-6">{{ trans('event/list.sort_by') }}: <span class="fst-italic">{{ trans('event/list.event_location') }}</span></p>
+                            @break
+                        @case('name')
+                            <p class="col-6">{{ trans('event/list.sort_by') }}: <span class="fst-italic">{{ trans('event/list.event_name') }}</span></p>
+                            @break
+                        @case('organiser_name')
+                            <p class="col-6">{{ trans('event/list.sort_by') }}: <span class="fst-italic">{{ trans('event/list.organiser_name') }}</span></p>
+                            @break
+                        @case('visibility')
+                            <p class="col-6">{{ trans('event/list.sort_by') }}: <span class="fst-italic">{{ trans('event/list.visibility') }}</span></p>
                             @break
                         @default
-                            <p class="col-6">DISUSUN SECARA:</p>     
+                            <p class="col-6">DISUSUN MENGIKUT: <span class="fst-italic"></span></p>
+                            @break
+                    @endswitch
+                    @switch($sortAndSearch['sortOrder'])
+                        @case('asc')
+                            <p class="col-6">{{ trans('event/list.order_by') }}: <span class="fst-italic">{{ trans('event/list.order_ascending') }}</span></p>
+                            @break
+                        @case('desc')
+                            <p class="col-6">{{ trans('event/list.order_by') }}: <span class="fst-italic">{{ trans('event/list.order_descending') }}</span></p>
+                            @break
+                        @default
+                            <p class="col-6">{{ trans('event/list.order_by') }}:</p>
                     @endswitch
                     @if(!empty($sortAndSearch['search']))
-                        <p class="col-12">CARIAN: <span class="fst-italic">{{ strtoupper($sortAndSearch['search']) }}</span></p>
+                        <p class="col-12">{{ trans('event/list.search') }}: <span class="fst-italic">{{ strtoupper($sortAndSearch['search']) }}</span></p>
                     @endif
                     <div class="col-12">
-                        <a href="{{ route('event.list') }}" class="btn btn-outline-light"><i class="bi bi-file-minus"></i> Kosongkan Carian Dan Susunan</a>
+                        <a href="{{ route('event.list') }}" class="btn btn-outline-light"><i class="bi bi-file-minus"></i> {{ trans('event/list.clear_search_and_order') }}</a>
                     </div>
                 </div>
             @endif
@@ -83,13 +105,13 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                     <thead>
                         <tr>
                             <th class="col-1 text-center">ID</th>
-                            <th class="col-1 text-center">Tarikh</th>
-                            <th class="col-2 text-center">Lokasi</th>
-                            <th class="col-2 text-center">Nama Acara</th>
-                            <th class="col-2 text-center">Nama Penganjur</th>
-                            <th class="col-1 text-center">Keterlihatan</th>
-                            <th class="col-1 text-center">Kemas Kini</th>
-                            <th class="col-1 text-center">Buang</th>
+                            <th class="col-1 text-center">{{ trans('event/list.date') }}</th>
+                            <th class="col-2 text-center">{{ trans('event/list.event_location') }}</th>
+                            <th class="col-2 text-center">{{ trans('event/list.event_name') }}</th>
+                            <th class="col-2 text-center">{{ trans('event/list.organiser_name') }}</th>
+                            <th class="col-1 text-center">{{ trans('event/list.visibility') }}</th>
+                            <th class="col-1 text-center">{{ trans('event/list.update') }}</th>
+                            <th class="col-1 text-center">{{ trans('event/list.remove') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -102,16 +124,16 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                                 <td>{{ strtoupper($event->organiser_name) }}</td>
                                 <td>
                                     @if($event->visibility == 'public')
-                                        AWAM
+                                        {{ strtoupper(trans('event/list.visibility_public')) }}
                                     @elseif($event->visibility == 'hidden')
-                                        TERSEMBUNYI
+                                        {{ strtoupper(trans('event/list.visibility_hidden')) }}
                                     @endif
                                 </td>
                                 <td class="fs-3 text-center"><a class="text-light" href="{{ route('event.update', [$event->id]) }}"><i class="bi bi-pencil-square"></i></a></td>
                                 <td class="fs-3 text-center"><a class="text-light" href="" data-bs-toggle="modal" data-bs-target="#{{ 'delete-event-modal-' . $event->id}}"><i class="bi bi-trash"></a></i></td>
                             </tr>
-                            {{-- 
-                                Modal for delete confirmation 
+                            {{--
+                                Modal for delete confirmation
                                 --}}
                                 <div class="modal text-dark fade" id="{{ 'delete-event-modal-' . $event->id}}" tabindex="-1" aria-labelledby="{{ 'delete-event-modal-' . $event->id}}" aria-hidden="true">
                                     <div class="modal-dialog">
@@ -119,21 +141,21 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                                             <form action="{{ route('event.remove') }}" method="post">
                                                 @csrf
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="{{ 'delete-event-modal-' . $event->id . '-label'}}">Buang Acara</h5>
+                                                    <h5 class="modal-title" id="{{ 'delete-event-modal-' . $event->id . '-label'}}">{{ trans('event/list.remove_modal_title') }}</h5>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <p>Anda yakin ingin membuang acara ini?</p>
-                                                    <p>Setiap sijil yang ditambah berdasarkan acara ini akan dibuang bersama.</p>
-                                                    <p class="fw-bold">ID Acara: <span class="fw-normal">{{ $event->id }}</span></p>
-                                                    <p class="fw-bold">Nama Acara: <span class="fw-normal">{{ strtoupper($event->name) }}</span></p>
-                                                    <p class="fw-bold">Tarikh: <span class="fw-normal">{{ $event->date }}</span></p>
-                                                    <p class="fw-bold">Lokasi: <span class="fw-normal">{{ strtoupper($event->location) }}</span></p>
+                                                    <p>{{ trans('event/list.remove_modal_message_one') }}?</p>
+                                                    <p>{{ trans('event/list.remove_modal_message_two') }}.</p>
+                                                    <p class="fw-bold">ID: <span class="fw-normal">{{ $event->id }}</span></p>
+                                                    <p class="fw-bold">{{ trans('event/list.event_name') }}: <span class="fw-normal">{{ strtoupper($event->name) }}</span></p>
+                                                    <p class="fw-bold">{{ trans('event/list.date') }}: <span class="fw-normal">{{ $event->date }}</span></p>
+                                                    <p class="fw-bold">{{ trans('event/list.event_location') }}: <span class="fw-normal">{{ strtoupper($event->location) }}</span></p>
                                                     <input type="text" name="event-id" id="event-id" value="{{ $event->id }}" hidden>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tidak</button>
-                                                    <button type="submit" class="btn btn-danger">Ya</button>
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ trans('event/list.remove_modal_no') }}</button>
+                                                    <button type="submit" class="btn btn-danger">{{ trans('event/list.remove_modal_yes') }}</button>
                                                 </div>
                                             </form>
                                         </div>
@@ -142,10 +164,10 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                         @endforeach
                     </tbody>
                 @else
-                    <p class="text-center fw-bold mt-3">Tiada rekod dijumpai.</p>
+                    <p class="text-center fw-bold mt-3">{{ trans('event/list.no_record_found') }}.</p>
                 @endif
             </table>
             {{ $events->links() }}
-        </div>   
+        </div>
     </div>
 @endsection

@@ -1,0 +1,26 @@
+<?php
+
+return [
+    'event_list' => 'Event List',
+    'date' => 'Event Date',
+    'event_location' => 'Event Location',
+    'event_name' => 'Event Name',
+    'organiser_name' => 'Organiser Name',
+    'visibility' => 'Visibility',
+    'sort_by' => 'Sorted By',
+    'order_ascending' => 'Ascending',
+    'order_descending' => 'Descending',
+    'order_by' => 'Ordered In',
+    'search' => 'Search',
+    'no_record_found' => 'No record found',
+    'clear_search_and_order' => 'Clear Search And Order',
+    'update' => 'Update',
+    'remove' => 'Discard',
+    'visibility_public' => 'Public',
+    'visibility_hidden' => 'Hidden',
+    'remove_modal_title' => 'Remove Event',
+    'remove_modal_message_one' => 'Are you sure you want to discard this event',
+    'remove_modal_message_two' => 'Any certificates added based on this event will be discarded together',
+    'remove_modal_yes' => 'Yes',
+    'remove_modal_no' => 'No',
+];
