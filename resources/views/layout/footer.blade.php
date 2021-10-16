@@ -5,14 +5,14 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="first-time-login-label">Selamat Datang Ke Sistem SeaJell</h5>
+                        <h5 class="modal-title" id="first-time-login-label">{{ trans('home/home.welcome_title') }}</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <p>Oleh kerana ini pertama kali anda log masuk, anda disarankan untuk menukar kata laluan anda di <a href="{{ route('user.update', [Auth::user()->username]) }}" class="text-dark" target="_blank">laman kemas kini profil pengguna</a>.</p>
+                        <p>{{ trans('home/home.welcome_message_one') }} <a href="{{ route('user.update', [Auth::user()->username]) }}" class="text-dark" target="_blank">{{ trans('home/home.welcome_message_two') }}</a>.</p>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-success" data-bs-dismiss="modal">Faham!</button>
+                        <button type="button" class="btn btn-success" data-bs-dismiss="modal">{{ trans('home/home.welcome_message_understood') }}</button>
                     </div>
                 </div>
             </div>

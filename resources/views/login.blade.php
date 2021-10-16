@@ -34,7 +34,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         @endif
     </p>
 
-    <p class="text-center mb-5 text-light fs-3">Log Masuk</p>
+    <p class="text-center mb-5 text-light fs-3">{{ trans('user/login.title') }}</p>
 
     <div class="col-4 mx-auto bg-light p-4 rounded">
         <form action="" method="post">
@@ -48,18 +48,17 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             @enderror
 
             <div class="mb-4">
-                <label for="password" class="form-label">Kata Laluan</label>
+                <label for="password" class="form-label">{{ trans('user/login.password') }}</label>
                 <input type="password" class="form-control" id="password" name="password" placeholder="">
             </div>
             @error('password')
             <div class="alert alert-danger">{{ $message }}</div>
             @enderror
 
-            <button class="btn btn-outline-dark mb-3" type="submit"><i class="bi bi-door-open"></i> Log
-                Masuk</button>
+            <button class="btn btn-outline-dark mb-3" type="submit"><i class="bi bi-door-open"></i> {{ trans('user/login.title') }}</button>
 
             <br>
-            <a href="{{ route('password.reset.request') }}" class="text-dark">Lupa Kata Laluan?</a>
+            <a href="{{ route('password.reset.request') }}" class="text-dark">{{ trans('user/login.forgot_password') }}</a>
         </form>
     </div>
 </div>

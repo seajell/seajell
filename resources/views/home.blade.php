@@ -19,14 +19,14 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
 @section('content')
     <div class="container text-center">
         <div class="row">
-            <p class="fs-2">Navigasi</p>
+            <p class="fs-2">{{ trans('home/home.navigation') }}</p>
         </div>
         <div class="row mb-3">
             <div class="col">
-                <a href="{{ route('certificate.list') }}" class="fs-4 btn btn-outline-light"><i class="bi bi-patch-check"></i> Sijil</a>
+                <a href="{{ route('certificate.list') }}" class="fs-4 btn btn-outline-light"><i class="bi bi-patch-check"></i> {{ trans('home/home.certificate') }}</a>
             </div>
             <div class="col">
-                <a href="{{ route('signature') }}" class="fs-4 btn btn-outline-light"><i class="bi bi-pen"></i> Tandatangan</a>
+                <a href="{{ route('signature') }}" class="fs-4 btn btn-outline-light"><i class="bi bi-pen"></i> {{ trans('home/home.signature') }}</a>
             </div>
         </div>
     </div>

@@ -76,19 +76,18 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                             @auth
                             <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="{{ route('home') }}">Laman
-                                    Utama</a>
+                                <a class="nav-link active" aria-current="page" href="{{ route('home') }}">{{ trans('home/home.home') }}</a>
                             </li>
                             @endauth
                             @if(Gate::allows('authAdmin'))
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                                     data-bs-toggle="dropdown" aria-expanded="false">
-                                    Acara
+                                    {{ trans('home/home.event') }}
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <li><a class="dropdown-item" href="{{ route('event.list') }}">Senarai Acara</a></li>
-                                    <li><a class="dropdown-item" href="{{ route('event.add') }}">Tambah Acara</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('event.list') }}">{{ trans('home/home.event_list') }}</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('event.add') }}">{{ trans('home/home.add_event') }}</a></li>
                                 </ul>
                             </li>
                             @endif
@@ -96,14 +95,13 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                                     data-bs-toggle="dropdown" aria-expanded="false">
-                                    Sijil
+                                    {{ trans('home/home.certificate') }}
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
 
-                                    <li><a class="dropdown-item" href="{{ route('certificate.list') }}">Senarai
-                                            Sijil</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('certificate.list') }}">{{ trans('home/home.certificate_list') }}</a></li>
                                     @if(Gate::allows('authAdmin'))
-                                    <li><a class="dropdown-item" href="{{ route('certificate.add') }}">Tambah Sijil</a>
+                                    <li><a class="dropdown-item" href="{{ route('certificate.add') }}">{{ trans('home/home.add_certificate') }}</a>
                                     </li>
                                     @endif
                                 </ul>
@@ -113,34 +111,33 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                                     data-bs-toggle="dropdown" aria-expanded="false">
-                                    Pengguna
+                                    {{ trans('home/home.user') }}
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <li><a class="dropdown-item" href="{{ route('user.list') }}">Senarai Pengguna</a>
+                                    <li><a class="dropdown-item" href="{{ route('user.list') }}">{{ trans('home/home.user_list') }}</a>
                                     </li>
-                                    <li><a class="dropdown-item" href="{{ route('user.add') }}">Tambah Pengguna</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('user.add') }}">{{ trans('home/home.add_user') }}</a></li>
                                 </ul>
                             </li>
                             @endif
                             @if(Gate::allows('authAdmin'))
                             <li class="nav-item">
-                                <a class="nav-link" aria-current="page" href="{{ route('statistic') }}">Statistik</a>
+                                <a class="nav-link" aria-current="page" href="{{ route('statistic') }}">{{ trans('home/home.statistic') }}</a>
                             </li>
                             @endif
                             @if(Gate::allows('authAdmin'))
                             <li class="nav-item">
-                                <a class="nav-link" aria-current="page" href="{{ route('system') }}">Sistem</a>
+                                <a class="nav-link" aria-current="page" href="{{ route('system') }}">{{ trans('home/home.system') }}</a>
                             </li>
                             @endif
                         </ul>
                         @auth
                         <span class="navbar-text">
-                            <span class="text-light">Log Masuk Sebagai: <a class="fw-bold"
+                            <span class="text-light">{{ trans('home/home.logged_in_as') }}: <a class="fw-bold"
                                     href="{{ route('user.update', [Auth::user()->username]) }}">{{ strtoupper(Auth::user()->username) }}</a></span>
                             <form action="{{ route('logout') }}" method="post">
                                 @csrf
-                                <button class="btn btn-light" type="submit"><i class="bi bi-door-closed"></i> Log
-                                    Keluar</button>
+                                <button class="btn btn-light" type="submit"><i class="bi bi-door-closed"></i> {{ trans('home/home.log_out') }}</button>
                             </form>
                         </span>
                         @endauth
@@ -158,7 +155,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         <div class="d-flex flex-column justify-content-center align-items-center">
             <p class="mt-5"><a class="text-decoration-underline text-light" href="https://www.seajell.xyz/"
                     target="_blank">SeaJell</a> {{ $appVersion }}</p>
-            <p>Hak Cipta &copy; The SeaJell Contributors 2021</p>
+            <p>{{ trans('home/home.copyright') }} &copy; The SeaJell Contributors 2021</p>
         </div>
     </footer>
 
