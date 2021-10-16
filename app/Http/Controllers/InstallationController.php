@@ -30,7 +30,7 @@ use Illuminate\Support\Facades\Storage;
 
 class InstallationController extends Controller
 {
-    public function installView(Request $request)
+    public function installView()
     {
         // If user table exist, redirect to success page.
         if (Schema::hasTable('users')) {
@@ -49,7 +49,7 @@ class InstallationController extends Controller
         }
     }
 
-    public function installConfigView(Request $request)
+    public function installConfigView()
     {
         // If user table exist, redirect to success page.
         if (Schema::hasTable('users')) {
@@ -68,7 +68,7 @@ class InstallationController extends Controller
         }
     }
 
-    public function installSuccessView(Request $request)
+    public function installSuccessView()
     {
         return view('install.success');
     }

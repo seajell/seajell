@@ -19,15 +19,14 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
 @section('page') Laman Utama @endsection
 @section('content')
 <div class="container d-flex flex-column h-auto align-items-center bg-dark my-5 text-light rounded-3 shadow-lg">
-    <h1 class="mt-5">Skrip Instalasi Sistem - {{ env('APP_NAME') }}</h1>
-    <h2>Laman Utama</h2>
+    <h1 class="mt-5">System Installation Script - {{ env('APP_NAME') }}</h1>
     <hr class="border-light w-100 border-4">
     <p class="fs-4">
-        Pastikan anda telah memastikan kesemua <span class="fst-italic">requirements</span> dipenuhi sebelum pemasangan.
+        Make sure you have fulfilled all the requirements before proceeding.
     </p>
     <p class="fs-4">
-        Skrip ini akan menambah pengguna <span class="fst-italic fw-bold">admin</span> baharu dan membuat <span class="fst-italic">database migration</span class="fst-italic">.
+        This script will add a new <span class="fw-bold">admin</span> user and run the database migration.
     </p>
-    <a href="{{ route('install.config') }}" class="btn w-50 my-5 hvr-shrink btn-outline-light fs-4">Teruskan <i class="bi bi-box-arrow-right"></i></a>
+    <a href="{{ route('install.config') }}" class="btn w-50 my-5 hvr-shrink btn-outline-light fs-4"><i class="bi bi-box-arrow-right"></i> Proceed</a>
 </div>
 @endsection

@@ -80,7 +80,8 @@ return [
     |
     */
 
-    'locale' => 'ms-MY',
+    // 'locale' => 'ms-MY', The default language is English with Malay support
+    'locale' => 'en',
 
     /*
     |--------------------------------------------------------------------------
