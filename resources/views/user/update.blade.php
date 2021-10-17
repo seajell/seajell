@@ -17,7 +17,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
 
 @extends('layout.main')
 @section('content')
-    <p class="fs-2">Kemas Kini Pengguna</p>
+    <p class="fs-2">{{ trans('user/update.update_user') }}</p>
     @php
     //  Check if there's old value, if not insert data from database if available
 
@@ -66,25 +66,26 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
     <form action="" method="post" class="mb-3">
         @csrf
         <div class="mb-3">
-            <label for="fullname" class="form-label">Nama Penuh Pengguna</label>
-            <input type="text" class="form-control" id="fullname" name="fullname" placeholder="Masukkan nama penuh pengguna." value="{{ $valueFullname }}">
+            <label for="fullname" class="form-label">{{ trans('user/update.user_fullname') }}</label>
+            <input type="text" class="form-control" id="fullname" name="fullname" placeholder="{{ trans('user/update.placeholder_user_fullname') }}." value="{{ $valueFullname }}">
         </div>
         @error('fullname')
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
         <div class="mb-3">
-            <label for="email" class="form-label">Alamat E-mel</label>
-            <input type="text" class="form-control" id="email" name="email" placeholder="Masukkan alamat e-mel pengguna." value="{{ $valueEmail }}">
+            <label for="email" class="form-label">{{ trans('user/update.email_address') }}</label>
+            <input type="text" class="form-control" id="email" name="email" placeholder="{{ trans('user/update.placeholder_user_email_address') }}." value="{{ $valueEmail }}">
         </div>
         @error('email')
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
         <div class="mb-3">
-            <label for="identification_number " class="form-label">Nombor Kad Pengenalan</label>
-            <input type="text" class="form-control" id="identification_number " name="identification_number" placeholder="Masukkan nombor kad pengenalan pengguna." value="{{ $valueIdentificationNumber }}">
+            <label for="identification_number " class="form-label">{{ trans('user/update.identification_card_number') }}</label>
+            <input type="text" class="form-control" id="identification_number " name="identification_number" placeholder="{{ trans('user/update.placeholder_identification_card_number') }}." value="{{ $valueIdentificationNumber }}">
             <div id="identification_number_help" class="form-text">
-                Nombor kad pengenalan mestilah diisi tanpa "-". <br>
-                Contoh: 012345678901
+                {{ trans('user/update.label_user_message_one') }}
+                <br>
+                {{ trans('user/update.label_user_message_two') }}
             </div>
         </div>
         @error('identification_number')
@@ -94,10 +95,10 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                 @if($data->role !== 'superadmin')
                     {{-- Only superadmin can edit someone else's role --}}
                     @if(Auth::user()->role == 'superadmin')
-                        <label for="role" class="form-label">Peranan Pengguna</label>
+                        <label for="role" class="form-label">{{ trans('user/update.user_role') }}</label>
                         <select class="form-select mb-3" name="role" id="role" aria-label="role">
-                            <option value="participant">Peserta</option>
-                            <option value="admin">Admin</option>
+                            <option value="participant">{{ trans('user/update.user_role_participant') }}</option>
+                            <option value="admin">{{ trans('user/update.user_role_admin') }}</option>
                         </select>
                         @error('role')
                             <div class="alert alert-danger">{{ $message }}</div>
@@ -105,13 +106,13 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                     @endif
                 @endif
             @endcan
-        <button class="btn btn-outline-light" type="submit" name="info">Kemas Kini Maklumat</button>
+        <button class="btn btn-outline-light" type="submit" name="info">{{ trans('user/update.update_information') }}</button>
     </form>
 
     <hr>
 
     {{-- Only admin can change their own password. Othe admins can't. Superadmin is an exception. --}}
-    <p class="fs-2">Kemas Kini Kata Laluan</p>
+    <p class="fs-2">{{ trans('user/update.update_password') }}</p>
     @if(session()->has('updateUserPasswordSuccess'))
         <span><div class="alert alert-success w-100 ml-1">{{ session('updateUserPasswordSuccess') }}</div></span>
     @endif
@@ -124,8 +125,8 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         {{-- Admin must enter their old password to change it --}}
         @if($data->username == Auth::user()->username)
             <div class="mb-3">
-                <label for="old_password" class="form-label">Kata Laluan Lama</label>
-                <input type="password" class="form-control" id="old_password" name="old_password" placeholder="Masukkan kata laluan lama pengguna.">
+                <label for="old_password" class="form-label">{{ trans('user/update.old_password') }}</label>
+                <input type="password" class="form-control" id="old_password" name="old_password" placeholder="{{ trans('user/update.placeholder_old_password') }}.">
             </div>
             @error('old_password')
                 <div class="alert alert-danger">{{ $message }}</div>
@@ -135,16 +136,16 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
             @enderror
         @endif
         <div class="mb-3">
-            <label for="password" class="form-label">Kata Laluan</label>
-            <input type="password" class="form-control" id="password" name="password" placeholder="Masukkan kata laluan pengguna.">
+            <label for="password" class="form-label">{{ trans('user/update.new_password') }}</label>
+            <input type="password" class="form-control" id="password" name="password" placeholder="{{ trans('user/update.placeholder_new_password') }}.">
         </div>
         @error('password')
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
         <div class="mb-3">
-            <label for="password_confirmation " class="form-label">Sahkan Kata Laluan</label>
-            <input type="password" class="form-control" id="password_confirmation " name="password_confirmation" placeholder="Masukkan kata laluan pengguna semula.">
+            <label for="password_confirmation " class="form-label">{{ trans('user/update.confirm_new_password') }}</label>
+            <input type="password" class="form-control" id="password_confirmation " name="password_confirmation" placeholder="{{ trans('user/update.placeholder_confirm_new_password') }}.">
         </div>
-        <button class="btn btn-outline-light" type="submit" name="password-update">Kemas Kini Kata Laluan</button>
+        <button class="btn btn-outline-light" type="submit" name="password-update">{{ trans('user/update.update_password') }}</button>
     </form>
 @endsection
