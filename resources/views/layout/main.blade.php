@@ -61,11 +61,11 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                             src="{{ asset('/storage/logo/SeaJell-Logo.png') }}" alt="SeaJell Logo"
                             style="height: 3em; width: 3em;"></a>
                     @endif
-                    <a class="navbar-brand" href="{{ route('home') }}">
+                    <a class="navbar-brand text-center me-0" href="{{ route('home') }}" style="max-width: 30vw !important; overflow-wrap: break-word !important; word-wrap: break-word !important; hyphens: auto !important; white-space: normal !important;">
                         @if(!empty($systemSetting->name))
-                        {{ strtoupper($systemSetting->name) }}
+                            {{ strtoupper($systemSetting->name) }}
                         @else
-                        {{ 'SeaJell' }}
+                            {{ 'SeaJell' }}
                         @endif
                     </a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
