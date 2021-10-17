@@ -34,7 +34,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         @endif
     </p>
 
-    <p class="text-center mb-5 text-light fs-3">Tetapkan Semula Kata Laluan</p>
+    <p class="text-center mb-5 text-light fs-3">{{ trans('password_reset/forgot_password.reset_password') }}</p>
 
     <div class="col-4 mx-auto bg-light p-4 rounded">
         <form action="" method="post">
@@ -43,17 +43,17 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                 <span><div class="alert alert-success w-100 ml-1">{{ session('passwordResetRequestSuccess') }}</div></span>
             @endif
             <div class="my-3">
-                <label for="email" class="form-label">Alamat E-mel</label>
+                <label for="email" class="form-label">{{ trans('password_reset/forgot_password.email_address') }}</label>
                 <input type="email" class="form-control mb-3" id="email" name="email" placeholder="">
             </div>
             @error('email')
                 <div class="alert alert-danger">{{ $message }}</div>
             @enderror
 
-            <button class="btn btn-outline-dark mb-3" type="submit">Hantar Permohonan</button>
+            <button class="btn btn-outline-dark mb-3" type="submit">{{ trans('password_reset/forgot_password.send_request') }}</button>
         </form>
 
-        <a href="{{ route('login') }}" class="btn btn-dark mt-5"><i class="bi bi-arrow-return-left"></i> Kembali Ke Laman Log Masuk</a>
+        <a href="{{ route('login') }}" class="btn btn-dark mt-5"><i class="bi bi-arrow-return-left"></i> {{ trans('password_reset/forgot_password.return_login_page') }}</a>
     </div>
 </div>
 </div>

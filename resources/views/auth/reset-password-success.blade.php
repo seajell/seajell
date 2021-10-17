@@ -34,11 +34,11 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         @endif
     </p>
 
-    <p class="text-center mb-5 text-light fs-3">Tetapkan Semula Kata Laluan</p>
+    <p class="text-center mb-5 text-light fs-3">{{ trans('password_reset/reset_password_success.reset_password') }}</p>
 
     <div class="col-4 mx-auto bg-light p-4 rounded">
-        <div class="alert alert-success">Kata laluan berjaya ditetapkan semula!</div>
-        <a href="{{ route('login') }}" class="btn btn-dark"><i class="bi bi-arrow-return-left"></i> Kembali Ke Laman Log Masuk</a>
+        <div class="alert alert-success">{{ trans('password_reset/reset_password_success.password_reset_success') }}!</div>
+        <a href="{{ route('login') }}" class="btn btn-dark"><i class="bi bi-arrow-return-left"></i> {{ trans('password_reset/reset_password_success.return_login_page') }}</a>
     </div>
 </div>
 </div>

@@ -34,7 +34,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
         @endif
     </p>
 
-    <p class="text-center mb-5 text-light fs-3">Tetapkan Semula Kata Laluan</p>
+    <p class="text-center mb-5 text-light fs-3">{{ trans('password_reset/reset_password.reset_password') }}</p>
 
     <div class="col-4 mx-auto bg-light p-4 rounded">
         @switch($resetStatus)
@@ -42,14 +42,14 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                 <form action="" method="post">
                     @csrf
                     <div class="my-3">
-                        <label for="password" class="form-label">Kata Laluan Baru</label>
+                        <label for="password" class="form-label">{{ trans('password_reset/reset_password.new_password') }}</label>
                         <input type="password" class="form-control mb-3" id="password" name="password" placeholder="" value="{{ old('password') }}">
                     </div>
                     @error('password')
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
                     <div class="my-3">
-                        <label for="password_confirmation" class="form-label">Sahkan Kata Laluan Baru</label>
+                        <label for="password_confirmation" class="form-label">{{ trans('password_reset/reset_password.confirm_new_password') }}</label>
                         <input type="password" class="form-control mb-3" id="password_confirmation" name="password_confirmation" placeholder="">
                     </div>
                     @error('password_confirmation')
@@ -57,12 +57,12 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                     @enderror
                     <input type="hidden" name="reset_token" value="{{ $resetToken }}">
                     <input type="hidden" name="email" value="{{ $email }}">
-                    <button class="btn btn-outline-dark mb-3" type="submit">Tukar Kata Laluan</button>
+                    <button class="btn btn-outline-dark mb-3" type="submit">{{ trans('password_reset/reset_password.change_password') }}</button>
                 </form>
                 @break
             @case('invalid')
-                <div class="alert alert-danger">Link ini tidak sah atau telah tamat tempoh.</div>
-                <a href="{{ route('login') }}" class="btn btn-dark"><i class="bi bi-arrow-return-left"></i> Kembali Ke Laman Log Masuk</a>
+                <div class="alert alert-danger">{{ trans('password_reset/reset_password.link_invalid_expired') }}.</div>
+                <a href="{{ route('login') }}" class="btn btn-dark"><i class="bi bi-arrow-return-left"></i> {{ trans('password_reset/reset_password.return_login_page') }}</a>
                 @break
             @default
                 @break

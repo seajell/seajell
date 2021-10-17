@@ -32,7 +32,7 @@
     {{-- Footer --}}
     <div class="text-center text-light mt-3">
         <p><a class="text-decoration-underline text-light" href="https://www.seajell.xyz/" target="_blank">SeaJell</a>
-            {{ $appVersion }}</p>
+            {{ env('APP_VERSION') }}</p>
         <p>{{ trans('user/login.copyright') }} &copy; The SeaJell Contributors 2021</p>
     </div>
 
