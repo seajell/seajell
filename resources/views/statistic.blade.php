@@ -19,31 +19,35 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
 @section('content')
     <div class="container text-center h-100">
         <div class="row">
-            <p class="fs-2">Statistik</p>
+            <p class="fs-2">{{ trans('statistic/main.statistic_title') }}</p>
         </div>
         <div class="row mb-5">
             <div class="form-floating w-50">
                 <select class="form-select" id="update-options" aria-label="Update options floating">
-                    <option selected value="all">Sepanjang Masa</option>
-                    <option value="today">Hari Ini</option>
-                    <option value="month">Bulan Ini</option>
-                    <option value="year">Tahun Ini</option>
+                    <option selected value="all">{{ trans('statistic/main.filter_all') }}</option>
+                    <option value="today">{{ trans('statistic/main.filter_today') }}</option>
+                    <option value="month">{{ trans('statistic/main.filter_month') }}</option>
+                    <option value="year">{{ trans('statistic/main.filter_year') }}</option>
                 </select>
-                <label for="floatingSelect">Jangka Masa</label>
+                <label for="floatingSelect">{{ trans('statistic/main.filter_timeframe') }}</label>
             </div>
-            <button class="btn btn-outline-light btn-sm w-25" type="button" id="update-options-btn"><i class="bi bi-arrow-repeat"></i> Kemas Kini</button>
+            <button class="btn btn-outline-light btn-sm w-25" type="button" id="update-options-btn"><i class="bi bi-arrow-repeat"></i> {{ trans('statistic/main.filter_update') }}</button>
         </div>
         <div class="row my-3">
-            <div class="col-12 d-flex flex-column justify-content-center align-items-center" id="update-status"></div>
+            <div class="col-12 d-flex flex-column justify-content-center align-items-center" id="update-status">
+                <div id="statistic-status-progress" class="alert alert-warning w-50" style="display: none;"><i class="bi bi-arrow-repeat"></i> {{ trans('statistic/main.statistic_status_progress') }}!</div>
+                <div id="statistic-status-succes" class="alert alert-success w-50" style="display: none;"><i class="bi bi-check"></i> {{ trans('statistic/main.statistic_status_success') }}!</div>
+                <div id="statistic-status-error" class="alert alert-danger w-50" style="display: none;"><i class="bi bi-x"></i> {{ trans('statistic/main.statistic_status_error') }}!</div>
+            </div>
         </div>
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 h-100 mb-3" id="statistics">
             <div class="table-responsive">
-                <p class="fs-5">Jumlah Log Masuk</p>
+                <p class="fs-5">{{ trans('statistic/main.login_title') }}</p>
                 <table class="table table-dark table-hover table-striped table-bordered border-light align-middle">
                     <tr>
-                        <th>Peserta</th>
-                        <th>Admin</th>
-                        <th>Jumlah</th>
+                        <th class="col-1">{{ trans('statistic/main.login_participant') }}</th>
+                        <th class="col-1">{{ trans('statistic/main.login_admin') }}</th>
+                        <th class="col-1">{{ trans('statistic/main.login_total') }}</th>
                     </tr>
                     <tr>
                         <td id="participant-login">0</td>
@@ -58,20 +62,20 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                 </table>
               </div>
             <div>
-                <p class="fs-5">Jumlah Lihat / Muat Turun Sijil</p>
+                <p class="fs-5">{{ trans('statistic/main.title_view_download') }}</p>
                 <div class="border border-light border-3 h-75 d-flex justify-content-center align-items-center">
                     <p class="fs-1" id="total-viewed">0</p>
                 </div>
             </div>
             <div>
-                <p class="fs-5">Jumlah Sijil Ditambah</p>
+                <p class="fs-5">{{ trans('statistic/main.title_certificate_added') }}</p>
                 <div class="border border-light border-3 h-75 d-flex justify-content-center align-items-center">
                     <p class="fs-1" id="total-added">0</p>
                 </div>
             </div>
         </div>
         <div class="row mt-5 mb-3">
-            <p>Jika anda mahu memberi maklumat balas berkenaan sistem ini, anda boleh melakukan sedemikian dengan mengisi borang ini: <a href="https://forms.gle/KLjTCqRGdpwQKCw7A" target="_blank">https://forms.gle/KLjTCqRGdpwQKCw7A</a></p>
+            <p>{{ trans('statistic/main.feedback') }}: <a href="https://forms.gle/KLjTCqRGdpwQKCw7A" target="_blank">https://forms.gle/KLjTCqRGdpwQKCw7A</a></p>
         </div>
     </div>
     <script src="{{ asset('js/statistic.js') }}"></script>

@@ -19,7 +19,6 @@ import axios from 'axios';
 
 document.addEventListener("DOMContentLoaded", function (event) {
     const token = document.querySelector('meta[name="api-token"]').content;
-    const updateStatusHTML = document.querySelector('#update-status');
     const totalViewedHTML = document.querySelector('#total-viewed');
     const totalAddedHTML = document.querySelector('#total-added');
     const participantLoginHTML = document.querySelector('#participant-login');
@@ -28,10 +27,13 @@ document.addEventListener("DOMContentLoaded", function (event) {
     const participantLoginPercentageHTML = document.querySelector('#participant-login-percentage');
     const adminLoginPercentageHTML = document.querySelector('#admin-login-percentage');
     const totalLoginPercentageHTML = document.querySelector('#total-login-percentage');
+    const statisticStatusProgress = document.querySelector('#statistic-status-progress');
+    const statisticStatusSuccess = document.querySelector('#statistic-status-succes');
+    const statisticStatusError = document.querySelector('#statistic-status-error');
 
     const updateOptions = document.querySelector('#update-options');
     const updateOptionsBtn = document.querySelector('#update-options-btn');
-    
+
     function clearData(){
         totalViewedHTML.innerHTML = "";
         totalAddedHTML.innerHTML = "";
@@ -64,7 +66,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
         getData(dataFor).then(function (response) {
             clearData();
             let data = response.data;
-            updateStatusHTML.innerHTML = '<div class="alert alert-warning w-50"><i class="bi bi-arrow-repeat"></i> Kemas kini sedang berlangsung!</div>';
+            statisticStatusProgress.style.display = 'block';
+
             // Checkes whether is any data is not available
             if(data.totalParticipantLogin == null || data.totalAdminLogin == null || data.totalLogin == null || data.totalCertificateViewed == null || data.totalCertificateAdded == null){
                 displayDataFor('error', data);
@@ -76,8 +79,10 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     function displayDataFor(dataStatus, data){
         if(dataStatus === 'error'){
-            setTimeout(function(){ 
-                updateStatusHTML.innerHTML = '<div class="alert alert-danger w-50"><i class="bi bi-x"></i> Kemas kini gagal!</div>';
+            setTimeout(function(){
+                statisticStatusProgress.style.display = 'none';
+                statisticStatusSuccess.style.display = 'none';
+                statisticStatusError.style.display = 'block';
             }, 1000);
             participantLoginHTML.innerHTML = 'Error';
             adminLoginHTML.innerHTML = 'Error';
@@ -96,19 +101,23 @@ document.addEventListener("DOMContentLoaded", function (event) {
             totalLoginPercentageHTML.innerHTML = "100%";
             totalViewedHTML.innerHTML = data.totalCertificateViewed;
             totalAddedHTML.innerHTML = data.totalCertificateAdded;
-            setTimeout(function(){ 
-                updateStatusHTML.innerHTML = '<div class="alert alert-success w-50"><i class="bi bi-check"></i> Kemas kini berjaya!</div>';
+            setTimeout(function(){
+                statisticStatusProgress.style.display = 'none';
+                statisticStatusError.style.display = 'none';
+                statisticStatusSuccess.style.display = 'block';
             }, 1000);
         }
         // Clears back the status
-        setTimeout(function(){ 
-            updateStatusHTML.innerHTML = '';
+        setTimeout(function(){
+            statisticStatusProgress.style.display = 'none';
+            statisticStatusSuccess.style.display = 'none';
+            statisticStatusError.style.display = 'none';
         }, 2500);
     }
 
     // Display all data when DOM loaded
     getDataFor('all');
-    
+
     updateOptionsBtn.addEventListener('click', () => {
         switch (updateOptions.value) {
             case 'all':
@@ -125,7 +134,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 break;
             default:
                 break;
-        }  
+        }
     });
-    
+
 });
