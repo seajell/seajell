@@ -1,0 +1,32 @@
+<?php
+
+return [
+    'system_setting' => 'Tetapan Sistem',
+    'organization_information' => 'Maklumat Organisasi',
+    'organization_name' => 'Nama Organisasi',
+    'system_language' => 'Bahasa Sistem',
+    'organization_logo' => 'Logo Organisasi',
+    'system_setting_update' => 'Kemas Kini',
+    'label_organization_name' => 'Nama ini akan digunakan pada bar navigasi dan tajuk laman',
+    'label_system_language' => 'Bahasa untuk keseluruhan antaramuka pengguna sistem',
+    'label_organization_logo' => 'Logo ini akan digunakan pada bar navigasi dan favicon',
+
+    'email_service_information' => 'Maklumat Servis E-Mel',
+    'email_service_information_description' => 'Servis e-mel pada sistem ini hanya mempunyai sokongan untuk SMTP',
+    'smtp_host' => 'Hos SMTP',
+    'smtp_port' => 'Port SMTP',
+    'email_user_username' => 'Username Pengguna E-mel',
+    'email_user_password' => 'Kata Laluan Pengguna E-mel',
+    'sender_email_address' => 'Alamat E-mel Penghantar',
+    'support_email_address' => 'Alamat E-mel Untuk Sokongan',
+    'email_active_switch' => 'Aktifkan Servis',
+    'label_used_for_connecting_to_email_server' => 'Digunakan untuk sambungan kepada pelayan e-mel',
+    'label_host_example' => 'Contoh: mail.seajell.xyz',
+    'label_port_example' => 'Contoh: 587',
+    'label_user_username' => 'Username pengguna e-mel',
+    'label_user_password' => 'Kata laluan untuk proses pengesahan pengguna di atas',
+    'label_sender_email_address' => 'Alamat e-mel ini akan digunakan di ruang From dan Reply-To untuk SMTP',
+    'label_support_email_address_one' => 'Alamat e-mel ini akan ditambahkan ke dalam isi e-mel untuk memberitahu pengguna alamat e-mel apa yang harus dihubungi untuk mendapatkan sokongan',
+    'label_support_email_address_two' => 'Alamat e-mel ini boleh sama seperti alamat e-mel penghantar',
+    'email_service_update' => 'Kemas Kini',
+];

@@ -59,39 +59,40 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
 
 @extends('layout.main')
 @section('content')
-    <p class="fs-2">@lang('common.system_setting')</p>
+    <p class="fs-2">{{ trans('system/update.system_setting') }}</p>
     @if(session()->has('systemSettingSuccess'))
         <span><div class="alert alert-success w-100 ml-1">{{ session('systemSettingSuccess') }}</div></span>
     @endif
-    <p class="fs-4">Maklumat Organisasi</p>
+    <p class="fs-4">{{ trans('system/update.organization_information') }}</p>
     <form action="" method="post" class="mb-3" enctype="multipart/form-data">
         @csrf
         <div class="mb-3">
-            <label for="system-name" class="form-label">Nama Organisasi</label>
+            <label for="system-name" class="form-label">{{ trans('system/update.organization_name') }}</label>
             <input type="text" class="form-control" id="system-name" name="system-name" aria-describedby="systemNameHelp" value="{{ $systemNameValue }}">
-            <div id="systemNameHelp" class="form-text">Nama ini akan digunakan pada bar navigasi dan tajuk laman.</div>
+            <div id="systemNameHelp" class="form-text">{{ trans('system/update.label_organization_name') }}.</div>
         </div>
         @error('system-name')
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
-        <label for="system-language" class="form-label">Bahasa</label>
+        <label for="system-language" class="form-label">{{ trans('system/update.system_language') }}</label>
         <select class="form-select mb-3" aria-label="System language" name="system-language" id="system-language">
             <option value="en" {{ $systemLanguageSelectedEn }}>English</option>
             <option value="ms-MY" {{ $systemLanguageSelectedMs }}>Malay</option>
         </select>
+        <div id="systemLanguageHelp" class="form-text">{{ trans('system/update.label_system_language') }}.</div>
         @error('system-language')
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
         <img src="{{ asset('storage/') . $systemSetting->logo }}" alt="" class="img img-thumbnail my-3">
         <div class="mb-3">
-            <label for="system-logo" class="form-label">Logo</label>
+            <label for="system-logo" class="form-label">{{ trans('system/update.organization_logo') }}</label>
             <input class="form-control" type="file" id="system-logo" name="system-logo">
-            <div id="systemLogoHelp" class="form-text">Logo ini akan digunakan pada bar navigasi dan favicon.</div>
+            <div id="systemLogoHelp" class="form-text">{{ trans('system/update.label_organization_logo') }}.</div>
         </div>
         @error('system-logo')
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
-        <button class="btn btn-outline-light" type="submit" name="organisation-information"><i class="bi bi-building"></i> Kemas Kini</button>
+        <button class="btn btn-outline-light" type="submit" name="organisation-information"><i class="bi bi-building"></i> {{ trans('system/update.system_setting_update') }}</button>
     </form>
 
     <hr>
@@ -177,67 +178,77 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
     @if(session()->has('updateEmailServiceSuccess'))
         <span><div class="alert alert-success w-100 ml-1">{{ session('updateEmailServiceSuccess') }}</div></span>
     @endif
-    <p class="fs-4">Maklumat Servis E-Mel</p>
+    <p class="fs-4">{{ trans('system/update.email_service_information') }}</p>
     <form action="" method="post" class="mb-3">
         @csrf
-        <p class="fst-italic">Servis e-mel pada sistem ini hanya mempunyai sokongan untuk SMTP.</p>
+        <p>{{ trans('system/update.email_service_information_description') }}.</p>
         <div class="form-check form-switch mb-3">
             <input class="form-check-input" type="checkbox" id="email-service-switch" name="email-service-switch" {{ $emailServiceStatus }}>
-            <label class="form-check-label" for="email-service-switch">Aktifkan Servis</label>
+            <label class="form-check-label" for="email-service-switch">{{ trans('system/update.email_active_switch') }}</label>
         </div>
         @error('email-service-switch')
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
         <div class="mb-3">
-            <label for="email-service-host" class="form-label">Host SMTP</label>
+            <label for="email-service-host" class="form-label">{{ trans('system/update.smtp_host') }}</label>
             <input type="text" class="form-control" id="email-service-host" name="email-service-host" aria-describedby="emailServiceHostHelp" value="{{ $emailServiceHost }}">
-            <div id="emailServiceHostHelp" class="form-text">Digunakan untuk sambungan kepada pelayan e-mel. <br> Contoh: mail.seajell.xyz</div>
+            <div id="emailServiceHostHelp" class="form-text">
+                {{ trans('system/update.label_used_for_connecting_to_email_server') }}.
+                <br>
+                {{ trans('system/update.label_host_example') }}.
+            </div>
         </div>
         @error('email-service-host')
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
         <div class="mb-3">
-            <label for="email-service-port" class="form-label">Port SMTP</label>
+            <label for="email-service-port" class="form-label">{{ trans('system/update.smtp_port') }}</label>
             <input type="number" class="form-control" id="email-service-port" name="email-service-port" aria-describedby="emailServicePortHelp" value="{{ $emailServicePort }}">
-            <div id="emailServicePortHelp" class="form-text">Digunakan untuk sambungan kepada pelayan e-mel.
-                <br> Contoh: 587</div>
+            <div id="emailServicePortHelp" class="form-text">
+                {{ trans('system/update.label_used_for_connecting_to_email_server') }}.
+                <br>
+                {{ trans('system/update.label_host_example') }}.
+            </div>
         </div>
         @error('email-service-port')
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
         <div class="mb-3">
-            <label for="email-service-username" class="form-label">Username Pengguna E-mel</label>
+            <label for="email-service-username" class="form-label">{{ trans('system/update.email_user_username') }}</label>
             <input type="text" class="form-control" id="email-service-username" name="email-service-username" aria-describedby="emailServiceUsernameHelp" value="{{ $emailServiceUsername }}">
-            <div id="emailServiceUsernameHelp" class="form-text">Username pengguna e-mel.</div>
+            <div id="emailServiceUsernameHelp" class="form-text">{{ trans('system/update.label_user_username') }}.</div>
         </div>
         @error('email-service-username')
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
         <div class="mb-3">
-            <label for="email-service-password" class="form-label">Kata Laluan Pengguna E-mel</label>
+            <label for="email-service-password" class="form-label">{{ trans('system/update.email_user_password') }}</label>
             <input type="password" class="form-control" id="email-service-password" name="email-service-password" aria-describedby="emailServicePasswordHelp" value="{{ $emailServicePassword }}">
-            <div id="emailServicePasswordHelp" class="form-text">Kata laluan untuk proses pengesahan username di atas.</div>
+            <div id="emailServicePasswordHelp" class="form-text">{{ trans('system/update.label_user_password') }}.</div>
         </div>
         @error('email-service-password')
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
         <div class="mb-3">
-            <label for="email-service-from-email" class="form-label">Alamat E-mel Penghantaran</label>
+            <label for="email-service-from-email" class="form-label">{{ trans('system/update.sender_email_address') }}</label>
             <input type="email" class="form-control" id="email-service-from-email" name="email-service-from-email" aria-describedby="emailServiceFromEmailHelp" value="{{ $emailServiceFromEmail }}">
-            <div id="emailServiceFromEmailHelp" class="form-text">Alamat e-mel ini akan digunakan untuk penghantaran e-mel.</div>
+            <div id="emailServiceFromEmailHelp" class="form-text">{{ trans('system/update.label_sender_email_address') }}.</div>
         </div>
         @error('email-service-from-email')
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
         <div class="mb-3">
-            <label for="email-service-support-email" class="form-label">Alamat E-mel Untuk Sokongan</label>
+            <label for="email-service-support-email" class="form-label">{{ trans('system/update.support_email_address') }}</label>
             <input type="email" class="form-control" id="email-service-support-email" name="email-service-support-email" aria-describedby="emailServiceSupportEmailHelp" value="{{ $emailServiceSupportEmail }}">
-            <div id="emailServiceSupportEmailHelp" class="form-text">Alamat e-mel ini akan ditambahkan ke isi e-mel untuk memberitahu pengguna alamat e-mel apa yang harus dihubungi untuk mendapatkan sokongan.
-                <br> Alamat e-mel ini boleh sama seperti alamat yang digunakan untuk menghantar e-mel.</div>
+            <div id="emailServiceSupportEmailHelp" class="form-text">
+                {{ trans('system/update.label_support_email_address_one') }}.
+                <br>
+                {{ trans('system/update.label_support_email_address_two') }}.
+            </div>
         </div>
         @error('email-service-support-email')
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
-        <button class="btn btn-outline-light" type="submit" name="email-information"><i class="bi bi-envelope"></i> Kemas Kini</button>
+        <button class="btn btn-outline-light" type="submit" name="email-information"><i class="bi bi-envelope"></i> {{ trans('system/update.email_service_update') }}</button>
     </form>
 @endsection
