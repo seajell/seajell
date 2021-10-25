@@ -616,7 +616,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                     <div class="alert alert-danger">{{ $message }}</div>
                 @enderror
                 <div class="my-1">
-                    <x-buk-color-picker name="type-text-color" class="mb-3" />
+                    <x-buk-color-picker name="type-text-color" class="mb-3" :options="['default' => $eventFontData->certificate_type_text_color]" />
                 </div>
                 @error('type-text-color')
                     <div class="alert alert-danger">{{ $message }}</div>
@@ -637,7 +637,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                     <div class="alert alert-danger">{{ $message }}</div>
                 @enderror
                 <div class="my-1">
-                    <x-buk-color-picker name="first-text-color" class="mb-3" />
+                    <x-buk-color-picker name="first-text-color" class="mb-3" :options="['default' => $eventFontData->first_text_color]" />
                 </div>
                 @error('first-text-color')
                     <div class="alert alert-danger">{{ $message }}</div>
@@ -658,7 +658,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                     <div class="alert alert-danger">{{ $message }}</div>
                 @enderror
                 <div class="my-1">
-                    <x-buk-color-picker name="second-text-color" class="mb-3" />
+                    <x-buk-color-picker name="second-text-color" class="mb-3" :options="['default' => $eventFontData->second_text_color]" />
                 </div>
                 @error('second-text-color')
                     <div class="alert alert-danger">{{ $message }}</div>
@@ -679,7 +679,7 @@ along with SeaJell.  If not, see <https://www.gnu.org/licenses/>. --}}
                     <div class="alert alert-danger">{{ $message }}</div>
                 @enderror
                 <div class="my-1">
-                    <x-buk-color-picker name="verifier-text-color" class="mb-3" />
+                    <x-buk-color-picker name="verifier-text-color" class="mb-3" :options="['default' => $eventFontData->verifier_text_color]" />
                 </div>
                 @error('verifier-text-color')
                     <div class="alert alert-danger">{{ $message }}</div>
