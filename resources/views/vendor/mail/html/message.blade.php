@@ -20,6 +20,19 @@
 {{-- Body --}}
 {{ $slot }}
 
+<br>
+
+Daripada, <br>
+@if(!empty($data['systemName']))
+    {{ '**' . strtoupper($data['systemName']) . '**' }}
+@else
+    {{ '**SeaJell**' }}
+@endif
+
+@if(!empty($data['supportEmail']))
+_Jika anda menghadapi sebarang masalah atau mempunyai pertanyaan, sila hubungi melalui e-mel <a href="mailto:{{ $data['supportEmail'] }}">{{ $data['supportEmail'] }}</a> untuk mendapatkan bantuan._
+@endif
+
 {{-- Subcopy --}}
 @isset($subcopy)
 @slot('subcopy')
